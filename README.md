@@ -13,8 +13,8 @@ and the 1784 directed links between their pages.
 | Path | What it is |
 | --- | --- |
 | `index.html` | Front page: the group, the course, the week index |
-| `weeks/week1.html` | Week 1 post: degree distributions, in vs out, components, islands |
-| `game/` | **WEB-CRAWLER**, a browser game played on the real graph |
+| `weeks/week1/index.html` | Week 1 post: degree distributions, in vs out, components, islands |
+| `weeks/week1/game/` | **WEB-CRAWLER**, a browser game played on the real graph |
 | `scripts/` | Everything that produces the data and the figures |
 | `assets/figures/` | Generated figures, all written by `scripts/analyse.py` |
 | `data/` | Generated: graph for the game, stats, API verification output |

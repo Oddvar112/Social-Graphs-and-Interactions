@@ -127,7 +127,7 @@ canvas#cv.pointing{cursor:pointer}
 .card .sub b{color:var(--text)}
 
 .heroes{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:22px 0 16px}
-@media(max-width:640px){.heroes{grid-template-columns:1fr}}
+@media(max-width:520px){.heroes{grid-template-columns:1fr}}
 .heroCard{
   background:linear-gradient(180deg,var(--panel),#0c1225);border:2px solid var(--line);
   border-radius:16px;padding:14px 12px 16px;transition:.18s;text-align:center;position:relative;overflow:hidden;
@@ -198,6 +198,31 @@ canvas#cv.pointing{cursor:pointer}
   .stat{min-width:52px;padding:4px 8px} .stat b{font-size:16px}
   #objective{top:auto;bottom:78px}
 }
+
+/* The start screen also has to fit inside a short embed frame, not just a full
+   window, so it tightens up on narrow widths and on short viewports. */
+@media(max-width:780px){
+  .heroCard{padding:10px 8px 12px}
+  .heroCard canvas{width:74px;height:90px}
+  .heroCard .hn{font-size:18px}
+  .heroCard .hr{font-size:8.5px;letter-spacing:.1em}
+  .heroCard .hd{font-size:10.5px;min-height:0;margin-top:6px}
+  .card h1{font-size:clamp(34px,7vw,52px)}
+  .card .sub{font-size:12px}
+}
+@media(max-width:600px){ .heroCard .hd{display:none} }
+@media(max-height:760px){
+  .veil{align-items:flex-start;padding:16px}
+  .card h1{font-size:clamp(30px,6vw,46px)}
+  .card .sub{font-size:11.5px;margin:7px auto 2px;line-height:1.55}
+  .heroCard canvas{width:68px;height:82px}
+  .heroCard .hd{display:none}
+  .rules{font-size:10.5px;line-height:1.6;padding:10px 13px;margin-top:12px}
+  .go{font-size:27px;padding:8px 40px}
+  .heroes{margin:13px 0 10px}
+  .diffs{margin-bottom:12px}
+  .homelink{margin-top:10px;font-size:11px}
+}
 </style>
 </head>
 <body>
@@ -205,7 +230,7 @@ canvas#cv.pointing{cursor:pointer}
 
   <div id="hud">
     <div class="brand comic">WEB-CRAWLER<small>MARVEL WIKI GRAPH</small></div>
-    <a class="back" href="../weeks/week1.html">&larr; Week 1 post</a>
+    <a class="back" href="../index.html">&larr; Week 1 post</a>
     <div class="stats">
       <div class="stat hot"><b id="sSteps">0</b><span>Steps</span></div>
       <div class="stat par"><b id="sPar">0</b><span>Par</span></div>
@@ -270,7 +295,7 @@ canvas#cv.pointing{cursor:pointer}
           <code>Web-zip</code> undoes your last step (+2 steps).<br>
           <b>Why is this hard?</b> The graph is directed. A linking to B says nothing about B linking back to A.
         </div>
-        <a class="homelink" href="../index.html">Back to the site</a>
+        <a class="homelink" href="../../../index.html">Back to the site</a>
       </div>
     </div>
 
@@ -298,7 +323,7 @@ canvas#cv.pointing{cursor:pointer}
   </div>
 </div>
 
-<script src="../data/marvel_week1.js"></script>
+<script src="../../../data/marvel_week1.js"></script>
 <script src="hero.js"></script>
 <script src="game.js"></script>
 </body>
