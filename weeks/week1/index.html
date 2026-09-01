@@ -18,27 +18,21 @@
     <nav>
       <a href="../../index.html">Weeks</a>
       <a href="index.html" class="on">Week 1</a>
-      <a href="game/index.html">Play</a>
       <a href="https://github.com/Oddvar112/Social-Graphs-and-Interactions">Code</a>
     </nav>
   </div>
 </header>
 
 <section class="playfirst">
-  <div class="wrap wide">
-    <div class="head">
-      <div>
-        <div class="kicker">Week 1 &middot; play it before you read it</div>
-        <h2 class="comic">WEB-CRAWLER</h2>
-      </div>
-      <p class="note">Pick a hero, then click your way out to the target and back, along real Wikipedia links.
-      The map is dark until you walk on it. <b>Everything written below is what we found in the same graph.</b></p>
-    </div>
-    <div class="gameframe">
-      <iframe src="game/index.html" title="WEB-CRAWLER, a game played on the Marvel Wikipedia link graph"></iframe>
-    </div>
-    <p class="framehint">Feeling cramped in the frame?
-      <a href="game/index.html" target="_blank" rel="noopener">Open it full screen &rarr;</a></p>
+  <div class="wrap">
+    <a class="playcard" href="game/index.html">
+      <div class="lbl">Week 1 &middot; play it before you read it</div>
+      <h3 class="comic">WEB-CRAWLER</h3>
+      <p>Play as Spider-Man, Wolverine or Doctor Strange. You get a target somewhere out in the network, and you click
+      your way there and back along real Wikipedia links, one page at a time. The map is dark until you walk on it, and
+      your score is compared against the shortest route that actually exists, computed with BFS on the same 1784 edges.</p>
+      <span class="cta">Play it</span>
+    </a>
   </div>
 </section>
 
@@ -196,14 +190,7 @@ for row in read_tsv("week1_edges.tsv"):    # then the 1784 edges
   <p>All of the above is the god's-eye view. We wanted the other one: what the network feels like from inside, with only
   the outgoing links of the page you are standing on. So we built <strong>WEB-CRAWLER</strong>.</p>
 
-  <a class="playcard" href="game/index.html" target="_blank" rel="noopener">
-    <div class="lbl">It is playing at the top of this page</div>
-    <h3 class="comic">WEB-CRAWLER</h3>
-    <p>Play as Spider-Man, Wolverine or Doctor Strange. You get a target somewhere out in the network, and you click
-    your way there and back along real Wikipedia links, one page at a time. The map is dark until you walk on it. Your
-    score is compared against the shortest route that actually exists, computed with BFS on the same 1784 edges.</p>
-    <span class="cta">Open it full screen</span>
-  </a>
+  <p>It is linked at the top of this page, or <a href="game/index.html">open WEB-CRAWLER here</a>.</p>
 
   <p>The game is not decoration. Three of the numbers above are things you can only really feel by playing:</p>
   <ul>
