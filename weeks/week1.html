@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Week 1: Everybody links to Spider-Man</title>
+<meta name="description" content="Degree distributions, in versus out degree, the giant component and the one island outside it, in Wikipedia's 303-character Marvel network. Plus a game built on the same graph.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bangers&family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/site.css">
+</head>
+<body>
+
+<header class="topbar">
+  <div class="wrap">
+    <a href="../index.html" class="logo comic">CAPES &amp; EDGES</a>
+    <nav>
+      <a href="../index.html">Weeks</a>
+      <a href="week1.html" class="on">Week 1</a>
+      <a href="../game/index.html">Play</a>
+      <a href="https://github.com/Oddvar112/Social-Graphs-and-Interactions">Code</a>
+    </nav>
+  </div>
+</header>
+
+<main class="wrap post">
+
+  <div class="kicker">Week 1 &middot; Structure</div>
+  <h1>Everybody links to Spider-Man.<br>Spider-Man links to almost nobody.</h1>
+  <p class="lede">One in three Marvel characters on Wikipedia links to Spider-Man's page. He links back to nine of them.
+  That asymmetry turned out to be the whole story of this week: in-degree and out-degree measure two completely
+  different jobs, and once you see it you cannot unsee it. So we built a game where you have to feel it.</p>
+  <p class="byline">Oddvar and David &middot; 1 September 2026 &middot; frozen snapshot of 26 August 2026 &middot; 303 nodes, 1784 directed edges</p>
+
+  <h2>What we asked</h2>
+  <p>Three questions, in the order they occurred to us:</p>
+  <ol>
+    <li><strong>Who is famous, and who is curious?</strong> In-degree says how many other characters point at you.
+      Out-degree says how many you point at. Are these the same people?</li>
+    <li><strong>What does the network look like if you have to walk it?</strong> Not the god's-eye picture, but the
+      view of somebody standing on one article with only its outgoing links to choose from.</li>
+    <li><strong>What is out there in the dark?</strong> The course notes warn that 17 characters have no link in either
+      direction. We wanted to know whether anything else lives outside the main body.</li>
+  </ol>
+
+  <h2>The data, and the 17 characters that vanish if you are careless</h2>
+  <p>We used the frozen week-1 release exactly as handed out. The one thing that matters when loading it is the order of
+  operations. The edge list only mentions characters that have at least one link, so building the graph from it alone
+  gives you 286 nodes and quietly loses the rest.</p>
+
+<pre><code>G = nx.DiGraph()
+for row in read_tsv("week1_nodes.tsv"):    # all 303 nodes FIRST
+    G.add_node(row["node_id"], **row)
+for row in read_tsv("week1_edges.tsv"):    # then the 1784 edges
+    G.add_edge(row["source"], row["target"])</code></pre>
+
+  <div class="callout warn">
+    <b>A trap worth naming.</b> The header line in <code>week1_edges.tsv</code> is written as a
+    <code>#</code> comment. If you strip comments before parsing, as you should, you also strip the header, and
+    <code>csv.DictReader</code> then silently treats the first real edge as column names. You lose one edge and get a
+    <code>KeyError</code> later. We pass the field names in explicitly.
+  </div>
+
+  <div class="tablewrap">
+    <table>
+      <thead><tr><th>Property</th><th class="num">Value</th><th>Comment</th></tr></thead>
+      <tbody>
+        <tr><td>Nodes</td><td class="num">303</td><td>Every character in the category</td></tr>
+        <tr><td>Directed edges</td><td class="num">1784</td><td>Article A links to article B</td></tr>
+        <tr><td>Density</td><td class="num">0.0195</td><td>About 2 percent of possible links exist</td></tr>
+        <tr><td>Mean degree</td><td class="num">5.89</td><td>Identical for in and out, by construction</td></tr>
+        <tr><td>Median in-degree</td><td class="num">3</td><td>The typical character is not famous</td></tr>
+        <tr><td>Median out-degree</td><td class="num">4</td><td>The typical character does link out</td></tr>
+        <tr><td>Reciprocity</td><td class="num">0.392</td><td>Only 39 percent of links are answered</td></tr>
+        <tr><td>Nodes with no outgoing link</td><td class="num">20</td><td>Dead ends when you walk the graph</td></tr>
+        <tr><td>Nodes with no incoming link</td><td class="num">58</td><td>Unreachable by clicking</td></tr>
+        <tr><td>Isolates</td><td class="num">17</td><td>No link in either direction</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h2>Degree distributions</h2>
+  <p>The required plot, and it earns its place. Read the top row first: in-degree on the left runs out to 106, while
+  out-degree on the right stops dead at 28. Same mean of 5.89, completely different shapes.</p>
+
+  <figure>
+    <img src="../assets/figures/degree_distributions.png" alt="Four panels: in-degree and out-degree distributions on linear axes on top, the same two on log-log axes below. In-degree is heavily skewed with a long tail to 106; out-degree is a compact hump peaking around 2 to 4.">
+    <figcaption>In-degree has the long tail everyone expects from a link network. Out-degree does not: it is a hump
+    with a hard ceiling. The dashed line on the log-log panels is a least-squares slope, and it is a description of the
+    shape, not a claim of a power law. With 303 nodes you cannot honestly fit one.</figcaption>
+  </figure>
+
+  <p>The asymmetry has a mundane cause, and that is what makes it interesting. Out-degree is bounded by <em>how much
+  somebody bothered to write</em>. An editor writing the Venom article mentions maybe twenty other characters, because
+  that is how long an article is. In-degree is bounded by nothing: every one of the other 302 articles can independently
+  decide to mention Spider-Man, and 106 of them did.</p>
+
+  <blockquote>Out-degree measures effort spent on one page. In-degree measures attention paid by everybody else.
+  One is capped by an author's stamina, the other by nothing at all.</blockquote>
+
+  <h2>In versus out: two different jobs</h2>
+  <p>Plotting them against each other makes the two populations visible. Correlation is real but weak, Pearson r = 0.50,
+  and the interesting characters are the ones far off the diagonal.</p>
+
+  <figure>
+    <img src="../assets/figures/in_vs_out.png" alt="Scatter plot of in-degree against out-degree on symmetric log axes. Spider-Man, Hulk, Wolverine and Doctor Strange sit far to the right with modest out-degree. Betsy Braddock, Cloak and Dagger, Adam Warlock and U.S. Agent sit high up with modest in-degree.">
+    <figcaption>Cyan labels are the five most linked-to characters, gold are the five that link out most. The two sets do
+    not overlap at all. Spider-Man is the extreme case: 106 in, 9 out.</figcaption>
+  </figure>
+
+  <div class="tablewrap">
+    <table>
+      <thead>
+        <tr><th>#</th><th>Most linked to</th><th class="num">in</th><th class="num">out</th><th>Most linking out</th><th class="num">out</th><th class="num">in</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>1</td><td>Spider-Man</td><td class="num">106</td><td class="num">9</td><td>Betsy Braddock</td><td class="num">28</td><td class="num">7</td></tr>
+        <tr><td>2</td><td>Hulk</td><td class="num">64</td><td class="num">10</td><td>Cloak and Dagger</td><td class="num">24</td><td class="num">11</td></tr>
+        <tr><td>3</td><td>Wolverine</td><td class="num">60</td><td class="num">17</td><td>Adam Warlock</td><td class="num">22</td><td class="num">8</td></tr>
+        <tr><td>4</td><td>Doctor Strange</td><td class="num">50</td><td class="num">17</td><td>Venom</td><td class="num">21</td><td class="num">17</td></tr>
+        <tr><td>5</td><td>Deadpool</td><td class="num">33</td><td class="num">19</td><td>She-Hulk</td><td class="num">20</td><td class="num">29</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <p>Not one name appears in both top fives. The heavily linked-to characters are the ones with decades of publication
+  history that every later character has to be positioned against. The heavy linkers are pages that are structurally
+  <em>about</em> other characters: Betsy Braddock has swapped identities, bodies and codenames often enough that her
+  article is mostly a map of other people, and Cloak and Dagger is one article covering two characters and their whole
+  shared supporting cast.</p>
+
+  <h2>Drawing the network</h2>
+  <p>277 of the 303 characters sit in one connected blob. Node size and colour are in-degree, and we brightened the edges
+  that terminate at a top-five hub, which is what makes the star patterns visible rather than merely implied.</p>
+
+  <figure>
+    <img src="../assets/figures/network.png" alt="Force-directed drawing of the giant component: 277 nodes, with Spider-Man as a large bright yellow hub near the centre, Hulk, Wolverine and Doctor Strange as smaller orange hubs, and a dense rim of small purple and blue nodes.">
+    <figcaption>The giant component. Spider-Man is the yellow node you cannot miss. What the picture hides is direction:
+    almost every one of those bright lines points inwards.</figcaption>
+  </figure>
+
+  <p>Direction changes the picture completely. Ignore it and you get one component of 277. Respect it and the graph
+  breaks into <strong>66 strongly connected components</strong>, the largest holding 229 characters. Those 229 are the
+  part of the universe you can actually wander around in and return from. Inside it the average shortest path is 3.36
+  hops and the diameter is 10.</p>
+
+  <h2>What is out there in the dark</h2>
+  <p>This is where we found the thing we did not expect. The 17 isolates are documented in the course notes, so we went
+  looking for what else sits outside the giant component. The answer is: exactly one island, and it has a story.</p>
+
+  <figure>
+    <img src="../assets/figures/islands.png" alt="Left: a nine-node island of Strikeforce Morituri characters densely linked to each other and to nothing else. Right: a list of the 17 isolated characters, including Baymax, Miracleman, Super Rabbit and Father Time.">
+    <figcaption>Left: the only island. Nine characters, 22 edges among themselves, zero edges to the other 294.
+    Right: the 17 isolates that disappear if you build the graph from the edge list alone.</figcaption>
+  </figure>
+
+  <p>The island is Backhand, Blackthorn, Radian, Scaredycat, Scatterbrain, Shear, Snapdragon, Toxyn and Vyking. They are
+  the cast of <em>Strikeforce: Morituri</em>, a 1986 Marvel series set in its own future where the characters were
+  written to die. They reference each other constantly and nothing else references them, because the series was
+  deliberately sealed off from the main continuity. The link graph reproduces that editorial decision perfectly, forty
+  years later, without knowing anything about comics.</p>
+
+  <div class="callout">
+    <b>Structure recovering intent.</b> We did not tell the algorithm that Morituri was a self-contained series. The
+    only reason those nine cluster is that Wikipedia editors linked them the way the comics were written. A connected
+    component here is a publishing decision, fossilised.
+  </div>
+
+  <p>The isolates are a different phenomenon. Baymax, Miracleman, Super Rabbit, Father Time, Yo-Yo Rodriguez and the
+  rest are mostly characters who arrived through an acquisition, a film, or a one-off wartime title. They are in the
+  category because a Wikipedia editor tagged them, but no other character's article has any reason to mention them.
+  Being in a category and being in a universe are not the same thing.</p>
+
+  <hr>
+
+  <h2>So we turned it into a game</h2>
+  <p>All of the above is the god's-eye view. We wanted the other one: what the network feels like from inside, with only
+  the outgoing links of the page you are standing on. So we built <strong>WEB-CRAWLER</strong>.</p>
+
+  <a class="playcard" href="../game/index.html">
+    <div class="lbl">Runs in the browser, no install</div>
+    <h3 class="comic">WEB-CRAWLER</h3>
+    <p>Play as Spider-Man, Wolverine or Doctor Strange. You get a target somewhere out in the network, and you click
+    your way there and back along real Wikipedia links, one page at a time. The map is dark until you walk on it. Your
+    score is compared against the shortest route that actually exists, computed with BFS on the same 1784 edges.</p>
+    <span class="cta">Play it</span>
+  </a>
+
+  <p>The game is not decoration. Three of the numbers above are things you can only really feel by playing:</p>
+  <ul>
+    <li><strong>Direction hurts.</strong> Reciprocity is 0.392, so the majority of the links you take cannot be walked
+      back. Overshoot and you do not reverse, you go around.</li>
+    <li><strong>Dead ends are real.</strong> 20 characters have no outgoing link at all. Land on one and the panel is
+      empty. That is not a bug, that is the graph.</li>
+    <li><strong>Hubs are the whole strategy.</strong> Because in-degree is so concentrated, the winning move is almost
+      always to get to a hub and let its incoming traffic carry you. The top ten characters absorb 25 percent of all
+      1784 edges.</li>
+  </ul>
+
+  <figure>
+    <img src="../assets/figures/roundtrip.png" alt="Three histograms of round-trip distance from Spider-Man, Wolverine and Doctor Strange to every other reachable character and back. All three peak around 4 to 5, with Spider-Man's distribution shifted slightly higher.">
+    <figcaption>The par values the game scores you against: shortest route out to a target plus shortest route back, for
+    every character reachable both ways. All three heroes can reach the same 228 characters and return, which is the
+    strongly connected core minus themselves.</figcaption>
+  </figure>
+
+  <p>The mean round trip is 4.92 hops for Spider-Man, 4.74 for Wolverine and 4.80 for Doctor Strange. Spider-Man being
+  the <em>hardest</em> of the three surprised us until we looked again at his out-degree: being the most linked-to
+  character in the network helps you get home, but it does nothing at all for getting out. He has nine doors.</p>
+
+  <h2>Stretch: does the snapshot still match Wikipedia?</h2>
+  <p>The snapshot's edges were harvested from raw wiki source, where internal links are written <code>[[Page name]]</code>.
+  We re-derived twelve characters ourselves through the API, resolved redirects in a batched query so that
+  <code>[[Peter Parker]]</code> and <code>[[Spider-Man]]</code> do not count as different targets, and diffed the
+  result against the frozen edge list.</p>
+
+<pre><code>python scripts/verify_wikipedia.py --n 12
+
+character                        snap  live  both   drift
+Betsy_Braddock                     28    28    28
+Cloak_and_Dagger_(characters)      24    24    24
+Adam_Warlock                       22    22    22
+Venom_(character)                  21    20    20   only in snapshot: Silk_(character)
+She-Hulk                           20    20    20
+U.S._Agent                         20    20    20
+Darkdevil                           4     4     4
+Doctor_Druid                        4     4     4
+Gremlin_(comics)                    4     4     4
+Guardian_(Marvel_Comics)            4     4     4
+Baymax                              0     0     0
+Bird-Brain_(Marvel_Comics)          0     0     0
+TOTAL                             151   150   150
+
+agreement (Jaccard over all sampled edges): 0.993</code></pre>
+
+  <p>150 of 151 edges reproduced independently. The single disagreement is real: the Venom article linked to Silk when
+  the snapshot was taken on 26 August and does not any more. That is not an error in the snapshot, it is the reason
+  the course froze one in the first place. Wikipedia moved underneath us in under a week.</p>
+
+  <div class="callout">
+    <b>If you try this yourself:</b> Wikipedia answers <code>403</code> unless your request carries a
+    <code>User-Agent</code> header identifying your client, and you have to resolve redirects or roughly a tenth of
+    every page's links look like disagreements when they are the same article under another name.
+  </div>
+
+  <h2>What surprised us</h2>
+  <ol>
+    <li><strong>The out-degree ceiling.</strong> We expected both distributions to be heavy-tailed and only one is.
+      In-degree measures the world's attention; out-degree measures one author's word count.</li>
+    <li><strong>Zero overlap in the top fives.</strong> Not a single character is both heavily linked to and a heavy
+      linker. We assumed the hubs would do both.</li>
+    <li><strong>Morituri.</strong> That the only island outside the giant component is exactly one 1986 series whose
+      whole premise was being sealed off from continuity. The link structure recovered a forty-year-old editorial
+      decision on its own.</li>
+    <li><strong>Spider-Man is the hardest hero to play.</strong> Easiest to come home to, hardest to leave.</li>
+  </ol>
+
+  <h2>Reproduce it</h2>
+  <p>Everything here is one repository, three scripts and no notebook state to guess at.</p>
+<pre><code>git clone https://github.com/Oddvar112/Social-Graphs-and-Interactions
+cd Social-Graphs-and-Interactions
+
+python scripts/build_graph.py        # snapshot -> data/marvel_week1.js for the game
+python scripts/analyse.py            # every figure and number in this post
+python scripts/verify_wikipedia.py   # the live Wikipedia check above
+
+python -m http.server 8000           # then open http://localhost:8000</code></pre>
+  <p>Every number quoted in this post is also written to <code>data/stats.json</code> by <code>analyse.py</code>, so
+  you can check any of them against the source rather than taking our word for it.</p>
+
+  <p style="margin-top:36px"><a href="../index.html">&larr; Back to all weeks</a> &nbsp;&middot;&nbsp;
+  <a href="../game/index.html">Play WEB-CRAWLER &rarr;</a></p>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    <span>Oddvar and David &middot; 02805 Social Graphs and Interactions &middot; DTU</span>
+    <span class="sp"><a href="https://github.com/Oddvar112/Social-Graphs-and-Interactions">Source on GitHub</a></span>
+  </div>
+</footer>
+
+</body>
+</html>

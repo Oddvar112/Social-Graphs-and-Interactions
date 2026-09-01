@@ -1,0 +1,107 @@
+{
+  "sampled": 12,
+  "snapshot_edges": 151,
+  "live_edges": 150,
+  "shared": 150,
+  "jaccard": 0.993,
+  "rows": [
+    {
+      "node": "Betsy_Braddock",
+      "snapshot": 28,
+      "live": 28,
+      "shared": 28,
+      "only_snapshot": [],
+      "only_live": []
+    },
+    {
+      "node": "Cloak_and_Dagger_(characters)",
+      "snapshot": 24,
+      "live": 24,
+      "shared": 24,
+      "only_snapshot": [],
+      "only_live": []
+    },
+    {
+      "node": "Adam_Warlock",
+      "snapshot": 22,
+      "live": 22,
+      "shared": 22,
+      "only_snapshot": [],
+      "only_live": []
+    },
+    {
+      "node": "Venom_(character)",
+      "snapshot": 21,
+      "live": 20,
+      "shared": 20,
+      "only_snapshot": [
+        "Silk_(character)"
+      ],
+      "only_live": []
+    },
+    {
+      "node": "She-Hulk",
+      "snapshot": 20,
+      "live": 20,
+      "shared": 20,
+      "only_snapshot": [],
+      "only_live": []
+    },
+    {
+      "node": "U.S._Agent",
+      "snapshot": 20,
+      "live": 20,
+      "shared": 20,
+      "only_snapshot": [],
+      "only_live": []
+    },
+    {
+      "node": "Darkdevil",
+      "snapshot": 4,
+      "live": 4,
+      "shared": 4,
+      "only_snapshot": [],
+      "only_live": []
+    },
+    {
+      "node": "Doctor_Druid",
+      "snapshot": 4,
+      "live": 4,
+      "shared": 4,
+      "only_snapshot": [],
+      "only_live": []
+    },
+    {
+      "node": "Gremlin_(comics)",
+      "snapshot": 4,
+      "live": 4,
+      "shared": 4,
+      "only_snapshot": [],
+      "only_live": []
+    },
+    {
+      "node": "Guardian_(Marvel_Comics)",
+      "snapshot": 4,
+      "live": 4,
+      "shared": 4,
+      "only_snapshot": [],
+      "only_live": []
+    },
+    {
+      "node": "Baymax",
+      "snapshot": 0,
+      "live": 0,
+      "shared": 0,
+      "only_snapshot": [],
+      "only_live": []
+    },
+    {
+      "node": "Bird-Brain_(Marvel_Comics)",
+      "snapshot": 0,
+      "live": 0,
+      "shared": 0,
+      "only_snapshot": [],
+      "only_live": []
+    }
+  ]
+}

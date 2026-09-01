@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>WEB-CRAWLER · a game inside the Marvel graph</title>
+<meta name="description" content="Navigate Wikipedia's Marvel network as Spider-Man, Wolverine or Doctor Strange. The map only exists where you have walked. Get home in as few steps as possible.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bangers&family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --panelw:330px;
+  --bg:#070a14; --bg2:#0c1122; --panel:#111830; --panel2:#18203c;
+  --line:#26304f; --text:#e9edf9; --dim:#8d99bd;
+  --red:#e62429; --red2:#ff4b50; --web:#5fe3ff; --gold:#ffc93f;
+  --green:#4ade80; --purple:#a678ff;
+  --hud-h:64px;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%}
+body{
+  background:var(--bg); color:var(--text);
+  font-family:Inter,system-ui,-apple-system,"Segoe UI",sans-serif;
+  overflow:hidden; -webkit-font-smoothing:antialiased;
+}
+.comic{font-family:Bangers,Impact,"Arial Black",sans-serif;letter-spacing:.055em;font-weight:400}
+button{font-family:inherit;color:inherit;border:0;background:none;cursor:pointer}
+a{color:var(--web)}
+
+/* ---------- layout ---------- */
+#app{position:fixed;inset:0;display:grid;grid-template-rows:var(--hud-h) 1fr}
+#stage{position:relative;overflow:hidden;background:radial-gradient(1200px 800px at 50% 40%, #101a35 0%, #070a14 70%)}
+canvas#cv{position:absolute;inset:0;width:100%;height:100%;display:block;touch-action:none;cursor:grab}
+canvas#cv.grabbing{cursor:grabbing}
+canvas#cv.pointing{cursor:pointer}
+
+/* ---------- HUD ---------- */
+#hud{
+  display:flex;align-items:center;gap:14px;padding:0 14px;
+  background:linear-gradient(180deg,#131b35,#0b1020);
+  border-bottom:1px solid var(--line);z-index:5;
+}
+#hud .brand{font-size:26px;line-height:1;color:var(--red2);text-shadow:0 2px 0 #6b0d10;white-space:nowrap}
+#hud .brand small{display:block;font-family:Inter,sans-serif;font-size:9px;letter-spacing:.22em;color:var(--dim);text-shadow:none;font-weight:600}
+#hud .back{font-size:11px;font-weight:700;color:var(--dim);padding:6px 10px;border:1px solid var(--line);border-radius:8px;text-decoration:none;white-space:nowrap}
+#hud .back:hover{color:var(--text);border-color:var(--web)}
+.stats{display:flex;gap:8px;margin-left:auto;align-items:center;flex-wrap:nowrap}
+.stat{background:var(--panel);border:1px solid var(--line);border-radius:9px;padding:5px 11px;min-width:62px;text-align:center}
+.stat b{display:block;font-size:19px;line-height:1.05;font-variant-numeric:tabular-nums}
+.stat span{display:block;font-size:8.5px;letter-spacing:.16em;color:var(--dim);text-transform:uppercase;font-weight:700}
+.stat.hot b{color:var(--gold)}
+.stat.par b{color:var(--web)}
+.hudbtn{background:var(--panel);border:1px solid var(--line);border-radius:9px;padding:8px 11px;font-size:12px;font-weight:600;color:var(--dim);transition:.15s}
+.hudbtn:hover{color:var(--text);border-color:var(--web)}
+.hudbtn.on{color:var(--gold);border-color:var(--gold)}
+
+#objective{
+  position:absolute;top:12px;left:0;right:var(--panelw,330px);margin-inline:auto;width:max-content;
+  background:rgba(12,17,34,.9);border:1px solid var(--line);border-left:4px solid var(--red);
+  border-radius:10px;padding:8px 16px;backdrop-filter:blur(8px);z-index:4;
+  display:flex;align-items:center;gap:10px;max-width:min(560px,88vw);
+}
+#objective .lbl{font-size:9px;letter-spacing:.2em;color:var(--dim);font-weight:800;text-transform:uppercase}
+#objective .tgt{font-size:16px;line-height:1.2}
+#objective.home{border-left-color:var(--gold)}
+#objective.home .tgt{color:var(--gold)}
+
+/* ---------- side panel ---------- */
+#panel{
+  position:absolute;top:0;right:0;bottom:0;width:330px;z-index:4;
+  background:linear-gradient(180deg,rgba(13,18,36,.96),rgba(9,13,26,.97));
+  border-left:1px solid var(--line);backdrop-filter:blur(10px);
+  display:flex;flex-direction:column;transition:transform .25s ease;
+}
+#panel.hidden{transform:translateX(100%)}
+#panelToggle{
+  position:absolute;top:50%;right:330px;transform:translateY(-50%);z-index:5;
+  background:var(--panel);border:1px solid var(--line);border-right:0;
+  border-radius:9px 0 0 9px;padding:16px 5px;font-size:13px;color:var(--dim);transition:right .25s ease;
+}
+#panelToggle.closed{right:0}
+.here{padding:14px 16px 12px;border-bottom:1px solid var(--line)}
+.here .kicker{font-size:9px;letter-spacing:.2em;color:var(--dim);font-weight:800;text-transform:uppercase;margin-bottom:5px}
+.here h2{font-size:22px;line-height:1.05;margin-bottom:6px}
+.here p{font-size:12px;line-height:1.5;color:var(--dim)}
+.here .chips{display:flex;gap:6px;margin-top:9px;flex-wrap:wrap}
+.chip{font-size:10px;font-weight:700;padding:3px 8px;border-radius:20px;background:var(--panel2);border:1px solid var(--line);color:var(--dim)}
+.chip.in{color:var(--web);border-color:#1d4a5c}
+.chip.out{color:var(--gold);border-color:#5c4a1d}
+.here a.wiki{font-size:11px;font-weight:600;display:inline-block;margin-top:8px}
+
+.linkhead{padding:11px 16px 7px;font-size:9px;letter-spacing:.2em;color:var(--dim);font-weight:800;text-transform:uppercase;display:flex;justify-content:space-between}
+#links{flex:1;overflow-y:auto;padding:0 10px 14px}
+#links::-webkit-scrollbar{width:8px}
+#links::-webkit-scrollbar-thumb{background:var(--line);border-radius:4px}
+.link{
+  display:flex;align-items:center;gap:9px;width:100%;text-align:left;
+  padding:8px 10px;border-radius:9px;border:1px solid transparent;margin-bottom:3px;transition:.12s;
+}
+.link:hover,.link.hl{background:var(--panel2);border-color:var(--web)}
+.link .nm{flex:1;font-size:12.5px;font-weight:600;line-height:1.25}
+.link .dg{font-size:9.5px;color:var(--dim);font-weight:700;font-variant-numeric:tabular-nums}
+.link .dot{width:8px;height:8px;border-radius:50%;background:var(--web);flex:none;box-shadow:0 0 8px var(--web)}
+.link.visited .dot{background:var(--dim);box-shadow:none}
+.link.visited .nm{color:var(--dim)}
+.link.isgoal{border-color:var(--red2);background:rgba(230,36,41,.14)}
+.link.isgoal .dot{background:var(--red2);box-shadow:0 0 10px var(--red2)}
+.link.hint{border-color:var(--gold);background:rgba(255,201,63,.12);animation:pulse 1s infinite}
+@keyframes pulse{50%{background:rgba(255,201,63,.26)}}
+.deadend{margin:8px 12px;padding:11px;border-radius:10px;background:rgba(230,36,41,.12);border:1px solid var(--red);font-size:12px;line-height:1.5}
+.deadend b{color:var(--red2)}
+
+.tools{padding:10px 12px;border-top:1px solid var(--line);display:flex;gap:7px}
+.tool{flex:1;background:var(--panel);border:1px solid var(--line);border-radius:9px;padding:9px 6px;font-size:10.5px;font-weight:700;color:var(--dim);transition:.15s;line-height:1.3}
+.tool:hover:not(:disabled){color:var(--text);border-color:var(--web)}
+.tool:disabled{opacity:.35;cursor:not-allowed}
+.tool b{display:block;font-size:14px;color:var(--gold)}
+
+/* ---------- overlays ---------- */
+.veil{position:absolute;inset:0;z-index:20;display:flex;align-items:center;justify-content:center;padding:20px;
+  background:radial-gradient(900px 600px at 50% 45%,rgba(20,28,56,.93),rgba(5,7,15,.97));backdrop-filter:blur(6px);overflow-y:auto}
+.veil.gone{display:none}
+.card{width:min(880px,100%);text-align:center}
+.card h1{font-size:clamp(40px,8vw,74px);line-height:.95;color:var(--red2);text-shadow:0 4px 0 #6b0d10,0 8px 24px rgba(230,36,41,.4)}
+.card .sub{font-size:13px;color:var(--dim);margin:10px auto 4px;max-width:600px;line-height:1.65}
+.card .sub b{color:var(--text)}
+
+.heroes{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:22px 0 16px}
+@media(max-width:640px){.heroes{grid-template-columns:1fr}}
+.heroCard{
+  background:linear-gradient(180deg,var(--panel),#0c1225);border:2px solid var(--line);
+  border-radius:16px;padding:14px 12px 16px;transition:.18s;text-align:center;position:relative;overflow:hidden;
+}
+.heroCard:hover{transform:translateY(-4px)}
+.heroCard.sel{box-shadow:0 0 0 4px rgba(255,255,255,.05),0 12px 32px rgba(0,0,0,.5)}
+.heroCard canvas{width:100px;height:120px;margin:0 auto;display:block}
+.heroCard .hn{font-size:23px;line-height:1;margin-top:6px}
+.heroCard .hr{font-size:10px;letter-spacing:.14em;color:var(--dim);font-weight:800;text-transform:uppercase;margin-top:4px}
+.heroCard .hd{font-size:11.5px;color:var(--dim);line-height:1.5;margin-top:8px;min-height:62px}
+.heroCard .deg{display:flex;justify-content:center;gap:6px;margin-top:9px}
+
+.diffs{display:flex;gap:8px;justify-content:center;margin-bottom:18px;flex-wrap:wrap}
+.diff{background:var(--panel);border:2px solid var(--line);border-radius:11px;padding:9px 16px;font-size:12px;font-weight:700;color:var(--dim);transition:.15s}
+.diff:hover{color:var(--text)}
+.diff.sel{border-color:var(--gold);color:var(--gold);background:rgba(255,201,63,.1)}
+.diff small{display:block;font-size:9.5px;font-weight:500;opacity:.7;letter-spacing:.05em}
+
+.go{
+  font-family:Bangers,Impact,sans-serif;font-size:34px;letter-spacing:.08em;
+  background:linear-gradient(180deg,var(--red2),#b81a1e);color:#fff;
+  padding:11px 52px;border-radius:14px;box-shadow:0 6px 0 #6b0d10,0 12px 30px rgba(230,36,41,.35);
+  transition:.12s;
+}
+.go:hover{transform:translateY(-2px);box-shadow:0 8px 0 #6b0d10,0 16px 36px rgba(230,36,41,.45)}
+.go:active{transform:translateY(4px);box-shadow:0 2px 0 #6b0d10}
+.rules{font-size:11.5px;color:var(--dim);line-height:1.7;margin-top:18px;max-width:660px;margin-inline:auto;text-align:left;
+  background:rgba(255,255,255,.03);border:1px solid var(--line);border-radius:12px;padding:13px 16px}
+.rules b{color:var(--text)}
+.rules code{background:var(--panel2);padding:1px 5px;border-radius:4px;font-size:10.5px;color:var(--web)}
+
+.verdict{font-size:clamp(34px,7vw,64px);line-height:1;color:var(--gold);text-shadow:0 4px 0 #7a5c11}
+.scoreRow{display:flex;gap:10px;justify-content:center;margin:18px 0;flex-wrap:wrap}
+.big{background:var(--panel);border:1px solid var(--line);border-radius:13px;padding:12px 22px;min-width:104px}
+.big b{display:block;font-size:32px;line-height:1;font-variant-numeric:tabular-nums}
+.big span{font-size:9px;letter-spacing:.16em;color:var(--dim);font-weight:800;text-transform:uppercase}
+.big.good b{color:var(--green)} .big.bad b{color:var(--red2)}
+.pathbox{background:rgba(0,0,0,.28);border:1px solid var(--line);border-radius:12px;padding:12px 14px;margin:6px auto 16px;
+  max-width:660px;text-align:left;font-size:11.5px;line-height:1.9;color:var(--dim);max-height:150px;overflow-y:auto}
+.pathbox .k{font-size:9px;letter-spacing:.18em;font-weight:800;text-transform:uppercase;display:block;margin-bottom:5px;color:var(--dim)}
+.pathbox em{font-style:normal;color:var(--text);font-weight:600}
+.pathbox .arrow{color:var(--red2);margin:0 5px}
+.pathbox.opt .k{color:var(--web)}
+.btnrow{display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
+.ghost{border:2px solid var(--line);border-radius:12px;padding:11px 22px;font-size:13px;font-weight:700;color:var(--dim);transition:.15s}
+.ghost:hover{color:var(--text);border-color:var(--web)}
+.homelink{display:inline-block;margin-top:18px;font-size:12px;color:var(--dim)}
+
+/* Centred on the visible map, not the window, so it never sits under the panel. */
+#toast{position:absolute;bottom:26px;left:0;right:var(--panelw,330px);margin-inline:auto;
+  width:max-content;max-width:min(520px,calc(100vw - var(--panelw,330px) - 40px));
+  transform:translateY(20px);z-index:15;
+  background:rgba(12,17,34,.95);border:1px solid var(--line);border-left:4px solid var(--gold);
+  border-radius:10px;padding:10px 18px;font-size:12.5px;font-weight:600;opacity:0;
+  transition:opacity .25s,transform .25s;pointer-events:none;line-height:1.5}
+#toast.show{opacity:1;transform:translateY(0)}
+
+#legend{position:absolute;left:12px;bottom:12px;z-index:4;background:rgba(12,17,34,.82);border:1px solid var(--line);
+  border-radius:10px;padding:9px 12px;font-size:10.5px;color:var(--dim);line-height:1.9;backdrop-filter:blur(6px)}
+#legend i{display:inline-block;width:9px;height:9px;border-radius:50%;margin-right:7px;vertical-align:middle}
+#legend .r{white-space:nowrap}
+@media(max-width:820px){
+  :root{--panelw:min(300px,86vw)}
+  #panel{width:min(300px,86vw)} #panelToggle{right:min(300px,86vw)}
+  #legend{display:none} #hud .brand small{display:none} #hud .back{display:none}
+}
+@media(max-width:560px){
+  .stat{min-width:52px;padding:4px 8px} .stat b{font-size:16px}
+  #objective{top:auto;bottom:78px}
+}
+</style>
+</head>
+<body>
+<div id="app">
+
+  <div id="hud">
+    <div class="brand comic">WEB-CRAWLER<small>MARVEL WIKI GRAPH</small></div>
+    <a class="back" href="../weeks/week1.html">&larr; Week 1 post</a>
+    <div class="stats">
+      <div class="stat hot"><b id="sSteps">0</b><span>Steps</span></div>
+      <div class="stat par"><b id="sPar">0</b><span>Par</span></div>
+      <div class="stat"><b id="sSeen">0</b><span>Seen</span></div>
+      <div class="stat"><b id="sTime">0:00</b><span>Time</span></div>
+      <button class="hudbtn" id="bCenter" title="Centre the camera on your hero (C)">&#9678;</button>
+      <button class="hudbtn on" id="bSound" title="Sound on/off (M)">&#9834;</button>
+      <button class="hudbtn" id="bMenu" title="New round">&#8635;</button>
+    </div>
+  </div>
+
+  <div id="stage">
+    <canvas id="cv"></canvas>
+
+    <div id="objective"><span class="lbl">Mission</span><span class="tgt comic" id="objText">&nbsp;</span></div>
+
+    <button id="panelToggle">&#9664;</button>
+    <aside id="panel">
+      <div class="here">
+        <div class="kicker">You are standing on</div>
+        <h2 class="comic" id="hName">&nbsp;</h2>
+        <p id="hDesc"></p>
+        <div class="chips">
+          <span class="chip in" id="hIn"></span>
+          <span class="chip out" id="hOut"></span>
+          <span class="chip" id="hStep"></span>
+        </div>
+        <a class="wiki" id="hWiki" href="#" target="_blank" rel="noopener">Read on Wikipedia &rarr;</a>
+      </div>
+      <div class="linkhead"><span>Links out of here</span><span id="linkCount"></span></div>
+      <div id="links"></div>
+      <div class="tools">
+        <button class="tool" id="bSense"><b id="senseN">3</b>Spider-sense</button>
+        <button class="tool" id="bBack"><b>&#8617;</b>Web-zip (+2)</button>
+      </div>
+    </aside>
+
+    <div id="legend">
+      <div class="r"><i style="background:var(--web);box-shadow:0 0 8px var(--web)"></i>Link you can take</div>
+      <div class="r"><i style="background:var(--gold)"></i>Already visited</div>
+      <div class="r"><i style="background:var(--red2);box-shadow:0 0 8px var(--red2)"></i>Objective</div>
+      <div class="r" style="opacity:.7;margin-top:3px">Drag to pan &middot; scroll to zoom</div>
+    </div>
+
+    <div id="toast"></div>
+
+    <div class="veil" id="vStart">
+      <div class="card">
+        <h1 class="comic">WEB-CRAWLER</h1>
+        <p class="sub">303 Marvel characters from Wikipedia. 1784 directed links. You start at home, get sent
+        somewhere out in the network, and have to find your way <b>back</b>. The map does not exist until you walk on it.</p>
+        <div class="heroes" id="heroPick"></div>
+        <div class="diffs" id="diffPick"></div>
+        <button class="go comic" id="bStart">SWING OUT!</button>
+        <div class="rules">
+          <b>How it works.</b> You can only follow links <i>out</i> of the page you are standing on, exactly like a reader
+          clicking onward. Nodes you have never seen do not exist yet. Once you reach the mission target the objective
+          flips: get <b>home</b>.<br>
+          <b>Par</b> is the shortest possible route out and back, computed with BFS on the real graph. Matching par means
+          you read the network as well as the network can be read.
+          <code>Spider-sense</code> points at a step that lies on a shortest route (+3 steps).
+          <code>Web-zip</code> undoes your last step (+2 steps).<br>
+          <b>Why is this hard?</b> The graph is directed. A linking to B says nothing about B linking back to A.
+        </div>
+        <a class="homelink" href="../index.html">Back to the site</a>
+      </div>
+    </div>
+
+    <div class="veil gone" id="vWin">
+      <div class="card">
+        <div class="verdict comic" id="wVerdict">SPECTACULAR!</div>
+        <p class="sub" id="wLine"></p>
+        <div class="scoreRow">
+          <div class="big"><b id="wSteps">0</b><span>Your steps</span></div>
+          <div class="big"><b id="wPar">0</b><span>Par</span></div>
+          <div class="big" id="wDiffBox"><b id="wDiff">0</b><span>Diff</span></div>
+          <div class="big"><b id="wTime">0:00</b><span>Time</span></div>
+          <div class="big"><b id="wSeen">0</b><span>Nodes seen</span></div>
+        </div>
+        <div class="pathbox" id="wPath"></div>
+        <div class="pathbox opt" id="wOpt"></div>
+        <div class="btnrow">
+          <button class="go comic" id="bAgain">RUN IT AGAIN</button>
+          <button class="ghost" id="bMenu2">Switch hero</button>
+          <button class="ghost" id="bExplore">Reveal the whole map</button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script src="../data/marvel_week1.js"></script>
+<script src="hero.js"></script>
+<script src="game.js"></script>
+</body>
+</html>
