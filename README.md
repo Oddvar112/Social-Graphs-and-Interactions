@@ -1,6 +1,6 @@
 # Capes &amp; Edges
 
-Group site for **02805 Social Graphs and Interactions** (DTU, autumn 2026), by **Oddvar** and **David**.
+Group site for **02805 Social Graphs and Interactions** (DTU, autumn 2026), by **Oddvar**, **David** and **Milena**.
 
 Eight weekly posts about one dataset: the 303 characters in Wikipedia's
 [Category:Marvel Comics superheroes](https://en.wikipedia.org/wiki/Category:Marvel_Comics_superheroes)
