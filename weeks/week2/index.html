@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Week 2: Shuffle the universe and see what survives</title>
+<meta name="description" content="Models and null models on Wikipedia's Marvel network: a proper power-law fit, the friendship paradox, a shuffle test of twelve numbers, a preferential-attachment Marvel next to the real one, and the villains crawled in as a second category.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bangers&family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../assets/site.css">
+</head>
+<body>
+
+<header class="topbar">
+  <div class="wrap">
+    <a href="../../index.html" class="logo comic">CAPES &amp; EDGES</a>
+    <nav>
+      <a href="../week1/">Week 1</a>
+      <a href="index.html" class="on">Week 2</a>
+      <a href="https://github.com/Oddvar112/Social-Graphs-and-Interactions">Code</a>
+    </nav>
+  </div>
+</header>
+
+<section class="playfirst">
+  <div class="wrap">
+    <a class="playcard" href="grow/index.html">
+      <div class="lbl">Week 2 &middot; play it before you read it</div>
+      <h3 class="comic">ORIGIN STORY</h3>
+      <p>Watch the Marvel universe grow, one character at a time from 1939 to 2020, each arrival with its comic
+      panel from Wikipedia, and watch who collects the links. Switch the villains on and see which side they point
+      at. Then grow a fake Marvel with preferential attachment to the same size and compare. In the model the first
+      to arrive become the hubs. On Wikipedia the first to arrive are the Human Torch and a lot of nobodies, and the
+      hubs are the class of 1962.</p>
+      <span class="cta">Play it</span>
+    </a>
+  </div>
+</section>
+
+<main class="wrap post">
+
+  <div class="kicker">Week 2 &middot; Models &amp; null models</div>
+  <h1>Shuffle the universe.<br>See what survives.</h1>
+  <p class="lede">Last week we described the Marvel network. This week we tested it. We grew a fake Marvel with
+  preferential attachment, shuffled the real one hundreds of times, crawled the supervillains to give the heroes
+  something to fight, and asked the same question of every number: would chance have handed us this anyway? Some
+  answers survived. Some famous-sounding ones did not. Villains do not obsess over heroes, hubs do not avoid each
+  other, and arriving first is worth almost nothing.</p>
+  <p class="byline">Oddvar, David and Milena &middot; 8 September 2026 &middot; heroes: frozen snapshot of 26 August 2026,
+  303 nodes, 1784 directed edges &middot; villains: live crawl of 8 September 2026, 363 more characters</p>
+
+  <h2>What we asked</h2>
+  <ol>
+    <li><strong>Random, preferential attachment, or neither?</strong> Not by eyeballing a log-log plot. With a CCDF,
+      a maximum-likelihood fit, a bootstrap and two alternatives, and an honest list of what 303 nodes cannot tell you.</li>
+    <li><strong>Does the friendship paradox hold among superheroes?</strong> Who are the popular friends that drive
+      it, and is there anybody nobody is out-popularitied by?</li>
+    <li><strong>Which numbers survive a shuffle?</strong> We took twelve properties of the network and tested each
+      against two null models: a degree-preserving shuffle and a plain random network. Survivors mean something.
+      Casualties were degree all along.</li>
+    <li><strong>Can preferential attachment grow a Marvel?</strong> Same n, same m, and then the model's central
+      prediction, that whoever arrives first becomes a hub, checked against 291 real debut years.</li>
+    <li><strong>What happens when you add the villains?</strong> The standing option this week is a second Wikipedia
+      category. Heroes need villains, so we crawled <em>Category:Marvel Comics supervillains</em> and ran everything
+      again on the combined network. That is where the biggest surprise was hiding.</li>
+  </ol>
+
+  <h2>1. Random, preferential attachment, or neither?</h2>
+  <p>The undirected Marvel network has 303 characters and 1434 links, an average degree of 9.5, and a biggest hub of
+  106. A random network with those numbers has a Poisson degree distribution whose biggest hub is around 19. A
+  preferential-attachment network with those numbers has a heavy tail and a biggest hub around 66. So the shape
+  question has a cheap first answer, and the CCDF gives it without any binning at all: every point is a character.</p>
+
+  <figure>
+    <img src="../../assets/figures/week2_ccdf.png" alt="Left: CCDF of the Marvel undirected degree on log-log axes, against a band of 200 random networks and a band of 200 preferential-attachment networks with the same n and m. Marvel lies above both at low degree and follows the preferential-attachment band into the tail, then overshoots it with Spider-Man at 106. Right: CCDF of the in-degree with a pure power law, a power law with exponential cut-off and a log-normal fitted above k_min = 5.">
+    <figcaption>Left: the real degree distribution sits nowhere near the random network and tracks the
+    preferential-attachment band into the tail, until Spider-Man leaves the band behind. Right: the in-degree tail
+    with three fitted shapes. The pure power law is the one that does not fit.</figcaption>
+  </figure>
+
+  <p>Two things the left panel shows that a binned plot hides. The real network has far more weakly connected
+  characters than the model: a third of all characters have degree three or less, and preferential attachment cannot
+  make any of them, because every newcomer arrives with four or five links and never loses one. And at the other end
+  the model never made a Spider-Man: the biggest hub in 200 runs was 95, and Spider-Man sits at 106.</p>
+
+  <h3>The fit, done the way the field learned to do it</h3>
+  <p>We wrote the Clauset, Shalizi and Newman recipe ourselves rather than eyeballing a slope: estimate the exponent
+  by maximum likelihood, pick k<sub>min</sub> by the Kolmogorov-Smirnov distance, test the fit with 500 bootstrap
+  datasets, and compare against a log-normal, an exponential and a power law with an exponential cut-off on the same
+  tail. First we checked that it recovers a known exponent from synthetic data. Then we ran it on Marvel.</p>
+
+  <div class="tablewrap">
+    <table>
+      <thead><tr><th>Degree</th><th class="num">k<sub>min</sub></th><th class="num">Nodes in tail</th><th class="num">&alpha;</th><th class="num">Bootstrap p</th><th>Verdict</th></tr></thead>
+      <tbody>
+        <tr><td>In-degree</td><td class="num">5</td><td class="num">112</td><td class="num">2.22 &plusmn; 0.12</td><td class="num">0.02</td><td>Pure power law rejected. A power law with cut-off fits significantly better (p = 0.007). Log-normal: a draw.</td></tr>
+        <tr><td>Undirected degree</td><td class="num">15</td><td class="num">69</td><td class="num">3.39 &plusmn; 0.29</td><td class="num">0.16</td><td>Power law not rejected. Neither is the log-normal (p = 0.73), nor even the exponential (p = 0.34).</td></tr>
+        <tr><td>Out-degree</td><td class="num">16</td><td class="num">18</td><td class="num">6.5 &plusmn; 1.3</td><td class="num">0.75</td><td>Eighteen nodes and an exponent of six is not a power law, it is a wall. The week-1 ceiling again.</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <p>So the robust claim is this: the in-degree distribution is heavy-tailed, with a tail that is clearly heavier than
+  anything a random network makes, and it bends down at the top exactly the way a power law with a cut-off does. The
+  claim we cannot make is "it is a power law with exponent 2.2". The strict test rejects the pure form, and the shape
+  that fits best, a cut-off, is also what Barab&aacute;si would predict for a network of 303 nodes: the tail runs out
+  of characters before it runs out of law.</p>
+
+  <div class="callout warn">
+    <b>What 303 nodes cannot tell you.</b> We ran the same test on 25 preferential-attachment networks of Marvel's
+    size, and on 25 random ones. It rejected the true power-law model 4 percent of the time, which is fine. It also
+    failed to reject a power law for the <em>random</em> networks 80 percent of the time, and it fitted them a
+    straight face and an exponent of about 7.4. With 69 nodes in a tail, the log-normal, the exponential and the
+    power law are all "plausible" because plausible is a weak word. The distinction that matters, heavy tail or not,
+    is settled by the left panel. The distinction the field fought about for a decade, power law or log-normal, is
+    not settleable on this network at all.
+  </div>
+
+  <h2>2. Your friends have more friends than you. Your links point up.</h2>
+  <p>Pick a random character with at least one link, then pick one of their neighbours at random. The character has
+  10.0 links on average. The neighbour has 24.2. In three out of four draws the friend is at least as connected as
+  the person, and 87 percent of all characters have neighbours whose average degree beats their own. We computed all
+  of this exactly rather than by sampling: the probability that the random friend turns out to be character v is the
+  sum over v's neighbours u of 1&nbsp;/&nbsp;(n&nbsp;k<sub>u</sub>), so every number below has no sampling noise.</p>
+
+  <figure>
+    <img src="../../assets/figures/week2_friendship.png" alt="Left: two CCDF curves, the degree of a random character and the degree of a random friend of a random character, with the friend curve shifted to the right and the two means marked at 10.0 and 24.2. Right: scatter of each character's in-degree against the mean in-degree of the pages it links to, on symmetric log axes; 91 percent of points lie above the diagonal, the six below it are labelled.">
+    <figcaption>Left: half of all characters have degree 8 or more, half of all friends have degree 18 or more.
+    Right: the directed version. Almost every page links to pages more famous than itself. The six that do not
+    are labelled.</figcaption>
+  </figure>
+
+  <div class="tablewrap">
+    <table>
+      <thead><tr><th>#</th><th>The popular friend</th><th class="num">Share of all friend draws</th><th class="num">Degree</th></tr></thead>
+      <tbody>
+        <tr><td>1</td><td>Spider-Man</td><td class="num">5.6%</td><td class="num">106</td></tr>
+        <tr><td>2</td><td>Hulk</td><td class="num">2.7%</td><td class="num">65</td></tr>
+        <tr><td>3</td><td>Wolverine</td><td class="num">2.5%</td><td class="num">63</td></tr>
+        <tr><td>4</td><td>Doctor Strange</td><td class="num">2.5%</td><td class="num">57</td></tr>
+        <tr><td>5</td><td>Deadpool</td><td class="num">1.9%</td><td class="num">41</td></tr>
+        <tr><td>6</td><td>She-Hulk</td><td class="num">1.6%</td><td class="num">37</td></tr>
+        <tr><td>7</td><td>Black Widow</td><td class="num">1.3%</td><td class="num">25</td></tr>
+        <tr><td>8</td><td>Hercules</td><td class="num">1.2%</td><td class="num">26</td></tr>
+        <tr><td>9</td><td>Cyclops</td><td class="num">1.2%</td><td class="num">26</td></tr>
+        <tr><td>10</td><td>Deathlok</td><td class="num">1.1%</td><td class="num">20</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <p>Ten characters out of 286 account for 22 percent of all friend draws. That is the whole mechanism: a hub is a
+  friend to many, so it keeps turning up as "friend" and almost never as "you". Under the formula, a random neighbour
+  has mean degree &lang;k&rang; + &sigma;&sup2;/&lang;k&rang;, which for Marvel is 22.1 when you sample a random link
+  end. The 24.2 above is the slightly larger number you get from the sampling the course explorable uses, person first
+  and then friend, because that scheme over-weights the neighbours of low-degree characters, who are, again, hubs.</p>
+
+  <div class="callout">
+    <b>Is there a character nobody is out-popularitied by?</b> Exactly two. <strong>Spider-Man</strong>, with 106
+    links, has no neighbour with more, which is not news. The other is <strong>Radian</strong>, with six. Radian is
+    the most linked member of the nine-character <em>Strikeforce: Morituri</em> island from week 1, and since the
+    island links to nothing else, nobody on it can be out-popularitied by anyone outside it. Radian is king of a
+    kingdom of nine. Everyone else in the universe, Hulk and Wolverine included, has at least one friend with more
+    friends. Hulk's is Spider-Man.
+  </div>
+
+  <p>The directed version is more brutal and, we think, more honest about how Wikipedia works. Take the pages a
+  character links to and average their in-degree. For 91 percent of characters that average beats their own
+  in-degree: the mean linker has 6.3 pages pointing at it, the pages it points to have 23.7. Only six characters
+  link exclusively to pages less famous than themselves: Spider-Man (of course), Quasar, Ms. Marvel, and three
+  Morituri who have nobody else to link to. This is not a paradox of friendship, it is the mechanism of a link
+  network: you mention the famous, the famous do not mention you.</p>
+
+  <p>And the null model? The paradox survives the degree-preserving shuffle untouched (random friend: 24.4 &plusmn; 0.5
+  in the shuffled giant component against 24.9 real), because it depends on the degree sequence and nothing else.
+  Even the random network does not kill it: there a random friend has 11.2 against 10.3 for a random person, because
+  a Poisson has a variance too. What changes is the size, and the size is set by one number, the variance of the
+  degrees.</p>
+
+  <h2>3. Twelve numbers, two nulls, one survivor board</h2>
+  <p>This is the tool we will use every week from now on. Take a number you computed on the network. Generate a few
+  hundred networks that keep some properties fixed and scramble everything else. See where the real value lands.
+  We did it with two nulls side by side: a degree-preserving shuffle (every character keeps exactly its degree,
+  10 &times; m edge swaps, 300 shuffles) and a random G(n,m) network (same number of nodes and links, nothing else).
+  The difference between the two answers is the lesson.</p>
+
+  <figure>
+    <img src="../../assets/figures/week2_survivors.png" alt="Twelve small panels. Each shows a histogram of a network property under 300 degree-preserving shuffles in cyan and 300 random networks in purple, with the real value as a red line and z-scores for both nulls. Clustering, transitivity, reciprocity, the island and the size of the largest strongly connected component sit far outside the shuffle distribution. Diameter, assortativity and the number of strongly connected components sit inside it.">
+    <figcaption>Every panel: shuffle in cyan, random in purple, real in red. Gold means the real value is not
+    explained by the degree sequence. Grey means it is, or it was fixed by construction.</figcaption>
+  </figure>
+
+  <div class="tablewrap">
+    <table>
+      <thead><tr><th>Property</th><th class="num">Real</th><th class="num">Shuffle</th><th class="num">z</th><th class="num">Random</th><th>What it means</th></tr></thead>
+      <tbody>
+        <tr><td>Average clustering C</td><td class="num">0.320</td><td class="num">0.155 &plusmn; 0.009</td><td class="num">+19</td><td class="num">0.037</td><td><strong>Survives.</strong> Hubs make triangles by sheer volume, and that explains half of it. The other half is real: friends of a character are friends of each other.</td></tr>
+        <tr><td>Reciprocity</td><td class="num">0.392</td><td class="num">0.058 &plusmn; 0.007</td><td class="num">+46</td><td class="num">0.020</td><td><strong>Survives, hugely.</strong> Hubs triple the chance a link is answered (2% &rarr; 6%). The real 39% is a different thing: if page A mentions B, the editor of B usually mentions A.</td></tr>
+        <tr><td>Islands beyond the giant component</td><td class="num">1</td><td class="num">0.06 &plusmn; 0.25</td><td class="num">+4</td><td class="num">0</td><td><strong>Survives.</strong> Shuffle the links and the Morituri island is absorbed. The shuffle occasionally makes an island of its own, always two one-link characters holding hands, never nine characters with 22 links among them.</td></tr>
+        <tr><td>Size of the largest strongly connected part</td><td class="num">229</td><td class="num">240 &plusmn; 1.6</td><td class="num">&minus;7</td><td class="num">302</td><td><strong>Survives.</strong> The real core is smaller than degrees predict: eleven characters that could have been reachable both ways are not.</td></tr>
+        <tr><td>Average shortest path</td><td class="num">2.67</td><td class="num">2.60 &plusmn; 0.02</td><td class="num">+5</td><td class="num">2.66</td><td><strong>Technically survives, practically dies.</strong> Three percent longer than chance because triangles waste links. Short paths are not a finding. They never are.</td></tr>
+        <tr><td>Diameter</td><td class="num">6</td><td class="num">5.4 &plusmn; 0.5</td><td class="num">+1</td><td class="num">4.4</td><td><strong>Dies.</strong> Four in ten shuffles have a diameter of 6 or more.</td></tr>
+        <tr><td>Degree assortativity r</td><td class="num">&minus;0.105</td><td class="num">&minus;0.121 &plusmn; 0.012</td><td class="num">+1</td><td class="num">&minus;0.01</td><td><strong>Dies.</strong> Against the random network the Marvel network is significantly disassortative, hubs avoid hubs. Against the shuffle it is not. See below.</td></tr>
+        <tr><td>Strongly connected components</td><td class="num">66</td><td class="num">64.3 &plusmn; 1.6</td><td class="num">+1</td><td class="num">2.4</td><td><strong>Dies.</strong> Sixty-six sounds like structure. It is 58 pages nobody links to and 20 pages that link to nobody, and the degree sequence already contains all of them.</td></tr>
+        <tr><td>Largest k-core</td><td class="num">10</td><td class="num">9.0 &plusmn; 0.1</td><td class="num">+10</td><td class="num">7</td><td><strong>Survives.</strong> Three of 300 shuffles managed a 10-core. One layer of core more than degrees alone would build.</td></tr>
+        <tr><td>Biggest hub's share of links</td><td class="num">0.075</td><td class="num">0.075</td><td class="num">&mdash;</td><td class="num">0.015</td><td><strong>Fixed by construction.</strong> A degree-preserving shuffle cannot move it, so it cannot test it. Only the random network can, and against that it is enormous.</td></tr>
+        <tr><td>Isolated characters</td><td class="num">17</td><td class="num">17</td><td class="num">&mdash;</td><td class="num">0</td><td><strong>Fixed by construction.</strong> Same story. The 17 isolates are a fact about degrees, and the random network's expected 0.02 isolates says how strange a fact.</td></tr>
+        <tr><td>Transitivity</td><td class="num">0.182</td><td class="num">0.118 &plusmn; 0.005</td><td class="num">+14</td><td class="num">0.037</td><td><strong>Survives.</strong> Same surplus of triangles, counted the other way.</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <blockquote>The shuffle does not tell you whether a number is big. It tells you whether the number is a separate
+  fact from the degree sequence. Clustering, reciprocity and the island are. Short paths, the diameter, the 66
+  components and the disassortativity are not.</blockquote>
+
+  <div class="callout warn">
+    <b>The sentence we almost wrote.</b> "The Marvel network is disassortative (r = &minus;0.105, against
+    &minus;0.01 for a random network, z = &minus;3.5): hubs avoid other hubs and link to minor characters instead."
+    Every word is true and the conclusion is wrong. A network with a 106-link hub among 277 nodes <em>has</em> to
+    be disassortative: Spider-Man cannot link mostly to other hubs because there are not enough hubs to go around.
+    The degree-preserving shuffle knows this and gives &minus;0.121 &plusmn; 0.012. The real value sits inside that.
+    Hubs avoid nobody. The choice of null model changed the conclusion, not the number, and the wrong null was the
+    easy one to generate.
+  </div>
+
+  <h2>4. Grow your own Marvel</h2>
+  <p>Start with a six-node star. Add a character, give it four or five links, and choose each target by picking a
+  random entry from the list of all link endpoints, which is exactly choosing a node with probability proportional to
+  its degree. Repeat until n = 303, with exactly enough five-link newcomers that the total lands on m = 1434. We ran
+  it 200 times, checked the degree distribution against NetworkX's own generator, and put one run next to the
+  real thing.</p>
+
+  <figure>
+    <img src="../../assets/figures/week2_grow.png" alt="Two force-directed drawings side by side with the same node-size scale. Left, the real Marvel giant component: 277 nodes, a few very large hubs labelled Spider-Man, Hulk, Wolverine, Doctor Strange, and a wide halo of tiny purple nodes. Right, a preferential-attachment network of 303 nodes and 1434 links: medium hubs labelled by arrival order, all among the first 17 nodes, and no tiny nodes at all.">
+    <figcaption>Same n, same m, same scale. The model gets hubs. It gets no Spider-Man, no isolates, no island, and
+    no characters with fewer than four links, which is a third of the real universe. Its hubs are labelled by when
+    they arrived.</figcaption>
+  </figure>
+
+  <div class="tablewrap">
+    <table>
+      <thead><tr><th>Property</th><th class="num">Real Marvel</th><th class="num">Preferential attachment</th><th class="num">Random</th><th>Verdict</th></tr></thead>
+      <tbody>
+        <tr><td>Biggest hub</td><td class="num">106</td><td class="num">66 &plusmn; 10</td><td class="num">19</td><td>Right kind of number, wrong size. Spider-Man is too big even for the model that makes hubs.</td></tr>
+        <tr><td>Average clustering C</td><td class="num">0.320</td><td class="num">0.092 &plusmn; 0.009</td><td class="num">0.037</td><td>Wrong. Better than random, still a factor of 3.5 short.</td></tr>
+        <tr><td>Average shortest path</td><td class="num">2.67</td><td class="num">2.64 &plusmn; 0.02</td><td class="num">2.66</td><td>Right. Everything with this many links per node is a small world.</td></tr>
+        <tr><td>Diameter</td><td class="num">6</td><td class="num">4.0 &plusmn; 0.2</td><td class="num">4.4</td><td>Wrong. The model has no far corners; Marvel has a fringe.</td></tr>
+        <tr><td>Assortativity</td><td class="num">&minus;0.105</td><td class="num">&minus;0.086 &plusmn; 0.018</td><td class="num">&minus;0.01</td><td>Right, for the reason in the box above: a hub that size forces it.</td></tr>
+        <tr><td>Isolates / islands</td><td class="num">17 / 1</td><td class="num">0 / 0</td><td class="num">0 / 0</td><td>Wrong. Growth models connect every newcomer; Wikipedia does not.</td></tr>
+        <tr><td>Fitted exponent</td><td class="num">3.4 (undirected)</td><td class="num">2.72 &plusmn; 0.04</td><td class="num">7.4</td><td>Note that even the true model does not reach its textbook &gamma; = 3 at this size.</td></tr>
+        <tr><td>Who becomes a hub</td><td class="num">&rho; = &minus;0.27</td><td class="num">&rho; = &minus;0.80</td><td class="num">&mdash;</td><td><strong>The most glaring miss.</strong> See below.</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3>The first shall be hubs. Except they are not.</h3>
+  <p>Preferential attachment makes one prediction that has nothing to do with degree distributions and that we can
+  test directly. Because the rich get richer, whoever arrives first collects the most links: in the model a node's
+  degree grows like the square root of n over its arrival time, and the earliest handful of nodes are the hubs in
+  every run. Marvel characters have arrival times. Every Wikipedia infobox carries the character's first
+  appearance, and we harvested it for 291 of the 303 characters.</p>
+
+  <figure>
+    <img src="../../assets/figures/week2_firstmover.png" alt="Left: scatter of in-degree against year of first appearance for 291 Marvel characters, log y-axis, with a step line for the mean per decade. The 1940s characters are low, the line jumps in the 1960s where Spider-Man (1962), Hulk (1962) and Doctor Strange (1963) sit at the top, then declines decade by decade to 2020. Right: degree against arrival order for a preferential-attachment run with the theoretical curve; degree falls steeply with arrival order.">
+    <figcaption>Left: Wikipedia. The Golden Age characters of the 1940s are not hubs. The hubs are the class of
+    1962 to 1974. Right: the model, where arriving early is everything and the first ten nodes are the top ten.</figcaption>
+  </figure>
+
+  <div class="tablewrap">
+    <table>
+      <thead><tr><th>Debut decade</th><th class="num">Characters</th><th class="num">Mean in-degree</th><th class="num">Median</th><th>Biggest</th></tr></thead>
+      <tbody>
+        <tr><td>1939 to 1949</td><td class="num">25</td><td class="num">4.2</td><td class="num">3</td><td>Hercules (19)</td></tr>
+        <tr><td>1950s</td><td class="num">5</td><td class="num">2.0</td><td class="num">2</td><td>Jack Monroe (3)</td></tr>
+        <tr><td>1960s</td><td class="num">37</td><td class="num">14.0</td><td class="num">5</td><td>Spider-Man (106)</td></tr>
+        <tr><td>1970s</td><td class="num">77</td><td class="num">7.9</td><td class="num">5</td><td>Wolverine (60)</td></tr>
+        <tr><td>1980s</td><td class="num">49</td><td class="num">4.2</td><td class="num">2</td><td>Cable (21)</td></tr>
+        <tr><td>1990s</td><td class="num">38</td><td class="num">3.3</td><td class="num">2</td><td>Deadpool (33)</td></tr>
+        <tr><td>2000s</td><td class="num">46</td><td class="num">2.8</td><td class="num">2</td><td>Anya Corazon (10)</td></tr>
+        <tr><td>2010s and later</td><td class="num">14</td><td class="num">2.6</td><td class="num">1</td><td>Spider-Woman, Gwen Stacy (12)</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <p>There is a first-mover effect on Wikipedia. It is just small: Spearman's &rho; between debut year and in-degree
+  is &minus;0.27, against &minus;0.80 in the model, and the top ten hubs arrived on average at the 26th percentile of
+  the roster rather than the model's 3rd. Deadpool arrived at the 68th percentile, later than two thirds of the
+  universe, and is the fifth most linked character. The 1940s characters, who under preferential attachment should
+  own the network, average four links. Half of the top ten are from 1962 to 1966, the five years in which Stan Lee and Jack Kirby created the modern
+  Marvel universe; the rest are 1970s creations, plus Deadpool.</p>
+
+  <blockquote>The model says: be first. Wikipedia says: be created by Stan Lee. Growth is real and preference is
+  real, but characters are not born equal. That missing ingredient has a name in the literature, fitness, and the
+  Bianconi-Barab&aacute;si model adds it. Next time we grow a Marvel, that is the dial we would add.</blockquote>
+
+  <h2>5. Enter the villains</h2>
+  <p>Heroes need villains, and this week's standing option was a second category, so we crawled
+  <em>Category:Marvel Comics supervillains</em> through the API the way the course network was built: raw wiki
+  source, links written as <code>[[Page name]]</code>, redirects resolved in bulk. The category has 518 members. 140
+  are redirects, 8 are "List of" pages and 7 are teams, species or objects rather than characters, which leaves 363
+  villains. Then we fetched the wiki source of all 363 plus the 303 heroes and kept every link between any two of
+  them.</p>
+
+  <div class="callout">
+    <b>64 characters are on both lists.</b> Wikipedia files 64 of the 303 "superheroes" under supervillains as well:
+    Hulk, Deadpool, Venom, Eddie Brock, Emma Frost, Quicksilver, Black Cat, Morbius, the Sentry, the Phoenix Force,
+    Spider-Woman, Yelena Belova and fifty-two more. A fifth of the heroes have a criminal record. We kept them as a
+    third side, "both", and left them out of the hero-versus-villain counts below.
+  </div>
+
+  <div class="tablewrap">
+    <table>
+      <thead><tr><th>Property</th><th class="num">Value</th><th>Comment</th></tr></thead>
+      <tbody>
+        <tr><td>Nodes</td><td class="num">602</td><td>239 heroes, 299 villains, 64 both</td></tr>
+        <tr><td>Directed links</td><td class="num">4082</td><td>All links between any two of the 602</td></tr>
+        <tr><td>Isolates</td><td class="num">21</td><td>Nine of the 17 hero isolates are still alone, eight found a villain, and twelve villains are isolates of their own</td></tr>
+        <tr><td>Hero &rarr; hero</td><td class="num">1096</td><td>The frozen snapshot, live: 1757 of its 1784 edges reproduced across all 303, Jaccard 0.98</td></tr>
+        <tr><td>Hero &rarr; villain</td><td class="num">511</td><td>27 percent of the links heroes send</td></tr>
+        <tr><td>Villain &rarr; hero</td><td class="num">802</td><td>49 percent of the links villains send</td></tr>
+        <tr><td>Villain &rarr; villain</td><td class="num">603</td><td>37 percent of the links villains send</td></tr>
+        <tr><td>Most linked character</td><td class="num">201</td><td>Spider-Man, of which 95 links come from villains</td></tr>
+        <tr><td>Most linked villain</td><td class="num">76</td><td>Norman Osborn. Green Goblin has his own page, at 26</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <figure>
+    <img src="../../assets/figures/week2_villains_network.png" alt="Force-directed drawing of the combined network's giant component: heroes in cyan, villains in red, characters filed as both in gold, links that cross the hero-villain line in purple. Spider-Man is a large cyan node at the centre; Norman Osborn, Thanos and Ultron are the largest red nodes; Hulk, Deadpool and Venom are gold.">
+    <figcaption>The universe with its villains. Heroes cyan, villains red, both gold, and every purple line is a
+    link across the hero-villain divide. Spider-Man in the middle collects 95 links from villains alone.</figcaption>
+  </figure>
+
+  <h3>Villains talk about heroes twice as much as heroes talk about villains. Then we shuffled.</h3>
+  <p>The raw counts tell a good story. Villains send 802 links to heroes and get 511 back. Half of everything a
+  villain page mentions is a hero; a quarter of what a hero page mentions is a villain. Only 25 percent of
+  villain-to-hero links are reciprocated, against 42 percent for hero-to-hero and villain-to-villain. Villains are
+  defined by their heroes; heroes are defined by each other. We had the paragraph written.</p>
+
+  <p>Then we ran the shuffle. Keep every character's in-degree and out-degree, keep the hero and villain labels,
+  scramble who links to whom, 300 times. The shuffle expects <strong>885 &plusmn; 14</strong> villain-to-hero
+  links. The real network has 802. Villains link to heroes <em>less</em> than chance, five standard deviations less.
+  Heroes link to villains less than chance too (511 against 604 &plusmn; 14). Both sides link within their own side
+  more than chance: hero-to-hero 1096 against 1009, villain-to-villain 603 against 508.</p>
+
+  <figure>
+    <img src="../../assets/figures/week2_villains_mixing.png" alt="Left: bars of the four link types, real against the degree-preserving shuffle and against the random network, with z-scores; real hero-to-hero and villain-to-villain exceed the shuffle, real hero-to-villain and villain-to-hero fall short of it. Middle: histogram of mutual hero-villain pairs under both nulls, at most 40, with the real value 198 far to the right. Right: in-degree CCDFs of heroes and villains in the combined network.">
+    <figcaption>Left: the four kinds of link against both nulls. Raw counts say villains obsess over heroes; the
+    shuffle says both sides keep to themselves. Middle: the one thing that survives everything, the nemesis pairs.
+    Right: the villains' tail is a little steeper than the heroes', and neither is distinguishable from a power law
+    at this size.</figcaption>
+  </figure>
+
+  <p>Why the raw counts lie: heroes hold 54 percent of all incoming links in the combined network while being 40
+  percent of its nodes. A villain page that links to ten characters at random would hit heroes more than half the
+  time simply because heroes are where the in-links are. The 802 is what 49 percent of a villain's links landing on
+  heroes looks like when 54 percent should. The villains are not obsessed. They are slightly clannish, and so are the
+  heroes.</p>
+
+  <p>What does survive, spectacularly, is the nemesis. There are 198 pairs of one hero and one villain that link to
+  each other. The degree-preserving shuffle produces 27 &plusmn; 5 such pairs; the random network 9. That is a
+  z-score of 34, and the list reads like a rogues' gallery: Spider-Man with Norman Osborn, the Green Goblin, the
+  Lizard, Mysterio and the Jackal; Wolverine with Sabretooth, Apocalypse, Wendigo and Romulus; Doctor Strange and
+  She-Hulk with Thanos; Luke Cage with Norman Osborn. Villains as a group do not point at heroes more than chance.
+  <em>Their</em> hero, they point at, and the hero points back.</p>
+
+  <blockquote>Two null models, two conclusions, one dataset. Against a random network, villains link to heroes
+  exactly as much as chance predicts (z = &minus;0.3). Against the degree-preserving shuffle, less than chance. The
+  "villains obsess over heroes" story is not in the data. The "every villain has a hero" story is, 34 standard
+  deviations deep.</blockquote>
+
+  <h3>The rest of the toolkit, on the villains</h3>
+  <ul>
+    <li><strong>Heavy tails.</strong> Villain in-degree: k<sub>min</sub> = 10, &alpha; = 2.93 &plusmn; 0.33 on 34 tail
+      nodes, bootstrap p = 0.49. Heroes in the same network: &alpha; = 2.36 &plusmn; 0.18. The villains' tail is
+      steeper and shorter. Nobody links to villains the way everybody links to Spider-Man, not even other
+      villains.</li>
+    <li><strong>Friendship paradox.</strong> A random character in the combined network has 11.5 links; a random
+      friend has 34.9. Three characters are out-popularitied by nobody: Spider-Man (201), Quasar (37, who ties with his
+      best-connected neighbour and wins on a technicality) and, still, Radian (6).</li>
+    <li><strong>Survivors.</strong> Clustering 0.298 against 0.135 &plusmn; 0.005 shuffled, reciprocity 0.365
+      against 0.044. Same survivors as the heroes alone, same order of magnitude. Adding 363 villains did not change
+      what the network is.</li>
+    <li><strong>Wikipedia moved again.</strong> Our live crawl reproduces 1757 of the snapshot's 1784 hero-to-hero
+      edges. The 27 missing ones are real edits from the last two weeks: an editor "condensed" the Phoenix Force
+      article on 31 August and nine links to other characters went with it. Two weeks after the freeze the snapshot
+      is already 1.5 percent out of date, which is the whole argument for freezing it.</li>
+  </ul>
+
+  <h2>What surprised us</h2>
+  <ol>
+    <li><strong>Radian.</strong> We asked who is out-popularitied by nobody and got Spider-Man and a character with
+      six links, because six is a lot on an island of nine.</li>
+    <li><strong>The villains do not obsess over heroes.</strong> 802 links one way, 511 the other, and both are
+      below what the degree sequence predicts. We had the opposite paragraph written before we ran the shuffle.</li>
+    <li><strong>Arriving first is worth almost nothing.</strong> The model's whole mechanism for making hubs, seniority,
+      explains a correlation of &minus;0.27 on Wikipedia against &minus;0.80 in the model. The 1940s own nothing. 1962
+      owns everything.</li>
+    <li><strong>The 66 strongly connected components are not a finding.</strong> Neither is the disassortativity.
+      Both looked like structure in week 1 and both dissolve under the right null.</li>
+    <li><strong>The test that cannot say no.</strong> Our power-law test fails to reject a power law for 80 percent of
+      random networks of Marvel's size. It still rejected the pure power law for Marvel's in-degree. That makes the
+      rejection more convincing, not less, and it makes every "this network is scale-free" claim about a network of
+      this size worthless.</li>
+  </ol>
+
+  <h2>Reproduce it</h2>
+  <p>One repository, four scripts for this week, no notebook state to guess at. Everything runs on the frozen
+  snapshot plus one crawl.</p>
+<pre><code>git clone https://github.com/Oddvar112/Social-Graphs-and-Interactions
+cd Social-Graphs-and-Interactions
+
+python scripts/crawl_week2.py            # villains + debut years from live Wikipedia -> data/week2_*.tsv
+python scripts/analyse_week2.py          # every figure and number in this post (about ten minutes)
+python scripts/analyse_week2.py --quick  # the same with 30 shuffles, for a look
+python scripts/heavytail.py              # self-test of the power-law fitter on synthetic data
+python scripts/build_week2_data.py       # debut years + the combined network for the ORIGIN STORY explorable
+python scripts/fetch_images.py           # lead-image URLs for the explorable's character cards
+
+python -m http.server 8000               # then open http://localhost:8000</code></pre>
+  <p>Every number quoted in this post is written to <code>data/stats_week2.json</code> by
+  <code>analyse_week2.py</code>, including all 300 shuffled values behind every histogram, so you can check any of
+  them against the source rather than taking our word for it. The crawl's own bookkeeping, which pages were dropped
+  and why, is in <code>data/week2_crawl.json</code>. The character pictures in ORIGIN STORY are the lead images of
+  the Wikipedia articles, loaded from Wikipedia as you play and credited on the card; we store only their URLs.</p>
+
+  <p style="margin-top:36px"><a href="../../index.html">&larr; Back to all weeks</a> &nbsp;&middot;&nbsp;
+  <a href="../week1/">&larr; Week 1</a> &nbsp;&middot;&nbsp;
+  <a href="grow/index.html" target="_blank" rel="noopener">Open ORIGIN STORY full screen &rarr;</a></p>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    <span>Oddvar, David and Milena &middot; 02805 Social Graphs and Interactions &middot; DTU</span>
+    <span class="sp"><a href="https://github.com/Oddvar112/Social-Graphs-and-Interactions">Source on GitHub</a></span>
+  </div>
+</footer>
+
+</body>
+</html>
