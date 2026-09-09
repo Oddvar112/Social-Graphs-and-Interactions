@@ -61,6 +61,8 @@
       Casualties were degree all along.</li>
     <li><strong>Can preferential attachment grow a Marvel?</strong> Same n, same m, and then the model's central
       prediction, that whoever arrives first becomes a hub, checked against 291 real debut years.</li>
+    <li><strong>What does non-linear preference do to the hubs?</strong> Exercise 2.10 asks for an explorable the
+      course page does not have. We built one around this claim and put Spider-Man on its dial.</li>
     <li><strong>What happens when you add the villains?</strong> The standing option this week is a second Wikipedia
       category. Heroes need villains, so we crawled <em>Category:Marvel Comics supervillains</em> and ran everything
       again on the combined network. That is where the biggest surprise was hiding.</li>
@@ -294,7 +296,47 @@
   real, but characters are not born equal. That missing ingredient has a name in the literature, fitness, and the
   Bianconi-Barab&aacute;si model adds it. Next time we grow a Marvel, that is the dial we would add.</blockquote>
 
-  <h2>5. Enter the villains</h2>
+  <h2>5. Turn the dial: what non-linear preference does to the hubs</h2>
+  <p>Exercise 2.10 asks for an explorable that shows a claim none of the course page's widgets show, and names four.
+  We built the third one. Barab&aacute;si's model assumes the preference is exactly proportional to degree,
+  &Pi;(k) &prop; k. Nothing says it has to be. Make it &Pi;(k) &prop; k<sup>&alpha;</sup> and one number decides what
+  kind of universe you get: below 1 the rich get richer too slowly and hubs never form, at 1 you get the power law,
+  above 1 an early lead compounds until one node takes a fixed share of every link there is. The course's growth
+  widget has a switch for preferential, uniform and no growth. This one has the dial in between and beyond.</p>
+
+  <div class="explorable">
+    <iframe src="hubdial/index.html?theme=dark&amp;grow=1" title="The hub dial: grow a network with attachment probability proportional to k to the power alpha" loading="lazy"></iframe>
+  </div>
+  <p class="figcap">One HTML file, no libraries, no data files: the 303 Marvel degrees are inlined as the grey
+  reference. Grow at &alpha; = 1, then at 0.5, then at 1.5, and read the biggest hub's share of all links each time.
+  Then press <strong>Sweep &alpha;</strong>. <a href="hubdial/index.html?theme=dark" target="_blank" rel="noopener">Open
+  it full screen</a>, or <a href="hubdial/index.html?theme=light" target="_blank" rel="noopener">in the course page's
+  light theme</a>.</p>
+
+  <p>The sweep is the claim in one picture. It grows the network from scratch at every &alpha; from 0 to 2.5, at two
+  sizes, and plots what fraction of all links the biggest hub holds. Below &alpha; = 1 the two curves fly apart: at
+  &alpha; = 0.5 the hub holds 3.5 percent of the links in a 303-node network and 0.6 percent in a 3000-node one,
+  because a hub that cannot feed on its own size is diluted by every newcomer. At &alpha; = 1 the gap is exactly the
+  textbook 1/&radic;n, 6 percent against 2 percent. Above about &alpha; = 1.3 the curves meet: the hub keeps a fifth
+  to a third of all links whether the network has 303 nodes or 3000, and it is nearly always one of the first few
+  nodes to arrive. That size-independence is what "the winner takes all" means, and no amount of staring at a single
+  network shows it. You need the second size.</p>
+
+  <p>And Spider-Man? His 106 of 1434 links are 7.4 percent, the dashed gold line. The n = 303 curve crosses it at
+  &alpha; &asymp; 1.1. Read literally, the Marvel universe is a tenth superlinear: an ordinary Barab&aacute;si-Albert
+  network of this size makes a biggest hub with five or six percent of the links, and Spider-Man is a little more than
+  that. Read with section 4 in mind, it is linear preference plus fitness, which looks the same from here. The dial
+  cannot tell those apart, and it says so in the caption, which is more than most log-log plots do.</p>
+
+  <div class="callout">
+    <b>Why this one, out of the four.</b> The regimes of the random network are half-shown by the page's giant
+    component widget already, and the friendship paradox against &gamma; is a curve rather than a mechanism. Stub
+    pairing would have been our second choice. Non-linear preference is the one claim from the week where a single
+    slider crosses two phase boundaries, where the model's own ingredient turns against it, and where the real
+    network hands you a number to read off the dial.
+  </div>
+
+  <h2>6. Enter the villains</h2>
   <p>Heroes need villains, and this week's standing option was a second category, so we crawled
   <em>Category:Marvel Comics supervillains</em> through the API the way the course network was built: raw wiki
   source, links written as <code>[[Page name]]</code>, redirects resolved in bulk. The category has 518 members. 140
@@ -403,6 +445,9 @@
       random networks of Marvel's size. It still rejected the pure power law for Marvel's in-degree. That makes the
       rejection more convincing, not less, and it makes every "this network is scale-free" claim about a network of
       this size worthless.</li>
+    <li><strong>Spider-Man is a tenth superlinear.</strong> Turn the preference exponent until the model's biggest
+      hub holds Spider-Man's share of the links and the dial reads 1.1. Whether that is stronger preference or plain
+      fitness, the dial cannot say, which is the honest answer.</li>
   </ol>
 
   <h2>Reproduce it</h2>
@@ -428,6 +473,7 @@ python -m http.server 8000               # then open http://localhost:8000</code
   <div class="postnav">
     <a href="../../index.html">&larr; Back to all weeks</a>
     <a class="cta" href="grow/index.html" target="_blank" rel="noopener">Open ORIGIN STORY full screen &rarr;</a>
+    <a class="cta" href="hubdial/index.html?theme=dark" target="_blank" rel="noopener">Open THE HUB DIAL &rarr;</a>
   </div>
 
 </main>

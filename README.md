@@ -19,6 +19,7 @@ crawled by us, and every link between any two of the 602.
 | `weeks/week1/game/` | **WEB-CRAWLER**, a browser game played on the real graph |
 | `weeks/week2/index.html` | Week 2 post: power-law fit, friendship paradox, shuffle tests, a grown Marvel, the villains |
 | `weeks/week2/grow/` | **ORIGIN STORY**, an explorable that replays the universe by debut year next to a growing model |
+| `weeks/week2/hubdial/` | **THE HUB DIAL**, our exercise 2.10 explorable: non-linear preferential attachment, one file, embeddable |
 | `scripts/` | Everything that produces the data and the figures |
 | `assets/figures/` | Generated figures: `analyse.py` writes the week 1 ones, `analyse_week2.py` the `week2_*` ones |
 | `data/` | Generated: graph for the game, stats, API verification output, the week 2 crawl |
@@ -47,6 +48,15 @@ is visible as a glowing centre. On Wikipedia the glow is a ring: the class of 19
 panel: the lead image of the character's Wikipedia article, loaded from Wikipedia at view time (only the URLs are
 in the repo, in `data/week2_images.js`; the art is Marvel's and is shown for identification). Vanilla JavaScript,
 one canvas, `?mode=combined&t=150` opens it at a moment.
+
+## The explorable for the course page (exercise 2.10)
+
+**THE HUB DIAL** (`weeks/week2/hubdial/index.html`) grows a network in which newcomers attach with probability
+proportional to k^α and lets you turn α from 0 to 2.5. Below 1 hubs never form, at 1 it is Barabási-Albert, above
+1 one node keeps a fixed share of all links however large the network grows; a sweep draws the biggest hub's share
+against α at n = 303 and n = 3000 so the size-independence is visible, with Spider-Man's 7.4 percent as the
+reference line. It is one self-contained HTML file, no libraries, no data files, styled after the course's own
+explorables, with `?theme=light|dark`. Embed it with an iframe of about 860 px height.
 
 ## Reproducing everything
 
