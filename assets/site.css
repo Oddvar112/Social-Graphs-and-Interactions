@@ -51,6 +51,8 @@ img{max-width:100%;height:auto;display:block}
 }
 .topbar nav a:hover{color:var(--text);border-color:var(--line);background:var(--panel);text-decoration:none}
 .topbar nav a.on{color:var(--gold);border-color:var(--gold);background:rgba(255,201,63,.08)}
+.topbar nav a.dial{color:var(--web);border-color:#1d4a5c;background:rgba(95,227,255,.07)}
+.topbar nav a.dial:hover{border-color:var(--web)}
 
 /* --------------------------------------------------------------- front page */
 .hero{padding:74px 0 44px;text-align:center;position:relative}
