@@ -92,6 +92,16 @@ canvas#cv{position:absolute;inset:0;width:100%;height:100%;display:block}
 #card.model .pic,#card.model .credit{display:none}
 #card.model .name{font-size:22px;margin-top:14px}
 #card.model .info{margin-bottom:12px}
+#card.pinned{outline:3px dashed rgba(166,120,255,.75);outline-offset:5px}
+
+/* ---------- decade splash cards, flashed when playback crosses a new era ---------- */
+#splash{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;pointer-events:none;z-index:4}
+#splash span{
+  font-family:Bangers,Impact,"Arial Black",sans-serif;font-size:clamp(30px,6vw,66px);color:var(--gold);
+  letter-spacing:.06em;text-shadow:0 4px 0 #6b0d10,0 16px 44px rgba(0,0,0,.6);
+  opacity:0;transform:scale(.72) rotate(-3deg);transition:opacity .25s ease,transform .3s cubic-bezier(.2,1.4,.4,1);
+}
+#splash span.show{opacity:1;transform:scale(1) rotate(-2deg)}
 
 #panel{
   background:linear-gradient(180deg,rgba(13,18,36,.98),rgba(9,13,26,.99));
@@ -159,6 +169,7 @@ canvas#ccdf{width:100%;height:170px;display:block;border:1px solid var(--line);b
 <div id="app">
   <section id="stage">
     <canvas id="cv"></canvas>
+    <div id="splash"></div>
     <div id="readout"><div class="big" id="ro-big">1939</div><div class="sub" id="ro-sub">1 of 303 characters &middot; 0 links</div></div>
     <a id="card" href="#" target="_blank" rel="noopener" title="Open the Wikipedia article">
       <span class="burst" id="card-burst">Just arrived</span>
@@ -195,7 +206,9 @@ canvas#ccdf{width:100%;height:170px;display:block;border:1px solid var(--line);b
 
     <p class="foot">Nodes sit on a spiral by arrival order: the centre is 1939 (or node #1), the rim is 2020 (or
     the last node). Size is degree; in the hero replay colour is degree too, in the heroes-and-villains replay colour
-    is the side (heroes cyan, villains red, both gold) and purple links cross the line. In the model the centre glows
+    is the side (heroes cyan, villains red, both gold) and purple links cross the line. Click any node that has
+    already arrived to pin its card and see its own links picked out; click it again, or empty canvas, to let it go.
+    The current leader glows. In the model the centre glows
     because whoever arrives first collects the links. On Wikipedia the glow is a ring: the class of 1962. Data: the
     frozen course snapshot, our crawl of the supervillain category, and debut years from each character's infobox. The card shows the lead image of each character's Wikipedia article, loaded from
     Wikipedia as you play; that art belongs to Marvel and is shown for identification only.

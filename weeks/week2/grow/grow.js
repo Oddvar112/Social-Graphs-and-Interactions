@@ -121,11 +121,14 @@
   }
 
   // ------------------------------------------------------------ state
+  const ARRIVE_MS = 480, EDGE_MS = 260;   // durations for the new-arrival burst / edge draw-in
   let mode = buildMarvel();
   let seed = 7;
   let t = 0;                     // rank of the newest node present
   let playing = false;
   let acc = 0, last = 0;
+  let inspect = -1;              // rank of a clicked node, pinned in the card until released
+  let lastDrawnT = -1, arrivalStart = 0;
 
   const cv = document.getElementById("cv"), ctx = cv.getContext("2d");
   const cc = document.getElementById("ccdf"), cctx = cc.getContext("2d");
@@ -140,6 +143,13 @@
       if (mode.directed) deg[E[i][1]]++; else { deg[E[i][0]]++; deg[E[i][1]]++; }
     }
     return deg;
+  }
+  function outDegreeAt(node, upto) {
+    if (!mode.directed) return 0;
+    const E = mode.edges, S = mode.stamp;
+    let c = 0;
+    for (let i = 0; i < E.length; i++) if (S[i] <= upto && E[i][0] === node) c++;
+    return c;
   }
   function linksPresent(upto) {
     let c = 0;
@@ -166,23 +176,29 @@
   function updateCard(deg) {
     const card = document.getElementById("card");
     const img = document.getElementById("card-img"), ph = document.getElementById("card-ph");
-    const own = deg[t];
+    const show = inspect >= 0 ? inspect : t;          // a pinned node takes over the card
+    const pinned = inspect >= 0 && inspect !== t;
+    const own = deg[show];
     card.classList.toggle("model", !mode.directed);
-    const side = mode.sides ? mode.sides[t] : null;
+    card.classList.toggle("pinned", pinned);
+    const side = mode.sides ? mode.sides[show] : null;
     const sideWord = side === "villain" ? " · villain" : side === "both" ? " · hero and villain" : "";
-    document.getElementById("card-burst").textContent = mode.directed ? `Just arrived · ${mode.when[t]}${sideWord}` : mode.when[t];
-    card.style.setProperty("--burst", side === "villain" ? COL.red : side === "both" ? "#ff9f43" : COL.gold);
-    document.getElementById("card-name").textContent = mode.labels[t];
+    document.getElementById("card-burst").textContent = mode.directed
+      ? (pinned ? `Pinned · ${mode.when[show]}${sideWord}` : `Just arrived · ${mode.when[show]}${sideWord}`)
+      : mode.when[show];
+    card.style.setProperty("--burst", pinned ? "#a678ff" : side === "villain" ? COL.red : side === "both" ? "#ff9f43" : COL.gold);
+    document.getElementById("card-name").textContent = mode.labels[show];
+    const outOwn = outDegreeAt(show, t);
     document.getElementById("card-info").innerHTML = mode.directed
-      ? `Linked by <b>${own}</b> of the ${t} characters already here.`
+      ? `<b>${own}</b> in-link${own === 1 ? "" : "s"} from the ${t} characters here so far, <b>${outOwn}</b> out-link${outOwn === 1 ? "" : "s"} to others.`
       : `Arrived with <b>${own}</b> links, chosen ${mode.key === "ba" ? "in proportion to degree" : "uniformly at random"}.`;
     if (mode.directed) {
-      const meta = IMAGES[mode.ids[t]];
-      card.href = mode.urls[t];
+      const meta = IMAGES[mode.ids[show]];
+      card.href = mode.urls[show];
       if (meta) {
         img.onerror = () => { img.hidden = true; ph.hidden = false; };
         img.src = meta.src;
-        img.alt = mode.labels[t];
+        img.alt = mode.labels[show];
         img.hidden = false;
         ph.hidden = true;
         document.getElementById("card-credit").textContent = "Image: Wikipedia, " + meta.file.replace(/_/g, " ");
@@ -193,12 +209,12 @@
         ph.hidden = false;
         document.getElementById("card-credit").textContent = "No lead image on the Wikipedia article";
       }
-      ph.innerHTML = `${mode.labels[t]}<small>no picture on Wikipedia</small>`;
+      ph.innerHTML = `${mode.labels[show]}<small>no picture on Wikipedia</small>`;
       preload(t + 1);
     } else {
       card.removeAttribute("href");
     }
-    const stamp = mode.key + ":" + t;
+    const stamp = mode.key + ":" + show;
     if (cardShown !== stamp) {
       cardShown = stamp;
       card.classList.remove("pop");
@@ -258,10 +274,16 @@
 
   function draw() {
     const w = cv.width, h = cv.height, dpr = Math.min(window.devicePixelRatio || 1, 2);
+    const now = performance.now();
+    if (t !== lastDrawnT) { arrivalStart = now; lastDrawnT = t; }
+    if (inspect > t) inspect = -1;                          // a pinned node can outrun a reset/scrub-back
+    const burstProg = Math.min(1, (now - arrivalStart) / ARRIVE_MS);
+
     ctx.clearRect(0, 0, w, h);
     const { pos, R, cx, cy } = layout();
     const deg = degrees(t);
     const KSCALE = mode.key === "combined" ? 201 : 106;     // the colour scale tops out at Spider-Man
+    const E = mode.edges, S = mode.stamp, sides = mode.sides;
 
     // rings
     ctx.lineWidth = 1 * dpr;
@@ -276,7 +298,6 @@
     });
 
     // edges present; in the combined replay a link across the hero-villain line is purple
-    const E = mode.edges, S = mode.stamp, sides = mode.sides;
     const crosses = i => !!sides && sides[E[i][0]] !== sides[E[i][1]] && sides[E[i][0]] !== "both" && sides[E[i][1]] !== "both";
     ctx.lineWidth = 0.7 * dpr;
     for (const [colour, wantCross] of [[COL.edge, false], [COL.cross, true]]) {
@@ -290,15 +311,56 @@
       }
       ctx.stroke();
     }
+    // edges landing this step draw in over EDGE_MS, growing outward from the newcomer itself.
+    // A newcomer with a lot of links (an unknown-year character forced to the very last rank,
+    // say) gets its edges staggered a few ms apart instead of the whole fan snapping in as one
+    // flash - it reads as a quick cascade rather than "connected to everything at once".
+    const arriving = [];
+    for (let i = 0; i < E.length; i++) if (S[i] === t) arriving.push(i);
     ctx.lineWidth = 1.3 * dpr;
     ctx.strokeStyle = COL.hot;
     ctx.beginPath();
-    for (let i = 0; i < E.length; i++) {
-      if (S[i] !== t) continue;
-      ctx.moveTo(pos[E[i][0]][0], pos[E[i][0]][1]);
-      ctx.lineTo(pos[E[i][1]][0], pos[E[i][1]][1]);
-    }
+    arriving.forEach((i, k) => {
+      const delay = Math.min(k, 12) * 14;
+      const p = Math.max(0, Math.min(1, ((now - arrivalStart) - delay) / EDGE_MS));
+      if (p <= 0) return;
+      const from = E[i][0] === t ? E[i][0] : E[i][1], to = from === E[i][0] ? E[i][1] : E[i][0];
+      const a = pos[from], b = pos[to];
+      ctx.moveTo(a[0], a[1]);
+      ctx.lineTo(a[0] + (b[0] - a[0]) * p, a[1] + (b[1] - a[1]) * p);
+    });
     ctx.stroke();
+
+    // the current leader gets a slow pulsing glow, so "who's winning" reads without the board
+    let leader = -1, leaderK = 0;
+    for (let r = 0; r <= t; r++) if (deg[r] > leaderK) { leaderK = deg[r]; leader = r; }
+    if (leader >= 0) {
+      const pulse = 0.5 + 0.5 * Math.sin(now / 450);
+      const glow = sides ? (SIDE[sides[leader]] || COL.gold) : COL.gold;
+      ctx.save();
+      ctx.shadowColor = glow;
+      ctx.shadowBlur = (14 + 10 * pulse) * dpr;
+      ctx.beginPath();
+      ctx.arc(pos[leader][0], pos[leader][1], nodeRadius(leaderK, dpr) + 3 * dpr, 0, Math.PI * 2);
+      ctx.strokeStyle = glow;
+      ctx.globalAlpha = 0.55 + 0.25 * pulse;
+      ctx.lineWidth = 2 * dpr;
+      ctx.stroke();
+      ctx.restore();
+    }
+
+    // click any node that has arrived to pin it; its incident edges get picked out
+    if (inspect >= 0) {
+      ctx.lineWidth = 1.1 * dpr;
+      ctx.strokeStyle = "rgba(233,237,249,0.55)";
+      ctx.beginPath();
+      for (let i = 0; i < E.length; i++) {
+        if (S[i] > t || (E[i][0] !== inspect && E[i][1] !== inspect)) continue;
+        ctx.moveTo(pos[E[i][0]][0], pos[E[i][0]][1]);
+        ctx.lineTo(pos[E[i][1]][0], pos[E[i][1]][1]);
+      }
+      ctx.stroke();
+    }
 
     // nodes, small first so hubs sit on top
     const order = [];
@@ -306,8 +368,9 @@
     order.sort((a, b) => deg[a] - deg[b]);
     for (const r of order) {
       const k = deg[r];
+      const pop = (r === t && burstProg < 1) ? 0.5 + 0.5 * (1 - Math.pow(1 - burstProg, 3)) : 1;
       ctx.beginPath();
-      ctx.arc(pos[r][0], pos[r][1], nodeRadius(k, dpr), 0, Math.PI * 2);
+      ctx.arc(pos[r][0], pos[r][1], nodeRadius(k, dpr) * pop, 0, Math.PI * 2);
       if (sides) {
         ctx.fillStyle = SIDE[sides[r]] || COL.web;
         ctx.globalAlpha = 0.45 + 0.55 * Math.min(1, Math.log1p(k) / Math.log1p(KSCALE) * 1.6);
@@ -316,8 +379,8 @@
       }
       ctx.fill();
       ctx.globalAlpha = 1;
-      ctx.lineWidth = (r === t ? 2.2 : 0.6) * dpr;
-      ctx.strokeStyle = r === t ? COL.gold : COL.bg;
+      ctx.lineWidth = (r === t ? 2.2 : r === inspect ? 2 : 0.6) * dpr;
+      ctx.strokeStyle = r === t ? COL.gold : r === inspect ? "#e9edf9" : COL.bg;
       ctx.stroke();
     }
 
@@ -336,8 +399,61 @@
       ctx.fillText(text, pos[r][0], y);
     });
 
+    // a burst of particles where the newest character just landed
+    if (burstProg < 1) {
+      const burstColor = sides ? (SIDE[sides[t]] || COL.hot) : COL.hot;
+      drawBurst(pos[t], nodeRadius(deg[t], dpr), burstProg, dpr, burstColor);
+    }
+
+    maybeSplash();
     drawCCDF(deg);
     updatePanel(deg);
+  }
+
+  function drawBurst(p, r0, prog, dpr, color) {
+    const ease = 1 - Math.pow(1 - prog, 3);
+    ctx.save();
+    ctx.strokeStyle = color;
+    ctx.globalAlpha = (1 - ease) * 0.85;
+    ctx.lineWidth = 2 * dpr;
+    ctx.beginPath();
+    ctx.arc(p[0], p[1], r0 + ease * 24 * dpr, 0, Math.PI * 2);
+    ctx.stroke();
+    ctx.fillStyle = color;
+    const N = 8;
+    for (let i = 0; i < N; i++) {
+      const ang = (i / N) * Math.PI * 2 + 0.35;
+      const dist = ease * (18 + (i % 3) * 6) * dpr;
+      ctx.globalAlpha = (1 - ease) * 0.8;
+      ctx.beginPath();
+      ctx.arc(p[0] + Math.cos(ang) * dist, p[1] + Math.sin(ang) * dist, Math.max(0.6, (1 - ease) * 2.2) * dpr, 0, Math.PI * 2);
+      ctx.fill();
+    }
+    ctx.restore();
+  }
+
+  // ------------------------------------------------------------ decade splash cards
+  // Fires once per decade (or every 50 arrivals in the models) the first time it's reached,
+  // even across mode switches or a reseed - not on every scrub back and forth over the same ground.
+  let announced = new Set();
+  let splashTimer = null;
+  function showSplash(label) {
+    const el = document.getElementById("splash");
+    el.innerHTML = `<span>${label}</span>`;
+    const span = el.firstElementChild;
+    requestAnimationFrame(() => requestAnimationFrame(() => span.classList.add("show")));
+    clearTimeout(splashTimer);
+    splashTimer = setTimeout(() => span.classList.remove("show"), 1000);
+  }
+  function maybeSplash() {
+    let label = null;
+    if (mode.years) {
+      const y = mode.years[t];
+      if (y) { const dec = Math.floor(y / 10) * 10; if (dec >= 1940) label = dec + "s"; }
+    } else if (t > 0 && t % 50 === 0) {
+      label = "#" + t;
+    }
+    if (label && !announced.has(label)) { announced.add(label); showSplash(label); }
   }
 
   function drawCCDF(deg) {
@@ -456,6 +572,8 @@
       acc += dt * Number(speed.value);
       while (acc >= 1) { acc -= 1; if (t < mode.n - 1) t++; else { playing = false; break; } }
       draw();
+    } else if (now - arrivalStart < Math.max(ARRIVE_MS, EDGE_MS)) {
+      draw();                    // keep animating the burst/edge draw-in a beat after a manual step
     }
     requestAnimationFrame(tick);
   }
@@ -465,7 +583,24 @@
     else mode = buildModel(key === "ba", seed);
     document.querySelectorAll(".mode").forEach(b => b.classList.toggle("on", b.dataset.mode === mode.key));
     playing = false;
+    inspect = -1;
+    announced = new Set();
     setT(0);
+  }
+  function hitTest(clientX, clientY) {
+    const rect = cv.getBoundingClientRect();
+    const dpr = Math.min(window.devicePixelRatio || 1, 2);
+    const mx = (clientX - rect.left) * dpr, my = (clientY - rect.top) * dpr;
+    const { pos } = layout();
+    const deg = degrees(t);
+    let best = -1, bestD = Infinity;
+    for (let r = 0; r <= t; r++) {
+      const dx = pos[r][0] - mx, dy = pos[r][1] - my;
+      const d2 = dx * dx + dy * dy;
+      const hr = nodeRadius(deg[r], dpr) + 5 * dpr;
+      if (d2 <= hr * hr && d2 < bestD) { bestD = d2; best = r; }
+    }
+    return best;
   }
 
   playBtn.addEventListener("click", () => {
@@ -484,6 +619,14 @@
   scrub.addEventListener("input", () => { playing = false; setT(Number(scrub.value)); });
   speed.addEventListener("input", () => { document.getElementById("speed-val").textContent = `${speed.value} characters / s`; });
   document.querySelectorAll(".mode").forEach(b => b.addEventListener("click", () => setMode(b.dataset.mode)));
+  cv.addEventListener("mousemove", e => { cv.style.cursor = hitTest(e.clientX, e.clientY) >= 0 ? "pointer" : "default"; });
+  cv.addEventListener("mouseleave", () => { cv.style.cursor = "default"; });
+  cv.addEventListener("click", e => {
+    const hit = hitTest(e.clientX, e.clientY);
+    // clicking empty canvas, or the newest node (already the star of the show), releases any pin
+    inspect = (hit === -1 || hit === t || hit === inspect) ? -1 : hit;
+    draw();
+  });
   window.addEventListener("resize", resize);
   document.addEventListener("keydown", e => {
     if (e.code === "Space") { e.preventDefault(); playBtn.click(); }
