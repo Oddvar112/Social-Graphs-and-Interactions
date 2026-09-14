@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>DISMANTLE · take the Marvel graph apart</title>
+<meta name="description" content="Remove Marvel characters one at a time in the order a centrality measure suggests, and watch the giant component collapse. Compare degree, betweenness, PageRank, closeness and random.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bangers&family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#070a14; --panel:#111830; --panel2:#18203c; --line:#26304f;
+  --text:#e9edf9; --dim:#8d99bd; --dim2:#66739a;
+  --red:#e62429; --red2:#ff4b50; --web:#5fe3ff; --gold:#ffc93f; --green:#4ade80; --purple:#a678ff;
+  --orange:#ff9a3c; --pale:#ffe28a;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%}
+body{background:var(--bg);color:var(--text);font-family:Inter,system-ui,sans-serif;overflow:hidden;-webkit-font-smoothing:antialiased}
+.comic{font-family:Bangers,Impact,"Arial Black",sans-serif;letter-spacing:.055em;font-weight:400}
+button{font-family:inherit;color:inherit;border:0;background:none;cursor:pointer}
+a{color:var(--web)}
+
+#app{position:fixed;inset:0;display:grid;grid-template-rows:60px 1fr}
+#hud{display:flex;align-items:center;gap:14px;padding:0 14px;background:linear-gradient(180deg,#131b35,#0b1020);border-bottom:1px solid var(--line)}
+#hud .brand{font-size:26px;line-height:1;color:var(--red2);text-shadow:0 2px 0 #6b0d10;white-space:nowrap}
+#hud .brand small{display:block;font-family:Inter,sans-serif;font-size:9px;letter-spacing:.22em;color:var(--dim);text-shadow:none;font-weight:600}
+#hud .back{font-size:11px;font-weight:700;color:var(--dim);padding:6px 10px;border:1px solid var(--line);border-radius:8px;text-decoration:none;white-space:nowrap}
+#hud .back:hover{color:var(--text);border-color:var(--web)}
+.stats{display:flex;gap:8px;margin-left:auto}
+.stat{background:var(--panel);border:1px solid var(--line);border-radius:9px;padding:5px 11px;min-width:70px;text-align:center}
+.stat b{display:block;font-size:19px;line-height:1.05;font-variant-numeric:tabular-nums}
+.stat span{display:block;font-size:8.5px;letter-spacing:.16em;color:var(--dim);text-transform:uppercase;font-weight:700}
+.stat.gold b{color:var(--gold)} .stat.red b{color:var(--red2)}
+
+#stage{position:relative;display:grid;grid-template-columns:1fr 360px;overflow:hidden}
+#mapwrap{position:relative;background:radial-gradient(1000px 700px at 50% 45%,#101a35 0%,#070a14 70%);overflow:hidden}
+canvas#map{position:absolute;inset:0;width:100%;height:100%;display:block}
+#now{position:absolute;left:14px;top:12px;background:rgba(12,17,34,.9);border:1px solid var(--line);border-left:4px solid var(--red);
+  border-radius:10px;padding:8px 14px;max-width:min(420px,70%);backdrop-filter:blur(8px)}
+#now .lbl{font-size:9px;letter-spacing:.2em;color:var(--dim);font-weight:800;text-transform:uppercase}
+#now .nm{font-size:18px;line-height:1.15}
+#now .why{font-size:11px;color:var(--dim);margin-top:3px}
+#legend{position:absolute;left:14px;bottom:12px;background:rgba(12,17,34,.85);border:1px solid var(--line);border-radius:10px;padding:8px 12px;font-size:10.5px;color:var(--dim);line-height:1.9}
+#legend i{display:inline-block;width:9px;height:9px;border-radius:50%;margin-right:7px;vertical-align:middle}
+
+#panel{background:linear-gradient(180deg,rgba(13,18,36,.98),rgba(9,13,26,.99));border-left:1px solid var(--line);display:flex;flex-direction:column;overflow-y:auto}
+.sec{padding:13px 16px;border-bottom:1px solid var(--line)}
+.sec .k{font-size:9px;letter-spacing:.2em;color:var(--dim);font-weight:800;text-transform:uppercase;margin-bottom:8px}
+.orders{display:grid;grid-template-columns:1fr 1fr;gap:6px}
+.ord{display:flex;align-items:center;gap:8px;text-align:left;padding:8px 10px;border-radius:9px;border:1px solid var(--line);background:var(--panel);font-size:11.5px;font-weight:600;color:var(--dim);transition:.12s;line-height:1.2}
+.ord:hover{color:var(--text);border-color:var(--web)}
+.ord.on{color:var(--text);border-color:var(--c);background:color-mix(in srgb,var(--c) 14%,var(--panel))}
+.ord i{width:10px;height:10px;border-radius:50%;background:var(--c);flex:none;box-shadow:0 0 8px var(--c)}
+.ord small{display:block;font-size:9.5px;font-weight:500;color:var(--dim2)}
+.ctl{display:flex;gap:7px;align-items:center}
+.big{flex:1;font-family:Bangers,Impact,sans-serif;font-size:22px;letter-spacing:.08em;background:linear-gradient(180deg,var(--red2),#b81a1e);color:#fff;padding:8px 0;border-radius:11px;box-shadow:0 4px 0 #6b0d10;transition:.1s}
+.big:active{transform:translateY(3px);box-shadow:0 1px 0 #6b0d10}
+.sm{background:var(--panel);border:1px solid var(--line);border-radius:9px;padding:9px 11px;font-size:12px;font-weight:700;color:var(--dim)}
+.sm:hover{color:var(--text);border-color:var(--web)} .sm.on{color:var(--gold);border-color:var(--gold)}
+input[type=range]{width:100%;accent-color:var(--gold);margin-top:8px}
+.row{display:flex;justify-content:space-between;font-size:11px;color:var(--dim);font-variant-numeric:tabular-nums}
+canvas#chart{width:100%;height:230px;display:block;border:1px solid var(--line);border-radius:10px;background:#0a0f1f}
+.note{font-size:11px;color:var(--dim);line-height:1.55;margin-top:9px}
+.note b{color:var(--text)}
+@media(max-width:820px){
+  #stage{grid-template-columns:1fr;grid-template-rows:55% 45%}
+  #panel{border-left:0;border-top:1px solid var(--line)}
+  #legend{display:none} #hud .back{display:none}
+}
+</style>
+</head>
+<body>
+<div id="app">
+  <div id="hud">
+    <div class="brand comic">DISMANTLE<small>MARVEL WIKI GRAPH · WEEK 3</small></div>
+    <a class="back" href="../index.html">&larr; Week 3 post</a>
+    <div class="stats">
+      <div class="stat red"><b id="sRemoved">0</b><span>Removed</span></div>
+      <div class="stat gold"><b id="sGiant">277</b><span>Giant</span></div>
+      <div class="stat"><b id="sFrac">100%</b><span>Of start</span></div>
+      <div class="stat"><b id="sComps">1</b><span>Pieces</span></div>
+    </div>
+  </div>
+
+  <div id="stage">
+    <div id="mapwrap">
+      <canvas id="map"></canvas>
+      <div id="now"><div class="lbl">Now removing</div><div class="nm comic" id="nowName">&nbsp;</div><div class="why" id="nowWhy">Pick an order and press GO.</div></div>
+      <div id="legend">
+        <div><i style="background:var(--gold)"></i>In the giant component</div>
+        <div><i style="background:#3a5c7a"></i>Cut off in a fragment</div>
+        <div><i style="background:var(--red2);box-shadow:0 0 8px var(--red2)"></i>Being removed</div>
+      </div>
+    </div>
+
+    <aside id="panel">
+      <div class="sec">
+        <div class="k">Remove in order of</div>
+        <div class="orders" id="orders"></div>
+      </div>
+      <div class="sec">
+        <div class="ctl">
+          <button class="big" id="bPlay">GO</button>
+          <button class="sm" id="bStep" title="One removal">+1</button>
+          <button class="sm" id="bReset" title="Start over">&#8635;</button>
+          <button class="sm" id="bSpeed" title="Speed">1&times;</button>
+        </div>
+        <input type="range" id="scrub" min="0" max="80" value="0">
+        <div class="row"><span>step <b id="stepN">0</b> / <span id="stepMax">80</span></span><span id="halfNote"></span></div>
+      </div>
+      <div class="sec">
+        <div class="k">Giant component as you remove</div>
+        <canvas id="chart"></canvas>
+        <p class="note">Every order is drawn faintly; the active one is bright. <b>Recomputed</b> orders re-rank after each
+        removal, which is the honest version of "remove the most central node". Random is a fresh shuffle each run,
+        with the 30-run mean dashed.</p>
+      </div>
+    </aside>
+  </div>
+</div>
+
+<script src="../../../data/marvel_week1.js"></script>
+<script src="../../../data/week3_dismantle.js"></script>
+<script>
+(function () {
+  'use strict';
+  const D = window.MARVEL_DATA, X = window.DISMANTLE;
+  if (!D || !X) { document.body.innerHTML = '<p style="padding:40px;color:#fff">Missing data files. Run scripts/build_graph.py and scripts/week3.py.</p>'; return; }
+
+  const $ = id => document.getElementById(id);
+  const shortName = s => s.replace(/\s*\((character|comics|Marvel Comics|Marvel Comics character|characters)\)\s*$/i, '');
+  const TAU = Math.PI * 2;
+
+  // ---- the undirected giant component, indexed 0..n-1 locally
+  const giant = X.giant, n = giant.length;
+  const local = new Map(giant.map((g, i) => [g, i]));
+  const adj = Array.from({ length: n }, () => []);
+  // Undirected: an arrow either way is one edge, reciprocal pairs count once.
+  const seen = new Set(), edges = [];
+  for (const g of giant) {
+    const a = local.get(g);
+    for (const v of D.out[g]) {
+      const b = local.get(v);
+      if (b === undefined) continue;
+      const key = a < b ? a * n + b : b * n + a;
+      if (seen.has(key)) continue;
+      seen.add(key); edges.push([a, b]); adj[a].push(b); adj[b].push(a);
+    }
+  }
+  const deg = adj.map(l => l.length);
+  const name = giant.map(g => shortName(D.nodes[g].name));
+  const pos = giant.map(g => ({ x: D.nodes[g].x, y: D.nodes[g].y }));
+  const STEPS = X.steps;
+
+  // ---- orders
+  const ORDERS = [
+    { key: 'degree', label: 'Degree', sub: 'most links first', c: '#ffc93f' },
+    { key: 'betweenness', label: 'Betweenness', sub: 'biggest broker first', c: '#ff4b50' },
+    { key: 'pagerank', label: 'PageRank', sub: 'directed, α = 0.85', c: '#a678ff' },
+    { key: 'closeness', label: 'Closeness', sub: 'nearest to everyone', c: '#4ade80' },
+    { key: 'betweenness (recomputed)', label: 'Betweenness, recomputed', sub: 're-rank after every cut', c: '#ff9a3c' },
+    { key: 'degree (recomputed)', label: 'Degree, recomputed', sub: 're-rank after every cut', c: '#ffe28a' },
+    { key: 'random', label: 'Random', sub: 'a fresh shuffle', c: '#8d99bd' },
+  ];
+  let seed = 12345;
+  const rnd = () => (seed = (seed * 1103515245 + 12345) & 0x7fffffff) / 0x7fffffff;
+  function randomOrder() {
+    const a = [...Array(n).keys()];
+    for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(rnd() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; }
+    return a.slice(0, STEPS);
+  }
+  const orderOf = {};
+  for (const o of ORDERS) orderOf[o.key] = o.key === 'random' ? randomOrder() : X.orders[o.key].map(g => local.get(g));
+
+  // ---- components after removing the first s of an order
+  function components(removedSet) {
+    const comp = new Int16Array(n).fill(-1);
+    let c = 0, sizes = [];
+    for (let s = 0; s < n; s++) {
+      if (removedSet[s] || comp[s] >= 0) continue;
+      const q = [s]; comp[s] = c; let size = 0;
+      for (let h = 0; h < q.length; h++) { const u = q[h]; size++; for (const v of adj[u]) if (!removedSet[v] && comp[v] < 0) { comp[v] = c; q.push(v); } }
+      sizes.push(size); c++;
+    }
+    return { comp, sizes };
+  }
+  function curve(order) {
+    const rem = new Uint8Array(n); const out = [n];
+    for (const v of order) { rem[v] = 1; const { sizes } = components(rem); out.push(sizes.length ? Math.max(...sizes) : 0); }
+    return out;
+  }
+  const curves = {};
+  for (const o of ORDERS) curves[o.key] = curve(orderOf[o.key]);
+  const halfAt = c => { for (let i = 0; i < c.length; i++) if (c[i] <= n / 2) return i; return null; };
+
+  // ---- state
+  let active = 'betweenness', step = 0, playing = false, speed = 1, lastTick = 0;
+  let removed = new Uint8Array(n), giantComp = -1, compOf = new Int16Array(n), pieces = 1, giantSize = n;
+  let particles = [], flash = { v: -1, t: 0 };
+
+  function applyStep(s) {
+    step = Math.max(0, Math.min(STEPS, s));
+    removed = new Uint8Array(n);
+    const ord = orderOf[active];
+    for (let i = 0; i < step; i++) removed[ord[i]] = 1;
+    const { comp, sizes } = components(removed);
+    compOf = comp; pieces = sizes.length;
+    giantSize = sizes.length ? Math.max(...sizes) : 0;
+    giantComp = sizes.indexOf(giantSize);
+    const last = step > 0 ? ord[step - 1] : -1;
+    $('nowName').textContent = last >= 0 ? name[last] : ' ';
+    $('nowWhy').textContent = last >= 0
+      ? `${deg[last]} links · step ${step} of ${STEPS} by ${ORDERS.find(o => o.key === active).label.toLowerCase()}`
+      : 'Pick an order and press GO.';
+    $('sRemoved').textContent = step; $('sGiant').textContent = giantSize;
+    $('sFrac').textContent = Math.round(100 * giantSize / n) + '%'; $('sComps').textContent = pieces;
+    $('scrub').value = step; $('stepN').textContent = step;
+    const h = halfAt(curves[active]);
+    $('halfNote').textContent = h === null ? 'never halves in ' + STEPS : `halves after ${h} removals`;
+    drawChart();
+  }
+  function advance() {
+    if (step >= STEPS) { playing = false; $('bPlay').textContent = 'DONE'; return; }
+    const v = orderOf[active][step];
+    flash = { v, t: performance.now() };
+    burst(v);
+    applyStep(step + 1);
+  }
+
+  // ---- map canvas
+  const cv = $('map'), ctx = cv.getContext('2d');
+  let W = 0, H = 0, DPR = 1, view = { s: 1, ox: 0, oy: 0 };
+  function resize() {
+    DPR = Math.min(devicePixelRatio || 1, 2);
+    const r = cv.getBoundingClientRect(); W = r.width; H = r.height;
+    cv.width = Math.round(W * DPR); cv.height = Math.round(H * DPR);
+    const xs = pos.map(p => p.x), ys = pos.map(p => p.y);
+    const minx = Math.min(...xs), maxx = Math.max(...xs), miny = Math.min(...ys), maxy = Math.max(...ys);
+    const pad = 46;
+    view.s = Math.min((W - 2 * pad) / (maxx - minx), (H - 2 * pad) / (maxy - miny));
+    view.ox = (W - (maxx - minx) * view.s) / 2 - minx * view.s;
+    view.oy = (H - (maxy - miny) * view.s) / 2 - miny * view.s;
+    const cc = $('chart'); const rr = cc.getBoundingClientRect();
+    cc.width = Math.round(rr.width * DPR); cc.height = Math.round(rr.height * DPR);
+    drawChart();
+  }
+  addEventListener('resize', resize);
+  const S = p => ({ x: p.x * view.s + view.ox, y: p.y * view.s + view.oy });
+  const R = i => 3.2 + 1.35 * Math.sqrt(deg[i]);
+
+  function burst(v) {
+    const p = S(pos[v]);
+    for (let i = 0; i < 26; i++) { const a = rnd() * TAU, sp = 40 + rnd() * 160; particles.push({ x: p.x, y: p.y, vx: Math.cos(a) * sp, vy: Math.sin(a) * sp, life: 1 }); }
+  }
+
+  function draw(now, dt) {
+    ctx.setTransform(DPR, 0, 0, DPR, 0, 0); ctx.clearRect(0, 0, W, H);
+    // edges
+    ctx.lineWidth = 0.8;
+    for (const [a, b] of edges) {
+      if (removed[a] || removed[b]) continue;
+      const inG = compOf[a] === giantComp;
+      ctx.strokeStyle = inG ? 'rgba(255,201,63,.20)' : 'rgba(80,120,160,.16)';
+      const p = S(pos[a]), q = S(pos[b]);
+      ctx.beginPath(); ctx.moveTo(p.x, p.y); ctx.lineTo(q.x, q.y); ctx.stroke();
+    }
+    // removed: small scars
+    ctx.strokeStyle = 'rgba(255,75,80,.28)'; ctx.lineWidth = 1;
+    for (let i = 0; i < n; i++) if (removed[i]) { const p = S(pos[i]); ctx.beginPath(); ctx.moveTo(p.x - 3, p.y - 3); ctx.lineTo(p.x + 3, p.y + 3); ctx.moveTo(p.x + 3, p.y - 3); ctx.lineTo(p.x - 3, p.y + 3); ctx.stroke(); }
+    // nodes
+    for (let i = 0; i < n; i++) {
+      if (removed[i]) continue;
+      const p = S(pos[i]), inG = compOf[i] === giantComp;
+      ctx.fillStyle = inG ? '#ffc93f' : '#3a5c7a';
+      ctx.beginPath(); ctx.arc(p.x, p.y, R(i), 0, TAU); ctx.fill();
+      if (inG && deg[i] >= 30) { ctx.strokeStyle = 'rgba(255,255,255,.5)'; ctx.lineWidth = 1; ctx.stroke(); }
+    }
+    // the next victim, pulsing
+    if (playing || step < STEPS) {
+      const nxt = orderOf[active][step];
+      if (nxt !== undefined && !removed[nxt]) {
+        const p = S(pos[nxt]); const r = R(nxt) + 5 + 2.5 * Math.sin(now / 160);
+        ctx.strokeStyle = 'rgba(255,75,80,.9)'; ctx.lineWidth = 2; ctx.beginPath(); ctx.arc(p.x, p.y, r, 0, TAU); ctx.stroke();
+        ctx.font = '700 11px Inter,sans-serif'; ctx.textAlign = 'center'; ctx.lineWidth = 3; ctx.strokeStyle = 'rgba(4,7,16,.9)';
+        ctx.strokeText(name[nxt], p.x, p.y - r - 5); ctx.fillStyle = '#ff8b8f'; ctx.fillText(name[nxt], p.x, p.y - r - 5);
+      }
+    }
+    // labels for big survivors
+    ctx.font = '600 10px Inter,sans-serif'; ctx.textAlign = 'center';
+    for (let i = 0; i < n; i++) if (!removed[i] && deg[i] >= 26) {
+      const p = S(pos[i]); ctx.lineWidth = 3; ctx.strokeStyle = 'rgba(4,7,16,.9)';
+      ctx.strokeText(name[i], p.x, p.y - R(i) - 4); ctx.fillStyle = 'rgba(230,236,250,.85)'; ctx.fillText(name[i], p.x, p.y - R(i) - 4);
+    }
+    // particles
+    for (const q of particles) { q.x += q.vx * dt; q.y += q.vy * dt; q.vx *= .93; q.vy *= .93; q.life -= dt * 1.6; ctx.globalAlpha = Math.max(0, q.life); ctx.fillStyle = '#ff4b50'; ctx.beginPath(); ctx.arc(q.x, q.y, 2, 0, TAU); ctx.fill(); }
+    ctx.globalAlpha = 1; particles = particles.filter(q => q.life > 0);
+  }
+
+  // ---- chart
+  function drawChart() {
+    const c = $('chart'), g = c.getContext('2d'); const w = c.width / DPR, h = c.height / DPR;
+    g.setTransform(DPR, 0, 0, DPR, 0, 0); g.clearRect(0, 0, w, h);
+    const L = 34, B = 24, T = 10, Rr = 10;
+    const px = f => L + f * (w - L - Rr), py = f => T + (1 - f) * (h - T - B);
+    g.strokeStyle = '#26304f'; g.lineWidth = 1;
+    for (const f of [0, .25, .5, .75, 1]) { g.beginPath(); g.moveTo(L, py(f)); g.lineTo(w - Rr, py(f)); g.stroke(); }
+    g.fillStyle = '#8d99bd'; g.font = '9px Inter,sans-serif'; g.textAlign = 'right';
+    for (const f of [0, .5, 1]) g.fillText(Math.round(f * 100) + '%', L - 4, py(f) + 3);
+    g.textAlign = 'center'; g.fillText('characters removed →', (L + w - Rr) / 2, h - 7);
+    for (const f of [0, .1, .2]) g.fillText(Math.round(f * 100) + '%', px(f / (STEPS / n)), h - 7 - 10);
+    const plot = (cur, color, width, alpha, dash) => {
+      g.strokeStyle = color; g.lineWidth = width; g.globalAlpha = alpha; g.setLineDash(dash || []);
+      g.beginPath(); cur.forEach((v, i) => { const x = px(i / STEPS), y = py(v / n); i ? g.lineTo(x, y) : g.moveTo(x, y); }); g.stroke();
+      g.setLineDash([]); g.globalAlpha = 1;
+    };
+    for (const o of ORDERS) if (o.key !== active) plot(curves[o.key], o.c, 1.2, .35);
+    plot(X.random_curve, '#8d99bd', 1.2, .6, [4, 4]);
+    const o = ORDERS.find(o => o.key === active); plot(curves[active], o.c, 2.6, 1);
+    const cur = curves[active]; const x = px(step / STEPS), y = py(cur[step] / n);
+    g.fillStyle = o.c; g.beginPath(); g.arc(x, y, 4.5, 0, TAU); g.fill();
+    g.strokeStyle = '#fff'; g.lineWidth = 1.2; g.stroke();
+  }
+
+  // ---- UI
+  const ow = $('orders');
+  for (const o of ORDERS) {
+    const b = document.createElement('button'); b.className = 'ord' + (o.key === active ? ' on' : ''); b.style.setProperty('--c', o.c);
+    b.innerHTML = `<i></i><span>${o.label}<small>${o.sub}</small></span>`;
+    b.onclick = () => { active = o.key; if (o.key === 'random') { orderOf.random = randomOrder(); curves.random = curve(orderOf.random); }
+      [...ow.children].forEach(x => x.classList.remove('on')); b.classList.add('on'); playing = false; $('bPlay').textContent = 'GO'; particles = []; applyStep(0); };
+    ow.appendChild(b);
+  }
+  $('bPlay').onclick = () => { if (step >= STEPS) applyStep(0); playing = !playing; $('bPlay').textContent = playing ? 'PAUSE' : 'GO'; lastTick = 0; };
+  $('bStep').onclick = () => { playing = false; $('bPlay').textContent = 'GO'; advance(); };
+  $('bReset').onclick = () => { playing = false; $('bPlay').textContent = 'GO'; particles = []; applyStep(0); };
+  $('bSpeed').onclick = () => { speed = speed === 1 ? 2 : speed === 2 ? 4 : 1; $('bSpeed').textContent = speed + '×'; };
+  $('scrub').max = STEPS; $('stepMax').textContent = STEPS;
+  $('scrub').oninput = e => { playing = false; $('bPlay').textContent = 'GO'; applyStep(+e.target.value); };
+  addEventListener('keydown', e => { if (e.key === ' ') { e.preventDefault(); $('bPlay').click(); } if (e.key === 'ArrowRight') $('bStep').click(); if (e.key === 'r') $('bReset').click(); });
+
+  let last = performance.now();
+  function frame(now) {
+    const dt = Math.min((now - last) / 1000, .05); last = now;
+    if (playing && now - lastTick > 520 / speed) { lastTick = now; advance(); }
+    draw(now, dt); requestAnimationFrame(frame);
+  }
+  resize(); applyStep(0); requestAnimationFrame(frame);
+})();
+</script>
+</body>
+</html>

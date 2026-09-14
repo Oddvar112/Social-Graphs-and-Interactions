@@ -15,6 +15,8 @@ and the 1784 directed links between their pages.
 | `index.html` | Front page: the group, the course, the week index |
 | `weeks/week1/index.html` | Week 1 post: degree distributions, in vs out, components, islands |
 | `weeks/week1/game/` | **WEB-CRAWLER**, a browser game played on the real graph |
+| `weeks/week3/index.html` | Week 3 post: distances, centralities, null models, cliques |
+| `weeks/week3/dismantle/` | **DISMANTLE**, an explorable: remove characters in different orders |
 | `scripts/` | Everything that produces the data and the figures |
 | `assets/figures/` | Generated figures, all written by `scripts/analyse.py` |
 | `data/` | Generated: graph for the game, stats, API verification output |
@@ -42,6 +44,7 @@ python scripts/build_graph.py        # snapshot -> data/marvel_week1.js (the gam
 python scripts/analyse.py            # every figure and number in the week 1 post
 python scripts/verify_wikipedia.py   # re-derives part of the snapshot from the live Wikipedia API
 python scripts/test_game_rules.py    # checks every mission the game can hand out is finishable
+python scripts/week3.py              # every figure and number in the week 3 post (~2 min)
 ```
 
 Then serve the folder and open it:
