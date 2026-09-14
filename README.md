@@ -44,7 +44,7 @@ python scripts/build_graph.py        # snapshot -> data/marvel_week1.js (the gam
 python scripts/analyse.py            # every figure and number in the week 1 post
 python scripts/verify_wikipedia.py   # re-derives part of the snapshot from the live Wikipedia API
 python scripts/test_game_rules.py    # checks every mission the game can hand out is finishable
-python scripts/week3.py              # every figure and number in the week 3 post (~2 min)
+python scripts/week3.py              # every figure and number in the week 3 post (~6 min)
 ```
 
 Then serve the folder and open it:

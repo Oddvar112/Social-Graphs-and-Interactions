@@ -23,7 +23,7 @@ Outputs
   data/week3.json               every number the post quotes
   data/week3_dismantle.js       removal orders for the DISMANTLE explorable
 
-Run:  python scripts/week3.py          (about two minutes; the shuffles dominate)
+Run:  python scripts/week3.py          (about six minutes; 400 shuffles dominate)
 """
 
 import collections
