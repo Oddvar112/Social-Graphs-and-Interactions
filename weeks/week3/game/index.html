@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>KINGPIN · shatter the Marvel graph</title>
+<link rel="icon" type="image/svg+xml" href="../../../assets/favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="../../../assets/favicon-32.png">
+<link rel="apple-touch-icon" href="../../../assets/apple-touch-icon.png">
+<meta name="description" content="You get a handful of hits. Remove characters from the real Marvel Wikipedia network and try to shatter its core. Then get judged against a hub-hunting bot, a broker-hunting bot, and blind chance.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bangers&family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --panelw:330px;
+  --bg:#0a0710; --panel:#191125; --panel2:#221836;
+  --line:#372a52; --text:#efe9f9; --dim:#a291c4;
+  --red:#e62429; --red2:#ff4b50; --gold:#ffc93f; --purple:#a678ff; --cyan:#5fe3ff;
+  --green:#4ade80;
+  --hud-h:64px;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%}
+body{
+  background:var(--bg); color:var(--text);
+  font-family:Inter,system-ui,-apple-system,"Segoe UI",sans-serif;
+  overflow:hidden; -webkit-font-smoothing:antialiased;
+}
+.comic{font-family:Bangers,Impact,"Arial Black",sans-serif;letter-spacing:.055em;font-weight:400}
+button{font-family:inherit;color:inherit;border:0;background:none;cursor:pointer}
+a{color:var(--purple)}
+
+/* ---------- layout ---------- */
+#app{position:fixed;inset:0;display:grid;grid-template-rows:var(--hud-h) 1fr}
+#stage{position:relative;overflow:hidden;background:radial-gradient(1200px 800px at 50% 40%, #1a1030 0%, #0a0710 70%)}
+canvas#cv{position:absolute;inset:0;width:100%;height:100%;display:block;touch-action:none;cursor:grab}
+canvas#cv.grabbing{cursor:grabbing}
+canvas#cv.aim{cursor:crosshair}
+
+/* ---------- HUD ---------- */
+#hud{
+  display:flex;align-items:center;gap:14px;padding:0 14px;
+  background:linear-gradient(180deg,#221536,#120b1e);
+  border-bottom:1px solid var(--line);z-index:5;
+}
+#hud .brand{font-size:26px;line-height:1;color:var(--gold);text-shadow:0 2px 0 #6b4a0d;white-space:nowrap}
+#hud .brand small{display:block;font-family:Inter,sans-serif;font-size:9px;letter-spacing:.22em;color:var(--dim);text-shadow:none;font-weight:600}
+#hud .back{font-size:11px;font-weight:700;color:var(--dim);padding:6px 10px;border:1px solid var(--line);border-radius:8px;text-decoration:none;white-space:nowrap}
+#hud .back:hover{color:var(--text);border-color:var(--purple)}
+.stats{display:flex;gap:8px;margin-left:auto;align-items:center;flex-wrap:nowrap}
+.stat{background:var(--panel);border:1px solid var(--line);border-radius:9px;padding:5px 11px;min-width:62px;text-align:center}
+.stat b{display:block;font-size:19px;line-height:1.05;font-variant-numeric:tabular-nums}
+.stat span{display:block;font-size:8.5px;letter-spacing:.16em;color:var(--dim);text-transform:uppercase;font-weight:700}
+.stat.hot b{color:var(--red2)}
+.stat.core b{color:var(--purple)}
+.stat.cut b{color:var(--gold)}
+.hudbtn{background:var(--panel);border:1px solid var(--line);border-radius:9px;padding:8px 11px;font-size:12px;font-weight:600;color:var(--dim);transition:.15s}
+.hudbtn:hover{color:var(--text);border-color:var(--purple)}
+.hudbtn.on{color:var(--gold);border-color:var(--gold)}
+
+#objective{
+  position:absolute;top:12px;left:0;right:var(--panelw,330px);margin-inline:auto;width:max-content;
+  background:rgba(18,11,30,.9);border:1px solid var(--line);border-left:4px solid var(--red);
+  border-radius:10px;padding:8px 16px;backdrop-filter:blur(8px);z-index:4;
+  display:flex;align-items:center;gap:10px;max-width:min(560px,88vw);
+}
+#objective .lbl{font-size:9px;letter-spacing:.2em;color:var(--dim);font-weight:800;text-transform:uppercase}
+#objective .tgt{font-size:16px;line-height:1.2}
+#objective.done{border-left-color:var(--gold)}
+#objective.done .tgt{color:var(--gold)}
+
+/* ---------- side panel ---------- */
+#panel{
+  position:absolute;top:0;right:0;bottom:0;width:330px;z-index:4;
+  background:linear-gradient(180deg,rgba(22,13,36,.96),rgba(13,8,22,.97));
+  border-left:1px solid var(--line);backdrop-filter:blur(10px);
+  display:flex;flex-direction:column;transition:transform .25s ease;
+}
+#panel.hidden{transform:translateX(100%)}
+#panelToggle{
+  position:absolute;top:50%;right:330px;transform:translateY(-50%);z-index:5;
+  background:var(--panel);border:1px solid var(--line);border-right:0;
+  border-radius:9px 0 0 9px;padding:16px 5px;font-size:13px;color:var(--dim);transition:right .25s ease;
+}
+#panelToggle.closed{right:0}
+/* Fixed height on purpose: the card's content swaps on every hover, and if it
+   could reflow, the lists below would shift under the cursor mid-aim. */
+.here{padding:14px 16px 12px;border-bottom:1px solid var(--line);height:158px;overflow:hidden}
+.here .kicker{font-size:9px;letter-spacing:.2em;color:var(--dim);font-weight:800;text-transform:uppercase;margin-bottom:5px}
+.here h2{font-size:21px;line-height:1.05;margin-bottom:6px}
+.here p{font-size:11.5px;line-height:1.5;color:var(--dim);display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+.here .chips{display:flex;gap:6px;margin-top:8px;flex-wrap:wrap}
+.chip{font-size:10px;font-weight:700;padding:3px 8px;border-radius:20px;background:var(--panel2);border:1px solid var(--line);color:var(--dim)}
+.chip.deg{color:var(--purple);border-color:#463366}
+.chip.core{color:var(--green);border-color:#1d5c34}
+.chip.out{color:var(--gold);border-color:#5c4a1d}
+.chip.dead{color:var(--red2);border-color:#5c1d1f}
+
+.listhead{padding:11px 16px 7px;font-size:9px;letter-spacing:.2em;color:var(--dim);font-weight:800;text-transform:uppercase;display:flex;justify-content:space-between}
+#wanted{flex:1;overflow-y:auto;padding:0 10px 8px;min-height:90px}
+#wanted::-webkit-scrollbar,#hits::-webkit-scrollbar{width:8px}
+#wanted::-webkit-scrollbar-thumb,#hits::-webkit-scrollbar-thumb{background:var(--line);border-radius:4px}
+.row{
+  display:flex;align-items:center;gap:9px;width:100%;text-align:left;
+  padding:7px 10px;border-radius:9px;border:1px solid transparent;margin-bottom:2px;transition:.12s;
+}
+button.row:hover,button.row.hl{background:var(--panel2);border-color:var(--red2)}
+.row .rk{font-size:10px;color:var(--dim);font-weight:800;width:16px;text-align:right;font-variant-numeric:tabular-nums}
+.row .nm{flex:1;font-size:12.5px;font-weight:600;line-height:1.25}
+.row .dg{font-size:9.5px;color:var(--dim);font-weight:700;font-variant-numeric:tabular-nums}
+.row .dot{width:8px;height:8px;border-radius:50%;background:var(--purple);flex:none;box-shadow:0 0 8px var(--purple)}
+#hits{max-height:32%;overflow-y:auto;padding:0 10px 12px;border-top:1px solid var(--line)}
+.row.dead .dot{background:var(--red2);box-shadow:none}
+.row.dead .nm{color:var(--dim);text-decoration:line-through}
+.row .drop{font-size:9.5px;color:var(--gold);font-weight:800;font-variant-numeric:tabular-nums}
+
+/* ---------- overlays ---------- */
+.veil{position:absolute;inset:0;z-index:20;display:flex;align-items:center;justify-content:center;padding:20px;
+  background:radial-gradient(900px 600px at 50% 45%,rgba(34,20,56,.88),rgba(8,5,15,.94));backdrop-filter:blur(5px);overflow-y:auto}
+.veil.gone{display:none}
+/* margin:auto (not align-items:center) so a card taller than the viewport
+   scrolls from its top instead of clipping the title off. */
+.card{width:min(880px,100%);text-align:center;margin:auto}
+.card h1{font-size:clamp(40px,8vw,74px);line-height:.95;color:var(--gold);text-shadow:0 4px 0 #6b4a0d,0 8px 24px rgba(255,201,63,.3)}
+.card .sub{font-size:13px;color:var(--dim);margin:10px auto 4px;max-width:620px;line-height:1.65}
+.card .sub b{color:var(--text)}
+
+.diffs{display:flex;gap:8px;justify-content:center;margin:20px 0 16px;flex-wrap:wrap}
+.diff{background:var(--panel);border:2px solid var(--line);border-radius:11px;padding:9px 18px;font-size:12px;font-weight:700;color:var(--dim);transition:.15s}
+.diff:hover{color:var(--text)}
+.diff.sel{border-color:var(--red2);color:var(--red2);background:rgba(230,36,41,.1)}
+.diff small{display:block;font-size:9.5px;font-weight:500;opacity:.7;letter-spacing:.05em}
+
+.go{
+  font-family:Bangers,Impact,sans-serif;font-size:34px;letter-spacing:.08em;
+  background:linear-gradient(180deg,var(--red2),#b81a1e);color:#fff;
+  padding:11px 52px;border-radius:14px;box-shadow:0 6px 0 #6b0d10,0 12px 30px rgba(230,36,41,.35);
+  transition:.12s;
+}
+.go:hover{transform:translateY(-2px);box-shadow:0 8px 0 #6b0d10,0 16px 36px rgba(230,36,41,.45)}
+.go:active{transform:translateY(4px);box-shadow:0 2px 0 #6b0d10}
+.rules{font-size:11.5px;color:var(--dim);line-height:1.7;margin-top:18px;max-width:680px;margin-inline:auto;text-align:left;
+  background:rgba(255,255,255,.03);border:1px solid var(--line);border-radius:12px;padding:13px 16px}
+.rules b{color:var(--text)}
+.rules i{color:var(--gold);font-style:normal}
+.rules .rtitle{font-size:10px;letter-spacing:.22em;font-weight:800;color:var(--gold);margin-bottom:8px}
+.rules ol{margin:0 0 10px 18px;padding:0}
+.rules li{margin-bottom:7px}
+.rules li::marker{color:var(--gold);font-weight:800}
+.rules .rcatch{border-top:1px solid var(--line);padding-top:9px}
+.scorenote{font-size:11px;color:var(--dim);line-height:1.6;max-width:660px;margin:0 auto 14px}
+.scorenote b{color:var(--text)}
+.homelink{display:inline-block;margin-top:18px;font-size:12px;color:var(--dim)}
+
+.verdict{font-size:clamp(34px,7vw,64px);line-height:1;color:var(--gold);text-shadow:0 4px 0 #7a5c11;
+  animation:vpop .55s cubic-bezier(.2,1.7,.35,1) both}
+@keyframes vpop{from{transform:scale(.3) rotate(-4deg);opacity:0}to{transform:scale(1) rotate(0);opacity:1}}
+.scoreRow .big{animation:bigin .4s ease-out both}
+.scoreRow .big:nth-child(1){animation-delay:.10s}
+.scoreRow .big:nth-child(2){animation-delay:.18s}
+.scoreRow .big:nth-child(3){animation-delay:.26s}
+.scoreRow .big:nth-child(4){animation-delay:.34s}
+.scoreRow .big:nth-child(5){animation-delay:.42s}
+@keyframes bigin{from{transform:translateY(14px);opacity:0}to{transform:none;opacity:1}}
+.scoreRow{display:flex;gap:10px;justify-content:center;margin:18px 0 12px;flex-wrap:wrap}
+.big{background:var(--panel);border:1px solid var(--line);border-radius:13px;padding:12px 18px;min-width:96px}
+.big b{display:block;font-size:30px;line-height:1;font-variant-numeric:tabular-nums}
+.big span{font-size:9px;letter-spacing:.14em;color:var(--dim);font-weight:800;text-transform:uppercase}
+.big.you b{color:var(--gold)} .big.rec b{color:var(--red2)}
+.big.good b{color:var(--green)}
+#chartWrap{max-width:660px;margin:0 auto 6px;background:rgba(0,0,0,.28);border:1px solid var(--line);border-radius:12px;padding:12px 14px 6px}
+#chart{width:100%;height:190px;display:block}
+.legendline{font-size:10px;color:var(--dim);font-weight:700;padding:6px 0 4px;display:flex;gap:14px;justify-content:center;flex-wrap:wrap}
+.legendline i{display:inline-block;width:14px;height:3px;border-radius:2px;margin-right:5px;vertical-align:middle}
+.pathbox{background:rgba(0,0,0,.28);border:1px solid var(--line);border-radius:12px;padding:12px 14px;margin:10px auto 16px;
+  max-width:660px;text-align:left;font-size:11.5px;line-height:1.9;color:var(--dim);max-height:170px;overflow-y:auto}
+.pathbox .k{font-size:9px;letter-spacing:.18em;font-weight:800;text-transform:uppercase;display:block;margin-bottom:5px;color:var(--dim)}
+.pathbox em{font-style:normal;color:var(--text);font-weight:600}
+.pathbox .m{color:var(--gold);font-weight:700}
+.btnrow{display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
+.ghost{border:2px solid var(--line);border-radius:12px;padding:11px 22px;font-size:13px;font-weight:700;color:var(--dim);transition:.15s}
+.ghost:hover{color:var(--text);border-color:var(--purple)}
+
+#toast{position:absolute;bottom:26px;left:0;right:var(--panelw,330px);margin-inline:auto;
+  width:max-content;max-width:min(520px,calc(100vw - var(--panelw,330px) - 40px));
+  transform:translateY(20px);z-index:15;
+  background:rgba(18,11,30,.95);border:1px solid var(--line);border-left:4px solid var(--gold);
+  border-radius:10px;padding:10px 18px;font-size:12.5px;font-weight:600;opacity:0;
+  transition:opacity .25s,transform .25s;pointer-events:none;line-height:1.5}
+#toast.show{opacity:1;transform:translateY(0)}
+
+#legend{position:absolute;left:12px;bottom:12px;z-index:4;background:rgba(18,11,30,.82);border:1px solid var(--line);
+  border-radius:10px;padding:9px 12px;font-size:10.5px;color:var(--dim);line-height:1.9;backdrop-filter:blur(6px)}
+#legend i{display:inline-block;width:9px;height:9px;border-radius:50%;margin-right:7px;vertical-align:middle}
+#legend .r{white-space:nowrap}
+@media(max-width:820px){
+  :root{--panelw:min(300px,86vw)}
+  #panel{width:min(300px,86vw)} #panelToggle{right:min(300px,86vw)}
+  #legend{display:none} #hud .brand small{display:none} #hud .back{display:none}
+}
+@media(max-width:560px){
+  .stat{min-width:52px;padding:4px 8px} .stat b{font-size:16px}
+  #objective{top:auto;bottom:78px}
+}
+@media(max-height:760px){
+  .veil{align-items:flex-start;padding:16px}
+  .card h1{font-size:clamp(30px,6vw,46px)}
+  .card .sub{font-size:11.5px;margin:7px auto 2px;line-height:1.55}
+  .rules{font-size:10.5px;line-height:1.6;padding:10px 13px;margin-top:12px}
+  .go{font-size:27px;padding:8px 40px}
+  .diffs{margin:12px 0 10px}
+  .homelink{margin-top:10px;font-size:11px}
+}
+</style>
+</head>
+<body>
+<div id="app">
+
+  <div id="hud">
+    <div class="brand comic">KINGPIN<small>MARVEL WIKI GRAPH</small></div>
+    <a class="back" href="../index.html">&larr; Week 3 post</a>
+    <div class="stats">
+      <div class="stat core" title="Your score: characters still holding together in the biggest cluster. Make it small."><b id="sCore">277</b><span>Core</span></div>
+      <div class="stat cut" title="Characters who lost their last route to the core. They no longer count."><b id="sCut">0</b><span>Cut off</span></div>
+      <div class="stat hot" title="Eliminations left on this contract."><b id="sHits">0</b><span>Hits left</span></div>
+      <button class="hudbtn" id="bCenter" title="Recentre the map (C)">&#9678;</button>
+      <button class="hudbtn on" id="bSound" title="Sound on/off (M)">&#9834;</button>
+      <button class="hudbtn" id="bMenu" title="New contract">&#8635;</button>
+    </div>
+  </div>
+
+  <div id="stage">
+    <canvas id="cv"></canvas>
+
+    <div id="objective"><span class="lbl">Contract</span><span class="tgt comic" id="objText">&nbsp;</span></div>
+
+    <button id="panelToggle">&#9664;</button>
+    <aside id="panel">
+      <div class="here">
+        <div class="kicker" id="hKick">You are aiming at</div>
+        <h2 class="comic" id="hName">Nobody yet</h2>
+        <p id="hDesc">Hover a character on the map, or pick one from the list below. One click is one hit. There is no undo in this business.</p>
+        <div class="chips" id="hChips"></div>
+      </div>
+      <div class="listhead" title="The 15 most-connected characters still in the core. Connections are not the same as holding the network together."><span>Most wanted &middot; by connections</span><span id="wantedNote">top 15</span></div>
+      <div id="wanted"></div>
+      <div class="listhead"><span>Your hits</span><span id="hitCount">0</span></div>
+      <div id="hits"></div>
+    </aside>
+
+    <div id="legend">
+      <div class="r" style="color:var(--gold);font-weight:700">Goal: shrink the purple core</div>
+      <div class="r"><i style="background:var(--purple);box-shadow:0 0 8px var(--purple)"></i>In the core &mdash; still counts</div>
+      <div class="r"><i style="background:#5a6275"></i>Cut off &mdash; out of the game</div>
+      <div class="r"><i style="background:var(--red2)"></i>Eliminated by you</div>
+      <div class="r" style="opacity:.7;margin-top:3px">Click to fire &middot; drag to pan &middot; scroll to zoom</div>
+    </div>
+
+    <div id="toast"></div>
+
+    <div class="veil" id="vStart">
+      <div class="card">
+        <h1 class="comic">KINGPIN</h1>
+        <p class="sub">The 277 characters of the Marvel core, every link on the table. You get a handful of hits.
+        Each one removes a character and every route through them. <b>Shatter the core</b>: when the smoke clears,
+        make the biggest surviving cluster as small as you can.</p>
+        <div class="diffs" id="diffPick"></div>
+        <button class="go comic" id="bStart">TAKE THE CONTRACT</button>
+        <div class="rules">
+          <div class="rtitle">HOW TO PLAY</div>
+          <ol>
+            <li><b>Pick a contract above</b> &mdash; how many characters you get to eliminate. First time? Take
+            <i>A warning</i> (3 hits) to learn the ropes.</li>
+            <li><b>Click a character to fire</b>, on the map or in the MOST WANTED list on the right. A laser locks on,
+            they go down, and every link through them goes down too. There is no undo.</li>
+            <li><b>Your score is the CORE counter</b>, top right: how many characters are still holding together in the
+            biggest cluster. Anyone who loses their last route to it is <i>cut off</i>, turns grey, drifts away, and
+            stops counting. <b>Lower core = better hit.</b></li>
+            <li><b>When the hits run out</b>, three rival hitmen run the same contract on the same board &mdash; one
+            always shoots the most connected, one the biggest broker (betweenness), one at random &mdash; and you are
+            ranked against all three, plus the best hit-list we ever found.</li>
+          </ol>
+          <div class="rcatch"><b>The catch.</b> The map and the list show how <i>connected</i> everyone is. They do not
+          show who <i>holds the network together</i>. Those are different people, and finding the second kind is how
+          you beat the machines.</div>
+        </div>
+        <a class="homelink" href="../../../index.html">Back to the site</a>
+      </div>
+    </div>
+
+    <div class="veil gone" id="vWin">
+      <div class="card">
+        <div class="verdict comic" id="wVerdict">CONTRACT COMPLETE</div>
+        <p class="sub" id="wLine"></p>
+        <div class="scoreRow">
+          <div class="big you" title="What your hits left of the core"><b id="wYou">0</b><span>Your core</span></div>
+          <div class="big" title="A bot that always shoots the character with the most links"><b id="wHub">0</b><span>Hub bot</span></div>
+          <div class="big" title="A bot that always shoots the highest betweenness, recomputed after every kill"><b id="wBroker">0</b><span>Broker bot</span></div>
+          <div class="big" title="A hitman shooting blind, averaged over 30 runs"><b id="wRandom">0</b><span>Random avg</span></div>
+          <div class="big rec" title="The best hit-list our search ever found for this contract"><b id="wRecord">0</b><span>Record</span></div>
+        </div>
+        <p class="scorenote">Each number is the core that strategy left standing after the same number of hits &mdash;
+        <b>lower is better</b>. The <b>hub bot</b> always shoots the most connected, the <b>broker bot</b> the highest
+        betweenness, <b>random</b> shoots blind (average of 30 runs), and the <b>record</b> is the best hit-list our
+        search ever found.</p>
+        <div id="chartWrap">
+          <canvas id="chart"></canvas>
+          <div class="legendline">
+            <span><i style="background:var(--gold)"></i>You</span>
+            <span><i style="background:var(--cyan)"></i>Hub bot</span>
+            <span><i style="background:var(--red2)"></i>Broker bot</span>
+            <span><i style="background:#8a93a8"></i>Random (avg of 30)</span>
+            <span><i style="background:var(--green)"></i>Record</span>
+          </div>
+        </div>
+        <div class="pathbox" id="wReport"></div>
+        <div class="btnrow">
+          <button class="go comic" id="bAgain">RUN IT BACK</button>
+          <button class="ghost" id="bMenu2">Change contract</button>
+          <button class="ghost" id="bReveal">Reveal the brokers</button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script src="../../../data/marvel_week1.js"></script>
+<script src="core.js"></script>
+<script src="kingpin.js"></script>
+</body>
+</html>

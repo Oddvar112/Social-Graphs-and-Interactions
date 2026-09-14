@@ -20,6 +20,8 @@ crawled by us, and every link between any two of the 602.
 | `weeks/week2/index.html` | Week 2 post: power-law fit, friendship paradox, shuffle tests, a grown Marvel, the villains |
 | `weeks/week2/grow/` | **ORIGIN STORY**, an explorable that replays the universe by debut year next to a growing model |
 | `weeks/week2/hubdial/` | **THE HUB DIAL**, our exercise 2.10 explorable: non-linear preferential attachment, one file, embeddable |
+| `weeks/week3/index.html` | Week 3 post: paths, four centralities, the broker shuffle test, cliques |
+| `weeks/week3/game/` | **KINGPIN**, a fragmentation game scored against rival centrality strategies |
 | `scripts/` | Everything that produces the data and the figures |
 | `assets/figures/` | Generated figures: `analyse.py` writes the week 1 ones, `analyse_week2.py` the `week2_*` ones |
 | `data/` | Generated: graph for the game, stats, API verification output, the week 2 crawl |
@@ -57,6 +59,19 @@ proportional to k^α and lets you turn α from 0 to 2.5. Below 1 hubs never form
 against α at n = 303 and n = 3000 so the size-independence is visible, with Spider-Man's 7.4 percent as the
 reference line. It is one self-contained HTML file, no libraries, no data files, styled after the course's own
 explorables, with `?theme=light|dark`. Embed it with an iframe of about 860 px height.
+## The other game
+
+**KINGPIN** (week 3) hands you a contract: 3, 5 or 8 hits on the undirected giant component (277 characters,
+1421 links). Each hit removes a character; whoever loses their last route to the big cluster is cut off. When the
+hits run out, three rival hitmen run the same contract on the same board: one shoots the highest degree, one the
+highest betweenness (Brandes, recomputed after every kill), one at random, thirty times over. The score screen is
+one long "compared to what", plus the best hit-list simulated annealing ever found, which beats both greedy bots
+on every contract, always contains Black Widow (degree 25, the only door to her corner), and never needs her to
+be famous.
+
+The algorithms live in `weeks/week3/game/core.js` with no DOM in them, so `scripts/test_kingpin_rules.py` runs
+the exact shipped file under node and diffs every number against networkx (betweenness to 1e-13, the bots' kill
+orders move for move).
 
 ## Reproducing everything
 
@@ -73,6 +88,9 @@ python scripts/analyse_week2.py      # every figure and number in the week 2 pos
 python scripts/heavytail.py          # self-test of the Clauset-Shalizi-Newman fitter on synthetic data
 python scripts/build_week2_data.py   # debut years + combined network for ORIGIN STORY -> data/week2_years.js, week2_combined.js
 python scripts/fetch_images.py       # lead-image URLs for ORIGIN STORY's character cards -> data/week2_images.js
+
+python scripts/analyse_week3.py      # every figure and number in the week 3 post (a few minutes; --quick for a look)
+python scripts/test_kingpin_rules.py # runs KINGPIN's shipped core.js under node and diffs it against networkx
 ```
 
 The week 2 crawl is not frozen by the course, so `data/week2_*.tsv` is committed as our own snapshot (8 September
