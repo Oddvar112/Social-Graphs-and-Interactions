@@ -34,6 +34,7 @@
   const inG0 = new Uint8Array(N);                 // the 277-strong core
   for (let i = 0; i < N; i++) if (c0.comp[i] === c0.giantId) inG0[i] = 1;
   const G0SIZE = c0.giantSize;
+  document.getElementById('scoreOf').textContent = 'Core size out of ' + G0SIZE;
 
   const deg0 = Core.aliveDegrees(N, adj, null);
   const btw0 = Core.brandes(N, adj, null);
@@ -120,6 +121,7 @@
     budget: 8, alive: null, comp: null, giantId: -1, coreSize: G0SIZE,
     inCore: null, hits: [], curve: [],
     running: false, finished: false, reveal: false,
+    hintsLeft: 0, hintNode: -1, hintUntil: 0,
   };
 
   const cam = { x: WORLD / 2, y: WORLD / 2, z: 0.3, tx: WORLD / 2, ty: WORLD / 2, tz: 0.3 };
@@ -187,6 +189,9 @@
     S.alive = new Uint8Array(N).fill(1);
     S.hits = []; S.curve = [G0SIZE];
     S.running = true; S.finished = false; S.reveal = false;
+    // One free hint per ~3 hits of budget: enough to get unstuck, not enough to autopilot.
+    S.hintsLeft = Math.max(1, Math.round(budget / 3));
+    S.hintNode = -1; S.hintUntil = 0;
     killedAt.fill(0);
     recompute();
     particles = []; splashes = []; shot = null; severFx = new Map(); flashUntil = 0;
@@ -197,6 +202,8 @@
     renderWanted();
     renderHits();
     setAim(-1);
+    $('hintN').textContent = S.hintsLeft;
+    $('bHint').disabled = false;
     toast(`Contract of <b>${budget}</b>: click any purple character to fire. Your score is <b>CORE</b>, top right &mdash; make it as small as you can.`, 6000);
   }
 
@@ -230,6 +237,7 @@
   function applyHit(i) {
     const before = S.coreSize;
     const wasCore = S.inCore;
+    S.hintNode = -1;                                // last hint's premise is stale the instant the board changes
     S.alive[i] = 0;
     killedAt[i] = performance.now();
     recompute();
@@ -671,7 +679,16 @@
       const core = !!S.inCore[i];
       const isHover = i === hoverNode;
       const isBroker = S.reveal && brokerTop10.has(i);
+      const isHint = i === S.hintNode && now < S.hintUntil;
 
+      if (isHint) {
+        const pulse = 0.22 + 0.14 * Math.sin(now / 220);
+        const g = ctx.createRadialGradient(p.x, p.y, R * 0.4, p.x, p.y, R * 3);
+        g.addColorStop(0, `rgba(74,222,128,${pulse})`);
+        g.addColorStop(1, 'rgba(74,222,128,0)');
+        ctx.fillStyle = g;
+        ctx.beginPath(); ctx.arc(p.x, p.y, R * 3, 0, TAU); ctx.fill();
+      }
       if (isHover && core && S.running) {
         const g = ctx.createRadialGradient(p.x, p.y, R * 0.4, p.x, p.y, R * 3.2);
         g.addColorStop(0, 'rgba(255,75,80,.30)');
@@ -700,6 +717,7 @@
       else if (inG0[i]) { fill = 'rgba(46,50,62,.75)'; stroke = 'rgba(130,140,160,.5)'; }
       else { fill = 'rgba(40,44,54,.5)'; stroke = 'rgba(110,120,140,.3)'; alpha = 0.6; }
       if (isBroker) { stroke = '#ffc93f'; lw = 2.2; }
+      if (isHint) { stroke = '#4ade80'; lw = 2.4; }
       if (isHover) { stroke = core && S.running ? '#ff4b50' : '#ffc93f'; lw = 2.4; }
 
       ctx.globalAlpha = alpha;
@@ -719,7 +737,7 @@
         ctx.stroke();
       }
 
-      const prio = isHover ? 4 : isBroker ? 3.5 : (core && degRank[i] > 0 && degRank[i] <= 14) ? 2 : 0;
+      const prio = isHover ? 4 : (isHint || isBroker) ? 3.5 : (core && degRank[i] > 0 && degRank[i] <= 14) ? 2 : 0;
       if (prio > 0) labels.push({ i, p, R, prio, style: core ? 'core' : 'sev' });
     }
 
@@ -816,6 +834,7 @@
     if (!$('vStart').classList.contains('gone')) { if (e.key === 'Enter') $('bStart').click(); return; }
     if (e.key === 'c' || e.key === 'C') fitCamera();
     if (e.key === 'm' || e.key === 'M') $('bSound').click();
+    if (e.key === 'h' || e.key === 'H') $('bHint').click();
   });
 
   // ----------------------------------------------------------------------- UI
@@ -943,12 +962,51 @@
     syncUI();
   }
 
+  /** HINT: recompute betweenness live over whoever's still in the core, point
+   *  at the top broker, and say why that's not always the same pick as the
+   *  most-wanted list (degree) leads with. This is the game's own lesson,
+   *  just answered on demand instead of left for the player to find. */
+  function suggestHit() {
+    if (!S.running || S.finished || shot) return;
+    if (S.hintsLeft <= 0) { Sfx.buzz(); toast('No hints left on this contract. You know enough &mdash; take the shot.'); return; }
+
+    const degNow = Core.aliveDegrees(N, adj, S.alive);
+    const btwNow = Core.brandes(N, adj, S.alive);
+    let byDeg = -1, byBtw = -1;
+    for (let i = 0; i < N; i++) {
+      if (!S.inCore[i]) continue;
+      if (byDeg < 0 || degNow[i] > degNow[byDeg]) byDeg = i;
+      if (byBtw < 0 || btwNow[i] > btwNow[byBtw]) byBtw = i;
+    }
+    if (byBtw < 0) return;                          // no legal target (shouldn't happen while S.running)
+
+    S.hintsLeft--;
+    $('hintN').textContent = S.hintsLeft;
+    $('bHint').disabled = S.hintsLeft <= 0;
+    S.hintNode = byBtw;
+    S.hintUntil = performance.now() + 6000;
+
+    const pick = shortName(nodes[byBtw].name);
+    let why;
+    if (byBtw === byDeg) {
+      why = `<b>${pick}</b> &mdash; it's both the most-connected name left <i>and</i> the biggest broker. ` +
+        'For once degree and betweenness agree, so there is no trick pick here.';
+    } else {
+      const rival = shortName(nodes[byDeg].name);
+      why = `<b>${pick}</b> &mdash; not the most-connected survivor (that's <b>${rival}</b>, ${degNow[byDeg]} links). ` +
+        `But it sits on more shortest paths between everyone else, which is what actually holds a network together.`;
+    }
+    toast(`<span style="color:var(--green);font-weight:800">HINT</span> &mdash; ${why}`, 7500);
+    Sfx.tone(1400, 0.1, 'sine', 0.03, 900);
+  }
+
   // ------------------------------------------------------------------ buttons
   $('bStart').onclick = () => { Sfx.boot(); $('vStart').classList.add('gone'); resize(); newRound(chosenBudget); };
   $('bAgain').onclick = () => { $('vWin').classList.add('gone'); newRound(S.budget); };
   $('bMenu').onclick = showStart;
   $('bMenu2').onclick = showStart;
   $('bReveal').onclick = revealBrokers;
+  $('bHint').onclick = suggestHit;
   $('bCenter').onclick = fitCamera;
   $('bSound').onclick = () => { Sfx.on = !Sfx.on; $('bSound').classList.toggle('on', Sfx.on); Sfx.boot(); };
   $('panelToggle').onclick = () => {

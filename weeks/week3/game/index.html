@@ -115,6 +115,14 @@ button.row:hover,button.row.hl{background:var(--panel2);border-color:var(--red2)
 .row.dead .nm{color:var(--dim);text-decoration:line-through}
 .row .drop{font-size:9.5px;color:var(--gold);font-weight:800;font-variant-numeric:tabular-nums}
 
+.tools{padding:10px 12px;border-bottom:1px solid var(--line)}
+.tool{width:100%;background:var(--panel);border:1px solid var(--line);border-radius:9px;padding:9px 10px;font-size:11.5px;font-weight:700;color:var(--dim);transition:.15s;display:flex;align-items:center;gap:9px}
+.tool:hover:not(:disabled){color:var(--text);border-color:var(--gold)}
+.tool:disabled{opacity:.35;cursor:not-allowed}
+.tool b{font-size:15px;color:var(--gold);min-width:14px;text-align:center}
+.tool .tt{flex:1;text-align:left;line-height:1.25}
+.tool .tt small{display:block;font-size:9px;font-weight:500;color:var(--dim);letter-spacing:.02em}
+
 /* ---------- overlays ---------- */
 .veil{position:absolute;inset:0;z-index:20;display:flex;align-items:center;justify-content:center;padding:20px;
   background:radial-gradient(900px 600px at 50% 45%,rgba(34,20,56,.88),rgba(8,5,15,.94));backdrop-filter:blur(5px);overflow-y:auto}
@@ -167,6 +175,7 @@ button.row:hover,button.row.hl{background:var(--panel2);border-color:var(--red2)
 .big{background:var(--panel);border:1px solid var(--line);border-radius:13px;padding:12px 18px;min-width:96px}
 .big b{display:block;font-size:30px;line-height:1;font-variant-numeric:tabular-nums}
 .big span{font-size:9px;letter-spacing:.14em;color:var(--dim);font-weight:800;text-transform:uppercase}
+.scoreOf{font-size:10px;letter-spacing:.16em;color:var(--dim);font-weight:700;text-transform:uppercase;margin:16px 0 -6px}
 .big.you b{color:var(--gold)} .big.rec b{color:var(--red2)}
 .big.good b{color:var(--green)}
 #chartWrap{max-width:660px;margin:0 auto 6px;background:rgba(0,0,0,.28);border:1px solid var(--line);border-radius:12px;padding:12px 14px 6px}
@@ -243,6 +252,11 @@ button.row:hover,button.row.hl{background:var(--panel2);border-color:var(--red2)
         <p id="hDesc">Hover a character on the map, or pick one from the list below. One click is one hit. There is no undo in this business.</p>
         <div class="chips" id="hChips"></div>
       </div>
+      <div class="tools">
+        <button class="tool" id="bHint" title="Point at whoever's holding the network together right now, and say why (H)">
+          <b id="hintN">0</b><span class="tt">Hint<small>who actually matters &mdash; not just who's popular</small></span>
+        </button>
+      </div>
       <div class="listhead" title="The 15 most-connected characters still in the core. Connections are not the same as holding the network together."><span>Most wanted &middot; by connections</span><span id="wantedNote">top 15</span></div>
       <div id="wanted"></div>
       <div class="listhead"><span>Your hits</span><span id="hitCount">0</span></div>
@@ -254,6 +268,7 @@ button.row:hover,button.row.hl{background:var(--panel2);border-color:var(--red2)
       <div class="r"><i style="background:var(--purple);box-shadow:0 0 8px var(--purple)"></i>In the core &mdash; still counts</div>
       <div class="r"><i style="background:#5a6275"></i>Cut off &mdash; out of the game</div>
       <div class="r"><i style="background:var(--red2)"></i>Eliminated by you</div>
+      <div class="r"><i style="background:var(--green)"></i>Hint target</div>
       <div class="r" style="opacity:.7;margin-top:3px">Click to fire &middot; drag to pan &middot; scroll to zoom</div>
     </div>
 
@@ -283,7 +298,8 @@ button.row:hover,button.row.hl{background:var(--panel2);border-color:var(--red2)
           </ol>
           <div class="rcatch"><b>The catch.</b> The map and the list show how <i>connected</i> everyone is. They do not
           show who <i>holds the network together</i>. Those are different people, and finding the second kind is how
-          you beat the machines.</div>
+          you beat the machines. Stuck? A few free uses of <b>HINT</b> per contract will point at whoever's holding
+          things together right now, and explain why that's not always the same as the most-connected name.</div>
         </div>
         <a class="homelink" href="../../../index.html">Back to the site</a>
       </div>
@@ -293,6 +309,7 @@ button.row:hover,button.row.hl{background:var(--panel2);border-color:var(--red2)
       <div class="card">
         <div class="verdict comic" id="wVerdict">CONTRACT COMPLETE</div>
         <p class="sub" id="wLine"></p>
+        <div class="scoreOf" id="scoreOf">Core size out of 277</div>
         <div class="scoreRow">
           <div class="big you" title="What your hits left of the core"><b id="wYou">0</b><span>Your core</span></div>
           <div class="big" title="A bot that always shoots the character with the most links"><b id="wHub">0</b><span>Hub bot</span></div>
