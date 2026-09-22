@@ -1,0 +1,474 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>SYMPOSIUM · seat the history of philosophy</title>
+<link rel="icon" type="image/svg+xml" href="../../../assets/favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="../../../assets/favicon-32.png">
+<link rel="apple-touch-icon" href="../../../assets/apple-touch-icon.png">
+<meta name="description" content="You host a dinner for 1374 philosophers and a handful of tables. Place the famous ones; everyone else sits where their friends sit. Your score is modularity, and Louvain is the rival host.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --sidew:360px;
+  --bg:#160d12; --bg2:#1f1219; --panel:#241720; --panel2:#2e1d28;
+  --line:#4a3040; --line2:#6a4a5a; --text:#f1e6d2; --dim:#bfa98f; --dim2:#8f7a68;
+  --gold:#d9a648; --gold2:#f0c766; --wine:#9b2f3f; --wine2:#c9455a; --laurel:#8fb573; --marble:#d8cfc0;
+  --ink:#0c0609;
+  --hud-h:66px;
+  --meander:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='12' viewBox='0 0 24 12'%3E%3Cpath d='M0 10h2V2h18v8h-6V6h2v2' fill='none' stroke='%23d9a648' stroke-width='1.4' opacity='.85'/%3E%3C/svg%3E");
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%}
+body{
+  background:var(--bg); color:var(--text);
+  font-family:"Cormorant Garamond",Georgia,"Times New Roman",serif;
+  font-size:16px; line-height:1.45;
+  overflow:hidden; -webkit-font-smoothing:antialiased;
+}
+.caps{font-family:Cinzel,"Trajan Pro",Georgia,serif;letter-spacing:.08em;font-weight:600}
+button{font-family:inherit;color:inherit;border:0;background:none;cursor:pointer}
+input{font-family:inherit;color:inherit}
+a{color:var(--gold)}
+a:hover{color:var(--gold2)}
+
+/* ---------- layout: the dining room in the middle, the map and the lists at the side ---------- */
+#app{position:fixed;inset:0;display:grid;grid-template-rows:var(--hud-h) 1fr}
+#stage{
+  position:relative;overflow:hidden;min-height:0;
+  display:grid;grid-template-columns:minmax(0,1fr) var(--sidew);grid-template-rows:minmax(0,42%) minmax(0,1fr);
+  grid-template-areas:"room map" "room side";
+}
+#stage.mapmode{grid-template-columns:minmax(280px,34%) minmax(0,1fr);grid-template-rows:minmax(0,55%) minmax(0,1fr);grid-template-areas:"room map" "side map"}
+#room{grid-area:room;position:relative;overflow-y:auto;min-height:0;
+  background:
+    radial-gradient(1100px 500px at 50% 0%, rgba(217,166,72,.10), transparent 60%),
+    repeating-linear-gradient(90deg, rgba(255,255,255,.012) 0 2px, transparent 2px 46px),
+    linear-gradient(180deg,#1c1016,#140b10);
+  border-right:1px solid var(--line)}
+#mapbox{grid-area:map;position:relative;min-height:0;border-bottom:1px solid var(--line);
+  background:radial-gradient(700px 500px at 50% 45%, #2a1620 0%, #160d12 75%)}
+canvas#cv{position:absolute;inset:0;width:100%;height:100%;display:block;touch-action:none;cursor:grab}
+canvas#cv.grabbing{cursor:grabbing}
+canvas#cv.seat{cursor:pointer}
+#side{grid-area:side;min-height:0;display:flex;flex-direction:column;overflow:hidden;
+  background:linear-gradient(180deg,rgba(36,23,32,.97),rgba(20,12,17,.98))}
+
+/* ---------- HUD ---------- */
+#hud{
+  display:flex;align-items:center;gap:14px;padding:0 16px;
+  background:linear-gradient(180deg,#2a1820,#170d13);
+  border-bottom:1px solid var(--line);z-index:5;position:relative;
+}
+#hud::after{content:"";position:absolute;left:0;right:0;bottom:-1px;height:12px;background:var(--meander) repeat-x;opacity:.55;pointer-events:none;transform:translateY(100%)}
+#hud .brand{font-size:24px;line-height:1;color:var(--gold);white-space:nowrap;text-shadow:0 1px 0 #5a3a10}
+#hud .brand small{display:block;font-family:"Cormorant Garamond",serif;font-size:12px;letter-spacing:.14em;color:var(--dim);font-weight:500;text-shadow:none;font-style:italic;margin-top:3px}
+#hud .back{font-size:12px;letter-spacing:.08em;color:var(--dim);padding:6px 12px;border:1px solid var(--line);border-radius:3px;text-decoration:none;white-space:nowrap;font-family:Cinzel,serif}
+#hud .back:hover{color:var(--gold);border-color:var(--gold)}
+.stats{display:flex;gap:8px;margin-left:auto;align-items:center;flex-wrap:nowrap}
+.stat{background:var(--panel);border:1px solid var(--line);border-radius:3px;padding:5px 12px;min-width:70px;text-align:center}
+.stat b{display:block;font-size:20px;line-height:1.05;font-variant-numeric:tabular-nums;font-family:Cinzel,serif;font-weight:600}
+.stat span{display:block;font-size:10px;letter-spacing:.16em;color:var(--dim);text-transform:uppercase;font-family:Cinzel,serif}
+.stat.q b{color:var(--gold)}
+.stat.cards b{color:var(--wine2)}
+.stat.seated b{color:var(--laurel)}
+.hudbtn{background:var(--panel);border:1px solid var(--line);border-radius:3px;padding:8px 11px;font-size:13px;color:var(--dim);transition:.15s}
+.hudbtn:hover{color:var(--gold);border-color:var(--gold)}
+
+/* ---------- the host's bar, on top of the room ---------- */
+.host{position:sticky;top:0;z-index:6;padding:12px 18px 10px;
+  background:linear-gradient(180deg,rgba(28,16,22,.98),rgba(28,16,22,.92));border-bottom:1px solid var(--line);backdrop-filter:blur(8px)}
+.host .line1{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+#objective{display:flex;align-items:center;gap:10px;margin-right:auto}
+#objective .lbl{font-size:10px;letter-spacing:.2em;color:var(--dim);font-family:Cinzel,serif;text-transform:uppercase}
+#objective .tgt{font-size:14px;line-height:1.2;color:var(--gold);font-family:Cinzel,serif;letter-spacing:.06em}
+#objective.done .tgt{color:var(--laurel)}
+.tool{background:var(--panel);border:1px solid var(--line);border-radius:3px;padding:8px 12px;font-size:12px;color:var(--dim);transition:.15s;font-family:Cinzel,serif;letter-spacing:.05em;display:flex;align-items:center;gap:8px;white-space:nowrap}
+.tool:hover:not(:disabled){color:var(--gold);border-color:var(--gold)}
+.tool:disabled{opacity:.35;cursor:not-allowed}
+.tool.primary{color:var(--ink);background:linear-gradient(180deg,var(--gold2),var(--gold));border-color:var(--gold);font-weight:700}
+.tool.primary:hover:not(:disabled){color:var(--ink);background:linear-gradient(180deg,#ffd97a,var(--gold2))}
+.toggle{display:flex;align-items:center;gap:7px;font-size:12.5px;color:var(--dim);cursor:pointer;user-select:none;white-space:nowrap}
+.toggle input{accent-color:var(--gold)}
+.toggle i{font-style:italic;color:var(--dim2)}
+.search{position:relative;margin-top:10px}
+.search input{
+  width:100%;background:var(--ink);border:1px solid var(--line2);border-radius:3px;padding:11px 14px 11px 44px;
+  font-size:17px;color:var(--text);outline:none;
+}
+.search input:focus{border-color:var(--gold)}
+.search input::placeholder{color:var(--dim2);font-style:italic}
+.search .glass{position:absolute;left:14px;top:50%;transform:translateY(-50%);color:var(--dim2);font-size:16px;pointer-events:none}
+#results{position:absolute;left:0;right:0;top:100%;z-index:8;background:#1c1016;border:1px solid var(--gold);border-top:0;border-radius:0 0 3px 3px;
+  box-shadow:0 18px 40px rgba(0,0,0,.6);display:none;max-height:340px;overflow-y:auto}
+#results.open{display:block}
+.row{
+  display:flex;align-items:center;gap:9px;width:100%;text-align:left;
+  padding:6px 10px;border-radius:3px;border:1px solid transparent;margin-bottom:1px;transition:.12s;
+}
+button.row:hover,button.row.hl{background:var(--panel2);border-color:var(--line2)}
+#results .row{border-radius:0;margin:0;padding:8px 12px;border-bottom:1px solid var(--line)}
+#results .row:last-child{border-bottom:0}
+#results .row.first{background:rgba(217,166,72,.08)}
+.row .dot{width:9px;height:9px;border-radius:50%;background:#5a4a52;flex:none}
+.row .pimg{width:28px;height:28px;border-radius:50%;object-fit:cover;flex:none;background:#3a2531;border:1px solid var(--line2);filter:sepia(.25)}
+.row .pini{width:28px;height:28px;border-radius:50%;flex:none;background:#3a2531;border:1px solid var(--line2);display:flex;align-items:center;justify-content:center;font-family:Cinzel,serif;font-size:12px;color:var(--dim2)}
+.row .nm{flex:1;font-size:15px;line-height:1.2;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.row .nm small{display:block;font-size:11.5px;color:var(--dim);font-style:italic;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.row .era{font-size:10.5px;color:var(--dim2);font-family:Cinzel,serif;letter-spacing:.03em;white-space:nowrap}
+.row .dg{font-size:11.5px;color:var(--dim);font-variant-numeric:tabular-nums;font-family:Cinzel,serif}
+.row .key{font-size:9.5px;color:var(--gold);font-family:Cinzel,serif;letter-spacing:.06em;border:1px solid #6b5124;border-radius:2px;padding:2px 6px;white-space:nowrap}
+.row.seated .nm{color:var(--gold)}
+.row.seated .dot{box-shadow:0 0 0 2px var(--gold)}
+
+/* ---------- the tables ---------- */
+#tables{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:18px 16px;padding:22px 18px 60px;align-items:start}
+#stage.mapmode #tables{grid-template-columns:1fr;padding:14px 12px 40px}
+.tcard{position:relative;border:1px solid var(--line);border-radius:6px;padding:14px 12px 12px;
+  background:linear-gradient(180deg,rgba(36,23,32,.8),rgba(20,12,17,.9));cursor:pointer;transition:.15s;text-align:center}
+.tcard:hover{border-color:var(--line2)}
+.tcard.on{border-color:var(--gold);box-shadow:0 0 0 1px var(--gold),0 14px 40px rgba(0,0,0,.45)}
+.tcard.on::before{content:"THE TABLE YOU ARE FILLING";position:absolute;top:-9px;left:50%;transform:translateX(-50%);font-family:Cinzel,serif;font-size:8.5px;letter-spacing:.2em;
+  color:var(--ink);background:var(--gold);padding:2px 9px;border-radius:2px;white-space:nowrap}
+.tcard.empty{opacity:.75}
+.thead{display:flex;align-items:center;justify-content:center;gap:8px;font-family:Cinzel,serif;font-size:13px;letter-spacing:.1em}
+.thead .sw{width:11px;height:11px;border-radius:50%;flex:none;box-shadow:0 0 0 2px rgba(0,0,0,.35)}
+.thead .x{margin-left:6px;font-size:11px;color:var(--dim2);padding:1px 6px;border:1px solid transparent;border-radius:2px;letter-spacing:0}
+.thead .x:hover{color:var(--wine2);border-color:var(--wine2)}
+/* the round table, with the chairs around it */
+.round{position:relative;margin:12px auto 4px}
+.top{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);border-radius:50%;
+  background:radial-gradient(circle at 40% 35%,#4a2e3c,#2a1720 65%,#1a0f15);
+  box-shadow:inset 0 0 0 6px var(--tc,var(--line2)),inset 0 0 40px rgba(0,0,0,.6),0 10px 30px rgba(0,0,0,.5);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px}
+.top .num{font-family:Cinzel,serif;font-size:13px;letter-spacing:.2em;color:var(--dim)}
+.top .cnt{font-family:Cinzel,serif;font-weight:700;font-size:30px;line-height:1;color:var(--text)}
+.top .cnt.big{font-size:38px}
+.top .lbl{font-size:12px;color:var(--dim);font-style:italic}
+.top .qs{font-family:Cinzel,serif;font-size:10.5px;letter-spacing:.08em;color:var(--tc,var(--gold));margin-top:3px}
+.chair{position:absolute;width:48px;height:48px;margin:-24px 0 0 -24px;border-radius:50%;border:3px solid var(--tc,var(--line2));
+  background:#2a1a24;padding:0;transition:.15s;box-shadow:0 4px 12px rgba(0,0,0,.5)}
+.chair img{width:100%;height:100%;border-radius:50%;object-fit:cover;display:block;filter:sepia(.2)}
+.chair .ini{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-family:Cinzel,serif;font-size:17px;color:var(--dim)}
+.chair .n{position:absolute;bottom:-9px;left:50%;transform:translateX(-50%);font-family:Cinzel,serif;font-size:9.5px;letter-spacing:.02em;
+  background:#0c0609;border:1px solid var(--line2);border-radius:10px;padding:1px 6px;color:var(--gold);white-space:nowrap;line-height:1.3}
+.chair .who{position:absolute;top:100%;left:50%;transform:translateX(-50%);margin-top:11px;font-size:11px;color:var(--dim);white-space:nowrap;
+  max-width:110px;overflow:hidden;text-overflow:ellipsis;font-style:italic;pointer-events:none}
+.chair:hover{border-color:var(--gold2);transform:scale(1.08);z-index:2}
+.chair:hover .n{color:var(--wine2)}
+.chair.empty{border-style:dashed;border-color:var(--dim2);background:rgba(0,0,0,.25);color:var(--dim2);font-family:Cinzel,serif;font-size:22px;line-height:1;box-shadow:none}
+.chair.empty:hover{border-color:var(--gold);color:var(--gold)}
+.chair.host{border-color:var(--gold2);box-shadow:0 0 0 3px rgba(240,199,102,.25),0 6px 16px rgba(0,0,0,.6);cursor:default}
+.chair.host:hover{transform:none}
+.chair.host .n{color:var(--ink);background:var(--gold);border-color:var(--gold2);letter-spacing:.14em}
+.chair.neg .n{color:var(--wine2)}
+.tcard.solo{max-width:560px;margin:0 auto;grid-column:1/-1;padding:18px 16px 16px}
+.tcard.solo .top .cnt{font-size:44px}
+.tcard.solo .top .lbl{font-size:13px}
+.tcard.solo .top .qs{font-size:11px;color:var(--dim)}
+.tcard.solo .tsub{font-size:14px;white-space:normal}
+#stage.one .roomonly{display:none}
+#stage:not(.one) .oneonly{display:none}
+.modes{display:flex;gap:10px;justify-content:center;margin:18px 0 6px;flex-wrap:wrap}
+.mode{flex:1 1 260px;max-width:340px;text-align:left;background:var(--panel);border:1px solid var(--line);border-radius:3px;padding:12px 16px;transition:.15s}
+.mode:hover{border-color:var(--line2)}
+.mode.sel{border-color:var(--gold);background:rgba(217,166,72,.07);box-shadow:0 0 0 1px var(--gold)}
+.mode b{display:block;font-family:Cinzel,serif;font-size:14px;letter-spacing:.12em;color:var(--gold)}
+.mode span{display:block;font-size:14px;color:var(--dim);font-style:italic;line-height:1.4;margin-top:4px}
+#hostPick{display:flex;align-items:center;justify-content:center;gap:12px;margin:10px 0 4px;font-size:16px;color:var(--dim);font-style:italic}
+#hostPick img,#hostPick .hini{width:44px;height:44px;border-radius:50%;object-fit:cover;border:2px solid var(--gold2);background:#2a1a24;display:inline-flex;align-items:center;justify-content:center;font-family:Cinzel,serif;color:var(--dim)}
+#hostPick b{font-family:Cinzel,serif;font-style:normal;font-size:16px;color:var(--text);letter-spacing:.04em}
+#hostPick .ghost{padding:6px 12px;font-size:11px}
+.row .two{display:flex;gap:10px;font-family:Cinzel,serif;font-size:10.5px;color:var(--dim);white-space:nowrap}
+.row .two b{color:var(--gold);font-weight:600}
+.chair.pop{animation:chairpop .5s cubic-bezier(.2,1.6,.4,1) both}
+@keyframes chairpop{from{transform:scale(.4)}to{transform:scale(1)}}
+.tsub{font-size:13px;color:var(--dim);font-style:italic;margin-top:8px;line-height:1.35;min-height:18px}
+.tsub b{color:var(--text);font-style:normal;font-weight:500}
+.roomnote{grid-column:1/-1;font-size:14px;color:var(--dim);font-style:italic;text-align:center;padding:30px 20px;border:1px dashed var(--line);border-radius:6px}
+/* a guest on their way from the list to a chair */
+.fly{position:fixed;z-index:60;width:48px;height:48px;border-radius:50%;object-fit:cover;pointer-events:none;border:3px solid var(--gold2);
+  box-shadow:0 8px 24px rgba(0,0,0,.6);background:#2a1a24;display:flex;align-items:center;justify-content:center;font-family:Cinzel,serif;color:var(--dim)}
+
+/* ---------- the map box ---------- */
+#mapbar{position:absolute;top:8px;left:10px;right:10px;z-index:3;display:flex;align-items:center;gap:8px;pointer-events:none}
+#mapbar .cap{font-family:Cinzel,serif;font-size:10px;letter-spacing:.2em;color:var(--dim);text-transform:uppercase;background:rgba(22,13,18,.75);padding:4px 8px;border-radius:2px}
+#mapbar .hudbtn{pointer-events:auto;margin-left:auto;padding:5px 9px;font-size:11px;font-family:Cinzel,serif;letter-spacing:.06em;background:rgba(22,13,18,.85)}
+#legend{position:absolute;left:10px;bottom:8px;z-index:3;background:rgba(22,13,18,.8);border:1px solid var(--line);
+  border-radius:3px;padding:6px 10px;font-size:11.5px;color:var(--dim);line-height:1.6;font-style:italic}
+#legend i{display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:6px;vertical-align:middle;font-style:normal}
+#legend .r{white-space:nowrap}
+#stage:not(.mapmode) #legend .more{display:none}
+
+/* ---------- side column ---------- */
+.here{padding:12px 14px 10px;border-bottom:1px solid var(--line);height:164px;overflow:hidden;display:flex;gap:12px;align-items:flex-start;flex:none}
+.heretext{flex:1;min-width:0}
+.portrait{width:70px;height:92px;flex:none;border:1px solid var(--line2);border-radius:3px;background:linear-gradient(180deg,#3a2531,#22151d);overflow:hidden;position:relative;box-shadow:0 2px 0 #0c0609}
+.portrait img{width:100%;height:100%;object-fit:cover;display:none;filter:sepia(.25) contrast(1.05)}
+.portrait.has img{display:block}
+.portrait span{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-family:Cinzel,serif;font-size:30px;color:var(--dim2)}
+.portrait.has span{display:none}
+.credit{font-size:9.5px;color:var(--dim2);margin-top:5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-style:italic}
+.here .kicker{font-size:10px;letter-spacing:.2em;color:var(--dim);font-family:Cinzel,serif;text-transform:uppercase;margin-bottom:4px}
+.here h2{font-size:20px;line-height:1.1;margin-bottom:4px;font-family:Cinzel,serif;font-weight:600;color:var(--text)}
+.here p{font-size:13px;line-height:1.4;color:var(--dim);display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;font-style:italic}
+.here .chips{display:flex;gap:5px;margin-top:6px;flex-wrap:wrap}
+.chip{font-size:10.5px;padding:2px 7px;border-radius:2px;background:var(--panel2);border:1px solid var(--line);color:var(--dim);font-family:Cinzel,serif;letter-spacing:.04em}
+.chip.era{color:var(--marble)}
+.chip.tbl{color:var(--ink);font-weight:700;border-color:transparent}
+.chip.card{color:var(--gold);border-color:#6b5124}
+.ladder{padding:4px 14px 8px;border-bottom:1px solid var(--line);flex:none}
+.ladder .bar{position:relative;height:16px;margin:18px 0 18px;background:linear-gradient(90deg,#2b1a24,#3b2531);border:1px solid var(--line);border-radius:2px}
+.ladder .tick{position:absolute;top:-1px;bottom:-1px;width:1px;background:var(--dim2)}
+.ladder .tick span{position:absolute;top:-15px;left:0;transform:translateX(-50%);font-size:9.5px;letter-spacing:.06em;color:var(--dim);white-space:nowrap;font-family:Cinzel,serif}
+.ladder .tick.below span{top:auto;bottom:-15px}
+.ladder .tick.lou{background:var(--laurel)} .ladder .tick.lou span{color:var(--laurel)}
+.ladder .you{position:absolute;top:2px;bottom:2px;width:4px;margin-left:-2px;background:var(--gold);box-shadow:0 0 10px var(--gold);transition:left .35s ease;border-radius:1px}
+.ladder .cap{font-size:11.5px;color:var(--dim);font-style:italic;line-height:1.35}
+.listhead{padding:9px 14px 5px;font-size:10px;letter-spacing:.2em;color:var(--dim);font-family:Cinzel,serif;text-transform:uppercase;display:flex;justify-content:space-between;align-items:baseline;flex:none}
+.listhead .sm{letter-spacing:.04em;font-family:"Cormorant Garamond",serif;font-size:12px;text-transform:none;font-style:italic}
+#guests{flex:1;overflow-y:auto;padding:0 8px 10px;min-height:60px}
+#guests::-webkit-scrollbar,#room::-webkit-scrollbar,#results::-webkit-scrollbar{width:8px}
+#guests::-webkit-scrollbar-thumb,#room::-webkit-scrollbar-thumb,#results::-webkit-scrollbar-thumb{background:var(--line);border-radius:4px}
+
+/* ---------- overlays ---------- */
+.veil{position:absolute;inset:0;z-index:20;display:flex;padding:20px;
+  background:radial-gradient(900px 600px at 50% 40%,rgba(52,26,40,.90),rgba(10,5,8,.96));backdrop-filter:blur(5px);overflow-y:auto}
+.veil.gone{display:none}
+.card{width:min(880px,100%);text-align:center;margin:auto}
+.card h1{font-family:Cinzel,serif;font-weight:700;font-size:clamp(42px,8vw,84px);line-height:.95;color:var(--gold);letter-spacing:.12em;
+  text-shadow:0 2px 0 #5a3a10,0 10px 30px rgba(217,166,72,.25)}
+.card .under{display:inline-block;margin:10px auto 0;padding:6px 0;width:min(420px,80%);background:var(--meander) repeat-x center;height:12px;opacity:.8}
+.card .sub{font-size:17px;color:var(--dim);margin:14px auto 4px;max-width:640px;line-height:1.5;font-style:italic}
+.card .sub b{color:var(--text);font-style:normal}
+.diffs{display:flex;gap:8px;justify-content:center;margin:20px 0 16px;flex-wrap:wrap}
+.diff{background:var(--panel);border:1px solid var(--line);border-radius:3px;padding:9px 18px;font-size:13px;color:var(--dim);transition:.15s;font-family:Cinzel,serif;letter-spacing:.05em}
+.diff:hover{color:var(--text)}
+.diff.sel{border-color:var(--gold);color:var(--gold);background:rgba(217,166,72,.08)}
+.diff small{display:block;font-size:12px;font-family:"Cormorant Garamond",serif;font-style:italic;letter-spacing:0;opacity:.8}
+.go{
+  font-family:Cinzel,serif;font-weight:700;font-size:22px;letter-spacing:.14em;
+  background:linear-gradient(180deg,var(--gold2),#b98a2f);color:var(--ink);
+  padding:13px 46px;border-radius:3px;box-shadow:0 4px 0 #5a3a10,0 12px 30px rgba(217,166,72,.25);
+  transition:.12s;
+}
+.go:hover{transform:translateY(-2px);box-shadow:0 6px 0 #5a3a10,0 16px 36px rgba(217,166,72,.35)}
+.go:active{transform:translateY(3px);box-shadow:0 1px 0 #5a3a10}
+.rules{font-size:14.5px;color:var(--dim);line-height:1.55;margin-top:20px;max-width:700px;margin-inline:auto;text-align:left;
+  background:rgba(255,255,255,.03);border:1px solid var(--line);border-radius:3px;padding:14px 18px}
+.rules b{color:var(--text)}
+.rules i{color:var(--gold);font-style:normal}
+.rules .rtitle{font-size:11px;letter-spacing:.24em;font-family:Cinzel,serif;color:var(--gold);margin-bottom:8px}
+.rules ol{margin:0 0 10px 20px;padding:0}
+.rules li{margin-bottom:7px}
+.rules li::marker{color:var(--gold);font-family:Cinzel,serif}
+.rules .rcatch{border-top:1px solid var(--line);padding-top:9px}
+.homelink{display:inline-block;margin-top:18px;font-size:13px;color:var(--dim);font-style:italic}
+.verdict{font-family:Cinzel,serif;font-weight:700;font-size:clamp(30px,6vw,58px);line-height:1.05;color:var(--gold);letter-spacing:.1em;text-shadow:0 2px 0 #5a3a10;
+  animation:vpop .55s cubic-bezier(.2,1.5,.35,1) both}
+@keyframes vpop{from{transform:scale(.6);opacity:0}to{transform:scale(1);opacity:1}}
+.scoreRow{display:flex;gap:8px;justify-content:center;margin:18px 0 10px;flex-wrap:wrap}
+.big{background:var(--panel);border:1px solid var(--line);border-radius:3px;padding:12px 16px;min-width:104px;animation:bigin .4s ease-out both}
+.big:nth-child(2){animation-delay:.08s}.big:nth-child(3){animation-delay:.16s}.big:nth-child(4){animation-delay:.24s}.big:nth-child(5){animation-delay:.32s}.big:nth-child(6){animation-delay:.4s}
+@keyframes bigin{from{transform:translateY(12px);opacity:0}to{transform:none;opacity:1}}
+.big b{display:block;font-size:26px;line-height:1;font-variant-numeric:tabular-nums;font-family:Cinzel,serif;font-weight:600}
+.big span{font-size:10px;letter-spacing:.14em;color:var(--dim);font-family:Cinzel,serif;text-transform:uppercase}
+.big.you b{color:var(--gold)} .big.lou b{color:var(--laurel)} .big.good b{color:var(--laurel)}
+.scoreOf{font-size:11px;letter-spacing:.16em;color:var(--dim);font-family:Cinzel,serif;text-transform:uppercase;margin:16px 0 -6px}
+.scorenote{font-size:14px;color:var(--dim);line-height:1.5;max-width:680px;margin:0 auto 14px;font-style:italic}
+.scorenote b{color:var(--text);font-style:normal}
+.nmirow{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin:6px 0 12px}
+.nmi{background:rgba(0,0,0,.25);border:1px solid var(--line);border-radius:3px;padding:9px 14px;min-width:150px}
+.nmi b{display:block;font-family:Cinzel,serif;font-size:22px;color:var(--text)}
+.nmi span{font-size:11.5px;color:var(--dim);font-style:italic}
+.pathbox{background:rgba(0,0,0,.28);border:1px solid var(--line);border-radius:3px;padding:12px 16px;margin:8px auto 16px;
+  max-width:720px;text-align:left;font-size:14px;line-height:1.7;color:var(--dim);max-height:210px;overflow-y:auto}
+.pathbox .k{font-size:10px;letter-spacing:.18em;font-family:Cinzel,serif;text-transform:uppercase;display:block;margin-bottom:5px;color:var(--gold)}
+.pathbox em{font-style:normal;color:var(--text)}
+.pathbox .m{color:var(--gold)}
+.pathbox .w{color:var(--wine2)}
+.pathbox .pimg{width:22px;height:22px;border-radius:50%;object-fit:cover;vertical-align:middle;margin-right:6px;border:1px solid var(--line2);background:#3a2531}
+.btnrow{display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
+.ghost{border:1px solid var(--line);border-radius:3px;padding:11px 20px;font-size:13px;color:var(--dim);transition:.15s;font-family:Cinzel,serif;letter-spacing:.06em}
+.ghost:hover{color:var(--gold);border-color:var(--gold)}
+
+#toast{position:absolute;bottom:22px;left:18px;z-index:15;max-width:min(560px,70%);
+  transform:translateY(20px);
+  background:rgba(22,13,18,.95);border:1px solid var(--line);border-left:3px solid var(--gold);
+  border-radius:3px;padding:10px 18px;font-size:15px;opacity:0;
+  transition:opacity .25s,transform .25s;pointer-events:none;line-height:1.45}
+#toast b{color:var(--gold)}
+#toast.show{opacity:1;transform:translateY(0)}
+
+@media(max-width:900px){
+  :root{--sidew:300px}
+  #hud .brand small{display:none} #hud .back{display:none}
+}
+@media(max-width:720px){
+  #stage,#stage.mapmode{grid-template-columns:1fr;grid-template-rows:260px minmax(0,1fr) 300px;grid-template-areas:"map" "room" "side"}
+  #room{border-right:0;border-bottom:1px solid var(--line)}
+  #tables{grid-template-columns:1fr;padding:14px 12px 40px}
+  .stat{min-width:54px;padding:4px 8px} .stat b{font-size:16px}
+  .tcard.on::before{display:none}
+}
+@media(max-height:760px){
+  .veil{padding:16px}
+  .card h1{font-size:clamp(30px,6vw,48px)}
+  .card .sub{font-size:14px;margin:8px auto 2px}
+  .rules{font-size:13px;line-height:1.45;padding:10px 13px;margin-top:12px}
+  .go{font-size:18px;padding:10px 34px}
+  .diffs{margin:12px 0 10px}
+  .homelink{margin-top:10px}
+}
+</style>
+</head>
+<body>
+<div id="app">
+
+  <div id="hud">
+    <div class="brand caps">SYMPOSIUM<small>a dinner for the history of philosophy</small></div>
+    <a class="back" href="../index.html">&larr; Week 4</a>
+    <div class="stats">
+      <div class="stat q" id="statQ" title="Modularity of your seating: how many links stay inside tables, beyond what a shuffled network would give. Higher is better."><b id="sQ">0.000</b><span id="sQl">Q</span></div>
+      <div class="stat cards" id="statCards" title="Place cards left: how many more guests you can seat by hand."><b id="sCards">0</b><span id="sCardsl">Cards</span></div>
+      <div class="stat seated" id="statSeated" title="Guests who found a table so far, out of 1374."><b id="sSeated">0</b><span id="sSeatedl">Seated</span></div>
+      <button class="hudbtn" id="bMenu" title="New dinner">&#8635;</button>
+    </div>
+  </div>
+
+  <div id="stage">
+
+    <div id="room">
+      <div class="host">
+        <div class="line1">
+          <div id="objective"><span class="lbl">The evening</span><span class="tgt" id="objText">&nbsp;</span></div>
+          <button class="tool roomonly" id="bTable" title="Open another table (T)"><b>+</b> Table</button>
+          <button class="tool oneonly" id="bHint" title="One hint per table: who would raise the score most right now, and why (H)">Hint <b id="hintN">1</b></button>
+          <button class="tool" id="bUndo" title="Take back the last guest (Z)" disabled>Undo</button>
+          <label class="toggle roomonly" title="With this on, a guest who is linked to the same person several times counts that person several times when choosing a table.">
+            <input type="checkbox" id="cWeighted"> Count repeated links <i>(weights)</i>
+          </label>
+          <button class="tool primary" id="bServe" title="Serve dinner and see how your table compares (Enter)">Serve dinner</button>
+        </div>
+        <div class="search">
+          <span class="glass">&#9906;</span>
+          <input id="search" type="search" placeholder="Who sits at Table I? Type a name&hellip;  (Enter seats the first match)" autocomplete="off" spellcheck="false">
+          <div id="results"></div>
+        </div>
+      </div>
+      <div id="tables"></div>
+      <div id="toast"></div>
+    </div>
+
+    <div id="mapbox">
+      <canvas id="cv"></canvas>
+      <div id="mapbar">
+        <span class="cap" id="mapCap">The room, as a network</span>
+        <button class="hudbtn" id="bCenter" title="Recentre the map (C)">&#9678;</button>
+        <button class="hudbtn" id="bMap" title="Make the map big (M)">Big map</button>
+      </div>
+      <div id="legend">
+        <div class="r"><i style="background:#5a4a52"></i>Not seated <span class="more">&middot; <i style="background:var(--gold);box-shadow:0 0 0 2px var(--gold2)"></i>placed by you &middot; colour = table</span></div>
+        <div class="r more" style="opacity:.7">Click to seat &middot; drag to pan &middot; scroll to zoom</div>
+      </div>
+    </div>
+
+    <aside id="side">
+      <div class="here">
+        <div class="portrait" id="hPortrait" title=""><img id="hImg" alt="" src=""><span id="hInitial">?</span></div>
+        <div class="heretext">
+          <div class="kicker" id="hKick">Under your gaze</div>
+          <h2 id="hName">Nobody yet</h2>
+          <p id="hDesc">Hover a chair, a name in the list, or a dot on the map. Click to seat them at the table you are filling.</p>
+          <div class="chips" id="hChips"></div>
+          <div class="credit" id="hCredit"></div>
+        </div>
+      </div>
+      <div class="ladder">
+        <div class="bar" id="ladderBar"></div>
+        <div class="cap" id="ladderCap">Your Q against the rival hosts. Louvain is the one to beat.</div>
+      </div>
+      <div class="listhead"><span id="guestsHead">Who&rsquo;s who</span><span class="sm" id="guestsNote">by links, top 80 &middot; click to seat</span></div>
+      <div id="guests"></div>
+    </aside>
+
+    <div class="veil" id="vStart">
+      <div class="card">
+        <h1>SYMPOSIUM</h1>
+        <div class="under"></div>
+        <p class="sub">Every philosopher on Wikipedia born before 1900, 1374 of them, and every link between their
+        articles. A community is a table where more of the guests link to each other than chance would give.
+        <b>You are the host.</b></p>
+        <div class="modes" id="modePick"></div>
+        <div id="hostPick"></div>
+        <div class="diffs" id="diffPick"></div>
+        <button class="go" id="bStart">OPEN THE DOORS</button>
+        <div class="rules" id="rulesOne">
+          <div class="rtitle">ONE TABLE &middot; HOW TO PLAY</div>
+          <ol>
+            <li><b>You get one guest</b>, shown above, at the head of an empty table with 3, 5 or 9 seats. Press
+            <i>Another guest</i> if you want someone else.</li>
+            <li><b>Fill the seats.</b> Type a name or pick from the list of people linked to the table. Each new
+            chair shows what that guest added to the score.</li>
+            <li><b>The score is links above chance:</b> the links inside the table, minus what a shuffled network
+            with the same links would have put there. That second part grows with the guests&rsquo; total links, so
+            a hub costs more than a modest name with the same friends. This is a single table&rsquo;s share of
+            <i>modularity</i>, times the number of links in the network.</li>
+            <li><b>Serve dinner</b> when the table is full. A greedy host, a random host and the best table our
+            search ever found sit down for comparison, and you see how many of your guests Louvain puts at the same
+            table as your host.</li>
+          </ol>
+          <div class="rcatch"><b>The catch.</b> The people your guest links to most are often hubs, and hubs are
+          expensive: every link they have raises what chance expects. The best tables are tight circles of modest
+          names who all know each other, and finding them is the whole game.</div>
+        </div>
+        <div class="rules" id="rulesRoom">
+          <div class="rtitle">THE WHOLE ROOM &middot; HOW TO PLAY</div>
+          <ol>
+            <li><b>Pick how many place cards you get</b> above. Each card seats one guest by hand.</li>
+            <li><b>Type a name, press Enter.</b> The philosopher walks to a chair at a new table, and the colour
+            spreads: everybody not yet seated joins the table where most of the people they link to are sitting,
+            one ring of friends at a time, until the room settles. The chair shows how many guests they brought
+            along. To put two guests at the <i>same</i> table, click that table first.</li>
+            <li><b>Your score is Q</b>, top right: modularity of the whole seating. Everyone at one table scores
+            exactly zero, so the game starts the moment you have two.</li>
+            <li><b>Serve dinner</b> when you are done. Louvain, a greedy merger, a historian who seats by century and
+            a random host seat the same room, and you see where you and Louvain disagree, and whether Louvain even
+            agrees with itself.</li>
+          </ol>
+          <div class="rcatch"><b>The catch.</b> A place card is not one seat, it is a lever. Seat Aristotle and three
+          hundred people move with him. Where the famous sit decides where the forgotten sit.</div>
+        </div>
+        <a class="homelink" href="../../../index.html">Back to the site</a>
+      </div>
+    </div>
+
+    <div class="veil gone" id="vWin">
+      <div class="card">
+        <div class="verdict" id="wVerdict">DINNER IS SERVED</div>
+        <p class="sub" id="wLine"></p>
+        <div class="scoreOf" id="scoreOf">Modularity Q of each host&rsquo;s seating</div>
+        <div class="scoreRow" id="scoreRow"></div>
+        <p class="scorenote" id="wNote"></p>
+        <div class="nmirow" id="nmiRow"></div>
+        <div class="pathbox" id="wReport"></div>
+        <div class="btnrow">
+          <button class="go" id="bReveal">SHOW LOUVAIN&rsquo;S SEATING</button>
+          <button class="ghost" id="bBack">Back to the table</button>
+          <button class="ghost" id="bMenu2">New dinner</button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script src="../../../data/week4_symposium.js"></script>
+<script src="../../../data/week4_images.js"></script>
+<script src="core.js"></script>
+<script src="symposium.js"></script>
+</body>
+</html>

@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Week 4: The seating plan</title>
+<link rel="icon" type="image/svg+xml" href="../../assets/favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="../../assets/favicon-32.png">
+<link rel="apple-touch-icon" href="../../assets/apple-touch-icon.png">
+<meta name="description" content="Communities on Wikipedia's philosophers network: modularity explained as a seating plan, Louvain against a shuffled network, a greedy merger and a historian, twenty runs that cannot agree where Aristotle sits, and a game that makes you the host.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bangers&family=Cinzel:wght@400;600;700&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../assets/site.css">
+<style>
+/* Week 4 sets its own table: the dinner is for philosophers, so the page
+   trades the comic-book night for candlelight, serif and gold. The top bar
+   and footer stay the site's, so you still know where you are. */
+:root{
+  --bg:#160d12; --bg2:#1d1118;
+  --panel:#241720; --panel2:#2e1d28;
+  --line:#4a3040;
+  --text:#f1e6d2; --dim:#bfa98f; --dim2:#8f7a68;
+  --gold:#d9a648; --gold2:#f0c766; --wine:#9b2f3f; --wine2:#c9455a; --laurel:#8fb573; --marble:#d8cfc0;
+  --web:#d9a648; --red:#9b2f3f; --red2:#c9455a; --green:#8fb573; --purple:#a985e0;
+  --meander:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='12' viewBox='0 0 24 12'%3E%3Cpath d='M0 10h2V2h18v8h-6V6h2v2' fill='none' stroke='%23d9a648' stroke-width='1.4' opacity='.85'/%3E%3C/svg%3E");
+}
+body{font-family:"Cormorant Garamond",Georgia,"Times New Roman",serif;font-size:19px;line-height:1.55}
+body::before{background:
+  radial-gradient(900px 600px at 80% -8%, rgba(217,166,72,.12), transparent 62%),
+  radial-gradient(800px 620px at 6% 6%, rgba(155,47,63,.16), transparent 60%)}
+.caps{font-family:Cinzel,"Trajan Pro",Georgia,serif;letter-spacing:.08em;font-weight:600}
+.topbar .logo{color:var(--gold);text-shadow:0 2px 0 #5a3a10}
+.topbar nav a{font-family:Cinzel,serif;font-size:11.5px;letter-spacing:.06em;border-radius:3px}
+.topbar nav a.on{color:var(--gold);border-color:var(--gold);background:rgba(217,166,72,.08)}
+
+/* the invitation */
+.invite{padding:34px 0 0}
+.invite .card{
+  display:block;position:relative;color:inherit;border:1px solid var(--line);border-radius:4px;
+  background:linear-gradient(160deg,#2b1a24,#160d12 70%);padding:34px 38px 30px;overflow:hidden;transition:.18s;
+  box-shadow:0 20px 60px rgba(0,0,0,.45);
+}
+.invite .card::before,.invite .card::after{content:"";position:absolute;left:0;right:0;height:12px;background:var(--meander) repeat-x center;opacity:.7}
+.invite .card::before{top:10px}
+.invite .card::after{bottom:10px;transform:scaleY(-1)}
+.invite .card:hover{transform:translateY(-3px);border-color:var(--gold);text-decoration:none;box-shadow:0 26px 70px rgba(0,0,0,.55)}
+.invite .lbl{font-family:Cinzel,serif;font-size:11px;letter-spacing:.3em;color:var(--dim);text-transform:uppercase}
+.invite h3{font-family:Cinzel,serif;font-weight:700;font-size:clamp(40px,7vw,68px);letter-spacing:.14em;line-height:1;color:var(--gold);
+  margin:10px 0 12px;text-shadow:0 2px 0 #5a3a10,0 10px 30px rgba(217,166,72,.2)}
+.invite p{color:#e6d8c2;font-size:18px;max-width:64ch;margin:0;font-style:italic}
+.invite .cta{margin-top:18px;display:inline-block;font-family:Cinzel,serif;font-weight:700;font-size:13px;letter-spacing:.14em;color:#0c0609;
+  background:linear-gradient(180deg,var(--gold2),#b98a2f);padding:11px 26px;border-radius:3px;box-shadow:0 4px 0 #5a3a10}
+
+/* the post */
+.post{padding:40px 0 20px}
+.post .eyebrow{font-family:Cinzel,serif;font-size:11px;letter-spacing:.3em;color:var(--dim);text-transform:uppercase}
+.post h1{font-family:Cinzel,serif;font-weight:700;font-size:clamp(34px,6vw,60px);line-height:1.05;color:var(--text);margin:8px 0 16px;letter-spacing:.04em}
+.post h1 em{font-style:normal;color:var(--gold)}
+.post .stand{font-size:22px;line-height:1.5;color:#e6d8c2;font-style:italic;max-width:66ch;margin-bottom:8px}
+.post .meta{font-family:Cinzel,serif;font-size:11px;letter-spacing:.12em;color:var(--dim2);margin:8px 0 30px}
+.post h2{font-family:Cinzel,serif;font-weight:600;font-size:26px;letter-spacing:.06em;color:var(--gold);margin:52px 0 14px;padding-top:18px;border-top:1px solid var(--line)}
+.post h2 .num{display:inline-block;min-width:44px;color:var(--dim2);font-weight:400}
+.post p{margin:0 0 18px;max-width:72ch;color:#e9dcc7}
+.post p b{color:var(--text)}
+.post li{color:#e9dcc7}
+.post ol,.post ul{margin:0 0 20px 26px}
+.post li{margin-bottom:9px}
+.post li::marker{color:var(--gold);font-family:Cinzel,serif;font-size:14px}
+.post blockquote{border-left:3px solid var(--gold);padding:12px 22px;margin:26px 0;color:var(--text);font-size:21px;font-style:italic;
+  background:rgba(217,166,72,.05);border-radius:0 4px 4px 0}
+.post .drop::first-letter{font-family:Cinzel,serif;font-size:3.4em;line-height:.8;float:left;padding:8px 10px 0 0;color:var(--gold)}
+.tldr{border-radius:4px;background:linear-gradient(180deg,#241720,#160d12)}
+.tldr::before{background:var(--meander) repeat-x;height:12px;opacity:.7}
+.tldr .lbl{font-family:Cinzel,serif;font-size:16px;letter-spacing:.24em;color:var(--gold);text-shadow:none;margin-top:8px}
+.tldr li{font-family:"Cormorant Garamond",serif;font-size:18px;color:#e9dcc7}
+.tldr li::before{content:"\25C6";color:var(--gold);font-size:9px;top:6px}
+figure{margin:26px 0 30px}
+figure img{border:1px solid var(--line);border-radius:4px;box-shadow:0 18px 50px rgba(0,0,0,.45)}
+figcaption,.figcap{font-size:15px;color:var(--dim);line-height:1.5;margin-top:10px;font-style:italic}
+.tablewrap{border-radius:4px}
+table{font-family:"Cormorant Garamond",serif;font-size:17px}
+th{font-family:Cinzel,serif;font-size:10.5px;letter-spacing:.14em;background:var(--panel)}
+td{color:#e6d8c2}
+.sw{display:inline-block;width:11px;height:11px;border-radius:50%;margin-right:8px;vertical-align:middle;box-shadow:0 0 0 1px rgba(0,0,0,.5)}
+.callout{border-left-color:var(--gold);border-radius:0 4px 4px 0;font-size:18px}
+.callout b{color:var(--gold)}
+.ladder{margin:26px 0 30px;background:var(--panel);border:1px solid var(--line);border-radius:4px;padding:20px 22px 12px}
+.ladder .row{display:grid;grid-template-columns:150px 1fr 64px;gap:12px;align-items:center;margin:9px 0;font-size:16px}
+.ladder .who{font-family:Cinzel,serif;font-size:11.5px;letter-spacing:.06em;color:var(--dim);text-align:right}
+.ladder .bar{height:12px;background:#0c0609;border-radius:2px;overflow:hidden;border:1px solid var(--line)}
+.ladder .bar i{display:block;height:100%;background:linear-gradient(90deg,#7a5620,var(--gold))}
+.ladder .row.lou .bar i{background:linear-gradient(90deg,#3f6a3a,var(--laurel))}
+.ladder .row.null .bar i{background:linear-gradient(90deg,#5a3a45,#8f6a75)}
+.ladder .q{font-family:Cinzel,serif;font-size:14px;color:var(--text);text-align:right}
+.ladder .cap{font-size:14px;color:var(--dim);font-style:italic;margin-top:12px}
+pre{background:#0c0609;border:1px solid var(--line);border-radius:4px;padding:16px 18px;overflow-x:auto;font-size:13px;line-height:1.6;color:#e6d8c2;margin:0 0 20px}
+code{font-family:ui-monospace,Consolas,monospace;font-size:.86em;color:var(--gold2)}
+pre code{color:#e6d8c2}
+.postnav a{font-family:Cinzel,serif;font-size:11.5px;letter-spacing:.06em;border-radius:3px}
+.postnav a.cta{color:#0c0609;background:var(--gold);border-color:var(--gold)}
+.postnav a.cta:hover{background:var(--gold2);border-color:var(--gold2);color:#0c0609}
+footer{font-family:"Cormorant Garamond",serif}
+@media(max-width:640px){
+  .invite .card{padding:30px 22px 26px}
+  .ladder .row{grid-template-columns:96px 1fr 54px;gap:8px}
+  body{font-size:17.5px}
+}
+</style>
+</head>
+<body>
+
+<header class="topbar">
+  <div class="wrap">
+    <a href="../../index.html" class="logo comic">CAPES &amp; EDGES</a>
+    <nav>
+      <a href="../week1/">Week 1</a>
+      <a href="../week2/">Week 2</a>
+      <a href="../week3/">Week 3</a>
+      <a href="index.html" class="on">Week 4</a>
+      <a href="https://github.com/Oddvar112/Social-Graphs-and-Interactions">Code</a>
+    </nav>
+  </div>
+</header>
+
+<section class="invite">
+  <div class="wrap">
+    <a class="card" href="game/index.html">
+      <div class="lbl">Week 4 &middot; you are invited &middot; play it before you read it</div>
+      <h3>SYMPOSIUM</h3>
+      <p>A dinner for every philosopher on Wikipedia born before 1900, 1374 of them, and every link between their
+      articles. You get one guest, Kant, or Confucius, or Hypatia, at the head of an empty table with 3, 5 or 9
+      seats, and you fill it. The score is the links inside the table beyond what chance would give, one
+      table&rsquo;s share of modularity, and hubs are expensive. Then a greedy host, a random host and the best
+      table our search ever found sit down beside yours. Or take the whole room: a few place cards, everyone else
+      follows their friends, and Louvain is the rival.</p>
+      <span class="cta">TAKE THE HOST&rsquo;S CHAIR</span>
+    </a>
+  </div>
+</section>
+
+<main class="wrap post">
+  <div class="eyebrow">Week 4 &middot; communities &amp; backbones &middot; a change of guests</div>
+  <h1>The seating plan, or <em>where does Aristotle sit?</em></h1>
+  <p class="stand">Three weeks of Marvel, and this week the course handed everyone a new network: the philosophers.
+  We took it, because communities are a question about traditions, and traditions are what philosophy is made of.
+  A community, it turns out, is a table at a dinner, modularity is how well the seating matches the friendships,
+  and the algorithm that seats the room best cannot make up its mind about the most linked guest of all.</p>
+  <div class="meta">Philosophers: the course&rsquo;s frozen snapshot of 15 September 2026 &middot; 1444 philosophers, 9140 links,
+  giant component 1374 / 9139 &middot; undirected, unweighted unless said otherwise</div>
+
+  <div class="tldr">
+    <span class="lbl">THE SHORT VERSION</span>
+    <ul>
+      <li><b>Louvain seats the philosophers at nine tables</b> with modularity 0.508: the Scholastics, the Germans, the
+      Enlightenment, the Greeks, the moderns, the Indians, the Chinese, six Poles and a table for two.</li>
+      <li><b>0.508 means something because a shuffled network scores 0.222.</b> Every philosopher keeps their number
+      of links and the traditions vanish; what is left is what any network with these degrees scores.</li>
+      <li><b>Time explains less than half of it.</b> Seating everyone by the century they were born in scores 0.358,
+      and agrees with Louvain to an NMI of only 0.44. The tables are traditions, not generations.</li>
+      <li><b>Louvain does not agree with itself.</b> Twenty runs, twenty seatings, NMI between them from 0.60 to 0.83.
+      705 philosophers never move. Aristotle moves in 12 of 19 runs, between the Greeks and the Scholastics.</li>
+      <li><b>So we made you the host.</b> SYMPOSIUM hands you one philosopher and 3, 5 or 9 seats; the score is the
+      table&rsquo;s links above chance, one table&rsquo;s share of modularity. The best table around Kant is the Jena
+      circle, around Aristotle the Neoplatonists, and a greedy host loses to one look ahead.</li>
+    </ul>
+  </div>
+
+  <h2><span class="num">&nbsp;</span>What we asked</h2>
+  <ol>
+    <li><b>What is a community, if it is not a clique?</b> A group with more links inside than a shuffled network
+    would put there. We wanted to see that definition do work, on people whose groups have names.</li>
+    <li><b>What does Louvain find on the philosophers, and compared to what?</b> Nine tables and a number, then the
+    same number on a shuffled network, on a random network, from a greedy merger, and from a historian who only
+    knows birth centuries.</li>
+    <li><b>How stable is the answer?</b> The course page warns that Louvain depends on its random seed. We ran it
+    twenty times and asked who moves, and found that the question &ldquo;which tradition is Aristotle really in?&rdquo;
+    is one the algorithm answers differently every other run.</li>
+    <li><b>Can a person do this by hand?</b> Not for 1374 guests. But one table, built seat by seat and scored the
+    way Louvain scores, yes, and that became the game.</li>
+  </ol>
+
+  <h2><span class="num">I.</span>A community is a table</h2>
+  <p class="drop">The course page defines a community as a set of nodes more densely connected among themselves than
+  with the rest, and warns straight away that &ldquo;everyone connected to everyone&rdquo; is the wrong bar: on the
+  philosophers, the largest group where everyone links to everyone has a handful of members, and the traditions are
+  hundreds. So the definition has to be statistical. <b>Modularity</b> is the standard one. For a seating plan, a
+  partition of the guests into tables, count the links inside each table, and subtract what a network with the same
+  links, shuffled so that every guest keeps their number of links, would have put inside that table by chance:</p>
+  <blockquote>Q = &Sigma;<sub>tables</sub> [ links inside &divide; m &nbsp;&minus;&nbsp; (degree sum &divide; 2m)&sup2; ]</blockquote>
+  <p>Everyone at one table scores exactly zero, which is the first thing the game teaches: seat one philosopher and
+  the whole room follows, and Q reads 0.000. Split the room where the links are thin and Q climbs. Split it where the
+  links are thick and Q falls, because you are now paying the degree term for two tables and getting the inside links
+  of neither.</p>
+
+  <p>Louvain is the algorithm the course page runs. It moves guests one at a time to whichever neighbouring table
+  raises Q most, then treats each table as one big guest and repeats. On the philosophers&rsquo; giant component it
+  finds nine tables. We named them after who sits there.</p>
+
+  <figure>
+    <img src="../../assets/figures/week4_tables.png" alt="The philosophers network laid out with ForceAtlas2, each node coloured by its Louvain community, with the seven large communities labelled: the Scholastics, the Germans, the Enlightenment, the Greeks, the moderns, the Indians and the Chinese." loading="lazy">
+    <figcaption>The 1374 philosophers, laid out by ForceAtlas2 and coloured by Louvain&rsquo;s tables (best of 20 seeds,
+    Q = 0.508). Links inside a table take its colour; links between tables are faint. The two tiny tables, six Poles
+    and a pair of Frenchmen, are unlabelled. The same colours are used in the game&rsquo;s reveal.</figcaption>
+  </figure>
+
+  <div class="tablewrap">
+    <table>
+      <thead><tr><th>Table</th><th class="num">Guests</th><th>Who sits there (most linked first)</th><th>When they were born</th></tr></thead>
+      <tbody>
+        <tr><td><i class="sw" style="background:#d9a648"></i>the Scholastics</td><td class="num">320</td><td>Aristotle, Thomas Aquinas, Augustine of Hippo, Jesus, Avicenna</td><td>11th&ndash;14th c. (169), 1st&ndash;10th c. (86)</td></tr>
+        <tr><td><i class="sw" style="background:#7fb069"></i>the Germans</td><td class="num">275</td><td>Immanuel Kant, Hegel, Friedrich Nietzsche, Baruch Spinoza, Karl Marx</td><td>19th c. (204), 18th c. (57)</td></tr>
+        <tr><td><i class="sw" style="background:#5b8fd6"></i>the Enlightenment</td><td class="num">256</td><td>Ren&eacute; Descartes, Leibniz, John Locke, David Hume, Isaac Newton</td><td>18th c. (100), 17th c. (81)</td></tr>
+        <tr><td><i class="sw" style="background:#e07a3f"></i>the Greeks</td><td class="num">176</td><td>Plato, Cicero, Diogenes Laertius, Heraclitus, Socrates</td><td>BC (108), 1st&ndash;10th c. (50)</td></tr>
+        <tr><td><i class="sw" style="background:#d4536a"></i>the moderns</td><td class="num">155</td><td>Bertrand Russell, Henri Bergson, William James, Albert Einstein, C. S. Peirce</td><td>19th c. (153)</td></tr>
+        <tr><td><i class="sw" style="background:#a985e0"></i>the Indians</td><td class="num">109</td><td>The Buddha, Adi Shankara, Rabindranath Tagore, Madhvacharya, Nagarjuna</td><td>1st&ndash;10th c. (34), 11th&ndash;14th c. (32)</td></tr>
+        <tr><td><i class="sw" style="background:#45c2b1"></i>the Chinese</td><td class="num">75</td><td>Confucius, Zhu Xi, Mao Zedong, Laozi, Mencius</td><td>BC (32), 19th c. (14)</td></tr>
+        <tr><td><i class="sw" style="background:#e79ab9"></i>the Poles</td><td class="num">6</td><td>W&#322;adys&#322;aw Tatarkiewicz, Feliks Koneczny, Hugo Ko&#322;&#322;&#261;taj</td><td>18th&ndash;19th c.</td></tr>
+        <tr><td><i class="sw" style="background:#b7b64f"></i>a table for two</td><td class="num">2</td><td>Jules Barth&eacute;lemy-Saint-Hilaire, Jules Lequier</td><td>19th c.</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p class="figcap">Louvain&rsquo;s nine communities on the giant component, seed 17 of 20, the run with the highest Q.
+  Names are ours; the algorithm only returns sets.</p>
+
+  <p>The first surprise is in the first row. Aristotle, the most linked philosopher on Wikipedia with 300 links, does
+  not sit with Plato. He sits with Aquinas, Augustine and Avicenna, at the table of the people who spent a thousand
+  years commenting on him. Plato&rsquo;s table is the one with Socrates, Cicero and Heraclitus. By the links, Aristotle
+  is a medieval philosopher. Hold that thought; section III is about how sure the algorithm is.</p>
+
+  <h2><span class="num">II.</span>Compared to what</h2>
+  <p>A modularity of 0.508 is not a finding until you know what nothing looks like. The course page says so, and
+  it is the habit this site has had since week 2: shuffle, then compare. We did it four ways.</p>
+
+  <div class="ladder">
+    <div class="row lou"><span class="who">Louvain</span><span class="bar"><i style="width:87.6%"></i></span><span class="q">0.508</span></div>
+    <div class="row"><span class="who">Greedy merging</span><span class="bar"><i style="width:71.8%"></i></span><span class="q">0.416</span></div>
+    <div class="row"><span class="who">By century</span><span class="bar"><i style="width:61.6%"></i></span><span class="q">0.358</span></div>
+    <div class="row null"><span class="who">G(n,m) random</span><span class="bar"><i style="width:40.2%"></i></span><span class="q">0.233</span></div>
+    <div class="row null"><span class="who">Degree shuffle</span><span class="bar"><i style="width:38.3%"></i></span><span class="q">0.222</span></div>
+    <div class="cap">Modularity of five seatings of the same 1374 guests. The two null models are Louvain run on 20
+    shuffled networks each; the standard deviations are 0.002 and 0.004, so the real network is more than a hundred
+    standard deviations above its own shuffle. Bars are to scale; the axis ends at 0.58.</div>
+  </div>
+
+  <p><b>The degree-preserving shuffle</b> is the honest zero. Rewire the 9139 links at random while every philosopher
+  keeps exactly their number of links, then let Louvain do its best: 0.222, give or take 0.002. That is not zero, and
+  the course page explains why: on a sparse network Louvain can always find a seating with some links inside, and
+  the fewer links per node, the more of them it can capture. The number to remember is not 0.508 but the gap,
+  0.508 against 0.222. <b>A plain random network</b> with the same number of links scores a little higher, 0.233,
+  because without hubs the degree term is smaller for every table.</p>
+
+  <p><b>Greedy modularity</b> starts with 1374 tables of one and repeatedly merges the pair that raises Q most. It
+  reaches 0.416 with fifteen tables and agrees with Louvain to an NMI of 0.54. It loses because it can only merge; a
+  philosopher seated early at the wrong table can never leave. Louvain&rsquo;s first phase is exactly that leaving,
+  and it is worth 0.09 of modularity here.</p>
+
+  <p><b>The historian</b> seats everyone by the list they came from: born BC, 1st to 10th century, and so on, seven
+  tables. That scores 0.358. It is a real seating, well above the shuffle, so the centuries do carry structure.
+  But its NMI against Louvain is 0.44: the tables Louvain finds are only partly generations. The Scholastics span
+  a thousand years, the Indians span two thousand, and the 19th century is split three ways between the Germans, the
+  moderns and half of the Chinese.</p>
+
+  <div class="callout"><b>What 0.508 does and does not establish.</b> It establishes that the link structure of these
+  1374 articles has groups far denser than chance, and that those groups are traditions more than centuries. It does
+  not establish that there are nine of them, or that Aristotle is a Scholastic: the next section is about how much
+  of the seating is the network and how much is the seed.</div>
+
+  <h2><span class="num">III.</span>Louvain against Louvain</h2>
+  <p>Louvain visits the guests in random order, so it depends on its seed. We ran it twenty times. The scores
+  barely move: from 0.4885 to 0.5081. The seatings move a lot. NMI between two runs ranges from 0.60 to 0.83, with a
+  mean of 0.72, which is the range the course page reports for this network. Two runs with nearly the same Q can
+  seat a fifth of the room differently.</p>
+
+  <p>So who moves? We took the best run as the reference, matched every other run&rsquo;s tables to it by largest
+  overlap, and counted, for every philosopher, in how many of the 19 other runs they ended up at a different
+  table.</p>
+  <ul>
+    <li><b>705 of 1374 never move.</b> Plato, Socrates, Cicero, Augustine, Locke and Boethius are at the same table in
+    all twenty runs. The core of each tradition is not in doubt.</li>
+    <li><b>135 move in ten runs or more.</b> They are the border: Alexandre Koyr&eacute;, &Eacute;mile Durkheim, Georges
+    Bataille, Herbert Spencer, John Henry Newman, a French sociologist here, a Victorian polymath there, people whose
+    articles link into two traditions at once.</li>
+    <li><b>Aristotle moves in 12 of 19 runs.</b> Sometimes he is a Scholastic, sometimes a Greek. Plotinus, the
+    Neoplatonist between the two, moves in 11. Spinoza moves in 8, between the Enlightenment and the Germans. Marx
+    moves in 5. Descartes and Leibniz in 2. Kant in none.</li>
+  </ul>
+  <blockquote>Which tradition is Aristotle really in? The links say: the one that read him most. The algorithm says:
+  ask me again with another seed. Both answers are true, and the second is the one to put in a report.</blockquote>
+  <p>This is what NMI is for. A single Louvain run with Q = 0.508 sounds like an answer. Twenty runs with a mean
+  self-agreement of 0.72 are the honest version of it: the big tables are real, the borders between them are not,
+  and the most linked philosopher in the network sits on a border.</p>
+
+  <h2><span class="num">IV.</span>Then we made you the host</h2>
+  <p>Nobody can seat 1374 guests by hand, and the course&rsquo;s explorables show Louvain doing it, one move at a
+  time. We wanted the opposite: one table, built by a person, scored the way Louvain scores. <b>SYMPOSIUM</b> hands
+  you a philosopher, Kant say, at the head of an empty table with 3, 5 or 9 seats, and a list of everyone linked to
+  the table. You fill the seats. The score is the table&rsquo;s share of modularity, times the 9139 links in the
+  network, which turns it into a number you can count: the links inside the table minus the links a shuffled network
+  would have put there. We call it <b>links above chance</b>.</p>
+  <blockquote>links above chance = links inside &minus; (degree sum)&sup2; &divide; 4m</blockquote>
+  <p>That second term is the whole game. It grows with the square of the guests&rsquo; total links, so a hub costs
+  more than a modest name with the same friends. Kant links to Hegel, and Hegel has 152 links; seat him and chance
+  expects a lot. Seat Fichte, Schelling, Reinhold, Jacobi and Fries instead, five names with 11 to 69 links each who
+  all cite each other, and the table holds 15 links where chance expects 3.7: <b>11.3 above chance</b>, the best
+  five-seat table our search found around Kant. Around Aristotle the best long table is not the Greeks at all but
+  the Neoplatonist commentators, Proclus, Damascius, Simplicius, Hypatia. Around Confucius it is the Warring States,
+  Xunzi, Mozi, Han Fei, Shang Yang. The communities of section I, rediscovered one table at a time.</p>
+  <p>When you serve dinner, three rival hosts sit down. The <b>greedy host</b> adds whoever raises the score most,
+  one seat at a time, and never looks ahead; on Kant&rsquo;s five-seat table it reaches 3.8, because the safest first
+  pick is a nobody with one link, and the safest second pick is another. The <b>best found</b> comes from a swap
+  search that keeps trading one guest for one candidate until nothing improves, and it is the number to beat. A
+  <b>random host</b> draws from the host&rsquo;s friends: 2.6 above chance for Kant, below zero for Aristotle,
+  because Aristotle&rsquo;s friends are hubs. The score screen also says how many of your guests Louvain seats at the
+  same table as your host, which is the bridge back to sections I to III.</p>
+  <p>The second mode, <b>the whole room</b>, is the same idea at full scale: 6, 12 or 20 place cards, everybody else
+  sits where most of their friends sit, ring by ring, until the room settles, and the score is Q for all 1374. That
+  rule is label propagation, seeded by you. Louvain, the greedy merger, the historian and a random host seat the
+  same room, and the reveal lists the guests you and Louvain disagree on, with how often Louvain disagrees with
+  itself about them. Three cards, Plato, Kant and Aquinas, score 0.37; the gap to 0.51 is the borders again, because a
+  head count cannot see the degree term.</p>
+
+  <h2><span class="num">&nbsp;</span>What surprised us</h2>
+  <ol>
+    <li><b>Aristotle is medieval.</b> By the links, the most-read Greek sits with his commentators, not his teacher,
+    and Louvain changes its mind about it in twelve runs out of nineteen.</li>
+    <li><b>The historian is not bad.</b> Birth century alone scores 0.358, more than half of Louvain. Philosophy does
+    happen in time. It just happens more in traditions.</li>
+    <li><b>A shuffled network scores 0.22.</b> Anyone reporting a modularity of 0.3 on a sparse network as
+    &ldquo;community structure&rdquo; has found the null.</li>
+    <li><b>Greedy loses by never leaving.</b> The one thing Louvain adds, letting a guest change tables, is worth
+    0.09 of Q on this network.</li>
+    <li><b>Greedy loses at one table too.</b> Adding the safest guest each time gives Kant a five-seat table at 3.8
+    links above chance; swapping until nothing improves gives 11.3 with the same five seats. One look ahead is
+    worth a factor of three.</li>
+    <li><b>Aristotle&rsquo;s best table is Neoplatonist.</b> The nine guests who beat chance by most around the most
+    linked philosopher are his late-antique commentators, not Plato and the Athenians. His Greek friends are hubs,
+    and hubs are expensive.</li>
+  </ol>
+
+  <h2><span class="num">&nbsp;</span>Reproduce it</h2>
+  <p>Two scripts build everything on this page and in the game; a third checks the game&rsquo;s engine against
+  networkx by running the shipped file under node.</p>
+<pre><code>git clone https://github.com/Oddvar112/Social-Graphs-and-Interactions
+cd Social-Graphs-and-Interactions
+
+python scripts/build_week4_data.py --png assets/figures   # Louvain x20, greedy, the century seating, both nulls,
+                                                           # the layout and the figure -> data/week4_symposium.js
+python scripts/fetch_week4_images.py                       # portrait URLs from Wikipedia -> data/week4_images.js
+python scripts/test_symposium_rules.py                     # runs weeks/week4/game/core.js under node, diffs vs networkx
+
+python -m http.server 8000                                 # then open http://localhost:8000/weeks/week4/game/</code></pre>
+  <p>The philosophers files are the course&rsquo;s frozen snapshot, unmodified, in the repository root. Every number
+  quoted above is printed by <code>build_week4_data.py</code> and written into the data file the game reads, and the
+  test fails if the two ever disagree. The portraits are the lead images of the Wikipedia articles, loaded from
+  Wikipedia as you play and credited on the card; we store only their URLs.</p>
+
+  <div class="postnav">
+    <a href="../../index.html">&larr; Back to all weeks</a>
+    <a class="cta" href="game/index.html" target="_blank" rel="noopener">Open SYMPOSIUM full screen &rarr;</a>
+  </div>
+</main>
+
+<footer>
+  <div class="wrap">
+    <span>Oddvar, David and Milena &middot; 02805 Social Graphs and Interactions &middot; DTU</span>
+    <span class="sp"><a href="https://github.com/Oddvar112/Social-Graphs-and-Interactions">Source on GitHub</a></span>
+  </div>
+</footer>
+
+</body>
+</html>

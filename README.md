@@ -6,7 +6,8 @@ Eight weekly posts about one dataset: the 303 characters in Wikipedia's
 [Category:Marvel Comics superheroes](https://en.wikipedia.org/wiki/Category:Marvel_Comics_superheroes)
 and the 1784 directed links between their pages. From week 2 the villains join in: 363 characters from
 [Category:Marvel Comics supervillains](https://en.wikipedia.org/wiki/Category:Marvel_Comics_supervillains),
-crawled by us, and every link between any two of the 602.
+crawled by us, and every link between any two of the 602. In week 4 the guests change: the course's philosophers
+network, every philosopher on Wikipedia born before 1900, 1444 of them with 9140 links.
 
 **Live site:** https://oddvar112.github.io/Social-Graphs-and-Interactions/
 
@@ -22,10 +23,14 @@ crawled by us, and every link between any two of the 602.
 | `weeks/week2/hubdial/` | **THE HUB DIAL**, our exercise 2.10 explorable: non-linear preferential attachment, one file, embeddable |
 | `weeks/week3/index.html` | Week 3 post: paths, four centralities, the broker shuffle test, cliques |
 | `weeks/week3/game/` | **KINGPIN**, a fragmentation game scored against rival centrality strategies |
+| `weeks/week4/index.html` | Week 4 post, on the philosophers: communities as a seating plan, Louvain against two nulls, greedy and a historian, twenty seeds that disagree about Aristotle |
+| `weeks/week4/game/` | **SYMPOSIUM**, a seating game scored by modularity against Louvain, with the engine in `core.js` |
 | `scripts/` | Everything that produces the data and the figures |
 | `assets/figures/` | Generated figures: `analyse.py` writes the week 1 ones, `analyse_week2.py` the `week2_*` ones |
 | `data/` | Generated: graph for the game, stats, API verification output, the week 2 crawl |
 | `week1_edges.tsv`, `week1_nodes.tsv` | The frozen course snapshot, unmodified |
+| `week4_philosophers_nodes.tsv`, `week4_philosophers_edges.tsv` | The course's week 4 philosophers snapshot (15 September 2026), unmodified |
+| `week4_edges_weighted.tsv` | The week 1 Marvel edges with a weight, from the course's week 4 release |
 
 ## The game
 
@@ -73,6 +78,30 @@ The algorithms live in `weeks/week3/game/core.js` with no DOM in them, so `scrip
 the exact shipped file under node and diffs every number against networkx (betweenness to 1e-13, the bots' kill
 orders move for move).
 
+## The seating game
+
+**SYMPOSIUM** (week 4) is played on the course's philosophers network: every philosopher on Wikipedia born before
+1900, undirected giant component of 1374 philosophers and 9139 links. Two modes:
+
+* **One table.** You get a philosopher at the head of an empty table and 3, 5 or 9 seats. The score is the table's
+  share of modularity times m, i.e. links inside minus (degree sum)² / 4m, shown as "links above chance", with each
+  chair showing what that guest added. Serving dinner compares you with a greedy host (best next guest each time), the
+  best table a deterministic swap search finds, and a random pick from the host's friends, and says how many of your
+  guests Louvain puts in the host's community. Greedy, the swap search and the score live in `weeks/week4/game/core.js`.
+* **The whole room.** 6, 12 or 20 place cards and up to nine tables. Each card seats one philosopher by hand; everyone
+  else joins the table where most of the people they link to sit, ring by ring, and then guests keep moving to their
+  neighbours' majority table until nobody wants to move (label propagation seeded by the player, deterministic). The
+  score is modularity of the full 1374-guest seating. Serving dinner runs Louvain (best of 20 seeds), greedy modularity,
+  seating by century and a random host, and shows where you and Louvain disagree, with how many of Louvain's own 19
+  other runs move each of those guests.
+
+Portraits are Wikipedia's page images, loaded at view time and credited; only URLs are stored (`data/week4_images.js`).
+
+`scripts/build_week4_data.py` computes everything the game compares you with and writes `data/week4_symposium.js`;
+`scripts/test_symposium_rules.py` runs the shipped `core.js` under node and diffs modularity, NMI, the seating rule,
+the one-table score, the greedy host and the swap search against networkx, scikit-learn and plain Python
+re-implementations, guest for guest.
+
 ## Reproducing everything
 
 Requires Python 3.9+ with `networkx`, `numpy`, `matplotlib` and (from week 2) `scipy`.
@@ -91,6 +120,10 @@ python scripts/fetch_images.py       # lead-image URLs for ORIGIN STORY's charac
 
 python scripts/analyse_week3.py      # every figure and number in the week 3 post (a few minutes; --quick for a look)
 python scripts/test_kingpin_rules.py # runs KINGPIN's shipped core.js under node and diffs it against networkx
+
+python scripts/build_week4_data.py --png assets/figures  # Louvain x20, greedy, century seating, both nulls, layout, figure -> data/week4_symposium.js (a few minutes)
+python scripts/fetch_week4_images.py                     # portrait URLs from Wikipedia -> data/week4_images.js
+python scripts/test_symposium_rules.py                   # runs SYMPOSIUM's shipped core.js under node and diffs it against networkx
 ```
 
 The week 2 crawl is not frozen by the course, so `data/week2_*.tsv` is committed as our own snapshot (8 September
