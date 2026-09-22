@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Explorable · The hub dial: what non-linear preference does to the hubs</title>
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%2064%2064%22%3E%3Crect%20width%3D%2264%22%20height%3D%2264%22%20rx%3D%2214%22%20fill%3D%22%230c1122%22/%3E%3Cline%20x1%3D%2227%22%20y1%3D%2234%22%20x2%3D%2252%22%20y2%3D%2214%22%20stroke%3D%22%235fe3ff%22%20stroke-width%3D%222.6%22%20stroke-opacity%3D%220.75%22/%3E%3Cline%20x1%3D%2227%22%20y1%3D%2234%22%20x2%3D%2255%22%20y2%3D%2240%22%20stroke%3D%22%235fe3ff%22%20stroke-width%3D%222.6%22%20stroke-opacity%3D%220.75%22/%3E%3Cline%20x1%3D%2227%22%20y1%3D%2234%22%20x2%3D%2244%22%20y2%3D%2256%22%20stroke%3D%22%235fe3ff%22%20stroke-width%3D%222.6%22%20stroke-opacity%3D%220.75%22/%3E%3Cline%20x1%3D%2227%22%20y1%3D%2234%22%20x2%3D%2212%22%20y2%3D%2254%22%20stroke%3D%22%235fe3ff%22%20stroke-width%3D%222.6%22%20stroke-opacity%3D%220.75%22/%3E%3Cline%20x1%3D%2227%22%20y1%3D%2234%22%20x2%3D%2210%22%20y2%3D%2216%22%20stroke%3D%22%235fe3ff%22%20stroke-width%3D%222.6%22%20stroke-opacity%3D%220.75%22/%3E%3Cline%20x1%3D%2252%22%20y1%3D%2214%22%20x2%3D%2255%22%20y2%3D%2240%22%20stroke%3D%22%235fe3ff%22%20stroke-width%3D%222%22%20stroke-opacity%3D%220.45%22/%3E%3Cline%20x1%3D%2210%22%20y1%3D%2216%22%20x2%3D%2212%22%20y2%3D%2254%22%20stroke%3D%22%235fe3ff%22%20stroke-width%3D%222%22%20stroke-opacity%3D%220.45%22/%3E%3Ccircle%20cx%3D%2252%22%20cy%3D%2214%22%20r%3D%225.5%22%20fill%3D%22%235fe3ff%22/%3E%3Ccircle%20cx%3D%2255%22%20cy%3D%2240%22%20r%3D%225%22%20fill%3D%22%235fe3ff%22/%3E%3Ccircle%20cx%3D%2244%22%20cy%3D%2256%22%20r%3D%225%22%20fill%3D%22%23ff4b50%22/%3E%3Ccircle%20cx%3D%2212%22%20cy%3D%2254%22%20r%3D%225%22%20fill%3D%22%235fe3ff%22/%3E%3Ccircle%20cx%3D%2210%22%20cy%3D%2216%22%20r%3D%225.5%22%20fill%3D%22%235fe3ff%22/%3E%3Ccircle%20cx%3D%2227%22%20cy%3D%2234%22%20r%3D%2210.5%22%20fill%3D%22%23ffc93f%22/%3E%3C/svg%3E">
+<meta name="description" content="Grow a network where newcomers attach with probability proportional to k^alpha. Turn the dial: below 1 the hubs never form, at 1 you get Barabási–Albert, above 1 one node takes everything. Where does Spider-Man sit?">
+<!--
+  THE HUB DIAL - an explorable for week 2, exercise 2.10.
+  Capes & Edges (Oddvar, David and Milena), 02805 Social Graphs and Interactions, DTU, autumn 2026.
+
+  One file, no libraries, no data files: the Marvel reference (303 degrees) is inlined below.
+  Drop it in an iframe like the other explorables on the course page. ?theme=light|dark
+  picks the palette; without it the page follows the viewer's system setting.
+-->
+<style>
+:root{
+  --page:#f9f9f7; --surface:#fcfcfb; --ink:#0b0b0b; --ink-2:#52514e; --muted:#898781;
+  --grid:#e1e0d9; --baseline:#c3c2b7; --border:rgba(11,11,11,.12);
+  --accent:#4a3aa7; --accent-wash:rgba(74,58,167,.10);
+  --s1:#2a78d6; --s2:#1baf7a; --hub:#e0a11c; --hot:#c0392b; --marvel:#8a8780;
+  --edge:rgba(11,11,11,.16); --node:#4477cc; --node-new:#e07a2f;
+  --sub:rgba(42,120,214,.07); --sup:rgba(192,57,43,.07);
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --page:#0d0d0d; --surface:#1a1a19; --ink:#ffffff; --ink-2:#c3c2b7; --muted:#898781;
+    --grid:#2c2c2a; --baseline:#4a4946; --border:rgba(255,255,255,.12);
+    --accent:#aab5ff; --accent-wash:rgba(170,181,255,.12);
+    --s1:#5aa0f2; --s2:#3fd19a; --hub:#ffc93f; --hot:#ff6b5e; --marvel:#8d99bd;
+    --edge:rgba(255,255,255,.14); --node:#6a9ae8; --node-new:#ff9f43;
+    --sub:rgba(90,160,242,.08); --sup:rgba(255,107,94,.08);
+  }
+}
+:root[data-theme="dark"]{
+  --page:#070a14; --surface:#0f1428; --ink:#e9edf9; --ink-2:#c8d2ea; --muted:#8d99bd;
+  --grid:#26304f; --baseline:#3b466e; --border:rgba(233,237,249,.14);
+  --accent:#a678ff; --accent-wash:rgba(166,120,255,.12);
+  --s1:#5fe3ff; --s2:#4ade80; --hub:#ffc93f; --hot:#ff4b50; --marvel:#8d99bd;
+  --edge:rgba(141,153,189,.22); --node:#5fa0e8; --node-new:#ff9f43;
+  --sub:rgba(95,227,255,.07); --sup:rgba(255,75,80,.08);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{background:var(--page);color:var(--ink)}
+body{font-family:Inter,system-ui,-apple-system,"Segoe UI",Helvetica,Arial,sans-serif;font-size:14px;line-height:1.45;padding:14px 16px 12px}
+button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
+
+.controls{display:flex;flex-wrap:wrap;align-items:center;gap:10px 18px;margin-bottom:12px}
+.controls label{display:flex;align-items:center;gap:8px;font-size:12.5px;color:var(--ink-2);white-space:nowrap}
+.seg{display:inline-flex;border:1px solid var(--border);border-radius:8px;overflow:hidden;background:var(--surface)}
+.seg button{padding:5px 10px;font-size:12.5px;color:var(--ink-2);border-right:1px solid var(--border)}
+.seg button:last-child{border-right:0}
+.seg button.on{background:var(--accent-wash);color:var(--accent);font-weight:600}
+.btn{padding:6px 12px;border:1px solid var(--border);border-radius:8px;background:var(--surface);font-size:12.5px;font-weight:600;color:var(--ink)}
+.btn.primary{background:var(--accent);color:#fff;border-color:transparent}
+.btn:hover{border-color:var(--accent)}
+.btn[disabled]{opacity:.45;cursor:default}
+input[type=range]{accent-color:var(--accent)}
+#alpha{width:min(300px,42vw)}
+.dial{display:flex;align-items:center;gap:10px}
+.dial .val{font-variant-numeric:tabular-nums;font-weight:700;font-size:16px;color:var(--accent);min-width:3.4em}
+.regime{font-size:12.5px;color:var(--ink-2)}
+.regime b{color:var(--ink)}
+
+.panels{display:grid;grid-template-columns:1.1fr 1fr;gap:16px}
+.right{display:grid;grid-template-rows:1fr 1fr;gap:16px}
+.panel{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:10px 12px 8px;min-width:0}
+.panel h2{font-size:12.5px;font-weight:600;color:var(--ink-2);margin-bottom:6px;letter-spacing:.01em}
+.panel h2 span{color:var(--muted);font-weight:400}
+canvas{display:block;width:100%}
+#net{height:400px}
+#ccdf{height:166px}
+#sweep{height:166px}
+.legend{display:flex;flex-wrap:wrap;gap:4px 14px;font-size:11.5px;color:var(--muted);margin-bottom:4px}
+.legend .key{display:inline-flex;align-items:center;gap:5px}
+.legend .sw{width:14px;height:3px;border-radius:2px;display:inline-block}
+.legend .sw.dot{width:8px;height:8px;border-radius:50%}
+
+.readout{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:10px;margin-top:14px}
+.tile{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:8px 12px}
+.tile .label{font-size:11.5px;color:var(--muted)}
+.tile .value{font-size:19px;font-weight:600;font-variant-numeric:tabular-nums;color:var(--ink)}
+.tile .value small{font-size:12px;font-weight:500;color:var(--ink-2);margin-left:4px}
+.tile.hub .value{color:var(--hub)}
+
+.caption{margin-top:12px;font-size:12.5px;color:var(--ink-2);max-width:78ch}
+.caption b{color:var(--ink)}
+.caption a{color:var(--accent)}
+@media (max-width:760px){
+  .panels{grid-template-columns:1fr}
+  #net{height:320px}
+}
+</style>
+</head>
+<body>
+
+<div class="controls">
+  <div class="dial">
+    <label for="alpha">preference exponent α</label>
+    <input type="range" id="alpha" min="0" max="2.5" step="0.05" value="1">
+    <span class="val" id="alpha-val">1.00</span>
+  </div>
+  <span class="seg" id="presets">
+    <button data-a="0">uniform</button><button data-a="0.5">0.5</button><button data-a="1" class="on">1</button><button data-a="1.5">1.5</button><button data-a="2">2</button>
+  </span>
+  <label>links per newcomer m
+    <span class="seg" id="m-seg"><button data-m="1">1</button><button data-m="2">2</button><button data-m="3" class="on">3</button><button data-m="5">5</button></span>
+  </label>
+  <label>nodes n
+    <span class="seg" id="n-seg"><button data-n="303" class="on">303</button><button data-n="1000">1000</button><button data-n="3000">3000</button></span>
+  </label>
+  <button class="btn primary" id="play">▶ Grow</button>
+  <button class="btn" id="instant">Instant</button>
+  <button class="btn" id="reset">Reset</button>
+  <label>speed <input type="range" id="speed" min="1" max="10" value="4"></label>
+  <button class="btn" id="sweepBtn">Sweep α</button>
+  <button class="btn" id="marvelBtn">Marvel overlay: on</button>
+</div>
+<div class="regime" id="regime"></div>
+
+<div class="panels">
+  <div class="panel">
+    <h2 id="net-title">Growing with Π(k) ∝ k<sup>α</sup> <span>· centre = first to arrive · biggest hub in gold · newest in orange</span></h2>
+    <canvas id="net"></canvas>
+  </div>
+  <div class="right">
+    <div class="panel">
+      <h2>Degree distribution <span>(CCDF, log–log)</span></h2>
+      <div class="legend">
+        <span class="key"><span class="sw dot" style="background:var(--s1)"></span>this network</span>
+        <span class="key"><span class="sw" style="background:var(--baseline)"></span>k⁻² guide (γ = 3)</span>
+        <span class="key" id="key-marvel"><span class="sw dot" style="background:var(--marvel)"></span>Marvel, 303 heroes</span>
+      </div>
+      <canvas id="ccdf"></canvas>
+    </div>
+    <div class="panel">
+      <h2>Biggest hub's share of all links, against α <span>(press Sweep α)</span></h2>
+      <div class="legend">
+        <span class="key"><span class="sw" style="background:var(--s1)"></span>n = 303</span>
+        <span class="key"><span class="sw" style="background:var(--s2)"></span>n = 3000</span>
+        <span class="key"><span class="sw" style="background:var(--hub)"></span>Spider-Man: 106 of 1434 links</span>
+        <span class="key"><span class="sw dot" style="background:var(--hot)"></span>this run</span>
+      </div>
+      <canvas id="sweep"></canvas>
+    </div>
+  </div>
+</div>
+
+<div class="readout">
+  <div class="tile"><div class="label">Nodes</div><div class="value" id="r-n">–</div></div>
+  <div class="tile"><div class="label">Links</div><div class="value" id="r-m">–</div></div>
+  <div class="tile hub"><div class="label">Biggest hub</div><div class="value" id="r-hub">–</div></div>
+  <div class="tile hub"><div class="label">Its share of all links</div><div class="value" id="r-share">–</div></div>
+  <div class="tile"><div class="label">It arrived as node #</div><div class="value" id="r-arr">–</div></div>
+  <div class="tile"><div class="label">Same share in Barabási–Albert (1/√n)</div><div class="value" id="r-theory">–</div></div>
+</div>
+
+<p class="caption" id="caption">
+  <b>What to try.</b> Grow at α = 1 and read the biggest hub's share, then push n from 303 to 3000: the share
+  falls like 1/√n. Now set α = 0.5 and grow again: no hub at all, the tail on the right dies early. Then α = 1.5:
+  one node, almost always the first, keeps a fixed share of every link no matter how large the network gets.
+  Press <b>Sweep α</b> to see all three regimes in one curve, and read off where Spider-Man's 7.4% lands.
+</p>
+
+<script>
+(function () {
+  "use strict";
+  // ------------------------------------------------------------ theme
+  const q = new URLSearchParams(location.search);
+  if (q.get("theme") === "dark" || q.get("theme") === "light") document.documentElement.dataset.theme = q.get("theme");
+  const css = name => getComputedStyle(document.documentElement).getPropertyValue(name).trim();
+
+  // The Marvel reference: undirected degree of the 303 heroes in the frozen course
+  // snapshot (1434 links). Spider-Man is the 106.
+  const MARVEL = [106,65,63,57,41,37,32,32,31,29,28,28,28,28,27,27,27,27,26,26,26,25,25,24,24,24,24,22,22,22,22,21,21,21,21,20,20,19,18,18,18,18,18,18,18,17,17,17,17,17,17,17,16,16,16,16,16,15,15,15,15,15,15,15,15,15,15,15,15,14,14,14,14,13,13,13,13,13,12,12,12,12,12,11,11,11,11,11,11,11,11,10,10,10,10,10,10,10,10,9,9,9,9,9,9,9,9,9,9,9,9,8,8,8,8,8,8,8,8,8,8,8,8,8,8,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0];
+  const MARVEL_LINKS = 1434, MARVEL_SHARE = 106 / 1434;
+
+  // ------------------------------------------------------------ helpers
+  function mulberry32(seed) {
+    return function () {
+      seed |= 0; seed = seed + 0x6D2B79F5 | 0;
+      let t = Math.imul(seed ^ seed >>> 15, 1 | seed);
+      t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t;
+      return ((t ^ t >>> 14) >>> 0) / 4294967296;
+    };
+  }
+  // Fenwick tree over attachment weights k^alpha, so drawing a target is O(log n)
+  // however lopsided the weights get (and at alpha = 2 they get very lopsided).
+  class Fenwick {
+    constructor(n) { this.n = n; this.t = new Float64Array(n + 1); this.total = 0; this.top = 1; while (this.top * 2 <= n) this.top *= 2; }
+    add(i, d) { this.total += d; for (i++; i <= this.n; i += i & -i) this.t[i] += d; }
+    find(x) {                       // smallest index whose prefix sum exceeds x
+      let pos = 0;
+      for (let step = this.top; step > 0; step >>= 1) {
+        if (pos + step <= this.n && this.t[pos + step] <= x) { pos += step; x -= this.t[pos]; }
+      }
+      return pos;                   // 0-based
+    }
+  }
+
+  // ------------------------------------------------------------ the model
+  // Start from a complete graph on m+1 nodes. Every newcomer brings m links and
+  // picks each target with probability proportional to k^alpha (distinct targets).
+  function makeNet(n, m, alpha, seed) {
+    const net = { n, m, alpha, rnd: mulberry32(seed), deg: new Int32Array(n), edges: [], fw: new Fenwick(n), next: 0 };
+    const seedSize = Math.min(m + 1, n);
+    for (let i = 0; i < seedSize; i++) for (let j = i + 1; j < seedSize; j++) { net.edges.push([i, j]); net.deg[i]++; net.deg[j]++; }
+    for (let i = 0; i < seedSize; i++) net.fw.add(i, Math.pow(net.deg[i], alpha));
+    net.next = seedSize;
+    return net;
+  }
+  function growOne(net) {
+    const v = net.next;
+    if (v >= net.n) return false;
+    const chosen = new Set();
+    let tries = 0;
+    while (chosen.size < Math.min(net.m, v) && tries < 200) {
+      tries++;
+      let u = net.fw.find(net.rnd() * net.fw.total);
+      if (u >= v) u = v - 1;
+      if (net.deg[u] === 0) continue;
+      chosen.add(u);
+    }
+    chosen.forEach(u => {
+      net.edges.push([v, u]);
+      net.deg[u]++;
+      net.fw.add(u, Math.pow(net.deg[u], net.alpha) - Math.pow(net.deg[u] - 1, net.alpha));
+    });
+    net.deg[v] = chosen.size;
+    net.fw.add(v, Math.pow(Math.max(net.deg[v], 1), net.alpha));
+    net.next = v + 1;
+    return true;
+  }
+  function growAll(net) { while (growOne(net)) { /* until n */ } return net; }
+  function hubOf(net) {
+    let best = 0;
+    for (let i = 1; i < net.next; i++) if (net.deg[i] > net.deg[best]) best = i;
+    return best;
+  }
+
+  // ------------------------------------------------------------ state
+  let alpha = 1, m = 3, n = 303, seed = 11, showMarvel = true;
+  let net = makeNet(n, m, alpha, seed);
+  let playing = false, acc = 0, lastT = 0;
+  let sweepData = { 303: [], 3000: [] };
+  let sweeping = false;
+
+  const $ = id => document.getElementById(id);
+  const cvNet = $("net"), cvC = $("ccdf"), cvS = $("sweep");
+  const dpr = () => Math.min(window.devicePixelRatio || 1, 2);
+
+  function fit(cv) {
+    const r = cv.getBoundingClientRect(), d = dpr();
+    if (cv.width !== Math.round(r.width * d) || cv.height !== Math.round(r.height * d)) {
+      cv.width = Math.round(r.width * d); cv.height = Math.round(r.height * d);
+    }
+    return { ctx: cv.getContext("2d"), w: cv.width, h: cv.height, d };
+  }
+  function regimeText(a) {
+    if (a < 0.02) return "<b>α = 0, uniform attachment.</b> Growth without preference: every existing node is equally likely. The oldest nodes still lead a little, but only because they have had more rounds.";
+    if (a < 0.95) return "<b>Sublinear (α &lt; 1): hubs never form.</b> Preference is too weak to feed back on itself; the degree distribution is a stretched exponential and the biggest node's share shrinks fast as n grows.";
+    if (a <= 1.05) return "<b>Linear (α = 1): Barabási–Albert.</b> Growth plus proportional preference gives a power law with γ = 3. The biggest hub has about m√n links, a share of all links that falls like 1/√n.";
+    if (a < 2) return "<b>Superlinear (1 &lt; α &lt; 2): the winner takes all.</b> A small early lead compounds; one node, almost always among the first, keeps a fixed share of every link however large the network grows.";
+    return "<b>α ≥ 2: a star.</b> After a short race the leader receives a link from essentially every newcomer; everybody else keeps the m links they arrived with. The share saturates at 1/m, because a newcomer can give the hub only one of its m links.";
+  }
+
+  // ------------------------------------------------------------ layout: sunflower by arrival
+  let posCache = { n: 0, pos: null };
+  function positions(nn, w, h) {
+    if (posCache.n === nn && posCache.w === w && posCache.h === h) return posCache.pos;
+    const R = Math.min(w, h) * 0.47, cx = w / 2, cy = h / 2, GA = Math.PI * (3 - Math.sqrt(5));
+    const pos = new Float32Array(nn * 2);
+    for (let i = 0; i < nn; i++) {
+      const rad = R * Math.sqrt((i + 0.5) / nn);
+      pos[2 * i] = cx + rad * Math.cos(i * GA);
+      pos[2 * i + 1] = cy + rad * Math.sin(i * GA);
+    }
+    posCache = { n: nn, w, h, pos };
+    return pos;
+  }
+
+  // ------------------------------------------------------------ drawing
+  function drawNet() {
+    const { ctx, w, h, d } = fit(cvNet);
+    ctx.clearRect(0, 0, w, h);
+    const pos = positions(net.n, w, h);
+    const present = net.next;
+    const hub = present ? hubOf(net) : -1;
+    const kmax = Math.max(1, net.deg[hub] || 1);
+    // edges
+    ctx.strokeStyle = css("--edge");
+    ctx.lineWidth = (net.n > 1000 ? 0.45 : 0.7) * d;
+    ctx.beginPath();
+    for (let i = 0; i < net.edges.length; i++) {
+      const e = net.edges[i];
+      ctx.moveTo(pos[2 * e[0]], pos[2 * e[0] + 1]);
+      ctx.lineTo(pos[2 * e[1]], pos[2 * e[1] + 1]);
+    }
+    ctx.stroke();
+    // nodes: area grows with k (radius with sqrt k), scaled down as n grows so the edges stay visible
+    const base = net.n > 1000 ? 0.5 : net.n > 500 ? 0.8 : 1.2;
+    const scale = net.n > 1000 ? 0.55 : net.n > 500 ? 0.75 : 1.0;
+    ctx.fillStyle = css("--node");
+    for (let i = 0; i < present; i++) {
+      if (i === hub) continue;
+      const r = (base + scale * Math.sqrt(net.deg[i])) * d;
+      ctx.beginPath(); ctx.arc(pos[2 * i], pos[2 * i + 1], r, 0, Math.PI * 2); ctx.fill();
+    }
+    if (present > 1) {                                   // newest node in orange
+      const i = present - 1;
+      ctx.fillStyle = css("--node-new");
+      ctx.beginPath(); ctx.arc(pos[2 * i], pos[2 * i + 1], (base + scale * Math.sqrt(net.deg[i])) * d + 1.5 * d, 0, Math.PI * 2); ctx.fill();
+    }
+    if (hub >= 0) {                                       // the hub, with a halo and its degree
+      const r = (base + scale * Math.sqrt(net.deg[hub])) * d;
+      ctx.fillStyle = css("--hub");
+      ctx.globalAlpha = 0.22;
+      ctx.beginPath(); ctx.arc(pos[2 * hub], pos[2 * hub + 1], r + 9 * d, 0, Math.PI * 2); ctx.fill();
+      ctx.globalAlpha = 1;
+      ctx.beginPath(); ctx.arc(pos[2 * hub], pos[2 * hub + 1], r, 0, Math.PI * 2); ctx.fill();
+      ctx.font = `700 ${12 * d}px Inter, system-ui, sans-serif`;
+      ctx.textAlign = "center"; ctx.textBaseline = "bottom";
+      ctx.lineWidth = 3 * d; ctx.strokeStyle = css("--surface"); ctx.lineJoin = "round";
+      const label = `k = ${net.deg[hub]}  (#${hub + 1})`;
+      ctx.strokeText(label, pos[2 * hub], pos[2 * hub + 1] - r - 3 * d);
+      ctx.fillStyle = css("--ink"); ctx.fillText(label, pos[2 * hub], pos[2 * hub + 1] - r - 3 * d);
+    }
+    void kmax;
+  }
+
+  function ccdfOf(arr) {
+    const v = Array.from(arr).filter(x => x > 0).sort((a, b) => a - b);
+    const pts = [];
+    for (let i = 0; i < v.length; i++) if (i === 0 || v[i] !== v[i - 1]) pts.push([v[i], (v.length - i) / v.length]);
+    return pts;
+  }
+  function logAxes(ctx, w, h, d, padL, padB, padT, padR, xmax, ymin, xticks, yticks) {
+    const X = x => padL + (Math.log10(x) / Math.log10(xmax)) * (w - padL - padR);
+    const Y = y => padT + (Math.log10(y) / Math.log10(ymin)) * (h - padT - padB);
+    ctx.strokeStyle = css("--grid"); ctx.lineWidth = 1 * d;
+    ctx.fillStyle = css("--muted"); ctx.font = `${10 * d}px Inter, system-ui, sans-serif`;
+    ctx.textAlign = "center"; ctx.textBaseline = "top";
+    xticks.forEach(x => { ctx.beginPath(); ctx.moveTo(X(x), padT); ctx.lineTo(X(x), h - padB); ctx.stroke(); ctx.fillText(String(x), X(x), h - padB + 3 * d); });
+    ctx.textAlign = "right"; ctx.textBaseline = "middle";
+    yticks.forEach(y => { ctx.beginPath(); ctx.moveTo(padL, Y(y)); ctx.lineTo(w - padR, Y(y)); ctx.stroke(); ctx.fillText(String(y), padL - 4 * d, Y(y)); });
+    return { X, Y };
+  }
+  function drawCCDF() {
+    const { ctx, w, h, d } = fit(cvC);
+    ctx.clearRect(0, 0, w, h);
+    const padL = 34 * d, padB = 18 * d, padT = 6 * d, padR = 8 * d;
+    const xmax = 4000, ymin = 1 / 4000;
+    const { X, Y } = logAxes(ctx, w, h, d, padL, padB, padT, padR, xmax, ymin, [1, 10, 100, 1000], [1, 0.1, 0.01, 0.001]);
+    // guide: k^-2
+    ctx.strokeStyle = css("--baseline"); ctx.lineWidth = 1.4 * d; ctx.setLineDash([5 * d, 4 * d]);
+    ctx.beginPath(); ctx.moveTo(X(m), Y(1)); ctx.lineTo(X(m * 60), Y(1 / 3600)); ctx.stroke(); ctx.setLineDash([]);
+    if (showMarvel) {
+      ctx.fillStyle = css("--marvel");
+      ccdfOf(MARVEL).forEach(([k, p]) => { ctx.beginPath(); ctx.arc(X(k), Y(Math.max(p, ymin)), 1.9 * d, 0, Math.PI * 2); ctx.fill(); });
+    }
+    if (net.next > 1) {
+      ctx.fillStyle = css("--s1");
+      ccdfOf(net.deg.subarray(0, net.next)).forEach(([k, p]) => { ctx.beginPath(); ctx.arc(X(k), Y(Math.max(p, ymin)), 2.4 * d, 0, Math.PI * 2); ctx.fill(); });
+    }
+  }
+  function drawSweep() {
+    const { ctx, w, h, d } = fit(cvS);
+    ctx.clearRect(0, 0, w, h);
+    const padL = 36 * d, padB = 18 * d, padT = 6 * d, padR = 8 * d;
+    const X = a => padL + (a / 2.5) * (w - padL - padR);
+    const Y = s => padT + (Math.log10(Math.max(s, 0.005)) / Math.log10(0.005)) * (h - padT - padB);
+    // regime washes
+    ctx.fillStyle = css("--sub"); ctx.fillRect(X(0), padT, X(1) - X(0), h - padT - padB);
+    ctx.fillStyle = css("--sup"); ctx.fillRect(X(1), padT, X(2.5) - X(1), h - padT - padB);
+    ctx.strokeStyle = css("--grid"); ctx.lineWidth = 1 * d;
+    ctx.fillStyle = css("--muted"); ctx.font = `${10 * d}px Inter, system-ui, sans-serif`;
+    ctx.textAlign = "center"; ctx.textBaseline = "top";
+    [0, 0.5, 1, 1.5, 2, 2.5].forEach(a => { ctx.beginPath(); ctx.moveTo(X(a), padT); ctx.lineTo(X(a), h - padB); ctx.stroke(); ctx.fillText(String(a), X(a), h - padB + 3 * d); });
+    ctx.textAlign = "right"; ctx.textBaseline = "middle";
+    [1, 0.3, 0.1, 0.03, 0.01].forEach(s => { ctx.beginPath(); ctx.moveTo(padL, Y(s)); ctx.lineTo(w - padR, Y(s)); ctx.stroke(); ctx.fillText(`${Math.round(s * 100)}%`, padL - 4 * d, Y(s)); });
+    ctx.textAlign = "left"; ctx.textBaseline = "top"; ctx.fillStyle = css("--muted");
+    ctx.fillText("no hubs", X(0.05), padT + 3 * d);
+    ctx.textAlign = "right"; ctx.fillText("winner takes all", X(2.45), padT + 3 * d);
+    ctx.textAlign = "center"; ctx.fillText("α", X(1.25), h - 1 * d - 10 * d);
+    // Spider-Man's share
+    ctx.strokeStyle = css("--hub"); ctx.lineWidth = 1.6 * d; ctx.setLineDash([6 * d, 4 * d]);
+    ctx.beginPath(); ctx.moveTo(padL, Y(MARVEL_SHARE)); ctx.lineTo(w - padR, Y(MARVEL_SHARE)); ctx.stroke(); ctx.setLineDash([]);
+    // sweep curves
+    for (const [nn, colour] of [[303, "--s1"], [3000, "--s2"]]) {
+      const pts = sweepData[nn];
+      if (!pts.length) continue;
+      ctx.strokeStyle = css(colour); ctx.lineWidth = 2 * d; ctx.beginPath();
+      pts.forEach(([a, s], i) => { if (i === 0) ctx.moveTo(X(a), Y(s)); else ctx.lineTo(X(a), Y(s)); });
+      ctx.stroke();
+      ctx.fillStyle = css(colour);
+      pts.forEach(([a, s]) => { ctx.beginPath(); ctx.arc(X(a), Y(s), 2.2 * d, 0, Math.PI * 2); ctx.fill(); });
+    }
+    // this run
+    if (net.next >= net.n) {
+      const hub = hubOf(net), share = net.deg[hub] / net.edges.length;
+      ctx.fillStyle = css("--hot");
+      ctx.beginPath(); ctx.arc(X(alpha), Y(share), 4.5 * d, 0, Math.PI * 2); ctx.fill();
+      ctx.strokeStyle = css("--surface"); ctx.lineWidth = 1.5 * d; ctx.stroke();
+    }
+  }
+  function updateReadout() {
+    const done = net.next >= net.n;
+    const hub = net.next ? hubOf(net) : -1;
+    const links = net.edges.length;
+    $("r-n").textContent = `${net.next} / ${net.n}`;
+    $("r-m").textContent = links;
+    $("r-hub").innerHTML = hub >= 0 ? `${net.deg[hub]}<small>links</small>` : "–";
+    $("r-share").innerHTML = hub >= 0 && links ? `${(100 * net.deg[hub] / links).toFixed(1)}%` + (done ? `<small>Spider-Man: 7.4%</small>` : "") : "–";
+    $("r-arr").textContent = hub >= 0 ? `#${hub + 1}` : "–";
+    $("r-theory").innerHTML = `${(100 / Math.sqrt(net.next || 1)).toFixed(1)}%<small>at n = ${net.next}</small>`;
+    $("regime").innerHTML = regimeText(alpha);
+    $("play").innerHTML = playing ? "❚❚ Pause" : (done ? "▶ Grow again" : "▶ Grow");
+  }
+  function drawAll() { drawNet(); drawCCDF(); drawSweep(); updateReadout(); }
+
+  // ------------------------------------------------------------ the sweep
+  function runSweep() {
+    if (sweeping) return;
+    sweeping = true;
+    $("sweepBtn").disabled = true;
+    sweepData = { 303: [], 3000: [] };
+    const alphas = [];
+    for (let a = 0; a <= 2.501; a += 0.1) alphas.push(Math.round(a * 10) / 10);
+    let i = 0;
+    function step() {
+      const a = alphas[i];
+      for (const nn of [303, 3000]) {
+        const runs = nn === 303 ? 5 : 2, shares = [];
+        for (let r = 0; r < runs; r++) {
+          const g = growAll(makeNet(nn, m, a, 1000 * i + 17 * r + nn));
+          shares.push(g.deg[hubOf(g)] / g.edges.length);
+        }
+        shares.sort((x, y) => x - y);
+        sweepData[nn].push([a, shares[Math.floor(shares.length / 2)]]);
+      }
+      drawSweep();
+      i++;
+      if (i < alphas.length) setTimeout(step, 30); else { sweeping = false; $("sweepBtn").disabled = false; }
+    }
+    step();
+  }
+
+  // ------------------------------------------------------------ control
+  function reset(newSeed) {
+    if (newSeed) seed = (seed * 48271 + 11) % 2147483647;
+    net = makeNet(n, m, alpha, seed);
+    playing = false; acc = 0;
+    drawAll();
+  }
+  function tick(now) {
+    if (playing) {
+      const perSec = [0, 4, 8, 15, 30, 60, 120, 250, 500, 1000, 2000][Number($("speed").value)];
+      acc += (now - lastT) / 1000 * perSec; lastT = now;
+      let steps = Math.floor(acc); acc -= steps;
+      while (steps-- > 0 && growOne(net)) { /* grow */ }
+      if (net.next >= net.n) playing = false;
+      drawAll();
+    }
+    requestAnimationFrame(tick);
+  }
+  $("alpha").addEventListener("input", () => {
+    alpha = Number($("alpha").value);
+    $("alpha-val").textContent = alpha.toFixed(2);
+    document.querySelectorAll("#presets button").forEach(b => b.classList.toggle("on", Number(b.dataset.a) === alpha));
+    reset(false);
+  });
+  document.querySelectorAll("#presets button").forEach(b => b.addEventListener("click", () => {
+    $("alpha").value = b.dataset.a; $("alpha").dispatchEvent(new Event("input"));
+  }));
+  document.querySelectorAll("#m-seg button").forEach(b => b.addEventListener("click", () => {
+    m = Number(b.dataset.m);
+    document.querySelectorAll("#m-seg button").forEach(x => x.classList.toggle("on", x === b));
+    sweepData = { 303: [], 3000: [] };
+    reset(false);
+  }));
+  document.querySelectorAll("#n-seg button").forEach(b => b.addEventListener("click", () => {
+    n = Number(b.dataset.n);
+    document.querySelectorAll("#n-seg button").forEach(x => x.classList.toggle("on", x === b));
+    reset(false);
+  }));
+  $("play").addEventListener("click", () => {
+    if (net.next >= net.n) reset(true);
+    playing = !playing; lastT = performance.now(); acc = 0; updateReadout();
+  });
+  $("instant").addEventListener("click", () => { if (net.next >= net.n) reset(true); playing = false; growAll(net); drawAll(); });
+  $("reset").addEventListener("click", () => reset(true));
+  $("sweepBtn").addEventListener("click", runSweep);
+  $("marvelBtn").addEventListener("click", () => {
+    showMarvel = !showMarvel;
+    $("marvelBtn").textContent = `Marvel overlay: ${showMarvel ? "on" : "off"}`;
+    $("key-marvel").style.opacity = showMarvel ? 1 : 0.35;
+    drawCCDF();
+  });
+  window.addEventListener("resize", drawAll);
+  document.addEventListener("keydown", e => { if (e.code === "Space" && e.target === document.body) { e.preventDefault(); $("play").click(); } });
+
+  if (q.get("alpha")) { $("alpha").value = q.get("alpha"); $("alpha").dispatchEvent(new Event("input")); }
+  reset(false);
+  if (q.get("grow") === "1") { growAll(net); drawAll(); }
+  if (q.get("sweep") === "1") runSweep();
+  requestAnimationFrame(tick);
+})();
+</script>
+</body>
+</html>

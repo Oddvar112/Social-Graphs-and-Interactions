@@ -3,8 +3,11 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Week 3: Compared to what?</title>
-<meta name="description" content="Why 2.67 versus 2.8 tells you nothing about the Marvel network, and what does. Centralities against the right null model, the characters that surprise once you control for degree, and an explorable where you take the network apart by hand.">
+<title>Week 3: The network shrugged</title>
+<link rel="icon" type="image/svg+xml" href="../../assets/favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="../../assets/favicon-32.png">
+<link rel="apple-touch-icon" href="../../assets/apple-touch-icon.png">
+<meta name="description" content="Four centrality measures on Wikipedia's Marvel network, the shuffle test that separates real brokers from famous hubs, six identical X-Men cliques, and a game where you try to out-assassinate two greedy bots.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Bangers&family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
@@ -17,6 +20,7 @@
     <a href="../../index.html" class="logo comic">CAPES &amp; EDGES</a>
     <nav>
       <a href="../week1/">Week 1</a>
+      <a href="../week2/">Week 2</a>
       <a href="index.html" class="on">Week 3</a>
       <a href="https://github.com/Oddvar112/Social-Graphs-and-Interactions">Code</a>
     </nav>
@@ -25,277 +29,282 @@
 
 <section class="playfirst">
   <div class="wrap">
-    <a class="playcard" href="dismantle/index.html">
+    <a class="playcard" href="game/index.html">
       <div class="lbl">Week 3 &middot; play it before you read it</div>
-      <h3 class="comic">DISMANTLE</h3>
-      <p>Remove Marvel characters one at a time in the order a centrality measure recommends, and watch the giant
-      component fall apart. Or not fall apart, which turns out to be the finding. Seven orders, including two that re-rank
-      after every cut, and a random baseline you can rerun.</p>
-      <span class="cta">Take it apart</span>
+      <h3 class="comic">KINGPIN</h3>
+      <p>You get a handful of hits. Remove characters from the real network and try to shatter its core; whoever
+      loses their last route to the big cluster is cut off. Then three rival hitmen run the same contract: one
+      always shoots the most connected, one the biggest broker, one at random. The map shows who is popular.
+      It does not show who holds the network together, and the gap between those two is this whole post.</p>
+      <span class="cta">Play it</span>
     </a>
   </div>
 </section>
 
 <main class="wrap post">
 
-  <div class="kicker">Week 3 &middot; Structure</div>
-  <h1>Compared to what?</h1>
-  <p class="lede">The assignment hands you two numbers. The Marvel network has an average distance of 2.67; a random
-  network with the same size and the same number of links has 2.8. Is that evidence of anything? It is not, and working
-  out why turned into the theme of the whole week: every "who matters" question has a "compared to what" hiding inside
-  it, and the answer changes completely depending on which null model you pick.</p>
-  <p class="byline">Oddvar, David and Milena &middot; 14 September 2026 &middot; same frozen snapshot as week 1 &middot; 200 degree-preserving shuffles behind every z-score</p>
+  <div class="kicker">Week 3 &middot; Centrality</div>
+  <h1>The network shrugged.</h1>
+  <p class="lede">This week the course handed us four definitions of importance: how many know you, how fast you
+  reach everyone, how often you are the bridge, and whether the important know you. On the Marvel network all four
+  crown Spider-Man, all four rank close to plain degree, and the whole game is in where they disagree. Then we
+  applied last week's lesson to this week's measures and asked, for every impressive-looking centrality:
+  compared to what? Spider-Man's famous betweenness did not survive the question. Black Widow's did. And when
+  we shot the network eight times to see what falls apart, it barely noticed &mdash; hence the title.</p>
+  <p class="byline">Oddvar, David and Milena &middot; 14 September 2026 &middot; frozen snapshot of 26 August 2026 &middot;
+  undirected giant component, 277 characters, 1421 links, unless the arrows are the point</p>
 
-  <h2>The trap in two numbers</h2>
-  <p>Three things are wrong with reading anything into 2.67 versus 2.8.</p>
-  <p><strong>Distance is almost entirely fixed by n and ⟨k⟩.</strong> In any network without a lattice-like structure,
-  paths grow like ln n / ln ⟨k⟩. With 303 nodes and ⟨k⟩ = 9.5 that is 2.54. Everything connected with these numbers
-  lands somewhere between 2.5 and 2.9. The Marvel value says the network is not a ring. We knew.</p>
-  <p><strong>The two numbers are not measured on the same thing.</strong> 2.67 is the giant component, 277 characters.
-  A G(n,m) network with ⟨k⟩ = 9.5 has no isolates at all, so its 2.8 is measured on 303. Bigger network, slightly longer
-  paths. Part of the gap is just that.</p>
-  <p><strong>G(n,m) is the wrong null for the question.</strong> We drew 200 of them: ⟨d⟩ = 2.778 ± 0.004. The spread is
-  so tight that the real network sits 24 standard deviations away. Significant, technically, and it proves exactly one
-  thing: the degree distribution is not Poisson. That is a week 1 result. Spider-Man's 106 links are shortcuts, and
-  G(n,m) has never heard of him.</p>
+  <div class="tldr">
+    <span class="lbl">TL;DR</span>
+    <ul>
+      <li><b>Distances are tiny and BFS is the machine.</b> Mean distance 2.67, diameter 6, and Spider-Man is the
+        literal centre of the universe: nobody in the core is more than 3 steps from him. Keep the arrows, though,
+        and only 69% of ordered pairs can reach each other at all.</li>
+      <li><b>The four centralities mostly agree</b> (rank correlation with degree 0.85 to 0.91), so a top-ten list
+        is not a finding. The disagreements are: PageRank lifts <b>Black Cat</b> and <b>Mayday Parker</b> into the
+        top ten on modest fame, because Spider-Man's nine outgoing links are the biggest vote in the network.</li>
+      <li><b>Compared to what?</b> Spider-Man's betweenness of 0.235 is exactly what any 106-link node would have
+        (z&nbsp;=&nbsp;0.3). The real brokers are <b>Black Widow</b> (z&nbsp;=&nbsp;4.9), <b>Hercules</b> (4.2),
+        <b>U.S. Agent</b> (3.3), and, absurdly, <b>Rockman</b>, two links and z&nbsp;=&nbsp;50. Black Cat has a
+        third of the betweenness her 28 links predict: Spider-Man is a shortcut around her.</li>
+      <li><b>Cliques top out at eight</b>, and the largest clique is not unique: there are six 8-cliques, every one
+        of them the same six X-Men plus two guests.</li>
+      <li><b>The network is hard to shatter.</b> Eight optimal-greedy assassinations shrink the 277-core only to
+        259, hub-hunting and broker-hunting tie, and beating them takes hits that work together. That is the game
+        above; the best crew we ever found always includes Black Widow.</li>
+    </ul>
+  </div>
 
-  <figure>
-    <img src="../../assets/figures/week3_distances.png" alt="Left: histogram of shortest path lengths for the real network, for G(n,m), and for degree-preserving shuffles. Right: the distribution of average distance over 200 draws of each null, with the real value marked.">
-    <figcaption>Left: the whole distance distribution, not just its mean. Right: where the real ⟨d⟩ falls against 200
-    draws of each null. Against G(n,m) it is far to the left. Against shuffles that keep every character's degree, it is
-    to the <em>right</em>.</figcaption>
-  </figure>
+  <h2>What we asked</h2>
+  <ol>
+    <li><strong>Who matters, by which definition?</strong> Degree, closeness, betweenness, eigenvector centrality
+      and PageRank all answer a different question. Do they answer differently on Marvel, and who benefits?</li>
+    <li><strong>Which centralities survive the shuffle?</strong> Week 2 taught us that a number means nothing until
+      you know what the degree sequence alone would produce. This week we aimed that tool at betweenness.</li>
+    <li><strong>Can you feel it?</strong> Betweenness is the least intuitive measure on the list, so we built a
+      game where the difference between "most connected" and "holds the network together" is the difference
+      between winning and losing.</li>
+  </ol>
 
-  <p>So we asked the question the right way. Keep every character's degree exactly as it is, rewire the links at random,
-  repeat 200 times. That null knows about Spider-Man. It gives ⟨d⟩ = 2.602 ± 0.015, and the real network at 2.674 sits
-  <strong>4.9 standard deviations above it</strong>. The real network is <em>longer</em> than its own hubs predict, not
-  shorter.</p>
+  <h2>The machine underneath: one BFS per character</h2>
+  <p>Every number in the first half of this post comes out of breadth-first search: stand on a node, everything it
+  links to is at distance 1, everything they link to that you have not seen is at distance 2, repeat. Run it from
+  all 277 characters of the undirected giant component and you have every distance in the network.</p>
 
   <div class="tablewrap">
     <table>
-      <thead><tr><th>Network</th><th class="num">nodes</th><th class="num">⟨d⟩</th><th class="num">z of real</th><th class="num">clustering C</th></tr></thead>
+      <thead><tr><th>Property</th><th class="num">Value</th><th>Comment</th></tr></thead>
       <tbody>
-        <tr><td>Marvel, giant component</td><td class="num">277</td><td class="num">2.674</td><td class="num"></td><td class="num">0.320</td></tr>
-        <tr><td>G(n,m), 200 draws</td><td class="num">303</td><td class="num">2.778 ± 0.004</td><td class="num">−23.8</td><td class="num">0.031</td></tr>
-        <tr><td>Degree-preserving shuffle, 200 draws</td><td class="num">277</td><td class="num">2.602 ± 0.015</td><td class="num">+4.9</td><td class="num"></td></tr>
-        <tr><td>ln n / ln ⟨k⟩</td><td class="num"></td><td class="num">2.54</td><td class="num"></td><td class="num"></td></tr>
+        <tr><td>Mean distance</td><td class="num">2.67</td><td>Between a random pair of characters</td></tr>
+        <tr><td>Pairs at distance 2 or 3</td><td class="num">86%</td><td>The network in one sentence</td></tr>
+        <tr><td>Diameter</td><td class="num">6</td><td>The farthest two characters are six clicks apart</td></tr>
+        <tr><td>Radius</td><td class="num">3</td><td>The best-placed character sees everyone within 3</td></tr>
+        <tr><td>The centre</td><td class="num">1 node</td><td>Spider-Man, alone. Eccentricity 3.</td></tr>
       </tbody>
     </table>
   </div>
 
-  <p>That is a finding, and it has a cause. The real network spends links on triangles: clustering is 0.32, ten times
-  the 0.03 a random network manages. X-Men link to X-Men, Avengers to Avengers. A link inside a clique is a link not
-  spent on a shortcut across the network, so paths get slightly longer. Community structure costs distance.</p>
+  <p>Then keep the arrows, and the cosy small world falls apart the way week 1 hinted it would. The largest
+  strongly connected component holds 229 of the 303 characters; only <strong>69% of ordered pairs</strong> can
+  reach each other by clicking at all; and Spider-Man, three undirected steps from everyone, can himself reach
+  just 230 characters through his nine outgoing links. Our favourite pair: <strong>Box links to Guardian</strong>,
+  one step, and the shortest route from Guardian's page back to Box is <strong>eight clicks</strong>. When the
+  question involves reaching, spreading or flowing, check whether the arrows matter before computing anything.</p>
 
-  <blockquote>The distance on its own is evidence of nothing. The pair is: distance like a random network, clustering ten
-  times a random network. That is the small-world signature, and clustering is the half doing the work. If you want to
-  read ⟨d⟩ at all, compare it to shuffles with the same degree sequence and report the spread, not one number against
-  another.</blockquote>
-
-  <p>For the record: diameter 6, radius 3, centre Spider-Man, and 85.7 percent of all pairs sit at distance 2 or 3.
-  Our hand-written breadth-first search agrees with networkx on all 20 random sources we checked.</p>
-
-  <h3>Keep the arrows and everything gets further away</h3>
-  <p>Undirected, 277 characters are mutually reachable. Directed, the largest strongly connected component holds 229, only
-  68.8 percent of ordered pairs can reach each other at all, and the mean distance over pairs that can is 3.43 instead
-  of 2.67. There are 171 links whose return trip takes five or more hops, and for 124 of them there is no return trip.
-  Blue Diamond links to Human Torch, Jeffrey Mace, Whizzer and six more of his Liberty Legion teammates from 1942. Not
-  one of them links back. d = 1 one way, d = ∞ the other, and the reason is on his page: he is a footnote in their
-  histories, they are the whole of his.</p>
-
-  <h2>Who matters, four ways</h2>
-  <p>Degree, closeness, harmonic centrality and betweenness on the undirected giant component. The top of every list looks
-  the same: seven characters are in all four top tens, and Spider-Man leads all four. He has 106 links, a closeness of
-  0.595 (mean distance to everyone else of 1.68), and 23 percent of all shortest paths in the network pass through
-  him.</p>
+  <h2>Four answers to "who matters"</h2>
+  <p>Each measure answers one question well. <strong>Degree</strong>: how many direct connections? In a directed
+  network it splits in two, and the split is the week-1 story again: the Hulk is mentioned by 64 pages and mentions
+  ten; Betsy Braddock is mentioned by seven and mentions 28. Famous and curious are different jobs.
+  <strong>Closeness</strong>: how fast can you reach everyone? The inverse mean distance. Spider-Man's is 0.595,
+  meaning 1.68 steps to a random character; the median character sits at 0.381. <strong>Betweenness</strong>: how
+  often are you the bridge others must cross? The fraction of all shortest paths that pass through you.
+  <strong>Eigenvector centrality / PageRank</strong>: are you connected to people who are themselves important?
+  Circular on purpose, and the circularity resolves into the leading eigenvector of the adjacency matrix, or, for
+  PageRank, into where a random clicker who sometimes teleports spends eternity.</p>
 
   <div class="tablewrap">
     <table>
-      <thead><tr><th>#</th><th>Degree</th><th class="num">k</th><th>Closeness</th><th class="num">c</th><th>Betweenness</th><th class="num">b</th></tr></thead>
+      <thead><tr><th>#</th><th>Degree</th><th>Betweenness</th><th>PageRank (directed, &alpha; = 0.85)</th></tr></thead>
       <tbody>
-        <tr><td>1</td><td>Spider-Man</td><td class="num">106</td><td>Spider-Man</td><td class="num">0.595</td><td>Spider-Man</td><td class="num">0.235</td></tr>
-        <tr><td>2</td><td>Hulk</td><td class="num">65</td><td>Hulk</td><td class="num">0.526</td><td>Hulk</td><td class="num">0.105</td></tr>
-        <tr><td>3</td><td>Wolverine</td><td class="num">63</td><td>Wolverine</td><td class="num">0.524</td><td>Wolverine</td><td class="num">0.093</td></tr>
-        <tr><td>4</td><td>Doctor Strange</td><td class="num">57</td><td>Doctor Strange</td><td class="num">0.517</td><td>Doctor Strange</td><td class="num">0.083</td></tr>
-        <tr><td>5</td><td>Deadpool</td><td class="num">41</td><td>Deadpool</td><td class="num">0.494</td><td>Deadpool</td><td class="num">0.056</td></tr>
-        <tr><td>6</td><td>She-Hulk</td><td class="num">37</td><td>She-Hulk</td><td class="num">0.482</td><td>She-Hulk</td><td class="num">0.040</td></tr>
-        <tr><td>7</td><td>Phoenix Force</td><td class="num">32</td><td>Scarlet Witch</td><td class="num">0.475</td><td><strong>Hercules</strong></td><td class="num">0.037</td></tr>
-        <tr><td>8</td><td>Scarlet Witch</td><td class="num">32</td><td>Phoenix Force</td><td class="num">0.471</td><td><strong>Black Widow</strong></td><td class="num">0.035</td></tr>
-        <tr><td>9</td><td>Black Panther</td><td class="num">31</td><td>Moon Knight</td><td class="num">0.469</td><td>Phoenix Force</td><td class="num">0.026</td></tr>
-        <tr><td>10</td><td>Venom</td><td class="num">29</td><td>Adam Warlock</td><td class="num">0.467</td><td>U.S. Agent</td><td class="num">0.026</td></tr>
+        <tr><td>1</td><td>Spider-Man &middot; 106</td><td>Spider-Man &middot; 0.235</td><td>Spider-Man</td></tr>
+        <tr><td>2</td><td>Hulk &middot; 65</td><td>Hulk &middot; 0.105</td><td>Hulk</td></tr>
+        <tr><td>3</td><td>Wolverine &middot; 63</td><td>Wolverine &middot; 0.093</td><td>Wolverine</td></tr>
+        <tr><td>4</td><td>Doctor Strange &middot; 57</td><td>Doctor Strange &middot; 0.083</td><td>Doctor Strange</td></tr>
+        <tr><td>5</td><td>Deadpool &middot; 41</td><td>Deadpool &middot; 0.056</td><td><strong>Black Cat</strong></td></tr>
+        <tr><td>6</td><td>She-Hulk &middot; 37</td><td>She-Hulk &middot; 0.040</td><td>Deadpool</td></tr>
+        <tr><td>7</td><td>Phoenix Force &middot; 32</td><td><strong>Hercules</strong> &middot; 0.037</td><td><strong>Mayday Parker</strong></td></tr>
+        <tr><td>8</td><td>Scarlet Witch &middot; 32</td><td><strong>Black Widow</strong> &middot; 0.035</td><td>Venom</td></tr>
+        <tr><td>9</td><td>Black Panther &middot; 31</td><td>Phoenix Force &middot; 0.026</td><td>Phoenix Force</td></tr>
+        <tr><td>10</td><td>Venom &middot; 29</td><td><strong>U.S. Agent</strong> &middot; 0.026</td><td>Jean Grey</td></tr>
       </tbody>
     </table>
   </div>
 
-  <p>The interesting rows are the ones where the lists disagree. Hercules is 20th by degree and 7th by betweenness. Black
-  Widow is 23rd by degree and 8th by betweenness. Their links go to places that otherwise barely touch: Hercules connects
-  the pantheon (Ares, Balder the Brave, the Eternal Ajak) to the Avengers and the Hulk; Black Widow connects the 1940s
-  (Blue Eagle, the android Human Torch), the street (Hawkeye, Deadpool), the cosmic (Adam Warlock) and the Ultimate
-  universe. Neither is a hub. Both are bridges.</p>
-
-  <figure>
-    <img src="../../assets/figures/week3_betweenness_vs_degree.png" alt="Scatter of betweenness against degree on log-log axes. Most characters follow a power-law band; Rockman, Nightmask and Turbo sit far above it at low degree.">
-    <figcaption>Betweenness grows like k<sup>2.2</sup>, so most of what betweenness "measures" is degree. The characters
-    above the band are the ones worth talking about. Rockman has two links.</figcaption>
-  </figure>
-
-  <p>Rockman is the purest case in the network. He has exactly two links: Black Widow, and a character called The
-  Witness. The Witness has exactly one link: Rockman. So every shortest path from anyone in the universe to The
-  Witness passes through Rockman, and a character nobody has heard of, with two links, ranks 59th of 277 on
-  betweenness, above 218 characters with more links than him. That is not a quirk of the measure. That is what the measure is for.</p>
-
-  <h3>Direction flips the top of the list</h3>
-  <p>Recompute betweenness on the directed network and Spider-Man drops from first to seventh; Hercules takes first
-  place. The reason is the number from week 1: Spider-Man has 106 links in and 9 out. Paths run <em>into</em> him
-  constantly and almost never <em>through</em> him, because there are only nine ways to leave. Betweenness on a
-  directed graph rewards characters who are both arrived at and departed from, and the most famous character in the
-  network is a cul-de-sac. The biggest individual moves were G. W. Bridge (238th undirected to 77th directed) and
-  Paladin (132nd to 23rd), both characters whose pages link out to people who link back to them.</p>
-
-  <h2>PageRank versus in-degree</h2>
-  <p>Five of the ten characters in the PageRank top ten are also in the in-degree top ten, and five are not. The five
-  that PageRank promotes are Black Cat, Mayday Parker, Venom, Phoenix Force and Jean Grey. The five it demotes are
-  She-Hulk, Scarlet Witch, Black Panther, Cyclops and Luke Cage.</p>
-  <p>The mechanism is Spider-Man, again. His PageRank is 0.050, three times anyone else's, and he links out to only nine
-  pages. Each of those nine inherits 0.85 × 0.050 / 9 ≈ 0.0047 from him alone, which is more than most characters'
-  entire score. Black Cat and Mayday Parker are in the top ten because Spider-Man vouches for them and vouches for
-  almost nobody else. She-Hulk and Luke Cage, by contrast, collect their 29 and 25 in-links from characters whose own
-  rank is low. PageRank is in-degree weighted by who is doing the pointing, divided by how many other people they
-  point at.</p>
-  <p>Our own power-iteration PageRank agrees with networkx to better than 10<sup>−9</sup> for α = 0.5, 0.85 and 0.95.
-  The one design decision that matters is the 20 characters with no outgoing links at all: without special handling
-  their score drains out of the system every iteration. We do what networkx does and hand their entire score back to
-  every node uniformly, as if a reader stuck on a dead-end page picks a random new one.</p>
-
-  <h2>Compared to what: the shuffle test</h2>
-  <p>This is the part we came for. For every character, we compare their real betweenness to the distribution they get
-  across 200 networks with the same degree sequence and random wiring, and report the z-score. A high z means "more
-  of a broker than your number of links can explain".</p>
-
-  <figure>
-    <img src="../../assets/figures/week3_centrality_z.png" alt="Two panels of z-score against degree. Betweenness: Rockman at z near 10, Nightmask and Turbo near 5, Hercules and Black Widow near 4, Black Cat near minus 3. Closeness: Quasar and Cyclops near minus 5, a few one-link characters near plus 2.">
-    <figcaption>Left: betweenness. Right: closeness. The shaded band is ±2. Spider-Man, the biggest dot, is inside it on
-    both panels: his centrality is exactly what 106 links buy you, no more.</figcaption>
-  </figure>
-
-  <div class="tablewrap">
-    <table>
-      <thead><tr><th>Character</th><th class="num">links</th><th class="num">betweenness</th><th class="num">expected from degree</th><th class="num">z</th><th>what they bridge</th></tr></thead>
-      <tbody>
-        <tr><td><strong>Rockman</strong></td><td class="num">2</td><td class="num">0.0072</td><td class="num">0.0001 ± 0.0007</td><td class="num">+9.7</td><td>The only door to The Witness</td></tr>
-        <tr><td>Nightmask</td><td class="num">5</td><td class="num">0.0077</td><td class="num">0.0009 ± 0.0013</td><td class="num">+5.2</td><td>The New Universe (Star Brand, Justice) to the main body</td></tr>
-        <tr><td>Turbo</td><td class="num">5</td><td class="num">0.0075</td><td class="num">0.0009 ± 0.0014</td><td class="num">+4.6</td><td>Darkhawk, Nova and Rom to a one-link character, Redneck</td></tr>
-        <tr><td><strong>Hercules</strong></td><td class="num">26</td><td class="num">0.0374</td><td class="num">0.0177 ± 0.0045</td><td class="num">+4.4</td><td>Olympus, Asgard and the Eternals to the Avengers</td></tr>
-        <tr><td><strong>Black Widow</strong></td><td class="num">25</td><td class="num">0.0351</td><td class="num">0.0169 ± 0.0045</td><td class="num">+4.1</td><td>Four decades of Marvel to each other</td></tr>
-        <tr><td>U.S. Agent</td><td class="num">21</td><td class="num">0.0255</td><td class="num">0.0118 ± 0.0039</td><td class="num">+3.5</td><td>Captain America's circle, the West Coast Avengers and the 1940s Invaders</td></tr>
-        <tr><td>Spider-Man</td><td class="num">106</td><td class="num">0.2349</td><td class="num">0.2305 ± 0.0094</td><td class="num">+0.5</td><td>Nothing his degree does not already explain</td></tr>
-        <tr><td>Black Cat</td><td class="num">28</td><td class="num">0.0071</td><td class="num">0.0201 ± 0.0044</td><td class="num">−2.9</td><td>Nothing: all 28 links stay inside Spider-Man's neighbourhood</td></tr>
-      </tbody>
-    </table>
-  </div>
-
-  <p>Spider-Man is the most central character by every raw measure and the 58th most surprising. His betweenness of 0.235
-  is what the shuffles give a character with 106 links: 0.231 ± 0.009. The network's biggest broker is not a broker at
-  all in the sense that matters. He is a hub, and hubs sit on paths because paths have nowhere else to go.</p>
+  <p>The rank correlations with degree are 0.85 (closeness), 0.88 (harmonic and eigenvector) and 0.91
+  (betweenness), and the degree and betweenness top tens share seven names. So on this network the measures mostly
+  agree, and a bare top-ten list tells you almost nothing you did not know from counting links. The information is
+  in the exceptions, bolded above, and each kind of exception has a mechanism.</p>
 
   <div class="callout">
-    <b>Hercules, stated correctly.</b> Hercules has a betweenness of 0.037, seventh in the network. A character with his
-    26 links would be expected to have 0.018 ± 0.005 under degree-preserving shuffling, so he sits 4.4 standard
-    deviations above what his degree buys. He is a broker because his links span the gods (Ares, Balder, Ajak) and the
-    Avengers, two groups that otherwise barely touch.
+    <b>The PageRank upsets.</b> Black Cat is the 5th most important character by PageRank with an in-degree of 21;
+    Mayday Parker is 7th with 14. The mechanism is the walk: a page splits its vote among its outgoing links, and
+    Spider-Man, holder of the biggest vote in the network, links out to only nine characters. Anyone he links to
+    inherits a ninth of everything. Being one of Spider-Man's nine doors is worth more than fifty ordinary links,
+    which is also, in one sentence, why Google worked and why link farms stopped working.
   </div>
 
-  <p>Closeness tells a different kind of story. Its z-scores never get extreme: the largest in magnitude is 5, against
-  9.7 for betweenness. That is built into the measure. Closeness averages your distance to all 276 other characters, and
-  no single link can move an average of 276 numbers very far. Betweenness can be dominated entirely by one bridge, which
-  is exactly what Rockman is. Where closeness does deviate, it deviates for whole groups at once: Quasar (z = −5.0) and
-  Cyclops (z = −4.9) have 24 and 26 links, but nearly all of them point into one tight cluster, the cosmic characters
-  and the X-Men respectively, so they are further from everybody else than their degree suggests. The same clustering
-  that lengthened the average distance in the first section shows up here, one character at a time.</p>
-
-  <h2>Do the important stick together?</h2>
-  <p>Degree assortativity is r = −0.105: slightly disassortative, high-degree characters link to low-degree ones a little
-  more than to each other. But the degree-preserving shuffles give r = −0.121 ± 0.010. The real network is if anything
-  <em>less</em> disassortative than its degree sequence forces it to be, z = +1.5, not significant. The negative sign is
-  structural: with one node holding 106 of 1434 links in a 277-node network, there simply are not enough other hubs for
-  Spider-Man to link to, so most of his links must go to ordinary characters whatever the wiring. Newman's result, in
-  miniature.</p>
-
   <figure>
-    <img src="../../assets/figures/week3_knn.png" alt="Mean neighbour degree against degree, log axes, for the real network and for one degree-preserving shuffle. Both slope gently downward and largely overlap.">
-    <figcaption>k<sub>nn</sub>(k) for the real network and one shuffle of it. They are the same curve. The downward slope
-    is the degree distribution talking, not any preference of the characters.</figcaption>
+    <img src="../../assets/figures/week3_centralities.png" alt="Scatter of betweenness against degree on log-log axes, one point per character, forming a tight diagonal cloud. Spider-Man and Hulk sit at the top right on the diagonal. Hercules, Black Widow and U.S. Agent are ringed in gold above the cloud; Black Cat is ringed in red below it; Rockman is ringed in gold far to the upper left, a degree-2 character with the betweenness of a degree-20 one.">
+    <figcaption>Betweenness against degree, both logarithmic; characters on no shortest path at all sit on the
+    dashed rail. The cloud is a diagonal, which is the 0.91 correlation. The named characters are the reason the
+    plot exists: gold sits far above the cloud, red far below it.</figcaption>
   </figure>
 
-  <p>With arrows kept, the picture sharpens. The out-degree of a link's source correlates with the out-degree of its
-  target at 0.107, and the in-degree of the source with the out-degree of the target at 0.100. The out-degree of the
-  source against the in-degree of the target is −0.023. So pages that link a lot link to other pages that link a lot,
-  heavy linkers are a club, while the famous get linked to by everybody regardless. Attention flows to the famous from
-  everywhere; curation is exchanged among the curators.</p>
+  <h2>Compared to what, centrality edition</h2>
+  <p>Here is the sentence we almost wrote: "Spider-Man is the critical broker of the Marvel universe: 23% of all
+  shortest paths pass through him." Every word is true. Then we did to betweenness what week 2 did to everything
+  else: 200 degree-preserving shuffles, recompute, and ask where the real value lands.</p>
 
-  <h2>Cliques</h2>
-  <p>893 maximal cliques, and the clique number is 8. There are six 8-cliques and they are all the same team: every one
-  contains Betsy Braddock, Cyclops, Emma Frost, Jean Grey, Rachel Summers and Wolverine, plus two of Cable, Jubilee,
-  Northstar, Phoenix Force and Storm. The X-Men are the densest object in the universe, and the six-person core is the
-  X-Men's own core cast. An 8-clique needs every member to have at least 7 links, which rules out 134 of the 277
-  characters before computing anything. 1835 triangles in total.</p>
-
-  <hr>
-
-  <h2>So we took it apart</h2>
-  <p>The week's opener asked which single character's removal fragments the network the most, and whether that is the
-  same character as the one with the highest betweenness. The answer to both is Spider-Man, and the answer is
-  underwhelming: removing him alone cuts off five characters out of 277. Removing Hulk cuts off none. Removing the top
-  four together cuts off eight. So we asked the better question: remove characters one after another, in the order a
-  measure recommends, and watch how fast the giant component collapses. That is <a href="dismantle/index.html">DISMANTLE</a>,
-  and the summary curve is below.</p>
+  <div class="tablewrap">
+    <table>
+      <thead><tr><th>Character</th><th class="num">Degree</th><th class="num">Real betweenness</th><th class="num">Shuffled</th><th class="num">z</th><th>Verdict</th></tr></thead>
+      <tbody>
+        <tr><td>Spider-Man</td><td class="num">106</td><td class="num">0.235</td><td class="num">0.232 &plusmn; 0.010</td><td class="num">+0.3</td><td>Not a finding. Any node with 106 links brokers this much.</td></tr>
+        <tr><td>Black Widow</td><td class="num">25</td><td class="num">0.035</td><td class="num">0.016 &plusmn; 0.004</td><td class="num">+4.9</td><td><strong>A broker.</strong> Twice the betweenness her degree predicts.</td></tr>
+        <tr><td>Hercules</td><td class="num">26</td><td class="num">0.037</td><td class="num">0.018 &plusmn; 0.005</td><td class="num">+4.2</td><td><strong>A broker.</strong> Position, not popularity.</td></tr>
+        <tr><td>U.S. Agent</td><td class="num">21</td><td class="num">0.026</td><td class="num">0.012 &plusmn; 0.004</td><td class="num">+3.3</td><td><strong>A broker.</strong> Betweenness top ten from degree rank ~30.</td></tr>
+        <tr><td>Black Cat</td><td class="num">28</td><td class="num">0.007</td><td class="num">0.020 &plusmn; 0.005</td><td class="num">&minus;2.8</td><td><strong>Sheltered.</strong> A third of what her degree predicts. See below.</td></tr>
+      </tbody>
+    </table>
+  </div>
 
   <figure>
-    <img src="../../assets/figures/week3_dismantle.png" alt="Giant component fraction against fraction of characters removed, for seven removal orders. Static degree, betweenness, PageRank and closeness track each other closely and reach about 55 percent after 80 removals. Recomputed betweenness drops sharply after around 50 removals and reaches 15 percent. Random stays near 70 percent.">
-    <figcaption>Eighty removals is 29 percent of the giant component. Four static orders, two that re-rank after every
-    cut, and the mean of 30 random orders. Only the two recomputed orders manage to halve the network.</figcaption>
+    <img src="../../assets/figures/week3_brokers.png" alt="Scatter of betweenness z-score against the degree-preserving shuffle, against degree on a log axis. A grey band marks absolute z below 2, where most characters sit, including Spider-Man and Hulk. Black Widow, Hercules and U.S. Agent sit above the band. Black Cat sits below it. Rockman sits alone at z equals 50.">
+    <figcaption>The same betweenness, re-expressed as "compared to what a node of your degree gets in a shuffled
+    network". The famous names fall into the grey band: their brokerage is their degree. The gold names are
+    genuinely in between. Rockman, top left, is in a category of his own.</figcaption>
   </figure>
 
-  <p>Three things we did not expect.</p>
-  <ol>
-    <li><strong>The network is hard to break.</strong> Remove the 80 highest-degree characters, every hub in the network,
-      and 139 of the 197 characters left are still in one piece, half the original giant component. Random removal barely dents it. With ⟨k⟩ = 9.5 and
-      clustering of 0.32 there is redundancy everywhere: cut the hub and its neighbours still know each other.</li>
-    <li><strong>The four static orders are the same order.</strong> Degree, betweenness, PageRank and closeness agree on
-      17 of the first 20 removals and their curves lie on top of each other. Once again, most of what any centrality
-      measures is degree.</li>
-    <li><strong>Recomputing is the whole game.</strong> Re-rank betweenness after every removal and the curve tracks the
-      static one for 50 steps, then falls off a cliff: it halves the network at removal 63 and has it down to 15 percent
-      by 80. After the hubs are gone, the brokers of the remaining network are different characters from the brokers of
-      the original one, and only the adaptive order finds them. Static betweenness is a snapshot of a network that no
-      longer exists.</li>
-  </ol>
-  <p>The robustness index R, the area under each curve, orders them: random 0.248, closeness 0.225, degree 0.219,
-  betweenness 0.218, recomputed degree 0.215, recomputed betweenness 0.203. Lower is a more effective attack.</p>
+  <p>The z-scores invert the fame ordering. Spider-Man, the Hulk and Wolverine sit inside the band, because a hub
+  in <em>any</em> network with this degree sequence carries this many paths; their betweenness is real but it is
+  not information. The characters the shuffle promotes are mid-degree characters whose links happen to be the only
+  connection between regions: Black Widow and U.S. Agent connect otherwise-separate corners of the Avengers
+  sprawl, Hercules bridges his mythological cast into the superhero core. And the single most surprising character
+  in the entire network is <strong>Rockman</strong>, an Atlas-era leftover with <em>two links</em> and
+  z&nbsp;=&nbsp;50: one of his two neighbours connects to nothing else through anywhere but him, so every path to
+  that corner squeezes through a degree-2 node. Betweenness can be enormous at degree two. That is the Krackhardt
+  kite from the lecture, alive in real data.</p>
+
+  <div class="callout warn">
+    <b>Why Black Cat is the opposite of a broker.</b> She has 28 links, comfortably top-fifteen degree, and less
+    betweenness than the median character. The reason: 24 of her 28 neighbours are also Spider-Man's neighbours.
+    Nearly every shortest path that could go through her has a one-step detour through the biggest hub in the
+    network standing right next to her. High degree in somebody else's shadow buys popularity, and no control at
+    all.
+  </div>
+
+  <p>For completeness we also re-ran the week-2 assortativity number with this week's shuffles: r = &minus;0.105
+  against &minus;0.123 &plusmn; 0.011 shuffled. Still not a finding, still what a 106-link hub forces on a
+  277-node network. Some lessons keep.</p>
+
+  <h2>Cliques: the strictest possible team</h2>
+  <p>A clique is a set of characters in which every pair is linked, the strictest definition of a group the graph
+  offers. The giant component has <strong>1835 triangles</strong>, 893 maximal cliques, 477 distinct 5-cliques,
+  and a clique number of <strong>8</strong>: you can find eight characters whose 28 possible page-pairs all link,
+  and you cannot find nine.</p>
+
+  <div class="callout">
+    <b>The largest clique is not unique, and that is the finding.</b> There are <strong>six</strong> different
+    8-cliques, and every one of them contains the same six characters: Betsy Braddock, Cyclops, Emma Frost,
+    Jean Grey, Rachel Summers and Wolverine. The other two seats rotate among Cable, Jubilee, Northstar, Storm and
+    the Phoenix Force. Six X-Men are the load-bearing clique of the Marvel universe, with two guest chairs. No
+    Avengers 8-clique exists: the Avengers are a bigger team, but their pages do not all link to each other, and a
+    clique forgives nothing.
+  </div>
+
+  <h2>So we turned betweenness into a game</h2>
+  <p>Betweenness is the measure of control: remove the broker and traffic reroutes or stops. The obvious way to
+  feel that is to remove people. <strong>KINGPIN</strong>, linked at the top or
+  <a href="game/index.html">right here</a>, gives you a contract of 3, 5 or 8 eliminations on the giant component
+  and one goal: make the biggest surviving cluster as small as possible. Every character who loses their last
+  route to the core is cut off and stops counting. When the hits run out, three rival hitmen run the same contract
+  on the same board, one shooting by degree, one by recomputed betweenness, one at random, and you are scored
+  against all three.</p>
+
+  <p>Building the game forced us to learn three things the figures above do not show:</p>
+
+  <div class="tablewrap">
+    <table>
+      <thead><tr><th>Single hit</th><th class="num">Degree</th><th class="num">Cut off beyond the victim</th></tr></thead>
+      <tbody>
+        <tr><td>Spider-Man</td><td class="num">106</td><td class="num">5</td></tr>
+        <tr><td>Black Widow</td><td class="num">25</td><td class="num">3</td></tr>
+        <tr><td>Doctor Strange</td><td class="num">57</td><td class="num">2</td></tr>
+        <tr><td>War Machine</td><td class="num">16</td><td class="num">1</td></tr>
+        <tr><td>Turbo</td><td class="num">5</td><td class="num">1</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <ul>
+    <li><strong>The network is nearly unbreakable.</strong> Only 13 of 277 characters are articulation points,
+      whose removal disconnects anything at all. The best single hit in the universe, Spider-Man, cuts off five
+      characters. Eight optimal-greedy hits take the core from 277 to 259. This robustness is the flip side of
+      week 2's heavy tail: there is almost always a path around you.</li>
+    <li><strong>The hub bot and the broker bot tie.</strong> Both greedy strategies produce the identical kill
+      list for four hits and the identical core of 259 after eight, because at the top of this network,
+      betweenness <em>is</em> degree, which is the z-table above restated as gameplay.</li>
+    <li><strong>Beating them takes combinations.</strong> Greedy shooting, by any centrality, sheds leaves one hub
+      at a time. Simulated annealing over hit-<em>sets</em> found crews that do strictly better: core 264 with 3
+      hits, 259 with 5, 253 with 8, and every record crew contains <strong>Black Widow</strong>, degree 25, the
+      broker the shuffle found. No single-number ranking discovers her; only asking "what do these hits do
+      <em>together</em>?" does. Her betweenness z-score was the cheap preview of that answer.</li>
+  </ul>
+
+  <blockquote>Degree answers "who is popular". Betweenness answers "who controls the flow", and only after the
+  shuffle. And "whose removal breaks the network" is a third question, about sets rather than nodes, that no
+  per-node centrality fully answers. The game's scoreboard is the three questions side by side.</blockquote>
 
   <h2>What surprised us</h2>
   <ol>
-    <li><strong>The real network is longer than its hubs predict, not shorter.</strong> We had the sign wrong in our
-      heads before we ran the right null.</li>
-    <li><strong>Rockman.</strong> Two links, 59th on betweenness, z of 9.7. A textbook bridge, in a network none of us
-      had read closely enough to know he existed.</li>
-    <li><strong>Spider-Man is unsurprising.</strong> First by every measure, 58th by surprise. Everything about his
-      centrality is degree.</li>
-    <li><strong>Hercules leads directed betweenness.</strong> Spider-Man is seventh, because nine outgoing links make
-      him a place paths end, not a place they pass.</li>
-    <li><strong>Eighty removals do not halve the network</strong> unless you re-rank as you go.</li>
+    <li><strong>Rockman.</strong> We went looking for brokers and the biggest surprise-by-shuffle in the network
+      is a forgotten 1941 character with two links and a z-score of 50. Betweenness genuinely does not care about
+      degree, it cares about doors.</li>
+    <li><strong>Black Cat has a third of the betweenness her degree predicts.</strong> Standing next to Spider-Man
+      makes you popular and powerless at the same time, and the network can measure the difference.</li>
+    <li><strong>The 8-clique is six 8-cliques.</strong> The course page names one; enumeration finds six, all
+      built on the same six X-Men. The largest clique is best read as a core with guest seats.</li>
+    <li><strong>You cannot shatter this universe.</strong> We built an assassination game and the honest headline
+      is that eight perfect hits remove 6.5% of the core. The robustness was the finding; the game works because
+      squeezing out those last few characters is genuinely hard.</li>
+    <li><strong>Spider-Man's betweenness is the least interesting number about him.</strong> It is enormous and it
+      is exactly what his degree forces. His nine outgoing links, meanwhile, quietly decide fifth place in
+      PageRank. The boring-looking number was the load-bearing one.</li>
   </ol>
 
   <h2>Reproduce it</h2>
-<pre><code>python scripts/week3.py          # every figure and number above, about six minutes
-                                 # (400 degree-preserving shuffles dominate)</code></pre>
-  <p>All quoted numbers are written to <code>data/week3.json</code>. The removal orders the explorable animates are in
-  <code>data/week3_dismantle.js</code>, computed by the same script. The hand-written BFS and PageRank are in
-  <code>scripts/week3.py</code> as <code>my_bfs</code> and <code>my_pagerank</code>, with their validation against
-  networkx in the output.</p>
+  <p>One script for the post, one for the game's engine, and the game's algorithms are tested against networkx
+  rather than trusted.</p>
+<pre><code>git clone https://github.com/Oddvar112/Social-Graphs-and-Interactions
+cd Social-Graphs-and-Interactions
 
-  <p style="margin-top:36px"><a href="../../index.html">&larr; Back to all weeks</a> &nbsp;&middot;&nbsp;
-  <a href="dismantle/index.html">Open DISMANTLE &rarr;</a></p>
+python scripts/analyse_week3.py          # every figure and number in this post (a few minutes)
+python scripts/analyse_week3.py --quick  # the same with 30 shuffles, for a look
+python scripts/test_kingpin_rules.py     # runs the game's shipped core.js under node,
+                                         # diffs betweenness and both bots against networkx
+
+python -m http.server 8000               # then open http://localhost:8000</code></pre>
+  <p>Every number quoted in this post is written to <code>data/stats_week3.json</code> by
+  <code>analyse_week3.py</code>. The game's graph engine lives in <code>weeks/week3/game/core.js</code> with no
+  DOM in it, so the test executes the exact file the browser runs: its Brandes betweenness matches networkx to
+  10<sup>&minus;13</sup>, its rival bots shoot the same characters in the same order, and the record hit-lists
+  achieve exactly the core sizes the game claims.</p>
+
+  <div class="postnav">
+    <a href="../../index.html">&larr; Back to all weeks</a>
+    <a href="../week2/">&larr; Week 2</a>
+    <a class="cta" href="game/index.html" target="_blank" rel="noopener">Open KINGPIN full screen &rarr;</a>
+  </div>
 
 </main>
 

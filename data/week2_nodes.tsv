@@ -1,0 +1,605 @@
+# Week 2 crawl of live Wikipedia, 2026-09-08. Heroes = the frozen week-1 roster, villains = Category:Marvel Comics supervillains (no redirects, lists, teams or disambiguation pages).
+# side: hero | villain | both. debut_year from the infobox, blank when not found.
+node_id	name	side	debut_year	url
+Abomination_(character)	Abomination (character)	hero	1967	https://en.wikipedia.org/wiki/Abomination_%28character%29
+Abraham_Cornelius	Abraham Cornelius	villain	1991	https://en.wikipedia.org/wiki/Abraham_Cornelius
+Absorbing_Man	Absorbing Man	villain	1965	https://en.wikipedia.org/wiki/Absorbing_Man
+Adam_Warlock	Adam Warlock	hero	1967	https://en.wikipedia.org/wiki/Adam_Warlock
+Agent_X_(Marvel_Comics)	Agent X (Marvel Comics)	hero	2002	https://en.wikipedia.org/wiki/Agent_X_%28Marvel_Comics%29
+Ajak	Ajak	hero	1976	https://en.wikipedia.org/wiki/Ajak
+Alex_Wilder	Alex Wilder	both	2003	https://en.wikipedia.org/wiki/Alex_Wilder
+Alexander_Bont	Alexander Bont	villain	2004	https://en.wikipedia.org/wiki/Alexander_Bont
+Anne_Weying	Anne Weying	hero	1993	https://en.wikipedia.org/wiki/Anne_Weying
+Anole_(character)	Anole (character)	hero	2003	https://en.wikipedia.org/wiki/Anole_%28character%29
+Answer_(comics)	Answer (comics)	villain	1984	https://en.wikipedia.org/wiki/Answer_%28comics%29
+Anya_Corazon	Anya Corazon	hero	2004	https://en.wikipedia.org/wiki/Anya_Corazon
+Apocalypse_(character)	Apocalypse (character)	villain	1985	https://en.wikipedia.org/wiki/Apocalypse_%28character%29
+Arabian_Knight_(character)	Arabian Knight (character)	hero	1981	https://en.wikipedia.org/wiki/Arabian_Knight_%28character%29
+Ares_(Marvel_Comics)	Ares (Marvel Comics)	both	1966	https://en.wikipedia.org/wiki/Ares_%28Marvel_Comics%29
+Aries_(character)	Aries (character)	villain	1970	https://en.wikipedia.org/wiki/Aries_%28character%29
+Attuma	Attuma	villain	1964	https://en.wikipedia.org/wiki/Attuma
+Awesome_Android	Awesome Android	villain	1963	https://en.wikipedia.org/wiki/Awesome_Android
+Backhand_(character)	Backhand (character)	hero	1987	https://en.wikipedia.org/wiki/Backhand_%28character%29
+Balder_the_Brave	Balder the Brave	hero	1962	https://en.wikipedia.org/wiki/Balder_the_Brave
+Barney_Barton	Barney Barton	villain	1969	https://en.wikipedia.org/wiki/Barney_Barton
+Baron_Brimstone	Baron Brimstone	villain	1980	https://en.wikipedia.org/wiki/Baron_Brimstone
+Baron_Strucker	Baron Strucker	villain	1964	https://en.wikipedia.org/wiki/Baron_Strucker
+Baron_Von_Blitzschlag	Baron Von Blitzschlag	villain	2007	https://en.wikipedia.org/wiki/Baron_Von_Blitzschlag
+Batroc_the_Leaper	Batroc the Leaper	villain	1966	https://en.wikipedia.org/wiki/Batroc_the_Leaper
+Battlestar_(character)	Battlestar (character)	hero	1986	https://en.wikipedia.org/wiki/Battlestar_%28character%29
+Batwing_(Marvel_Comics)	Batwing (Marvel Comics)	villain	1995	https://en.wikipedia.org/wiki/Batwing_%28Marvel_Comics%29
+Baymax	Baymax	hero	1998	https://en.wikipedia.org/wiki/Baymax
+Beta_Ray_Bill	Beta Ray Bill	hero	1983	https://en.wikipedia.org/wiki/Beta_Ray_Bill
+Betsy_Braddock	Betsy Braddock	hero	1976	https://en.wikipedia.org/wiki/Betsy_Braddock
+Beyonder	Beyonder	villain	1984	https://en.wikipedia.org/wiki/Beyonder
+Bi-Beast	Bi-Beast	villain	1973	https://en.wikipedia.org/wiki/Bi-Beast
+Bill_Foster_(character)	Bill Foster (character)	hero	1966	https://en.wikipedia.org/wiki/Bill_Foster_%28character%29
+Bird-Brain_(Marvel_Comics)	Bird-Brain (Marvel Comics)	hero	1987	https://en.wikipedia.org/wiki/Bird-Brain_%28Marvel_Comics%29
+Birdy_(character)	Birdy (character)	villain	1992	https://en.wikipedia.org/wiki/Birdy_%28character%29
+Black_Bolt	Black Bolt	hero	1965	https://en.wikipedia.org/wiki/Black_Bolt
+Black_Cat_(Marvel_Comics)	Black Cat (Marvel Comics)	both	1979	https://en.wikipedia.org/wiki/Black_Cat_%28Marvel_Comics%29
+Black_Fox_(Robert_Paine)	Black Fox (Robert Paine)	hero	2000	https://en.wikipedia.org/wiki/Black_Fox_%28Robert_Paine%29
+Black_Jack_Tarr	Black Jack Tarr	hero	1974	https://en.wikipedia.org/wiki/Black_Jack_Tarr
+Black_Knight_(Marvel_Comics)	Black Knight (Marvel Comics)	both		https://en.wikipedia.org/wiki/Black_Knight_%28Marvel_Comics%29
+Black_Knight_(Nathan_Garrett)	Black Knight (Nathan Garrett)	villain	1964	https://en.wikipedia.org/wiki/Black_Knight_%28Nathan_Garrett%29
+Black_Mariah	Black Mariah	villain	1973	https://en.wikipedia.org/wiki/Black_Mariah
+Black_Marvel	Black Marvel	hero	1941	https://en.wikipedia.org/wiki/Black_Marvel
+Black_Panther_(character)	Black Panther (character)	hero	1966	https://en.wikipedia.org/wiki/Black_Panther_%28character%29
+Black_Rider_(character)	Black Rider (character)	hero	1948	https://en.wikipedia.org/wiki/Black_Rider_%28character%29
+Black_Spectre	Black Spectre	villain	1982	https://en.wikipedia.org/wiki/Black_Spectre
+Black_Talon_(comics)	Black Talon (comics)	villain	1974	https://en.wikipedia.org/wiki/Black_Talon_%28comics%29
+Black_Widow_(Natasha_Romanova)	Black Widow (Natasha Romanova)	hero	1964	https://en.wikipedia.org/wiki/Black_Widow_%28Natasha_Romanova%29
+Blackthorn_(character)	Blackthorn (character)	hero	1986	https://en.wikipedia.org/wiki/Blackthorn_%28character%29
+Blackwulf	Blackwulf	hero	1994	https://en.wikipedia.org/wiki/Blackwulf
+Blade_(character)	Blade (character)	hero	1973	https://en.wikipedia.org/wiki/Blade_%28character%29
+Blastaar	Blastaar	villain	1967	https://en.wikipedia.org/wiki/Blastaar
+Blazing_Skull	Blazing Skull	hero	1941	https://en.wikipedia.org/wiki/Blazing_Skull
+Blizzard_(Marvel_Comics)	Blizzard (Marvel Comics)	villain	1963	https://en.wikipedia.org/wiki/Blizzard_%28Marvel_Comics%29
+Blood_Brothers_(comics)	Blood Brothers (comics)	villain	1973	https://en.wikipedia.org/wiki/Blood_Brothers_%28comics%29
+Blood_Spider_(character)	Blood Spider (character)	villain		https://en.wikipedia.org/wiki/Blood_Spider_%28character%29
+Blue_Bullet	Blue Bullet	hero	1976	https://en.wikipedia.org/wiki/Blue_Bullet
+Blue_Diamond_(character)	Blue Diamond (character)	hero	1941	https://en.wikipedia.org/wiki/Blue_Diamond_%28character%29
+Blue_Eagle_(character)	Blue Eagle (character)	hero	1971	https://en.wikipedia.org/wiki/Blue_Eagle_%28character%29
+Blue_Marvel	Blue Marvel	hero	2008	https://en.wikipedia.org/wiki/Blue_Marvel
+Bob,_Agent_of_Hydra	Bob, Agent of Hydra	hero	2007	https://en.wikipedia.org/wiki/Bob%2C_Agent_of_Hydra
+Bonebreaker	Bonebreaker	villain	1988	https://en.wikipedia.org/wiki/Bonebreaker
+Box_(comics)	Box (comics)	hero	1983	https://en.wikipedia.org/wiki/Box_%28comics%29
+Brain_Drain_(character)	Brain Drain (character)	both	1975	https://en.wikipedia.org/wiki/Brain_Drain_%28character%29
+Breeze_Barton	Breeze Barton	hero	1940	https://en.wikipedia.org/wiki/Breeze_Barton
+Brent_Jackson	Brent Jackson	villain	2001	https://en.wikipedia.org/wiki/Brent_Jackson
+Brian_Braddock	Brian Braddock	hero	1976	https://en.wikipedia.org/wiki/Brian_Braddock
+Bucky_(Marvel_Comics)	Bucky (Marvel Comics)	hero	1941	https://en.wikipedia.org/wiki/Bucky_%28Marvel_Comics%29
+Bug_(Marvel_Comics)	Bug (Marvel Comics)	hero	1979	https://en.wikipedia.org/wiki/Bug_%28Marvel_Comics%29
+Bulldozer_(character)	Bulldozer (character)	villain	1974	https://en.wikipedia.org/wiki/Bulldozer_%28character%29
+Bullseye_(Marvel_Comics)	Bullseye (Marvel Comics)	villain	1976	https://en.wikipedia.org/wiki/Bullseye_%28Marvel_Comics%29
+Bushman_(character)	Bushman (character)	villain	1980	https://en.wikipedia.org/wiki/Bushman_%28character%29
+Bushwacker_(comics)	Bushwacker (comics)	villain	1987	https://en.wikipedia.org/wiki/Bushwacker_%28comics%29
+Cable_(character)	Cable (character)	hero	1986	https://en.wikipedia.org/wiki/Cable_%28character%29
+Cammi_(character)	Cammi (character)	hero	2005	https://en.wikipedia.org/wiki/Cammi_%28character%29
+Captain_Atlas	Captain Atlas	villain	1990	https://en.wikipedia.org/wiki/Captain_Atlas
+Captain_Marvel_(Khn'nr)	Captain Marvel (Khn'nr)	hero	2007	https://en.wikipedia.org/wiki/Captain_Marvel_%28Khn%27nr%29
+Captain_Marvel_(Marvel_Comics)	Captain Marvel (Marvel Comics)	hero		https://en.wikipedia.org/wiki/Captain_Marvel_%28Marvel_Comics%29
+Captain_Midlands	Captain Midlands	hero	2007	https://en.wikipedia.org/wiki/Captain_Midlands
+Captain_Ultra	Captain Ultra	hero	1976	https://en.wikipedia.org/wiki/Captain_Ultra
+Captain_Universe	Captain Universe	hero	1979	https://en.wikipedia.org/wiki/Captain_Universe
+Caretaker_(comics)	Caretaker (comics)	hero	2008	https://en.wikipedia.org/wiki/Caretaker_%28comics%29
+Carrion_(comics)	Carrion (comics)	villain	1978	https://en.wikipedia.org/wiki/Carrion_%28comics%29
+Ch'od	Ch'od	hero	1977	https://en.wikipedia.org/wiki/Ch%27od
+Champion_of_the_Universe	Champion of the Universe	villain	1982	https://en.wikipedia.org/wiki/Champion_of_the_Universe
+Charcoal_(comics)	Charcoal (comics)	both	1998	https://en.wikipedia.org/wiki/Charcoal_%28comics%29
+Chase_Stein	Chase Stein	hero	2003	https://en.wikipedia.org/wiki/Chase_Stein
+Chondu_the_Mystic	Chondu the Mystic	villain	1960	https://en.wikipedia.org/wiki/Chondu_the_Mystic
+Citizen_V	Citizen V	hero	1942	https://en.wikipedia.org/wiki/Citizen_V
+Cloak_and_Dagger_(characters)	Cloak and Dagger (characters)	hero	1982	https://en.wikipedia.org/wiki/Cloak_and_Dagger_%28characters%29
+Cobra_(Marvel_Comics)	Cobra (Marvel Comics)	villain	1963	https://en.wikipedia.org/wiki/Cobra_%28Marvel_Comics%29
+Cockroach_Hamilton	Cockroach Hamilton	villain	1975	https://en.wikipedia.org/wiki/Cockroach_Hamilton
+Coldblood	Coldblood	hero	1989	https://en.wikipedia.org/wiki/Coldblood
+Condor_(comics)	Condor (comics)	villain	1976	https://en.wikipedia.org/wiki/Condor_%28comics%29
+Controller_(Marvel_Comics)	Controller (Marvel Comics)	villain	1969	https://en.wikipedia.org/wiki/Controller_%28Marvel_Comics%29
+Copperhead_(Marvel_Comics)	Copperhead (Marvel Comics)	villain	1975	https://en.wikipedia.org/wiki/Copperhead_%28Marvel_Comics%29
+Cottonmouth_(Burchell_Clemens)	Cottonmouth (Burchell Clemens)	villain	1985	https://en.wikipedia.org/wiki/Cottonmouth_%28Burchell_Clemens%29
+Cottonmouth_(Cornell_Stokes)	Cottonmouth (Cornell Stokes)	villain	1974	https://en.wikipedia.org/wiki/Cottonmouth_%28Cornell_Stokes%29
+Crane_Mother	Crane Mother	hero	2007	https://en.wikipedia.org/wiki/Crane_Mother
+Crippler_(character)	Crippler (character)	both	1991	https://en.wikipedia.org/wiki/Crippler_%28character%29
+Cyber_(Marvel_Comics)	Cyber (Marvel Comics)	villain	1991	https://en.wikipedia.org/wiki/Cyber_%28Marvel_Comics%29
+Cyclops_(Marvel_Comics)	Cyclops (Marvel Comics)	hero	1963	https://en.wikipedia.org/wiki/Cyclops_%28Marvel_Comics%29
+Daddy_Longlegs_(comics)	Daddy Longlegs (comics)	villain	1982	https://en.wikipedia.org/wiki/Daddy_Longlegs_%28comics%29
+Damage_(Marvel_Comics)	Damage (Marvel Comics)	villain	1989	https://en.wikipedia.org/wiki/Damage_%28Marvel_Comics%29
+Damon_Dran	Damon Dran	villain	1972	https://en.wikipedia.org/wiki/Damon_Dran
+Danger_Room	Danger Room	villain	2005	https://en.wikipedia.org/wiki/Danger_Room
+Dargo_Ktor	Dargo Ktor	hero	1987	https://en.wikipedia.org/wiki/Dargo_Ktor
+Darkdevil	Darkdevil	hero	1998	https://en.wikipedia.org/wiki/Darkdevil
+Darkhawk	Darkhawk	hero	1991	https://en.wikipedia.org/wiki/Darkhawk
+David_8	David 8	villain	2012	https://en.wikipedia.org/wiki/David_8
+Deadpool	Deadpool	both	1991	https://en.wikipedia.org/wiki/Deadpool
+Death-Stalker	Death-Stalker	villain	1968	https://en.wikipedia.org/wiki/Death-Stalker
+Deathbird	Deathbird	villain	1977	https://en.wikipedia.org/wiki/Deathbird
+Deathlok	Deathlok	hero	1974	https://en.wikipedia.org/wiki/Deathlok
+Debrii	Debrii	hero	2005	https://en.wikipedia.org/wiki/Debrii
+Delroy_Garrett	Delroy Garrett	hero	1998	https://en.wikipedia.org/wiki/Delroy_Garrett
+Desak	Desak	villain	2001	https://en.wikipedia.org/wiki/Desak
+Detroit_Steel	Detroit Steel	both	2010	https://en.wikipedia.org/wiki/Detroit_Steel
+Devil_Dinosaur	Devil Dinosaur	hero	1978	https://en.wikipedia.org/wiki/Devil_Dinosaur
+Devil_Hulk	Devil Hulk	both	2000	https://en.wikipedia.org/wiki/Devil_Hulk
+Devos_the_Devastator	Devos the Devastator	villain	1991	https://en.wikipedia.org/wiki/Devos_the_Devastator
+Diamondback_(Willis_Stryker)	Diamondback (Willis Stryker)	villain	1972	https://en.wikipedia.org/wiki/Diamondback_%28Willis_Stryker%29
+Diamondhead_(comics)	Diamondhead (comics)	villain	1976	https://en.wikipedia.org/wiki/Diamondhead_%28comics%29
+Digitek_(character)	Digitek (character)	hero	1992	https://en.wikipedia.org/wiki/Digitek_%28character%29
+Doctor_Druid	Doctor Druid	both	1961	https://en.wikipedia.org/wiki/Doctor_Druid
+Doctor_Faustus_(character)	Doctor Faustus (character)	villain	1968	https://en.wikipedia.org/wiki/Doctor_Faustus_%28character%29
+Doctor_Nemesis	Doctor Nemesis	both	1941	https://en.wikipedia.org/wiki/Doctor_Nemesis
+Doctor_Spectrum	Doctor Spectrum	hero	1969	https://en.wikipedia.org/wiki/Doctor_Spectrum
+Doctor_Strange	Doctor Strange	hero	1963	https://en.wikipedia.org/wiki/Doctor_Strange
+Dogpool	Dogpool	hero	2010	https://en.wikipedia.org/wiki/Dogpool
+Doom_2099	Doom 2099	both	1992	https://en.wikipedia.org/wiki/Doom_2099
+Doomsday_Man	Doomsday Man	villain	1970	https://en.wikipedia.org/wiki/Doomsday_Man
+Doppelganger_(Marvel_Comics)	Doppelganger (Marvel Comics)	villain	1992	https://en.wikipedia.org/wiki/Doppelganger_%28Marvel_Comics%29
+Dracula_(Marvel_Comics)	Dracula (Marvel Comics)	villain	1951	https://en.wikipedia.org/wiki/Dracula_%28Marvel_Comics%29
+Dragon_Lord_(character)	Dragon Lord (character)	both	1972	https://en.wikipedia.org/wiki/Dragon_Lord_%28character%29
+Dreadknight	Dreadknight	villain	1977	https://en.wikipedia.org/wiki/Dreadknight
+Dreadnought_(comics)	Dreadnought (comics)	villain	1967	https://en.wikipedia.org/wiki/Dreadnought_%28comics%29
+Dusk_(comics)	Dusk (comics)	hero	1998	https://en.wikipedia.org/wiki/Dusk_%28comics%29
+Dweller-in-Darkness	Dweller-in-Darkness	villain	1974	https://en.wikipedia.org/wiki/Dweller-in-Darkness
+Eddie_Brock	Eddie Brock	both	1986	https://en.wikipedia.org/wiki/Eddie_Brock
+Eel_(Marvel_Comics)	Eel (Marvel Comics)	villain	1963	https://en.wikipedia.org/wiki/Eel_%28Marvel_Comics%29
+Egghead_(Marvel_Comics)	Egghead (Marvel Comics)	villain	1962	https://en.wikipedia.org/wiki/Egghead_%28Marvel_Comics%29
+Ego_the_Living_Planet	Ego the Living Planet	villain	1966	https://en.wikipedia.org/wiki/Ego_the_Living_Planet
+Elsa_Bloodstone	Elsa Bloodstone	hero	2001	https://en.wikipedia.org/wiki/Elsa_Bloodstone
+Emma_Frost	Emma Frost	both	1980	https://en.wikipedia.org/wiki/Emma_Frost
+Empath_(character)	Empath (character)	both	1984	https://en.wikipedia.org/wiki/Empath_%28character%29
+Emrys_Killebrew	Emrys Killebrew	hero	1994	https://en.wikipedia.org/wiki/Emrys_Killebrew
+Enigma_(Marvel_Comics)	Enigma (Marvel Comics)	hero		https://en.wikipedia.org/wiki/Enigma_%28Marvel_Comics%29
+Equinox_(comics)	Equinox (comics)	villain	1974	https://en.wikipedia.org/wiki/Equinox_%28comics%29
+Ethan_Edwards	Ethan Edwards	hero	2005	https://en.wikipedia.org/wiki/Ethan_Edwards
+Fabio_Medina	Fabio Medina	hero	2013	https://en.wikipedia.org/wiki/Fabio_Medina
+Fandral	Fandral	hero	1965	https://en.wikipedia.org/wiki/Fandral
+Farley_Stillwell	Farley Stillwell	villain	1965	https://en.wikipedia.org/wiki/Farley_Stillwell
+Father_Time_(Marvel_Comics)	Father Time (Marvel Comics)	hero	1941	https://en.wikipedia.org/wiki/Father_Time_%28Marvel_Comics%29
+Fin_Fang_Foom	Fin Fang Foom	both	1961	https://en.wikipedia.org/wiki/Fin_Fang_Foom
+Firebird_(Marvel_Comics)	Firebird (Marvel Comics)	hero	1981	https://en.wikipedia.org/wiki/Firebird_%28Marvel_Comics%29
+Firebrand_(Marvel_Comics)	Firebrand (Marvel Comics)	villain	1970	https://en.wikipedia.org/wiki/Firebrand_%28Marvel_Comics%29
+Firelord_(character)	Firelord (character)	hero	1974	https://en.wikipedia.org/wiki/Firelord_%28character%29
+Firepower_(comics)	Firepower (comics)	villain	1988	https://en.wikipedia.org/wiki/Firepower_%28comics%29
+Flag-Smasher	Flag-Smasher	villain	1985	https://en.wikipedia.org/wiki/Flag-Smasher
+Flatman_(character)	Flatman (character)	hero	1989	https://en.wikipedia.org/wiki/Flatman_%28character%29
+Flying_Tiger_(Marvel_Comics)	Flying Tiger (Marvel Comics)	villain	1981	https://en.wikipedia.org/wiki/Flying_Tiger_%28Marvel_Comics%29
+Force_(comics)	Force (comics)	both	1972	https://en.wikipedia.org/wiki/Force_%28comics%29
+Forearm_(comics)	Forearm (comics)	villain	1990	https://en.wikipedia.org/wiki/Forearm_%28comics%29
+Foreigner_(character)	Foreigner (character)	villain	1986	https://en.wikipedia.org/wiki/Foreigner_%28character%29
+Frankenstein's_Monster_(Marvel_Comics)	Frankenstein's Monster (Marvel Comics)	hero	1953	https://en.wikipedia.org/wiki/Frankenstein%27s_Monster_%28Marvel_Comics%29
+Franklin_Richards_(character)	Franklin Richards (character)	hero	1968	https://en.wikipedia.org/wiki/Franklin_Richards_%28character%29
+Frog-Man	Frog-Man	hero	1982	https://en.wikipedia.org/wiki/Frog-Man
+Fury_(Marvel_Comics)	Fury (Marvel Comics)	villain	1982	https://en.wikipedia.org/wiki/Fury_%28Marvel_Comics%29
+G._W._Bridge	G. W. Bridge	hero	1991	https://en.wikipedia.org/wiki/G._W._Bridge
+Gargoyle_(comics)	Gargoyle (comics)	both	1962	https://en.wikipedia.org/wiki/Gargoyle_%28comics%29
+Garokk	Garokk	villain	1970	https://en.wikipedia.org/wiki/Garokk
+Garrison_Kane	Garrison Kane	hero	1991	https://en.wikipedia.org/wiki/Garrison_Kane
+Gauntlet_(Joseph_Green)	Gauntlet (Joseph Green)	hero	2006	https://en.wikipedia.org/wiki/Gauntlet_%28Joseph_Green%29
+Gemini_(Marvel_Comics)	Gemini (Marvel Comics)	villain	1970	https://en.wikipedia.org/wiki/Gemini_%28Marvel_Comics%29
+Genis-Vell	Genis-Vell	hero	1993	https://en.wikipedia.org/wiki/Genis-Vell
+Gentleman_(character)	Gentleman (character)	villain	1999	https://en.wikipedia.org/wiki/Gentleman_%28character%29
+Ghost_Rider	Ghost Rider	hero	1972	https://en.wikipedia.org/wiki/Ghost_Rider
+Ghost_Rider_(Danny_Ketch)	Ghost Rider (Danny Ketch)	hero	1990	https://en.wikipedia.org/wiki/Ghost_Rider_%28Danny_Ketch%29
+Ghost_Rider_(Johnny_Blaze)	Ghost Rider (Johnny Blaze)	hero	1972	https://en.wikipedia.org/wiki/Ghost_Rider_%28Johnny_Blaze%29
+Gideon_Mace	Gideon Mace	villain	1972	https://en.wikipedia.org/wiki/Gideon_Mace
+Giganto	Giganto	villain	1961	https://en.wikipedia.org/wiki/Giganto
+Gladiator_(Kallark)	Gladiator (Kallark)	hero	1977	https://en.wikipedia.org/wiki/Gladiator_%28Kallark%29
+Gladiator_(Melvin_Potter)	Gladiator (Melvin Potter)	villain	1966	https://en.wikipedia.org/wiki/Gladiator_%28Melvin_Potter%29
+Glenn_Talbot	Glenn Talbot	villain	1964	https://en.wikipedia.org/wiki/Glenn_Talbot
+Glob_(comics)	Glob (comics)	villain	1969	https://en.wikipedia.org/wiki/Glob_%28comics%29
+Glob_Herman	Glob Herman	villain	2001	https://en.wikipedia.org/wiki/Glob_Herman
+Golem_(Marvel_Comics)	Golem (Marvel Comics)	both	1974	https://en.wikipedia.org/wiki/Golem_%28Marvel_Comics%29
+Gorgon_(Inhuman)	Gorgon (Inhuman)	both	1965	https://en.wikipedia.org/wiki/Gorgon_%28Inhuman%29
+Gorr_the_God_Butcher	Gorr the God Butcher	villain	2013	https://en.wikipedia.org/wiki/Gorr_the_God_Butcher
+Grappler_(comics)	Grappler (comics)	villain	1981	https://en.wikipedia.org/wiki/Grappler_%28comics%29
+Green_Goblin	Green Goblin	villain	1964	https://en.wikipedia.org/wiki/Green_Goblin
+Gremlin_(comics)	Gremlin (comics)	both	1973	https://en.wikipedia.org/wiki/Gremlin_%28comics%29
+Grizzly_(comics)	Grizzly (comics)	villain	1964	https://en.wikipedia.org/wiki/Grizzly_%28comics%29
+Grog_(Marvel_Comics)	Grog (Marvel Comics)	villain	1988	https://en.wikipedia.org/wiki/Grog_%28Marvel_Comics%29
+Guardian_(Marvel_Comics)	Guardian (Marvel Comics)	hero	1978	https://en.wikipedia.org/wiki/Guardian_%28Marvel_Comics%29
+Guardsman_(character)	Guardsman (character)	both	1970	https://en.wikipedia.org/wiki/Guardsman_%28character%29
+Gwenpool	Gwenpool	hero	2015	https://en.wikipedia.org/wiki/Gwenpool
+Hangman_(Marvel_Comics)	Hangman (Marvel Comics)	villain	1973	https://en.wikipedia.org/wiki/Hangman_%28Marvel_Comics%29
+Hank_Pym	Hank Pym	hero	1962	https://en.wikipedia.org/wiki/Hank_Pym
+Happy_Sam_Sawyer	Happy Sam Sawyer	hero	1963	https://en.wikipedia.org/wiki/Happy_Sam_Sawyer
+Harold_Meachum	Harold Meachum	villain	1974	https://en.wikipedia.org/wiki/Harold_Meachum
+Hate-Monger	Hate-Monger	villain	1963	https://en.wikipedia.org/wiki/Hate-Monger
+Hawkeye_(comics)	Hawkeye (comics)	hero		https://en.wikipedia.org/wiki/Hawkeye_%28comics%29
+Headsman_(character)	Headsman (character)	villain	1996	https://en.wikipedia.org/wiki/Headsman_%28character%29
+Helix_(Marvel_Comics)	Helix (Marvel Comics)	hero	1995	https://en.wikipedia.org/wiki/Helix_%28Marvel_Comics%29
+Hellfire_(J._T._Slade)	Hellfire (J. T. Slade)	both	2008	https://en.wikipedia.org/wiki/Hellfire_%28J._T._Slade%29
+Hellion_(character)	Hellion (character)	hero	2003	https://en.wikipedia.org/wiki/Hellion_%28character%29
+Hercules_(Marvel_Comics)	Hercules (Marvel Comics)	hero	1943	https://en.wikipedia.org/wiki/Hercules_%28Marvel_Comics%29
+Hippo_(character)	Hippo (character)	villain	2009	https://en.wikipedia.org/wiki/Hippo_%28character%29
+Hit-Monkey	Hit-Monkey	hero	2010	https://en.wikipedia.org/wiki/Hit-Monkey
+Hive_(character)	Hive (character)	villain	2009	https://en.wikipedia.org/wiki/Hive_%28character%29
+Hobgoblin_(Marvel_Comics)	Hobgoblin (Marvel Comics)	villain	1983	https://en.wikipedia.org/wiki/Hobgoblin_%28Marvel_Comics%29
+Hornet_(comics)	Hornet (comics)	hero	1979	https://en.wikipedia.org/wiki/Hornet_%28comics%29
+Hrimhari	Hrimhari	hero	1985	https://en.wikipedia.org/wiki/Hrimhari
+Hulk	Hulk	both	1962	https://en.wikipedia.org/wiki/Hulk
+Hulk_2099	Hulk 2099	hero	1993	https://en.wikipedia.org/wiki/Hulk_2099
+Hulkling	Hulkling	hero	2005	https://en.wikipedia.org/wiki/Hulkling
+Human_Cannonball_(Marvel_Comics)	Human Cannonball (Marvel Comics)	villain	1962	https://en.wikipedia.org/wiki/Human_Cannonball_%28Marvel_Comics%29
+Human_Fly_(character)	Human Fly (character)	both	1976	https://en.wikipedia.org/wiki/Human_Fly_%28character%29
+Human_Torch	Human Torch	hero	1961	https://en.wikipedia.org/wiki/Human_Torch
+Human_Torch_(android)	Human Torch (android)	hero	1939	https://en.wikipedia.org/wiki/Human_Torch_%28android%29
+Humus_Sapien	Humus Sapien	villain	1973	https://en.wikipedia.org/wiki/Humus_Sapien
+Hurricane_(comics)	Hurricane (comics)	villain		https://en.wikipedia.org/wiki/Hurricane_%28comics%29
+Hybrid_(Scott_Washington)	Hybrid (Scott Washington)	hero	1992	https://en.wikipedia.org/wiki/Hybrid_%28Scott_Washington%29
+Hydro-Man	Hydro-Man	villain	1981	https://en.wikipedia.org/wiki/Hydro-Man
+Hyperion_(character)	Hyperion (character)	hero	1969	https://en.wikipedia.org/wiki/Hyperion_%28character%29
+Hypno-Hustler	Hypno-Hustler	villain	1978	https://en.wikipedia.org/wiki/Hypno-Hustler
+Ikaris	Ikaris	hero	1976	https://en.wikipedia.org/wiki/Ikaris
+Illuminator_(Marvel_Comics)	Illuminator (Marvel Comics)	hero	1993	https://en.wikipedia.org/wiki/Illuminator_%28Marvel_Comics%29
+In-Betweener	In-Betweener	villain	1975	https://en.wikipedia.org/wiki/In-Betweener
+Inferno_(Dante_Pertuz)	Inferno (Dante Pertuz)	hero	2014	https://en.wikipedia.org/wiki/Inferno_%28Dante_Pertuz%29
+Iron_Fist_(character)	Iron Fist (character)	hero	1974	https://en.wikipedia.org/wiki/Iron_Fist_%28character%29
+Iron_Lad	Iron Lad	hero	2005	https://en.wikipedia.org/wiki/Iron_Lad
+Iron_Man_(Ultimate_Marvel_character)	Iron Man (Ultimate Marvel character)	hero	2001	https://en.wikipedia.org/wiki/Iron_Man_%28Ultimate_Marvel_character%29
+Iron_Man_2020	Iron Man 2020	both	1984	https://en.wikipedia.org/wiki/Iron_Man_2020
+Iron_Monger	Iron Monger	villain	1982	https://en.wikipedia.org/wiki/Iron_Monger
+Isaiah_Bradley	Isaiah Bradley	hero	2002	https://en.wikipedia.org/wiki/Isaiah_Bradley
+Isbisa	Isbisa	villain	1946	https://en.wikipedia.org/wiki/Isbisa
+Jack_Frost_(Marvel_Comics)	Jack Frost (Marvel Comics)	hero	1941	https://en.wikipedia.org/wiki/Jack_Frost_%28Marvel_Comics%29
+Jack_Monroe_(character)	Jack Monroe (character)	hero	1953	https://en.wikipedia.org/wiki/Jack_Monroe_%28character%29
+Jackal_(Marvel_Comics_character)	Jackal (Marvel Comics character)	villain	1965	https://en.wikipedia.org/wiki/Jackal_%28Marvel_Comics_character%29
+Jackhammer_(comics)	Jackhammer (comics)	villain	1975	https://en.wikipedia.org/wiki/Jackhammer_%28comics%29
+Janice_Lincoln	Janice Lincoln	both	2010	https://en.wikipedia.org/wiki/Janice_Lincoln
+Jason_Macendale	Jason Macendale	villain	1981	https://en.wikipedia.org/wiki/Jason_Macendale
+Jean_Grey	Jean Grey	hero	1963	https://en.wikipedia.org/wiki/Jean_Grey
+Jean_Grey_(X-Men_film_series)	Jean Grey (X-Men film series)	hero	2000	https://en.wikipedia.org/wiki/Jean_Grey_%28X-Men_film_series%29
+Jeffrey_Mace	Jeffrey Mace	hero	1941	https://en.wikipedia.org/wiki/Jeffrey_Mace
+Jericho_Drumm	Jericho Drumm	hero	1973	https://en.wikipedia.org/wiki/Jericho_Drumm
+Jerry_Jaxon	Jerry Jaxon	villain	1983	https://en.wikipedia.org/wiki/Jerry_Jaxon
+Jessica_Jones	Jessica Jones	hero	1963	https://en.wikipedia.org/wiki/Jessica_Jones
+Jester_(Marvel_Comics)	Jester (Marvel Comics)	villain	1989	https://en.wikipedia.org/wiki/Jester_%28Marvel_Comics%29
+John_Jameson_(character)	John Jameson (character)	hero	1963	https://en.wikipedia.org/wiki/John_Jameson_%28character%29
+John_Ryker	John Ryker	villain	2000	https://en.wikipedia.org/wiki/John_Ryker
+Jonas_Harrow	Jonas Harrow	villain	1972	https://en.wikipedia.org/wiki/Jonas_Harrow
+Jubilee_(character)	Jubilee (character)	hero	1989	https://en.wikipedia.org/wiki/Jubilee_%28character%29
+Junior_Juniper	Junior Juniper	hero	1963	https://en.wikipedia.org/wiki/Junior_Juniper
+Justice_(New_Universe)	Justice (New Universe)	hero	1986	https://en.wikipedia.org/wiki/Justice_%28New_Universe%29
+Kaluu	Kaluu	villain	1966	https://en.wikipedia.org/wiki/Kaluu
+Kangaroo_(character)	Kangaroo (character)	villain	1970	https://en.wikipedia.org/wiki/Kangaroo_%28character%29
+Karla_Sofen	Karla Sofen	villain	1975	https://en.wikipedia.org/wiki/Karla_Sofen
+Karnak_(character)	Karnak (character)	hero	1965	https://en.wikipedia.org/wiki/Karnak_%28character%29
+Kearson_DeWitt	Kearson DeWitt	villain	1990	https://en.wikipedia.org/wiki/Kearson_DeWitt
+Kid_Colt	Kid Colt	hero	1948	https://en.wikipedia.org/wiki/Kid_Colt
+Killpower	Killpower	hero	1992	https://en.wikipedia.org/wiki/Killpower
+Killraven	Killraven	hero	1970	https://en.wikipedia.org/wiki/Killraven
+Kingpin_(Matt_Murdock)	Kingpin (Matt Murdock)	villain	2014	https://en.wikipedia.org/wiki/Kingpin_%28Matt_Murdock%29
+Kismet_(Marvel_Comics)	Kismet (Marvel Comics)	hero	1977	https://en.wikipedia.org/wiki/Kismet_%28Marvel_Comics%29
+Korath_the_Pursuer	Korath the Pursuer	villain	1992	https://en.wikipedia.org/wiki/Korath_the_Pursuer
+Korvus	Korvus	hero	2006	https://en.wikipedia.org/wiki/Korvus
+Krang_(Marvel_Comics)	Krang (Marvel Comics)	villain	1963	https://en.wikipedia.org/wiki/Krang_%28Marvel_Comics%29
+Kristoff_Vernard	Kristoff Vernard	both	1982	https://en.wikipedia.org/wiki/Kristoff_Vernard
+Kro_(character)	Kro (character)	villain	1940	https://en.wikipedia.org/wiki/Kro_%28character%29
+Kulan_Gath	Kulan Gath	villain	1972	https://en.wikipedia.org/wiki/Kulan_Gath
+Kurse_(comics)	Kurse (comics)	villain	1984	https://en.wikipedia.org/wiki/Kurse_%28comics%29
+Lady_Gorgon	Lady Gorgon	villain	2008	https://en.wikipedia.org/wiki/Lady_Gorgon
+Lash_(comics)	Lash (comics)	villain	2014	https://en.wikipedia.org/wiki/Lash_%28comics%29
+Laufey_(character)	Laufey (character)	villain	1965	https://en.wikipedia.org/wiki/Laufey_%28character%29
+Leader_(character)	Leader (character)	villain	1964	https://en.wikipedia.org/wiki/Leader_%28character%29
+Leap-Frog_(comics)	Leap-Frog (comics)	villain	1967	https://en.wikipedia.org/wiki/Leap-Frog_%28comics%29
+Leech_(character)	Leech (character)	hero	1984	https://en.wikipedia.org/wiki/Leech_%28character%29
+Lei_Kung_(character)	Lei Kung (character)	hero	1974	https://en.wikipedia.org/wiki/Lei_Kung_%28character%29
+Lemuel_Dorcas	Lemuel Dorcas	villain	1968	https://en.wikipedia.org/wiki/Lemuel_Dorcas
+Leo_(comics)	Leo (comics)	villain	1970	https://en.wikipedia.org/wiki/Leo_%28comics%29
+Libra_(Marvel_Comics)	Libra (Marvel Comics)	villain	1970	https://en.wikipedia.org/wiki/Libra_%28Marvel_Comics%29
+Lightmaster	Lightmaster	villain	1977	https://en.wikipedia.org/wiki/Lightmaster
+Living_Brain	Living Brain	villain	1964	https://en.wikipedia.org/wiki/Living_Brain
+Living_Laser	Living Laser	villain	1966	https://en.wikipedia.org/wiki/Living_Laser
+Living_Lightning	Living Lightning	hero	1990	https://en.wikipedia.org/wiki/Living_Lightning
+Living_Monolith	Living Monolith	villain	1969	https://en.wikipedia.org/wiki/Living_Monolith
+Lizard_(character)	Lizard (character)	villain	1963	https://en.wikipedia.org/wiki/Lizard_%28character%29
+Lloyd_Bloch	Lloyd Bloch	villain	1974	https://en.wikipedia.org/wiki/Lloyd_Bloch
+Llyra	Llyra	villain	1970	https://en.wikipedia.org/wiki/Llyra
+Locksmith_(comics)	Locksmith (comics)	villain	1983	https://en.wikipedia.org/wiki/Locksmith_%28comics%29
+Looter_(character)	Looter (character)	villain	1966	https://en.wikipedia.org/wiki/Looter_%28character%29
+Luke_Cage	Luke Cage	hero	1972	https://en.wikipedia.org/wiki/Luke_Cage
+Lunatik	Lunatik	villain	1977	https://en.wikipedia.org/wiki/Lunatik
+Mac_Gargan	Mac Gargan	villain	1964	https://en.wikipedia.org/wiki/Mac_Gargan
+Machine_Man	Machine Man	hero	1977	https://en.wikipedia.org/wiki/Machine_Man
+Mad_Dog_(Marvel_Comics)	Mad Dog (Marvel Comics)	villain	1944	https://en.wikipedia.org/wiki/Mad_Dog_%28Marvel_Comics%29
+Maestro_(character)	Maestro (character)	villain	1992	https://en.wikipedia.org/wiki/Maestro_%28character%29
+Magician_(Marvel_Comics)	Magician (Marvel Comics)	both	1964	https://en.wikipedia.org/wiki/Magician_%28Marvel_Comics%29
+Mahkizmo	Mahkizmo	villain	1974	https://en.wikipedia.org/wiki/Mahkizmo
+Mahr_Vehl	Mahr Vehl	hero	2005	https://en.wikipedia.org/wiki/Mahr_Vehl
+Maker_(character)	Maker (character)	villain	2004	https://en.wikipedia.org/wiki/Maker_%28character%29
+Makkari_(character)	Makkari (character)	hero	1940	https://en.wikipedia.org/wiki/Makkari_%28character%29
+Malcolm_Colcord	Malcolm Colcord	villain	2001	https://en.wikipedia.org/wiki/Malcolm_Colcord
+Man-Elephant	Man-Elephant	villain	1983	https://en.wikipedia.org/wiki/Man-Elephant
+Man-Killer	Man-Killer	villain	1968	https://en.wikipedia.org/wiki/Man-Killer
+Man-Thing	Man-Thing	hero	1971	https://en.wikipedia.org/wiki/Man-Thing
+Man_Mountain_Marko	Man Mountain Marko	villain	1969	https://en.wikipedia.org/wiki/Man_Mountain_Marko
+Mania_(character)	Mania (character)	both	2003	https://en.wikipedia.org/wiki/Mania_%28character%29
+Marduk_Kurios	Marduk Kurios	villain	1974	https://en.wikipedia.org/wiki/Marduk_Kurios
+Mark_Hazzard:_Merc	Mark Hazzard: Merc	hero		https://en.wikipedia.org/wiki/Mark_Hazzard%3A_Merc
+Marvel_Boy_(Robert_Grayson)	Marvel Boy (Robert Grayson)	hero	1950	https://en.wikipedia.org/wiki/Marvel_Boy_%28Robert_Grayson%29
+Masked_Marauder	Masked Marauder	villain	1966	https://en.wikipedia.org/wiki/Masked_Marauder
+Massacre_(Marvel_Comics)	Massacre (Marvel Comics)	villain	2011	https://en.wikipedia.org/wiki/Massacre_%28Marvel_Comics%29
+Master_Khan	Master Khan	villain	1960	https://en.wikipedia.org/wiki/Master_Khan
+Master_Man_(Marvel_Comics)	Master Man (Marvel Comics)	villain	1975	https://en.wikipedia.org/wiki/Master_Man_%28Marvel_Comics%29
+Master_Menace	Master Menace	villain	1979	https://en.wikipedia.org/wiki/Master_Menace
+Master_Mold	Master Mold	villain	1965	https://en.wikipedia.org/wiki/Master_Mold
+Master_Pandemonium	Master Pandemonium	villain	1986	https://en.wikipedia.org/wiki/Master_Pandemonium
+Master_of_the_World_(character)	Master of the World (character)	villain	1983	https://en.wikipedia.org/wiki/Master_of_the_World_%28character%29
+Mauler_(comics)	Mauler (comics)	villain	1980	https://en.wikipedia.org/wiki/Mauler_%28comics%29
+Maur-Konn	Maur-Konn	villain	1979	https://en.wikipedia.org/wiki/Maur-Konn
+Mayday_Parker	Mayday Parker	hero	1998	https://en.wikipedia.org/wiki/Mayday_Parker
+Megatak	Megatak	villain	1983	https://en.wikipedia.org/wiki/Megatak
+Mentallo	Mentallo	villain	1966	https://en.wikipedia.org/wiki/Mentallo
+Metal_Master_(comics)	Metal Master (comics)	villain	1963	https://en.wikipedia.org/wiki/Metal_Master_%28comics%29
+Michael_Pointer_(character)	Michael Pointer (character)	villain	2006	https://en.wikipedia.org/wiki/Michael_Pointer_%28character%29
+Midgard_Serpent_(Marvel_Comics)	Midgard Serpent (Marvel Comics)	villain	1949	https://en.wikipedia.org/wiki/Midgard_Serpent_%28Marvel_Comics%29
+Midnight_Man_(comics)	Midnight Man (comics)	villain	1981	https://en.wikipedia.org/wiki/Midnight_Man_%28comics%29
+Mikhail_Rasputin	Mikhail Rasputin	villain	1992	https://en.wikipedia.org/wiki/Mikhail_Rasputin
+Mind-Wave	Mind-Wave	villain	1976	https://en.wikipedia.org/wiki/Mind-Wave
+Miracleman_(character)	Miracleman (character)	hero		https://en.wikipedia.org/wiki/Miracleman_%28character%29
+Mirage_(Marvel_Comics)	Mirage (Marvel Comics)	villain	1976	https://en.wikipedia.org/wiki/Mirage_%28Marvel_Comics%29
+Missing_Link_(comics)	Missing Link (comics)	villain	1968	https://en.wikipedia.org/wiki/Missing_Link_%28comics%29
+Mister_Fear	Mister Fear	villain	1965	https://en.wikipedia.org/wiki/Mister_Fear
+Mister_Hyde_(Marvel_Comics)	Mister Hyde (Marvel Comics)	villain	1963	https://en.wikipedia.org/wiki/Mister_Hyde_%28Marvel_Comics%29
+Mister_Negative	Mister Negative	villain	2007	https://en.wikipedia.org/wiki/Mister_Negative
+Mister_Sinister	Mister Sinister	villain	1986	https://en.wikipedia.org/wiki/Mister_Sinister
+Mister_X_(Marvel_Comics)	Mister X (Marvel Comics)	villain	2001	https://en.wikipedia.org/wiki/Mister_X_%28Marvel_Comics%29
+Misty_Knight	Misty Knight	hero	1975	https://en.wikipedia.org/wiki/Misty_Knight
+Mockingbird_(Marvel_Comics)	Mockingbird (Marvel Comics)	hero	1971	https://en.wikipedia.org/wiki/Mockingbird_%28Marvel_Comics%29
+Modular_Man	Modular Man	villain	1977	https://en.wikipedia.org/wiki/Modular_Man
+Mojo_(comics)	Mojo (comics)	villain	1985	https://en.wikipedia.org/wiki/Mojo_%28comics%29
+Mole_Man	Mole Man	villain	1961	https://en.wikipedia.org/wiki/Mole_Man
+Molecule_Man	Molecule Man	villain	1963	https://en.wikipedia.org/wiki/Molecule_Man
+Monsteroso	Monsteroso	villain	1961	https://en.wikipedia.org/wiki/Monsteroso
+Montana_(character)	Montana (character)	villain	1964	https://en.wikipedia.org/wiki/Montana_%28character%29
+Moon_Knight	Moon Knight	hero	1975	https://en.wikipedia.org/wiki/Moon_Knight
+Moondragon	Moondragon	hero	1973	https://en.wikipedia.org/wiki/Moondragon
+Moonglow_(comics)	Moonglow (comics)	hero	1986	https://en.wikipedia.org/wiki/Moonglow_%28comics%29
+Morbius	Morbius	both	1971	https://en.wikipedia.org/wiki/Morbius
+Morg	Morg	villain	1992	https://en.wikipedia.org/wiki/Morg
+Morpheus_(Marvel_Comics)	Morpheus (Marvel Comics)	villain	1981	https://en.wikipedia.org/wiki/Morpheus_%28Marvel_Comics%29
+Motormouth_(comics)	Motormouth (comics)	hero	1992	https://en.wikipedia.org/wiki/Motormouth_%28comics%29
+Mountjoy_(comics)	Mountjoy (comics)	villain	1994	https://en.wikipedia.org/wiki/Mountjoy_%28comics%29
+Mr._Fish	Mr. Fish	villain	1975	https://en.wikipedia.org/wiki/Mr._Fish
+Ms._Marvel	Ms. Marvel	hero		https://en.wikipedia.org/wiki/Ms._Marvel
+Mysterio	Mysterio	villain	1964	https://en.wikipedia.org/wiki/Mysterio
+NFL_SuperPro	NFL SuperPro	hero		https://en.wikipedia.org/wiki/NFL_SuperPro
+Naga_(Marvel_Comics)	Naga (Marvel Comics)	villain	1969	https://en.wikipedia.org/wiki/Naga_%28Marvel_Comics%29
+Nanny_and_Orphan-Maker	Nanny and Orphan-Maker	villain	1988	https://en.wikipedia.org/wiki/Nanny_and_Orphan-Maker
+Nathaniel_Richards_(Marvel_Comics)	Nathaniel Richards (Marvel Comics)	villain	1984	https://en.wikipedia.org/wiki/Nathaniel_Richards_%28Marvel_Comics%29
+Nebulon_(comics)	Nebulon (comics)	villain	1974	https://en.wikipedia.org/wiki/Nebulon_%28comics%29
+Nicholas_Scratch	Nicholas Scratch	villain	1977	https://en.wikipedia.org/wiki/Nicholas_Scratch
+Nicodemus_West	Nicodemus West	villain	2006	https://en.wikipedia.org/wiki/Nicodemus_West
+Nightmask	Nightmask	hero	1986	https://en.wikipedia.org/wiki/Nightmask
+Nightwatch_(character)	Nightwatch (character)	both	1993	https://en.wikipedia.org/wiki/Nightwatch_%28character%29
+Noh-Varr	Noh-Varr	both	2000	https://en.wikipedia.org/wiki/Noh-Varr
+Nomad_(Marvel_Comics)	Nomad (Marvel Comics)	both	1974	https://en.wikipedia.org/wiki/Nomad_%28Marvel_Comics%29
+Norman_Osborn	Norman Osborn	villain	1964	https://en.wikipedia.org/wiki/Norman_Osborn
+Northstar_(character)	Northstar (character)	both	1979	https://en.wikipedia.org/wiki/Northstar_%28character%29
+Nova_(Richard_Rider)	Nova (Richard Rider)	hero	1976	https://en.wikipedia.org/wiki/Nova_%28Richard_Rider%29
+Nth_Man	Nth Man	villain	1976	https://en.wikipedia.org/wiki/Nth_Man
+Nuke_(Marvel_Comics)	Nuke (Marvel Comics)	villain	1986	https://en.wikipedia.org/wiki/Nuke_%28Marvel_Comics%29
+Obnoxio_the_Clown	Obnoxio the Clown	villain	1980	https://en.wikipedia.org/wiki/Obnoxio_the_Clown
+Occulus	Occulus	villain	1992	https://en.wikipedia.org/wiki/Occulus
+Ogre_(Marvel_Comics)	Ogre (Marvel Comics)	both	1967	https://en.wikipedia.org/wiki/Ogre_%28Marvel_Comics%29
+Ogun_(comics)	Ogun (comics)	villain	1984	https://en.wikipedia.org/wiki/Ogun_%28comics%29
+Olivier_(comics)	Olivier (comics)	villain	1976	https://en.wikipedia.org/wiki/Olivier_%28comics%29
+Orb_(comics)	Orb (comics)	villain	1973	https://en.wikipedia.org/wiki/Orb_%28comics%29
+Orka_(character)	Orka (character)	villain	1970	https://en.wikipedia.org/wiki/Orka_%28character%29
+Outlaw_(Marvel_Comics)	Outlaw (Marvel Comics)	hero	1992	https://en.wikipedia.org/wiki/Outlaw_%28Marvel_Comics%29
+Overdrive_(character)	Overdrive (character)	villain	2007	https://en.wikipedia.org/wiki/Overdrive_%28character%29
+Overmind_(comics)	Overmind (comics)	villain	1971	https://en.wikipedia.org/wiki/Overmind_%28comics%29
+Oya_(comics)	Oya (comics)	hero	2010	https://en.wikipedia.org/wiki/Oya_%28comics%29
+Painter_(comics)	Painter (comics)	villain	1963	https://en.wikipedia.org/wiki/Painter_%28comics%29
+Paladin_(comics)	Paladin (comics)	hero	1978	https://en.wikipedia.org/wiki/Paladin_%28comics%29
+Patsy_Walker	Patsy Walker	hero	1944	https://en.wikipedia.org/wiki/Patsy_Walker
+Peggy_Carter	Peggy Carter	hero	1966	https://en.wikipedia.org/wiki/Peggy_Carter
+Phil_Urich	Phil Urich	both	1995	https://en.wikipedia.org/wiki/Phil_Urich
+Phoenix_Force	Phoenix Force	both	1976	https://en.wikipedia.org/wiki/Phoenix_Force
+Phyla-Vell	Phyla-Vell	hero	2003	https://en.wikipedia.org/wiki/Phyla-Vell
+Piledriver_(character)	Piledriver (character)	villain	1974	https://en.wikipedia.org/wiki/Piledriver_%28character%29
+Pisces_(character)	Pisces (character)	villain	1970	https://en.wikipedia.org/wiki/Pisces_%28character%29
+Plunderer_(comics)	Plunderer (comics)	villain	1966	https://en.wikipedia.org/wiki/Plunderer_%28comics%29
+Porcupine_(character)	Porcupine (character)	villain	1963	https://en.wikipedia.org/wiki/Porcupine_%28character%29
+Power_Broker_(character)	Power Broker (character)	villain	1978	https://en.wikipedia.org/wiki/Power_Broker_%28character%29
+Power_Man_(Victor_Alvarez)	Power Man (Victor Alvarez)	hero	2010	https://en.wikipedia.org/wiki/Power_Man_%28Victor_Alvarez%29
+Powerhouse_(Marvel_Comics)	Powerhouse (Marvel Comics)	both	1976	https://en.wikipedia.org/wiki/Powerhouse_%28Marvel_Comics%29
+Predator_X_(character)	Predator X (character)	villain	2004	https://en.wikipedia.org/wiki/Predator_X_%28character%29
+Primus_(Marvel_Comics)	Primus (Marvel Comics)	villain	1977	https://en.wikipedia.org/wiki/Primus_%28Marvel_Comics%29
+Princess_Python	Princess Python	villain	1965	https://en.wikipedia.org/wiki/Princess_Python
+Professor_Power	Professor Power	villain	1982	https://en.wikipedia.org/wiki/Professor_Power
+Profile_(Marvel_Comics)	Profile (Marvel Comics)	villain	2006	https://en.wikipedia.org/wiki/Profile_%28Marvel_Comics%29
+Prowler_(Marvel_Comics)	Prowler (Marvel Comics)	villain	1969	https://en.wikipedia.org/wiki/Prowler_%28Marvel_Comics%29
+Psycho-Man	Psycho-Man	villain	1967	https://en.wikipedia.org/wiki/Psycho-Man
+Psyklop	Psyklop	villain	1971	https://en.wikipedia.org/wiki/Psyklop
+Puck_(Marvel_Comics)	Puck (Marvel Comics)	hero	1983	https://en.wikipedia.org/wiki/Puck_%28Marvel_Comics%29
+Puppet_Master_(Marvel_Comics)	Puppet Master (Marvel Comics)	villain	1962	https://en.wikipedia.org/wiki/Puppet_Master_%28Marvel_Comics%29
+Purple_Man	Purple Man	villain	1964	https://en.wikipedia.org/wiki/Purple_Man
+Pyro_(Marvel_Comics)	Pyro (Marvel Comics)	villain	1981	https://en.wikipedia.org/wiki/Pyro_%28Marvel_Comics%29
+Quasar_(character)	Quasar (character)	hero	1979	https://en.wikipedia.org/wiki/Quasar_%28character%29
+Quicksilver_(Marvel_Comics)	Quicksilver (Marvel Comics)	both	1964	https://en.wikipedia.org/wiki/Quicksilver_%28Marvel_Comics%29
+Rachel_Summers	Rachel Summers	hero	1981	https://en.wikipedia.org/wiki/Rachel_Summers
+Radian_(Morituri)	Radian (Morituri)	hero	1986	https://en.wikipedia.org/wiki/Radian_%28Morituri%29
+Radioactive_Man_(comics)	Radioactive Man (comics)	both	1963	https://en.wikipedia.org/wiki/Radioactive_Man_%28comics%29
+Ragnarok_(comics)	Ragnarok (comics)	villain	2006	https://en.wikipedia.org/wiki/Ragnarok_%28comics%29
+Rampage_(Marvel_Comics)	Rampage (Marvel Comics)	villain	1975	https://en.wikipedia.org/wiki/Rampage_%28Marvel_Comics%29
+Rapido_(comics)	Rapido (comics)	villain	1992	https://en.wikipedia.org/wiki/Rapido_%28comics%29
+Ravage_2099	Ravage 2099	hero	1992	https://en.wikipedia.org/wiki/Ravage_2099
+Raza_Longknife	Raza Longknife	hero	1977	https://en.wikipedia.org/wiki/Raza_Longknife
+Red_Guardian	Red Guardian	hero	1967	https://en.wikipedia.org/wiki/Red_Guardian
+Red_Hulk	Red Hulk	villain		https://en.wikipedia.org/wiki/Red_Hulk
+Red_Raven_(Marvel_Comics)	Red Raven (Marvel Comics)	both	1940	https://en.wikipedia.org/wiki/Red_Raven_%28Marvel_Comics%29
+Red_Wolf_(comics)	Red Wolf (comics)	hero	1970	https://en.wikipedia.org/wiki/Red_Wolf_%28comics%29
+Redneck_(comics)	Redneck (comics)	both	2001	https://en.wikipedia.org/wiki/Redneck_%28comics%29
+Redstone_(comics)	Redstone (comics)	villain	1986	https://en.wikipedia.org/wiki/Redstone_%28comics%29
+Rev_(comics)	Rev (comics)	villain	1987	https://en.wikipedia.org/wiki/Rev_%28comics%29
+Ricochet_(comics)	Ricochet (comics)	hero	1998	https://en.wikipedia.org/wiki/Ricochet_%28comics%29
+Rikki_Barnes	Rikki Barnes	hero	1996	https://en.wikipedia.org/wiki/Rikki_Barnes
+Ringmaster_(comics)	Ringmaster (comics)	villain	1962	https://en.wikipedia.org/wiki/Ringmaster_%28comics%29
+Robbie_Baldwin	Robbie Baldwin	hero	1988	https://en.wikipedia.org/wiki/Robbie_Baldwin
+Rocket_Raccoon	Rocket Raccoon	hero	1976	https://en.wikipedia.org/wiki/Rocket_Raccoon
+Rockman_(character)	Rockman (character)	hero	1941	https://en.wikipedia.org/wiki/Rockman_%28character%29
+Rockslide_(character)	Rockslide (character)	hero	2003	https://en.wikipedia.org/wiki/Rockslide_%28character%29
+Rom_the_Space_Knight	Rom the Space Knight	hero	1979	https://en.wikipedia.org/wiki/Rom_the_Space_Knight
+Romulus_(comics)	Romulus (comics)	villain	2007	https://en.wikipedia.org/wiki/Romulus_%28comics%29
+Ronan_the_Accuser	Ronan the Accuser	villain	1967	https://en.wikipedia.org/wiki/Ronan_the_Accuser
+Ronin_(Marvel_Comics)	Ronin (Marvel Comics)	hero		https://en.wikipedia.org/wiki/Ronin_%28Marvel_Comics%29
+Rose_(Marvel_Comics)	Rose (Marvel Comics)	villain	1984	https://en.wikipedia.org/wiki/Rose_%28Marvel_Comics%29
+Ruby_Summers	Ruby Summers	hero	2008	https://en.wikipedia.org/wiki/Ruby_Summers
+Russian_(comics)	Russian (comics)	villain	2000	https://en.wikipedia.org/wiki/Russian_%28comics%29
+Rusty_Collins	Rusty Collins	both	1986	https://en.wikipedia.org/wiki/Rusty_Collins
+Sabra_(character)	Sabra (character)	hero	1980	https://en.wikipedia.org/wiki/Sabra_%28character%29
+Sabretooth_(character)	Sabretooth (character)	villain	1977	https://en.wikipedia.org/wiki/Sabretooth_%28character%29
+Sagittarius_(comics)	Sagittarius (comics)	villain	1970	https://en.wikipedia.org/wiki/Sagittarius_%28comics%29
+Samuel_Silke	Samuel Silke	villain	2001	https://en.wikipedia.org/wiki/Samuel_Silke
+Sapphire_Styx	Sapphire Styx	villain	1988	https://en.wikipedia.org/wiki/Sapphire_Styx
+Sarnak_(comics)	Sarnak (comics)	villain	1973	https://en.wikipedia.org/wiki/Sarnak_%28comics%29
+Satana_(Marvel_Comics)	Satana (Marvel Comics)	both	1973	https://en.wikipedia.org/wiki/Satana_%28Marvel_Comics%29
+Scarecrow_(Marvel_Comics)	Scarecrow (Marvel Comics)	villain	1964	https://en.wikipedia.org/wiki/Scarecrow_%28Marvel_Comics%29
+Scaredycat	Scaredycat	hero	1987	https://en.wikipedia.org/wiki/Scaredycat
+Scarlet_Scarab	Scarlet Scarab	both	1977	https://en.wikipedia.org/wiki/Scarlet_Scarab
+Scarlet_Spider	Scarlet Spider	both		https://en.wikipedia.org/wiki/Scarlet_Spider
+Scarlet_Witch	Scarlet Witch	hero	1964	https://en.wikipedia.org/wiki/Scarlet_Witch
+Scatterbrain_(Morituri)	Scatterbrain (Morituri)	hero	1987	https://en.wikipedia.org/wiki/Scatterbrain_%28Morituri%29
+Scientist_Supreme	Scientist Supreme	villain	1971	https://en.wikipedia.org/wiki/Scientist_Supreme
+Scorpio_(Marvel_Comics)	Scorpio (Marvel Comics)	both	1967	https://en.wikipedia.org/wiki/Scorpio_%28Marvel_Comics%29
+Screwball_(character)	Screwball (character)	villain	2008	https://en.wikipedia.org/wiki/Screwball_%28character%29
+Sean_and_Chris	Sean and Chris	hero	2010	https://en.wikipedia.org/wiki/Sean_and_Chris
+Selene_(comics)	Selene (comics)	villain	1983	https://en.wikipedia.org/wiki/Selene_%28comics%29
+Sentry_(Curtis_Elkins)	Sentry (Curtis Elkins)	villain	1993	https://en.wikipedia.org/wiki/Sentry_%28Curtis_Elkins%29
+Sentry_(Robert_Reynolds)	Sentry (Robert Reynolds)	both	2000	https://en.wikipedia.org/wiki/Sentry_%28Robert_Reynolds%29
+Shadow_Knight_(character)	Shadow Knight (character)	villain	1979	https://en.wikipedia.org/wiki/Shadow_Knight_%28character%29
+Shamrock_(comics)	Shamrock (comics)	hero	1982	https://en.wikipedia.org/wiki/Shamrock_%28comics%29
+Shang-Chi	Shang-Chi	hero	1973	https://en.wikipedia.org/wiki/Shang-Chi
+Shatterstar	Shatterstar	hero	1991	https://en.wikipedia.org/wiki/Shatterstar
+She-Hulk	She-Hulk	hero	1979	https://en.wikipedia.org/wiki/She-Hulk
+She-Hulk_(Lyra)	She-Hulk (Lyra)	hero	2008	https://en.wikipedia.org/wiki/She-Hulk_%28Lyra%29
+Shear_(character)	Shear (character)	hero	1987	https://en.wikipedia.org/wiki/Shear_%28character%29
+Shepard_(comics)	Shepard (comics)	villain	2003	https://en.wikipedia.org/wiki/Shepard_%28comics%29
+Shockwave_(comics)	Shockwave (comics)	villain	1976	https://en.wikipedia.org/wiki/Shockwave_%28comics%29
+Shriek_(character)	Shriek (character)	villain	1993	https://en.wikipedia.org/wiki/Shriek_%28character%29
+Shuri_(character)	Shuri (character)	hero	2005	https://en.wikipedia.org/wiki/Shuri_%28character%29
+Sidewinder_(character)	Sidewinder (character)	villain	1980	https://en.wikipedia.org/wiki/Sidewinder_%28character%29
+Silencer_(comics)	Silencer (comics)	hero	1987	https://en.wikipedia.org/wiki/Silencer_%28comics%29
+Silhouette_(comics)	Silhouette (comics)	hero	1990	https://en.wikipedia.org/wiki/Silhouette_%28comics%29
+Silk_(character)	Silk (character)	hero	2014	https://en.wikipedia.org/wiki/Silk_%28character%29
+Silvermane	Silvermane	villain	1969	https://en.wikipedia.org/wiki/Silvermane
+Sin_(Marvel_Comics)	Sin (Marvel Comics)	villain	1984	https://en.wikipedia.org/wiki/Sin_%28Marvel_Comics%29
+Skull_the_Slayer	Skull the Slayer	hero	1975	https://en.wikipedia.org/wiki/Skull_the_Slayer
+Slaymaster	Slaymaster	villain	1977	https://en.wikipedia.org/wiki/Slaymaster
+Sleeper_(Marvel_Comics)	Sleeper (Marvel Comics)	villain	1965	https://en.wikipedia.org/wiki/Sleeper_%28Marvel_Comics%29
+Snapdragon_(Morituri)	Snapdragon (Morituri)	hero	1986	https://en.wikipedia.org/wiki/Snapdragon_%28Morituri%29
+Solarman	Solarman	hero	1979	https://en.wikipedia.org/wiki/Solarman
+Solo_(Marvel_Comics)	Solo (Marvel Comics)	hero	1986	https://en.wikipedia.org/wiki/Solo_%28Marvel_Comics%29
+Solomon_Kane_(comics)	Solomon Kane (comics)	hero		https://en.wikipedia.org/wiki/Solomon_Kane_%28comics%29
+Speed_(character)	Speed (character)	hero	1986	https://en.wikipedia.org/wiki/Speed_%28character%29
+Sphinx_(Marvel_Comics)	Sphinx (Marvel Comics)	villain	1977	https://en.wikipedia.org/wiki/Sphinx_%28Marvel_Comics%29
+Spider-Bitch_(Ashley_Barton)	Spider-Bitch (Ashley Barton)	both	2008	https://en.wikipedia.org/wiki/Spider-Bitch_%28Ashley_Barton%29
+Spider-Girl	Spider-Girl	both	1977	https://en.wikipedia.org/wiki/Spider-Girl
+Spider-Man	Spider-Man	hero	1962	https://en.wikipedia.org/wiki/Spider-Man
+Spider-Man_(Marvel_Mangaverse)	Spider-Man (Marvel Mangaverse)	hero	2002	https://en.wikipedia.org/wiki/Spider-Man_%28Marvel_Mangaverse%29
+Spider-Man_Noir	Spider-Man Noir	hero	2009	https://en.wikipedia.org/wiki/Spider-Man_Noir
+Spider-UK	Spider-UK	hero	2014	https://en.wikipedia.org/wiki/Spider-UK
+Spider-Woman	Spider-Woman	both	1977	https://en.wikipedia.org/wiki/Spider-Woman
+Spider-Woman_(Gwen_Stacy)	Spider-Woman (Gwen Stacy)	hero	2014	https://en.wikipedia.org/wiki/Spider-Woman_%28Gwen_Stacy%29
+Spider-Woman_(Jessica_Drew)	Spider-Woman (Jessica Drew)	hero	1977	https://en.wikipedia.org/wiki/Spider-Woman_%28Jessica_Drew%29
+Spitfire_(character)	Spitfire (character)	hero	1976	https://en.wikipedia.org/wiki/Spitfire_%28character%29
+Spot_(Marvel_Comics)	Spot (Marvel Comics)	villain	1984	https://en.wikipedia.org/wiki/Spot_%28Marvel_Comics%29
+Star-Lord	Star-Lord	hero	1976	https://en.wikipedia.org/wiki/Star-Lord
+Star_Brand	Star Brand	hero		https://en.wikipedia.org/wiki/Star_Brand
+Starhawk_(character)	Starhawk (character)	hero	1975	https://en.wikipedia.org/wiki/Starhawk_%28character%29
+Starr_the_Slayer	Starr the Slayer	hero	1970	https://en.wikipedia.org/wiki/Starr_the_Slayer
+Steel_Serpent	Steel Serpent	villain	1975	https://en.wikipedia.org/wiki/Steel_Serpent
+Steel_Spider	Steel Spider	hero	1982	https://en.wikipedia.org/wiki/Steel_Spider
+Stiletto_(comics)	Stiletto (comics)	villain	1973	https://en.wikipedia.org/wiki/Stiletto_%28comics%29
+Stingray_(Marvel_Comics)	Stingray (Marvel Comics)	hero	1967	https://en.wikipedia.org/wiki/Stingray_%28Marvel_Comics%29
+Stonewall_(comics)	Stonewall (comics)	villain	1987	https://en.wikipedia.org/wiki/Stonewall_%28comics%29
+Storm_(Marvel_Comics)	Storm (Marvel Comics)	hero	1975	https://en.wikipedia.org/wiki/Storm_%28Marvel_Comics%29
+Straw_Man_(comics)	Straw Man (comics)	hero	1975	https://en.wikipedia.org/wiki/Straw_Man_%28comics%29
+Strongman_(character)	Strongman (character)	villain	1962	https://en.wikipedia.org/wiki/Strongman_%28character%29
+Super-Adaptoid	Super-Adaptoid	villain	1966	https://en.wikipedia.org/wiki/Super-Adaptoid
+Super-Patriot_(Marvel_Comics)	Super-Patriot (Marvel Comics)	villain	1969	https://en.wikipedia.org/wiki/Super-Patriot_%28Marvel_Comics%29
+Super-Skrull	Super-Skrull	villain	1963	https://en.wikipedia.org/wiki/Super-Skrull
+Super_Rabbit	Super Rabbit	hero	1943	https://en.wikipedia.org/wiki/Super_Rabbit
+Surge_(Marvel_Comics)	Surge (Marvel Comics)	hero	2004	https://en.wikipedia.org/wiki/Surge_%28Marvel_Comics%29
+Synapse_(character)	Synapse (character)	both	1998	https://en.wikipedia.org/wiki/Synapse_%28character%29
+T-Ray_(comics)	T-Ray (comics)	villain	1997	https://en.wikipedia.org/wiki/T-Ray_%28comics%29
+Talos_the_Untamed	Talos the Untamed	villain	1994	https://en.wikipedia.org/wiki/Talos_the_Untamed
+Tarantula_(Marvel_Comics)	Tarantula (Marvel Comics)	both	1974	https://en.wikipedia.org/wiki/Tarantula_%28Marvel_Comics%29
+Tatterdemalion	Tatterdemalion	villain	1973	https://en.wikipedia.org/wiki/Tatterdemalion
+Taurus_(Marvel_Comics)	Taurus (Marvel Comics)	villain	1970	https://en.wikipedia.org/wiki/Taurus_%28Marvel_Comics%29
+Technovore	Technovore	villain	1993	https://en.wikipedia.org/wiki/Technovore
+Tempus_(comics)	Tempus (comics)	villain	1974	https://en.wikipedia.org/wiki/Tempus_%28comics%29
+Tetu_(comics)	Tetu (comics)	villain	2016	https://en.wikipedia.org/wiki/Tetu_%28comics%29
+Thanos	Thanos	villain	1973	https://en.wikipedia.org/wiki/Thanos
+The_Union_(Marvel)	The Union (Marvel)	hero	2020	https://en.wikipedia.org/wiki/The_Union_%28Marvel%29
+The_Witness_(character)	The Witness (character)	hero	1941	https://en.wikipedia.org/wiki/The_Witness_%28character%29
+Thena	Thena	hero	1940	https://en.wikipedia.org/wiki/Thena
+Thermo_(comics)	Thermo (comics)	villain	1981	https://en.wikipedia.org/wiki/Thermo_%28comics%29
+Thin_Man_(character)	Thin Man (character)	hero	1940	https://en.wikipedia.org/wiki/Thin_Man_%28character%29
+Thor_Girl	Thor Girl	hero	2000	https://en.wikipedia.org/wiki/Thor_Girl
+Thunderball_(character)	Thunderball (character)	villain	1974	https://en.wikipedia.org/wiki/Thunderball_%28character%29
+Thunderbolt_(Marvel_Comics)	Thunderbolt (Marvel Comics)	hero	1970	https://en.wikipedia.org/wiki/Thunderbolt_%28Marvel_Comics%29
+Thunderbolt_Ross	Thunderbolt Ross	villain	1962	https://en.wikipedia.org/wiki/Thunderbolt_Ross
+Thunderclap_(comics)	Thunderclap (comics)	hero	1984	https://en.wikipedia.org/wiki/Thunderclap_%28comics%29
+Tiger_Shark_(Marvel_Comics)	Tiger Shark (Marvel Comics)	villain	1968	https://en.wikipedia.org/wiki/Tiger_Shark_%28Marvel_Comics%29
+Timeslip_(comics)	Timeslip (comics)	hero	1995	https://en.wikipedia.org/wiki/Timeslip_%28comics%29
+Tinkerer_(Marvel_Comics)	Tinkerer (Marvel Comics)	villain	1963	https://en.wikipedia.org/wiki/Tinkerer_%28Marvel_Comics%29
+Tombstone_(character)	Tombstone (character)	villain	1988	https://en.wikipedia.org/wiki/Tombstone_%28character%29
+Toro_(character)	Toro (character)	hero	1940	https://en.wikipedia.org/wiki/Toro_%28character%29
+Torpedo_(Marvel_Comics)	Torpedo (Marvel Comics)	villain	1975	https://en.wikipedia.org/wiki/Torpedo_%28Marvel_Comics%29
+Toxyn	Toxyn	hero	1987	https://en.wikipedia.org/wiki/Toxyn
+Tracer_(Marvel_Comics)	Tracer (Marvel Comics)	villain	2005	https://en.wikipedia.org/wiki/Tracer_%28Marvel_Comics%29
+Tricephalous_(comics)	Tricephalous (comics)	villain	1961	https://en.wikipedia.org/wiki/Tricephalous_%28comics%29
+Tumbler_(comics)	Tumbler (comics)	villain	1966	https://en.wikipedia.org/wiki/Tumbler_%28comics%29
+Tundra_(Marvel_Comics)	Tundra (Marvel Comics)	villain	1983	https://en.wikipedia.org/wiki/Tundra_%28Marvel_Comics%29
+Turbo_(comics)	Turbo (comics)	hero	1992	https://en.wikipedia.org/wiki/Turbo_%28comics%29
+Two-Gun_Kid	Two-Gun Kid	hero	1948	https://en.wikipedia.org/wiki/Two-Gun_Kid
+Typeface_(character)	Typeface (character)	both	2000	https://en.wikipedia.org/wiki/Typeface_%28character%29
+Typhon_(comics)	Typhon (comics)	villain	1968	https://en.wikipedia.org/wiki/Typhon_%28comics%29
+U-Man	U-Man	villain	1975	https://en.wikipedia.org/wiki/U-Man
+U.S._Agent	U.S. Agent	hero	1986	https://en.wikipedia.org/wiki/U.S._Agent
+Ulik	Ulik	villain	1967	https://en.wikipedia.org/wiki/Ulik
+Ultimo_(Marvel_Comics)	Ultimo (Marvel Comics)	villain	1966	https://en.wikipedia.org/wiki/Ultimo_%28Marvel_Comics%29
+Ultron	Ultron	villain	1968	https://en.wikipedia.org/wiki/Ultron
+Ulysses_Bloodstone	Ulysses Bloodstone	hero	1975	https://en.wikipedia.org/wiki/Ulysses_Bloodstone
+Union_Jack_(Joseph_Chapman)	Union Jack (Joseph Chapman)	hero	1981	https://en.wikipedia.org/wiki/Union_Jack_%28Joseph_Chapman%29
+Union_Jack_(Marvel_Comics)	Union Jack (Marvel Comics)	hero	1976	https://en.wikipedia.org/wiki/Union_Jack_%28Marvel_Comics%29
+Ursa_Major_(character)	Ursa Major (character)	hero	1981	https://en.wikipedia.org/wiki/Ursa_Major_%28character%29
+Val_Rhymin	Val Rhymin	villain	2008	https://en.wikipedia.org/wiki/Val_Rhymin
+Vance_Astrovik	Vance Astrovik	hero	1975	https://en.wikipedia.org/wiki/Vance_Astrovik
+Varnae	Varnae	villain	1982	https://en.wikipedia.org/wiki/Varnae
+Venom_(character)	Venom (character)	both	1984	https://en.wikipedia.org/wiki/Venom_%28character%29
+Vibro_(comics)	Vibro (comics)	villain	1984	https://en.wikipedia.org/wiki/Vibro_%28comics%29
+Victor_Timely	Victor Timely	villain	1992	https://en.wikipedia.org/wiki/Victor_Timely
+Vindicator_(comics)	Vindicator (comics)	hero	1980	https://en.wikipedia.org/wiki/Vindicator_%28comics%29
+Virgo_(character)	Virgo (character)	villain	1970	https://en.wikipedia.org/wiki/Virgo_%28character%29
+Vulcan_(Marvel_Comics)	Vulcan (Marvel Comics)	both	2006	https://en.wikipedia.org/wiki/Vulcan_%28Marvel_Comics%29
+Vyking	Vyking	hero	1986	https://en.wikipedia.org/wiki/Vyking
+War_(Marvel_Comics)	War (Marvel Comics)	villain	1986	https://en.wikipedia.org/wiki/War_%28Marvel_Comics%29
+War_Machine	War Machine	hero	1979	https://en.wikipedia.org/wiki/War_Machine
+Warrior_Woman_(Marvel_Comics)	Warrior Woman (Marvel Comics)	villain	1977	https://en.wikipedia.org/wiki/Warrior_Woman_%28Marvel_Comics%29
+Wendigo_(comics)	Wendigo (comics)	villain	1973	https://en.wikipedia.org/wiki/Wendigo_%28comics%29
+Werewolf_by_Night	Werewolf by Night	hero	1972	https://en.wikipedia.org/wiki/Werewolf_by_Night
+Werner_von_Strucker	Werner von Strucker	villain	1989	https://en.wikipedia.org/wiki/Werner_von_Strucker
+Whiplash_(Marvel_Comics)	Whiplash (Marvel Comics)	villain	1968	https://en.wikipedia.org/wiki/Whiplash_%28Marvel_Comics%29
+White_Tiger_(Heroes_for_Hire)	White Tiger (Heroes for Hire)	hero	1997	https://en.wikipedia.org/wiki/White_Tiger_%28Heroes_for_Hire%29
+White_Tiger_(comics)	White Tiger (comics)	hero	1975	https://en.wikipedia.org/wiki/White_Tiger_%28comics%29
+Whizzer_(Robert_Frank)	Whizzer (Robert Frank)	hero	1941	https://en.wikipedia.org/wiki/Whizzer_%28Robert_Frank%29
+Wild_Child_(character)	Wild Child (character)	both	1983	https://en.wikipedia.org/wiki/Wild_Child_%28character%29
+Will_o'_the_Wisp_(comics)	Will o' the Wisp (comics)	both	1977	https://en.wikipedia.org/wiki/Will_o%27_the_Wisp_%28comics%29
+William_Burnside_(character)	William Burnside (character)	both	1953	https://en.wikipedia.org/wiki/William_Burnside_%28character%29
+Wolverine_(Ultimate_Marvel_character)	Wolverine (Ultimate Marvel character)	hero	2001	https://en.wikipedia.org/wiki/Wolverine_%28Ultimate_Marvel_character%29
+Wolverine_(character)	Wolverine (character)	hero	1974	https://en.wikipedia.org/wiki/Wolverine_%28character%29
+Wong-Chu	Wong-Chu	villain	1963	https://en.wikipedia.org/wiki/Wong-Chu
+Wrecker_(comics)	Wrecker (comics)	villain	1968	https://en.wikipedia.org/wiki/Wrecker_%28comics%29
+Xorn	Xorn	both	2001	https://en.wikipedia.org/wiki/Xorn
+Yelena_Belova	Yelena Belova	both	1998	https://en.wikipedia.org/wiki/Yelena_Belova
+Ymir_(Marvel_Comics)	Ymir (Marvel Comics)	villain	1963	https://en.wikipedia.org/wiki/Ymir_%28Marvel_Comics%29
+Yo-Yo_Rodriguez	Yo-Yo Rodriguez	hero	2008	https://en.wikipedia.org/wiki/Yo-Yo_Rodriguez
+Zarathos	Zarathos	villain	1972	https://en.wikipedia.org/wiki/Zarathos
+Zarrko	Zarrko	villain	1962	https://en.wikipedia.org/wiki/Zarrko
+Zenzi_(comics)	Zenzi (comics)	villain	2016	https://en.wikipedia.org/wiki/Zenzi_%28comics%29
+Zheng_Zu	Zheng Zu	villain	1973	https://en.wikipedia.org/wiki/Zheng_Zu
+Zhou_Cheng	Zhou Cheng	villain	2008	https://en.wikipedia.org/wiki/Zhou_Cheng
+Zombie_(comics)	Zombie (comics)	hero	1953	https://en.wikipedia.org/wiki/Zombie_%28comics%29
+Zzzax	Zzzax	villain	1973	https://en.wikipedia.org/wiki/Zzzax

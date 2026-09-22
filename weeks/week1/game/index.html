@@ -4,6 +4,9 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>WEB-CRAWLER · a game inside the Marvel graph</title>
+<link rel="icon" type="image/svg+xml" href="../../../assets/favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="../../../assets/favicon-32.png">
+<link rel="apple-touch-icon" href="../../../assets/apple-touch-icon.png">
 <meta name="description" content="Navigate Wikipedia's Marvel network as Spider-Man, Wolverine or Doctor Strange. The map only exists where you have walked. Get home in as few steps as possible.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -121,7 +124,9 @@ canvas#cv.pointing{cursor:pointer}
 .veil{position:absolute;inset:0;z-index:20;display:flex;align-items:center;justify-content:center;padding:20px;
   background:radial-gradient(900px 600px at 50% 45%,rgba(20,28,56,.93),rgba(5,7,15,.97));backdrop-filter:blur(6px);overflow-y:auto}
 .veil.gone{display:none}
-.card{width:min(880px,100%);text-align:center}
+/* margin:auto (not align-items:center) so a card taller than the viewport
+   scrolls from its top instead of clipping the title off. */
+.card{width:min(880px,100%);text-align:center;margin:auto}
 .card h1{font-size:clamp(40px,8vw,74px);line-height:.95;color:var(--red2);text-shadow:0 4px 0 #6b0d10,0 8px 24px rgba(230,36,41,.4)}
 .card .sub{font-size:13px;color:var(--dim);margin:10px auto 4px;max-width:600px;line-height:1.65}
 .card .sub b{color:var(--text)}
@@ -158,6 +163,11 @@ canvas#cv.pointing{cursor:pointer}
   background:rgba(255,255,255,.03);border:1px solid var(--line);border-radius:12px;padding:13px 16px}
 .rules b{color:var(--text)}
 .rules code{background:var(--panel2);padding:1px 5px;border-radius:4px;font-size:10.5px;color:var(--web)}
+.rules .rtitle{font-size:10px;letter-spacing:.22em;font-weight:800;color:var(--gold);margin-bottom:8px}
+.rules ol{margin:0 0 10px 18px;padding:0}
+.rules li{margin-bottom:7px}
+.rules li::marker{color:var(--gold);font-weight:800}
+.rules .rcatch{border-top:1px solid var(--line);padding-top:9px}
 
 .verdict{font-size:clamp(34px,7vw,64px);line-height:1;color:var(--gold);text-shadow:0 4px 0 #7a5c11}
 .scoreRow{display:flex;gap:10px;justify-content:center;margin:18px 0;flex-wrap:wrap}
@@ -286,14 +296,20 @@ canvas#cv.pointing{cursor:pointer}
         <div class="diffs" id="diffPick"></div>
         <button class="go comic" id="bStart">SWING OUT!</button>
         <div class="rules">
-          <b>How it works.</b> You can only follow links <i>out</i> of the page you are standing on, exactly like a reader
-          clicking onward. Nodes you have never seen do not exist yet. Once you reach the mission target the objective
-          flips: get <b>home</b>.<br>
-          <b>Par</b> is the shortest possible route out and back, computed with BFS on the real graph. Matching par means
-          you read the network as well as the network can be read.
-          <code>Spider-sense</code> points at a step that lies on a shortest route (+3 steps).
-          <code>Web-zip</code> undoes your last step (+2 steps).<br>
-          <b>Why is this hard?</b> The graph is directed. A linking to B says nothing about B linking back to A.
+          <div class="rtitle">YOUR MISSION</div>
+          <ol>
+            <li><b>Find the target.</b> The mission bar names a character somewhere out in the network. Move by
+            clicking a link out of the page you are standing on &mdash; on the map, or in the panel's link list &mdash;
+            exactly like a reader clicking onward. The red compass arrow points the way.</li>
+            <li><b>The map is dark.</b> Only pages you have stood on reveal their surroundings. Aim for hubs: the
+            big names link everywhere, the small ones often nowhere.</li>
+            <li><b>Then get home.</b> Once you touch the target the objective flips. The way back is usually
+            <b>not</b> the way you came: links are one-way, and only 39% point back.</li>
+          </ol>
+          <div class="rcatch"><b>Score.</b> Every click is a step; <b>par</b> is the shortest possible round trip,
+          computed with BFS on the real graph, and matching it means a perfect route. Stuck?
+          <code>Spider-sense</code> reveals one step of a shortest route (costs +3 steps).
+          <code>Web-zip</code> undoes your last step (+2) and is the only way out of a dead-end page.</div>
         </div>
         <a class="homelink" href="../../../index.html">Back to the site</a>
       </div>

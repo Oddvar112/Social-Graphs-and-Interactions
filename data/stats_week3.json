@@ -1,0 +1,523 @@
+{
+  "settings": {
+    "shuffles": 200,
+    "quick": false
+  },
+  "giant": 277,
+  "mean_distance": 2.674,
+  "diameter": 6,
+  "radius": 3,
+  "center": [
+    "Spider-Man"
+  ],
+  "frac_pairs_2_or_3": 0.857,
+  "largest_scc": 229,
+  "reach_from_spiderman": 230,
+  "frac_ordered_pairs_reachable": 0.69,
+  "asymmetric_pair": {
+    "from": "Box",
+    "to": "Guardian",
+    "there": 1,
+    "back": 8
+  },
+  "top10": {
+    "degree": [
+      [
+        "Spider-Man",
+        106.0
+      ],
+      [
+        "Hulk",
+        65.0
+      ],
+      [
+        "Wolverine",
+        63.0
+      ],
+      [
+        "Doctor Strange",
+        57.0
+      ],
+      [
+        "Deadpool",
+        41.0
+      ],
+      [
+        "She-Hulk",
+        37.0
+      ],
+      [
+        "Phoenix Force",
+        32.0
+      ],
+      [
+        "Scarlet Witch",
+        32.0
+      ],
+      [
+        "Black Panther",
+        31.0
+      ],
+      [
+        "Venom",
+        29.0
+      ]
+    ],
+    "closeness": [
+      [
+        "Spider-Man",
+        0.5948
+      ],
+      [
+        "Hulk",
+        0.5257
+      ],
+      [
+        "Wolverine",
+        0.5237
+      ],
+      [
+        "Doctor Strange",
+        0.5169
+      ],
+      [
+        "Deadpool",
+        0.4937
+      ],
+      [
+        "She-Hulk",
+        0.4817
+      ],
+      [
+        "Scarlet Witch",
+        0.475
+      ],
+      [
+        "Phoenix Force",
+        0.471
+      ],
+      [
+        "Moon Knight",
+        0.4694
+      ],
+      [
+        "Adam Warlock",
+        0.467
+      ]
+    ],
+    "harmonic": [
+      [
+        "Spider-Man",
+        0.6812
+      ],
+      [
+        "Hulk",
+        0.5954
+      ],
+      [
+        "Wolverine",
+        0.5915
+      ],
+      [
+        "Doctor Strange",
+        0.58
+      ],
+      [
+        "Deadpool",
+        0.5465
+      ],
+      [
+        "She-Hulk",
+        0.5332
+      ],
+      [
+        "Scarlet Witch",
+        0.522
+      ],
+      [
+        "Phoenix Force",
+        0.5184
+      ],
+      [
+        "Moon Knight",
+        0.5115
+      ],
+      [
+        "Cloak and Dagger",
+        0.5109
+      ]
+    ],
+    "betweenness": [
+      [
+        "Spider-Man",
+        0.2349
+      ],
+      [
+        "Hulk",
+        0.105
+      ],
+      [
+        "Wolverine",
+        0.0925
+      ],
+      [
+        "Doctor Strange",
+        0.0827
+      ],
+      [
+        "Deadpool",
+        0.056
+      ],
+      [
+        "She-Hulk",
+        0.0398
+      ],
+      [
+        "Hercules",
+        0.0374
+      ],
+      [
+        "Black Widow",
+        0.0351
+      ],
+      [
+        "Phoenix Force",
+        0.0257
+      ],
+      [
+        "U.S. Agent",
+        0.0255
+      ]
+    ],
+    "eigenvector": [
+      [
+        "Spider-Man",
+        0.3501
+      ],
+      [
+        "Wolverine",
+        0.2334
+      ],
+      [
+        "Doctor Strange",
+        0.2232
+      ],
+      [
+        "Hulk",
+        0.2056
+      ],
+      [
+        "Deadpool",
+        0.1587
+      ],
+      [
+        "She-Hulk",
+        0.141
+      ],
+      [
+        "Black Cat",
+        0.1389
+      ],
+      [
+        "Storm",
+        0.134
+      ],
+      [
+        "Phoenix Force",
+        0.1334
+      ],
+      [
+        "Scarlet Witch",
+        0.1332
+      ]
+    ],
+    "pagerank": [
+      [
+        "Spider-Man",
+        0.0501
+      ],
+      [
+        "Hulk",
+        0.028
+      ],
+      [
+        "Wolverine",
+        0.0259
+      ],
+      [
+        "Doctor Strange",
+        0.0207
+      ],
+      [
+        "Black Cat",
+        0.0176
+      ],
+      [
+        "Deadpool",
+        0.0148
+      ],
+      [
+        "Mayday Parker",
+        0.0143
+      ],
+      [
+        "Venom",
+        0.0137
+      ],
+      [
+        "Phoenix Force",
+        0.0136
+      ],
+      [
+        "Jean Grey",
+        0.013
+      ]
+    ]
+  },
+  "spearman_vs_degree": {
+    "closeness": 0.853,
+    "harmonic": 0.882,
+    "betweenness": 0.914,
+    "eigenvector": 0.877
+  },
+  "top10_shared_degree_betweenness": 7,
+  "spiderman": {
+    "closeness": 0.595,
+    "mean_distance": 1.681,
+    "betweenness": 0.2349,
+    "out_degree": 9
+  },
+  "median_closeness": 0.381,
+  "pagerank_upsets": [
+    {
+      "who": "Black Cat",
+      "pagerank_rank": 5,
+      "in_degree": 21
+    },
+    {
+      "who": "Mayday Parker",
+      "pagerank_rank": 7,
+      "in_degree": 14
+    }
+  ],
+  "black_cat_shelter": {
+    "degree": 28,
+    "neighbors_shared_with_spiderman": 24,
+    "spiderman_is_neighbor": true
+  },
+  "hulk": {
+    "in": 64,
+    "out": 10
+  },
+  "betsy": {
+    "in": 7,
+    "out": 28
+  },
+  "shuffles": 200,
+  "betweenness_vs_shuffle": [
+    {
+      "who": "Spider-Man",
+      "degree": 106,
+      "real": 0.2349,
+      "shuffle_mean": 0.2321,
+      "shuffle_sd": 0.0098,
+      "z": 0.3
+    },
+    {
+      "who": "Hercules",
+      "degree": 26,
+      "real": 0.0374,
+      "shuffle_mean": 0.018,
+      "shuffle_sd": 0.0046,
+      "z": 4.2
+    },
+    {
+      "who": "Black Widow",
+      "degree": 25,
+      "real": 0.0351,
+      "shuffle_mean": 0.0161,
+      "shuffle_sd": 0.0039,
+      "z": 4.9
+    },
+    {
+      "who": "U.S. Agent",
+      "degree": 21,
+      "real": 0.0255,
+      "shuffle_mean": 0.0123,
+      "shuffle_sd": 0.0039,
+      "z": 3.3
+    },
+    {
+      "who": "Black Cat",
+      "degree": 28,
+      "real": 0.0071,
+      "shuffle_mean": 0.0204,
+      "shuffle_sd": 0.0048,
+      "z": -2.8
+    }
+  ],
+  "surprising_brokers": [
+    [
+      50.4,
+      "Rockman",
+      2
+    ],
+    [
+      5.4,
+      "Nightmask",
+      5
+    ],
+    [
+      4.9,
+      "Black Widow",
+      25
+    ],
+    [
+      4.4,
+      "Turbo",
+      5
+    ],
+    [
+      4.2,
+      "Hercules",
+      26
+    ],
+    [
+      3.8,
+      "Ikaris",
+      5
+    ],
+    [
+      3.4,
+      "Darkhawk",
+      15
+    ],
+    [
+      3.3,
+      "U.S. Agent",
+      21
+    ],
+    [
+      3.3,
+      "Guardsman",
+      8
+    ],
+    [
+      3.0,
+      "Genis-Vell",
+      8
+    ]
+  ],
+  "assortativity": {
+    "real": -0.105,
+    "shuffle_mean": -0.123,
+    "shuffle_sd": 0.011
+  },
+  "triangles": 1835,
+  "maximal_cliques": 893,
+  "clique_number": 8,
+  "largest_cliques": {
+    "count": 6,
+    "common_core": [
+      "Betsy Braddock",
+      "Cyclops",
+      "Emma Frost",
+      "Jean Grey",
+      "Rachel Summers",
+      "Wolverine"
+    ],
+    "guests": [
+      "Cable",
+      "Jubilee",
+      "Northstar",
+      "Phoenix Force",
+      "Storm"
+    ]
+  },
+  "five_cliques": 477,
+  "single_hit_damage": [
+    {
+      "who": "Spider-Man",
+      "degree": 106,
+      "cut_off": 5
+    },
+    {
+      "who": "Black Widow",
+      "degree": 25,
+      "cut_off": 3
+    },
+    {
+      "who": "Doctor Strange",
+      "degree": 57,
+      "cut_off": 2
+    },
+    {
+      "who": "War Machine",
+      "degree": 16,
+      "cut_off": 1
+    },
+    {
+      "who": "Turbo",
+      "degree": 5,
+      "cut_off": 1
+    }
+  ],
+  "articulation_points": 13,
+  "greedy_curves": {
+    "degree": [
+      277,
+      271,
+      270,
+      268,
+      265,
+      262,
+      261,
+      260,
+      259
+    ],
+    "betweenness": [
+      277,
+      271,
+      270,
+      268,
+      265,
+      262,
+      261,
+      260,
+      259
+    ]
+  },
+  "records": {
+    "3": {
+      "core": 264,
+      "crew": [
+        "Black Widow",
+        "Doctor Strange",
+        "Spider-Man"
+      ]
+    },
+    "5": {
+      "core": 259,
+      "crew": [
+        "Black Widow",
+        "Deadpool",
+        "Doctor Strange",
+        "Spider-Man",
+        "Wolverine"
+      ]
+    },
+    "8": {
+      "core": 253,
+      "crew": [
+        "Black Widow",
+        "Deadpool",
+        "Deathlok",
+        "Doctor Strange",
+        "Genis-Vell",
+        "Spider-Man",
+        "War Machine",
+        "Wolverine"
+      ]
+    }
+  }
+}

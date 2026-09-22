@@ -4,6 +4,9 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Capes &amp; Edges</title>
+<link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-32.png">
+<link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
 <meta name="description" content="Oddvar, David and Milena take eight weeks apart inside Wikipedia's Marvel network. 02805 Social Graphs and Interactions, DTU.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -17,7 +20,9 @@
     <a href="index.html" class="logo comic">CAPES &amp; EDGES</a>
     <nav>
       <a href="weeks/week1/">Week 1</a>
+      <a href="weeks/week2/">Week 2</a>
       <a href="weeks/week3/">Week 3</a>
+      <a href="weeks/week2/hubdial/index.html?theme=dark" class="dial">The Hub Dial &middot; 2.10</a>
       <a href="https://github.com/Oddvar112/Social-Graphs-and-Interactions">Code</a>
     </nav>
   </div>
@@ -50,7 +55,6 @@
   <section class="wrap">
     <div class="sectionhead">
       <h2 class="comic">THE WEEKS</h2>
-      <p>One post a week.<br>Structure first, text from week 5.</p>
     </div>
 
     <div class="weeks">
@@ -69,23 +73,35 @@
         <div class="go">Read the post &rarr;</div>
       </a>
 
-      <div class="week soon">
-        <div class="no">Week 2 <span class="pill">Not yet</span></div>
-        <h3 class="comic">COMING UP</h3>
-        <p>Slot reserved. It fills in when week 2 lands.</p>
-        <div class="tags"><span class="tag cool">Structure</span></div>
-      </div>
+      <a class="week" href="weeks/week2/">
+        <div class="no">Week 2 <span class="pill live">Published</span></div>
+        <h3 class="comic">SHUFFLE THE UNIVERSE</h3>
+        <p>A proper power-law fit and what it cannot say, the friendship paradox and the two characters nobody
+        out-popularities, twelve numbers shuffle-tested against two nulls, a preferential-attachment Marvel next to
+        the real one, and the villains crawled in. Then we replayed the universe from 1939.</p>
+        <div class="tags">
+          <span class="tag cool">Structure</span>
+          <span class="tag">Null models</span>
+          <span class="tag">Preferential attachment</span>
+          <span class="tag">Villains</span>
+          <span class="tag hot">Playable</span>
+          <span class="tag hot">Explorable</span>
+        </div>
+        <div class="go">Read the post &rarr;</div>
+      </a>
 
       <a class="week" href="weeks/week3/">
         <div class="no">Week 3 <span class="pill live">Published</span></div>
-        <h3 class="comic">WHO MATTERS, COMPARED TO WHAT</h3>
-        <p>Why 2.67 versus 2.8 tells you nothing, and what does. Betweenness against the right null, the characters
-        that surprise once you control for degree, and an explorable where you take the network apart by hand.</p>
+        <h3 class="comic">THE NETWORK SHRUGGED</h3>
+        <p>Four definitions of importance and the shuffle test that sorts them: Spider-Man's famous betweenness is
+        just his degree, the real brokers are Black Widow, Hercules and a forgotten character with two links, and
+        the biggest clique is six X-Men with two guest chairs. Then we built an assassination game about it.</p>
         <div class="tags">
           <span class="tag cool">Structure</span>
           <span class="tag">Centrality</span>
           <span class="tag">Null models</span>
-          <span class="tag hot">Explorable</span>
+          <span class="tag">Cliques</span>
+          <span class="tag hot">Playable</span>
         </div>
         <div class="go">Read the post &rarr;</div>
       </a>
@@ -129,8 +145,38 @@
   </section>
 
   <section class="wrap">
+    <div class="sectionhead">
+      <h2 class="comic">THE GAMES</h2>
+    </div>
+
+    <a class="playcard" href="weeks/week3/game/">
+      <div class="lbl">Built in week 3</div>
+      <h3 class="comic">KINGPIN</h3>
+      <p>You get eight hits. Remove characters from the real network and try to shatter its core; whoever loses
+      their last route to the big cluster is cut off. Then three rival hitmen run the same contract: one shoots
+      the most connected, one the biggest broker, one at random. The map shows who is popular. It does not show
+      who holds the network together.</p>
+      <span class="cta">Play it</span>
+    </a>
+    <a class="playcard" href="weeks/week2/grow/">
+      <div class="lbl">Built in week 2</div>
+      <h3 class="comic">ORIGIN STORY</h3>
+      <p>Watch the Marvel universe grow one character at a time from 1939 to 2020, each arrival with its comic
+      panel, with or without the villains, and see who collects the links. Then grow a preferential-attachment
+      universe of the same size next to it. In the model, whoever arrives first becomes a hub. On Wikipedia, the
+      hubs are the class of 1962.</p>
+      <span class="cta">Play it</span>
+    </a>
+    <a class="playcard" href="weeks/week2/hubdial/index.html?theme=dark">
+      <div class="lbl">Built in week 2 for the course page &middot; exercise 2.10</div>
+      <h3 class="comic">THE HUB DIAL</h3>
+      <p>Grow a network where newcomers attach with probability proportional to k to the power &alpha;, and turn
+      &alpha;. Below 1 the hubs never form. At 1 you get Barab&aacute;si-Albert. Above 1 one node takes a fixed share
+      of every link, however big the network gets. Spider-Man reads 1.1 on the dial.</p>
+      <span class="cta">Turn it</span>
+    </a>
     <a class="playcard" href="weeks/week1/game/">
-      <div class="lbl">Built in week 1, playable now</div>
+      <div class="lbl">Built in week 1</div>
       <h3 class="comic">WEB-CRAWLER</h3>
       <p>Pick Spider-Man, Wolverine or Doctor Strange. You get sent somewhere out in the network and have to click your
       way home along real Wikipedia links, one page at a time. The map only exists where you have walked, and your score
