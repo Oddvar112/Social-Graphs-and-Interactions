@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Week 5: Enemies sit at the same table</title>
+<link rel="icon" type="image/svg+xml" href="../../assets/favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="../../assets/favicon-32.png">
+<link rel="apple-touch-icon" href="../../assets/apple-touch-icon.png">
+<meta name="description" content="The Marvel network gets its text: 303 Wikipedia pages, 718,552 tokens. Every link becomes the sentence that carries it, labelled foe, ally or family and tested against the communities; Zipf, Heaps, Wikipedia copying itself, a search engine that cannot find Thor, and a game where a bag-of-words machine plays against you.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bangers&family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../assets/site.css">
+</head>
+<body>
+
+<header class="topbar">
+  <div class="wrap">
+    <a href="../../index.html" class="logo comic">CAPES &amp; EDGES</a>
+    <nav>
+      <a href="../week1/">Week 1</a>
+      <a href="../week2/">Week 2</a>
+      <a href="../week3/">Week 3</a>
+      <a href="../week4/">Week 4</a>
+      <a href="index.html" class="on">Week 5</a>
+      <a href="https://github.com/Oddvar112/Social-Graphs-and-Interactions">Code</a>
+    </nav>
+  </div>
+</header>
+
+<section class="playfirst">
+  <div class="wrap">
+    <a class="playcard" href="game/index.html">
+      <div class="lbl">Week 5 &middot; play it before you read it</div>
+      <h3 class="comic">SECRET IDENTITY</h3>
+      <p>Every one of the 303 Marvel pages reduced to a bag of words. Unmask the character from as few words as you
+      can, tell a real Wikipedia sentence from one a trigram model dreamed up, and put the blacked-out word back into
+      a concordance line. A bag-of-words machine plays the same case with the same clues, and its score sits next to
+      yours. Switch the clue order to raw counts and watch it drown in <em>the</em> and <em>of</em> like everyone else.</p>
+      <span class="cta">Play it</span>
+    </a>
+  </div>
+</section>
+
+<main class="wrap post">
+
+  <div class="kicker">Week 5 &middot; From language to numbers</div>
+  <h1>Enemies sit at the same table.<br>Only family stays home.</h1>
+  <p class="lede">This week the network got its text: 303 Wikipedia articles, 4.4 million characters, 718,552 words
+  under the pipeline we chose. We counted first, as instructed, and then asked the text a question the links could
+  never answer: what <em>kind</em> of link is this? For every link from A to B we found the sentence on A's page that
+  mentions B, parsed it, and read it for enemies, allies and family. Foes cross community lines exactly as often as
+  any link. Allies a little less. Family almost never. Along the way we found Wikipedia copying itself 164 words at a
+  time, a search engine that cannot find Thor because there is no Thor, and the characters whose pages a bag of words
+  cannot tell apart. Then we made the words a game.</p>
+  <p class="byline">Oddvar, David and Milena &middot; 30 September 2026 &middot; text: the course's frozen week 5 release
+  (snapshot of 26 August 2026), 303 pages &middot; links and communities: the week 1 snapshot, 1784 directed links</p>
+
+  <div class="tldr">
+    <span class="lbl">THE SHORT VERSION</span>
+    <ul>
+      <li><b>Every link is a sentence.</b> We parsed the sentence on A's page that names B and kept a relationship
+      word only when the grammar attaches it to the name. That labels 246 links foe, ally or family. We read 60 of them
+      by hand: foe 15 of 20 right, ally 20 of 20, family 17 of 20.</li>
+      <li><b>Foes cross Louvain's community lines like any link</b> (38 percent against 43 for all links, z = &minus;0.8).
+      Allies cross less (30 percent, z = &minus;2.7). Family almost never (14 percent, z = &minus;4.3). The communities
+      are franchises, not alliances: your archenemy is in your community, your in-laws are.</li>
+      <li><b>Zipf, honestly.</b> Frequency against rank on the full pages has slope 0.92 over the first thousand
+      ranks, Moby Dick 1.07, the 303 one-line descriptions 0.79. The straight line is real; the "law" is a shape.</li>
+      <li><b>Wikipedia copies itself.</b> 288 pairs of pages share five or more eight-word runs that appear nowhere
+      else; Mayday Parker and Spider-Woman share 164 consecutive words. The strongest copies are one character
+      described twice; the rest are teams carrying the same paragraph.</li>
+      <li><b>The hero who isn't there.</b> Captain America is named on 115 of the 303 pages, more pages than Hulk, and
+      has no page in the playground. Nor do Thor, Iron Man, Daredevil, Magneto or Thanos. Our 20-line search engine
+      failed seven of twenty queries for this reason alone.</li>
+      <li><b>SECRET IDENTITY.</b> A bag-of-words machine reads the same clues you do and commits on its own schedule.
+      With distinctive clue words it commits after 4.8 clues and is right 86 percent of the time; on raw counts it
+      reads 9.4 clues and is right 31 percent. That gap is the week, and there is a case of the day to compare
+      scores on.</li>
+    </ul>
+  </div>
+
+  <h2><span class="num">&nbsp;</span>What we asked</h2>
+  <ol>
+    <li><b>What is actually in the text?</b> Tokens, types, hapaxes, under stated choices; whether the corpus is
+    Zipf-like and what that plot can and cannot establish.</li>
+    <li><b>Does network fame buy you words?</b> In-degree from week 1 against page length, and who breaks the rule.
+    And Heaps' law: does the vocabulary ever stop growing, and do minor characters bring new words?</li>
+    <li><b>Can the text tell us what a link means?</b> The course's first opener: turn links into relationships,
+    then ask whether enemies sit in different communities than friends.</li>
+    <li><b>Does Wikipedia copy itself?</b> Long shared n-grams between pages, drawn as a network of their own.</li>
+    <li><b>Can a bag of words find a character from a description?</b> A search engine in twenty lines, its failures,
+    and what its failures revealed about the roster.</li>
+    <li><b>Which pages look alike, and which page is the weirdest?</b> Cosine neighbours against network neighbours,
+    and the pages least like the rest of the corpus.</li>
+  </ol>
+
+  <h2><span class="num">I.</span>Count first</h2>
+  <p class="drop">The course's rule for this half is the same as for the network half: know what is in the data
+  before modelling it. So, three pipelines, three answers to "how many words are there", and the difference between
+  them is the first lesson. Tokenization is spaCy's; the rest is our choice and we state it.</p>
+
+  <div class="tablewrap">
+    <table>
+      <thead><tr><th>Pipeline</th><th class="num">Tokens</th><th class="num">Types</th><th class="num">Hapax</th><th>Ten most frequent</th></tr></thead>
+      <tbody>
+        <tr><td>spaCy tokens, nothing else</td><td class="num">862,787</td><td class="num">30,887</td><td class="num">38%</td><td>, the . and of to a in - "</td></tr>
+        <tr><td>letters only, lowercased</td><td class="num">718,552</td><td class="num">25,138</td><td class="num">35%</td><td>the and of to in a is as by his</td></tr>
+        <tr><td>the same, NLTK stopwords removed</td><td class="num">426,073</td><td class="num">25,003</td><td class="num">35%</td><td>marvel man spider character new x series appears avengers later</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <p>The comma is the most frequent token in the Marvel universe. Lowercasing and dropping punctuation and numbers
+  removes 144,000 tokens and 5,700 types; dropping 198 stopwords removes another 292,000 tokens but only 135 types,
+  which is Zipf in one row: the function words are few and everywhere. Ten types cover 24 percent of all tokens, a
+  hundred cover 47 percent, a thousand cover 73 percent, and 8,687 types, a third of the vocabulary, occur exactly
+  once. What remains after the stopwords is publishing, not heroism: <em>marvel</em>, <em>character</em>,
+  <em>series</em>, <em>appears</em>, and <em>man</em> and <em>spider</em>, which are one word that spaCy cut in two.</p>
+
+  <figure>
+    <img src="../../assets/figures/week5_zipf.png" alt="Left: log-log rank-frequency plot of the full Marvel pages, the 303 short descriptions and Moby Dick, with an ideal Zipf line of slope minus one. The full pages and Moby Dick run close to the line over three decades; the descriptions bend and end after 906 types. Right: the same counts for the full pages on linear axes, ranks 1 to 40, a steep spike with the, and, of, to, in, a labelled.">
+    <figcaption>Left: the same relationship three times. The full pages (cyan) and Moby Dick (green) follow the
+    ideal line for three decades of rank; the descriptions (gold) are 5,369 tokens of the same sentence and bend
+    away almost at once. Right: the full pages on linear axes, where the long tail is invisible and <em>the</em>
+    is a wall.</figcaption>
+  </figure>
+
+  <p>The course explorable showed the descriptions and asked us to predict the full pages. Our prediction was that
+  size would straighten the curve, and it did, but not because Wikipedia became a novel. Fitting a line through
+  log frequency against log rank gives a slope of 0.79 for the descriptions, 0.92 for the full pages over the first
+  thousand ranks, and 1.07 for Moby Dick, which has a third as many tokens as the pages but 44 percent hapaxes to
+  our 35. Over all ranks the Marvel slope is 1.44, steepened by 8,687 words that occur once and sit in a staircase
+  at the bottom right. The descriptions deviate for three reasons we can name: 303 copies of one template sentence
+  (<em>is a superhero appearing in American comic books published by Marvel Comics</em> gives <em>by</em>,
+  <em>marvel</em>, <em>comics</em>, <em>published</em> a flat top that no natural text has), a vocabulary of 906
+  types with nowhere to put a tail, and the fact that names are a third of it.</p>
+
+  <div class="callout warn">
+    <b>The AI-drafted report, and its three flaws.</b> The course page quotes one: the most frequent words are
+    <em>the</em>, <em>of</em>, <em>Marvel</em>, <em>Comics</em>, <em>published</em>, "which proves the corpus follows
+    Zipf's law", and <em>power</em> occurs 1,204 times, "making it the central theme". Under our pipeline
+    <em>power</em> occurs 820 times, which is the first flaw: a count without a stated pipeline is not a number. The
+    second is that a straight-ish line on log-log axes is what every large text does; it is a shape to compare
+    against, not a law to confirm, and the slope depends on how many ranks you fit. The third is that the top of a
+    frequency list is a fact about English and about Wikipedia's template sentence, and the 820 occurrences of
+    <em>power</em> are mostly <em>powers and abilities</em>, a section heading on every page. A concordance shows that
+    in a minute; a count never will.
+  </div>
+
+  <h2><span class="num">II.</span>Does fame buy you words?</h2>
+  <p>Week 1 gave every character an in-degree. Week 5 gives every character a word count. The two are related, and
+  the relationship is strong: Spearman's &rho; between in-degree and page length is 0.75, and on log-log axes the
+  slope is 0.65, so doubling the number of characters who link to you buys you 57 percent more words. Pages run from
+  191 words (Hellfire) to 14,138 (Scarlet Witch), a 74-fold spread the course page warned us to look at before
+  averaging anything.</p>
+
+  <figure>
+    <img src="../../assets/figures/week5_fame_heaps.png" alt="Left: scatter of page length against in-degree on log axes with a fitted line of slope 0.65; Betsy Braddock, U.S. Agent, Brian Braddock, Miracleman and Mania sit far above the line, Quasar far below, Spider-Man at the top right. Right: Heaps' law, distinct types against tokens read, for two page orders; both curves keep rising to 25,138 types at 718,552 tokens, the least-linked-first curve slightly above.">
+    <figcaption>Left: more in-links, more words, with exceptions worth reading. Right: Heaps' law in two orders.
+    The vocabulary never flattens, and adding the least-linked characters first finds slightly more of it per
+    token.</figcaption>
+  </figure>
+
+  <p>The exceptions are the finding. Far above the line: Betsy Braddock again (7 in-links, 12,904 words, the
+  second-longest page in the corpus and week 1's most enthusiastic linker), her brother Brian Braddock (1 in-link,
+  7,180 words), U.S. Agent (6 in-links, 9,327 words), Miracleman (no in-links at all, 4,351 words) and Beta Ray Bill. These
+  are pages somebody cared about far more than the rest of the universe does. Far below the line: Quasar, with 24
+  in-links and 1,005 words, which turns out not to be a character at all. The page is "the name of several
+  superheroes", a disambiguation with a biography attached, and 24 pages link to the name because four different
+  people have worn it. The link count measured the name; the word count measured the article.</p>
+
+  <p>Heaps' law asked whether the vocabulary flattens. It does not: at 718,552 tokens the corpus is still finding new
+  words at 17 to 22 per thousand tokens, and the fitted exponent is 0.49 with the most-linked characters first and
+  0.54 with the least-linked first. The order matters less than we expected. After 100,000 tokens the hub-first
+  reading knows 10,167 types and the minor-first reading 10,628, and by the end the last fifty pages of either order
+  bring roughly the same trickle: 21.7 new types per thousand tokens when the minor characters come last, 17.4 when
+  the famous ones do. Minor characters do bring slightly more new words per word, because a Runaway's page is about
+  Gert, Nico and the Leapfrog and nobody else's is. But the famous characters' pages are longer, and length wins.</p>
+
+  <h2><span class="num">III.</span>Every link is a sentence</h2>
+  <p class="drop">A link from A to B exists because somewhere on A's page the editor wrote B's name. That sentence
+  says what the link means, and week 1's network threw it away. So for each of the 1784 links we found every sentence
+  on A's page, after the first, that names B, and asked it what kind of relationship it describes. This was harder
+  than the opener made it sound, and how it went wrong is the most useful thing we learned this week.</p>
+
+  <p>Our first detector was a bag of words: a foe if any of <em>enemy, fight, battle, attack, kill</em> appears within
+  ten tokens of the name, an ally for <em>ally, friend, team, alongside</em>, family for <em>wife, son, sister,
+  married</em>. It labelled 380 foes. We read twenty of them. Four were right. In comics everybody fights together,
+  and <em>attack</em> next to a name almost always means they were attacked side by side; <em>kill</em> next to a name
+  usually means somebody else was killed nearby. Nouns only (<em>enemy, nemesis, rival</em>) got foes to 45 percent,
+  still failing on <em>Nova's old enemy Sphinx</em>, where the enemy is Sphinx's, not Nova's. So the final version
+  parses each sentence with spaCy and keeps a relationship word only when the grammar attaches it to the name: <em>an
+  enemy <b>of</b> Iron Fist</em>, <em>his wife<b>,</b> Jean Grey</em>, <em>the vampire Morbius</em> as a compound, <em>fought
+  alongside Nova</em>, <em>His main opponent <b>was</b> Misty Knight</em>, or a verb (<em>fought, defeated, married,
+  dating</em>) whose object is the name and whose subject is the page's own character or a pronoun, following
+  conjunctions back to the subject so that <em>the Sinister Six reform and defeat the Hulk</em> is credited to the
+  Sinister Six. A name that is somebody's possession (<em>Nova's</em>) or a relationship that belongs to a third party
+  (<em>Franklin Richards, son of Mister Fantastic</em>) is rejected. Names shared by two pages (Captain Marvel, Ghost
+  Rider, Spider-Woman) count as ambiguous and are not used.</p>
+
+  <div class="tablewrap">
+    <table>
+      <thead><tr><th>What happened to the 1784 links</th><th class="num">Links</th><th>Meaning</th></tr></thead>
+      <tbody>
+        <tr><td>Target's name is ambiguous</td><td class="num">309</td><td>The name belongs to two or more pages, or is part of the source's own name</td></tr>
+        <tr><td>No sentence names the target</td><td class="num">258</td><td>The link is in an infobox, a list, a caption, or the definition sentence we skip</td></tr>
+        <tr><td>Sentence found, no relationship word attached</td><td class="num">971</td><td>"appears alongside" without the word, a list of characters, a publication note</td></tr>
+        <tr><td><strong>Foe</strong></td><td class="num">78</td><td>Precision when we read 20: 15 right</td></tr>
+        <tr><td><strong>Ally</strong></td><td class="num">109</td><td>20 of 20 right</td></tr>
+        <tr><td><strong>Family</strong></td><td class="num">51</td><td>17 of 20 right</td></tr>
+        <tr><td>Mixed</td><td class="num">8</td><td>Two kinds tied, which for Jean Grey's page on Cyclops, or Hercules on the Hulk, is accurate</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <p>246 typed links out of 1784 is a 14 percent yield, and we want to be clear about what that means: this is a
+  typed <em>sample</em> of the network, biased towards links whose sentence is explicit about the relationship. The
+  sixty sentences we read, with our verdict on each, are in the repository as a file the analysis script checks
+  against its own labels, so the precision numbers above are not a memory. The five foe errors are all the same
+  error: a fight in which the two are on the same side, or a pronoun subject that turned out to be somebody else.</p>
+
+  <figure>
+    <img src="../../assets/figures/week5_relations.png" alt="Left: the giant component of the Marvel network with nodes coloured by seven Louvain communities; foe links drawn red, ally links green, family links gold, all other links faint grey. Coloured links of all three kinds run within and between community colours. Right: horizontal bars of the share of each kind of link that crosses a community line: foe 38 percent, ally 30 percent, family 14 percent, each with a white dot and error bar for the shuffled-label null at 43 percent, and a dashed line for all links at 43 percent.">
+    <figcaption>Left: the typed links on top of week 1's network, nodes coloured by community. Right: what share
+    of each kind crosses a community line, against what shuffling the labels among the same links gives. Foes are
+    indistinguishable from chance. Family is four standard deviations inside.</figcaption>
+  </figure>
+
+  <p>The course's question was whether enemies sit in different communities than friends. We ran Louvain on the
+  undirected giant component, best of twenty seeds as in week 4 (modularity 0.388, seven communities), and got
+  franchises: the X-Men around Wolverine and Cyclops; the Spider-people around Spider-Man and Venom; a cosmic table
+  around Hercules, Adam Warlock, Nova and Quasar; the street-level Avengers around Black Panther, Luke Cage and Iron
+  Fist; the supernatural corner of Doctor Strange, Blade, Ghost Rider and Deadpool; the Hulk family with the New
+  Warriors; and the Golden Age with the Inhumans and the Fantastic Four's relatives. Then we asked, for each kind of
+  link, how often its two ends are in different communities, and compared with the labels shuffled among the same
+  links three thousand times.</p>
+
+  <div class="tablewrap">
+    <table>
+      <thead><tr><th>Kind of link</th><th class="num">n</th><th class="num">Crosses communities</th><th class="num">Shuffled labels</th><th class="num">z</th><th class="num">p</th></tr></thead>
+      <tbody>
+        <tr><td>All links in the giant component</td><td class="num">1217</td><td class="num">43%</td><td class="num">&mdash;</td><td class="num">&mdash;</td><td class="num">&mdash;</td></tr>
+        <tr><td>Foe</td><td class="num">78</td><td class="num">38%</td><td class="num">43 &plusmn; 6%</td><td class="num">&minus;0.8</td><td class="num">0.24</td></tr>
+        <tr><td>Ally</td><td class="num">103</td><td class="num">30%</td><td class="num">43 &plusmn; 5%</td><td class="num">&minus;2.7</td><td class="num">0.003</td></tr>
+        <tr><td>Family</td><td class="num">51</td><td class="num">14%</td><td class="num">43 &plusmn; 7%</td><td class="num">&minus;4.3</td><td class="num">0.0003</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <blockquote>Enemies do not sit at a different table. A foe link crosses a community line as often as a random
+  link does, because a community here is a franchise, and a franchise comes with its villains. The Green Goblin is
+  Spider-Man's, Sabretooth is Wolverine's, the Abomination is the Hulk's. What the communities do sort is blood:
+  family links stay home, and allies lean that way.</blockquote>
+
+  <p>Some of what the sentences know. The character with the most foe links pointing at him is the Hulk, sixteen,
+  twice anyone else; every gamma monster, every Defender and half the Avengers have at some point <em>battled the
+  Hulk</em>. The most allied-to is Doctor Strange, six. The most family links point at Cyclops, five: from his son
+  Cable, his daughter Rachel Summers from another future, his brother Vulcan, his fianc&eacute;e on the film-series
+  page, and from Wolverine, whose page calls Cyclops "her husband" about Jean Grey; the grammar handed Jean's
+  relationship to Wolverine, and that one is wrong. It is exactly the kind of wrong we counted: 17 of 20.
+  Where both pages describe the same link, they agree: ten pairs say family both ways, six say ally both ways, and
+  two say foe both ways, Ares and Hercules, and Eddie Brock and Venom, who are the same person and still cannot get
+  along. Two pairs disagree, and both disagreements are the story: Blade's page calls Morbius a foe, Morbius's calls
+  Blade an ally (they fought, then Morbius joined the Midnight Sons), and Luke Cage calls Misty Knight an ally while
+  her page calls him an opponent from her days with Heroes for Hire.</p>
+
+  <div class="callout">
+    <b>What the yield does not allow us to say.</b> With 78 foe links the shuffle's standard deviation is six points,
+    so a foe effect of a few points would hide inside it; the honest statement is that foes are not distinguishable
+    from ordinary links, not that they are identical. The 971 links with a sentence but no attached relationship
+    word are the majority, and they are mostly <em>appears alongside</em>, <em>joins</em>, <em>with</em>: the language
+    of team rosters. A typed Marvel network built from all of them would be an ally network with a red minority.
+  </div>
+
+  <h2><span class="num">IV.</span>Wikipedia copies itself</h2>
+  <p>We indexed every run of eight consecutive words in the corpus, 701,335 distinct ones. 695,528 occur on one
+  page. 26 occur on thirty or more, and those are the template: <em>in american comic books published by marvel
+  comics</em> is on 282 of the 303 pages, followed by seven overlapping windows of the same sentence and, further down,
+  <em>at the comic book db archived from the original</em>. Everything else that appears on two, three or four pages is
+  a copy in the ordinary sense, and there are 4,725 such eight-word runs. 1,452 pairs of pages share at least one,
+  288 share five or more, and 39 share twenty or more.</p>
+
+  <div class="tablewrap">
+    <table>
+      <thead><tr><th>Pair</th><th class="num">Shared 8-word runs</th><th class="num">Longest identical run</th><th>Where the long run starts</th></tr></thead>
+      <tbody>
+        <tr><td>Eddie Brock &harr; Venom</td><td class="num">471</td><td class="num">57 words</td><td>Roger Stern asking to use the idea for Spider-Man's alien costume</td></tr>
+        <tr><td>Cyclops &harr; Jean Grey</td><td class="num">456</td><td class="num">102 words</td><td>Cyclops leaves his wife and child to lead X-Factor; Claremont's dismay</td></tr>
+        <tr><td>Mayday Parker &harr; Spider-Woman</td><td class="num">187</td><td class="num">164 words</td><td>the twins raised by Mary Jane in Portland, Oregon</td></tr>
+        <tr><td>Spitfire &harr; Union Jack</td><td class="num">185</td><td class="num">56 words</td><td>a list of collected editions, ISBNs and all</td></tr>
+        <tr><td>Ghost Rider &harr; Ghost Rider (Johnny Blaze)</td><td class="num">174</td><td class="num">62 words</td><td>seven riders show their flaming heads for the first time</td></tr>
+        <tr><td>Spider-Girl &harr; Spider-Woman</td><td class="num">173</td><td class="num">154 words</td><td>the daughter of Tonya Parker and Hawkeye</td></tr>
+        <tr><td>Spider-Woman &harr; Spider-Woman (Jessica Drew)</td><td class="num">164</td><td class="num">129 words</td><td>Stan Lee on why the character was created</td></tr>
+        <tr><td>Blue Diamond &harr; Jack Frost</td><td class="num">128</td><td class="num">82 words</td><td>the Liberty Legion's five stories in 1976</td></tr>
+        <tr><td>Ch'od &harr; Raza Longknife</td><td class="num">91</td><td class="num">48 words</td><td>Dave Cockrum creating the Starjammers</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <figure>
+    <img src="../../assets/figures/week5_copying.png" alt="A gallery of small networks, one box per connected component: pairs and small clusters of Marvel pages joined by edges whose width is the number of shared eight-word runs. The biggest cluster joins the Spider-Woman, Spider-Girl, Mayday Parker, Eddie Brock and Venom pages; most other components are pairs such as Ghost Rider and Ghost Rider (Johnny Blaze), Blue Diamond and Jack Frost, Ch'od and Raza Longknife. Gold edges join pages that share a name.">
+    <figcaption>The strong copies, fifteen or more shared runs, one connected component per box. Gold edges join
+    pages that share a name; the cyan ones are teammates and storyline partners.</figcaption>
+  </figure>
+
+  <p>The strongest copies are one character written twice. Eddie Brock is Venom; the Cyclops and Jean Grey pages
+  retell one marriage from both sides; Wikipedia has a page for the Spider-Woman name and separate ones for Jessica
+  Drew, Gwen Stacy and Spider-Girl, and their "Other versions" sections are the same paragraphs pasted three and four
+  ways; Ghost Rider is three pages; Union Jack is two. Below the top ten the copies are teams: the Starjammers (Ch'od
+  and Raza Longknife share Dave Cockrum's creation story), the Liberty Legion (Blue Diamond, Jack Frost, Blazing Skull
+  and Black Marvel carry the Legion's publication history four times), the Eternals (Thena, Makkari, Ikaris, Ajak),
+  the Runaways (Chase Stein and Alex Wilder), the Inhumans (Karnak and Gorgon), the New Universe (Nightmask and Star
+  Brand), and the X-Men of the Krakoa era, whose "new status quo for mutants" paragraph sits word for word on Rachel
+  Summers's, Storm's and Wild Child's pages. The copying network is a map of Wikipedia's editorial seams: the places
+  where one story was split across articles and nobody rewrote the halves. Of the 61 strong pairs, 48 are inside a
+  single Louvain community, and of the 288 pairs sharing five or more runs, 54 percent are, against roughly one in
+  seven for two pages picked at random. Copying follows the storyline, and storylines mostly stay in their
+  franchise.</p>
+
+  <h2><span class="num">V.</span>A search engine in twenty lines, and the hero who isn't there</h2>
+  <p>The document-term matrix of the full pages, one row per character and one column per word with the stopwords
+  removed, is 303 by 25,003 and 97.3 percent zeros. A query is a tiny document, so <em>norse god of thunder</em>
+  becomes a vector with three ones in it, and cosine similarity ranks the 303 pages against it. Twenty queries, each
+  with the character we had in mind:</p>
+
+  <div class="tablewrap">
+    <table>
+      <thead><tr><th>Query</th><th>Top three</th><th>We meant</th><th class="num">Rank</th></tr></thead>
+      <tbody>
+        <tr><td>king of wakanda</td><td>Black Panther, Shuri, Blade</td><td>Black Panther</td><td class="num">1</td></tr>
+        <tr><td>talking raccoon</td><td>Rocket Raccoon, Super Rabbit, Ch'od</td><td>Rocket Raccoon</td><td class="num">1</td></tr>
+        <tr><td>healthcare robot big hero 6</td><td>Baymax, Brain Drain, Living Lightning</td><td>Baymax</td><td class="num">1</td></tr>
+        <tr><td>vampire hunter</td><td>Blade, Morbius, Elsa Bloodstone</td><td>Blade</td><td class="num">1</td></tr>
+        <tr><td>master archer avenger</td><td>Hawkeye, Blue Eagle, Dusk</td><td>Hawkeye</td><td class="num">1</td></tr>
+        <tr><td>green monster gamma radiation</td><td>Frankenstein's Monster, Hulk, Phil Urich</td><td>Hulk</td><td class="num">2</td></tr>
+        <tr><td>russian spy avenger</td><td>Ursa Major, Black Widow, Yelena Belova</td><td>Black Widow</td><td class="num">2</td></tr>
+        <tr><td>symbiote</td><td>Mania, Eddie Brock, Venom</td><td>Venom</td><td class="num">3</td></tr>
+        <tr><td>merc with a mouth</td><td>Mark Hazzard: Merc, Firebird, Deadpool</td><td>Deadpool</td><td class="num">3</td></tr>
+        <tr><td>sorcerer supreme</td><td>Moonglow, Doctor Spectrum, Hyperion</td><td>Doctor Strange</td><td class="num">5</td></tr>
+        <tr><td>mutant with adamantium claws and a healing factor</td><td>Rusty Collins, Redneck, Wolverine (Ultimate)</td><td>Wolverine</td><td class="num">5</td></tr>
+        <tr><td>web slinging teenager from queens</td><td>Nightwatch, Anya Corazon, Spider-UK</td><td>Spider-Man</td><td class="num">16</td></tr>
+        <tr><td>norse god of thunder</td><td>Starhawk, Hercules, Ares</td><td>Thor</td><td class="num">not in the corpus</td></tr>
+        <tr><td>super soldier with a shield</td><td>Super Rabbit, Isaiah Bradley, U.S. Agent</td><td>Captain America</td><td class="num">not in the corpus</td></tr>
+        <tr><td>billionaire in a suit of armor</td><td>Turbo, Guardsman, Gremlin</td><td>Iron Man</td><td class="num">not in the corpus</td></tr>
+        <tr><td>blind lawyer from hell's kitchen</td><td>Anne Weying, Jessica Jones, Two-Gun Kid</td><td>Daredevil</td><td class="num">not in the corpus</td></tr>
+        <tr><td>the first mutant</td><td>Redneck, Rusty Collins, Fabio Medina</td><td>Apocalypse</td><td class="num">not in the corpus</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <p>Nine of twenty in the top three, and the failures sort into two piles. The first pile is the engine's: raw counts
+  reward short pages that repeat one query word (Super Rabbit is a vampire-hunting, shield-carrying, sorcerer-adjacent
+  rabbit as far as cosine is concerned, because his page is 291 words long and any hit is a large share of it), and
+  <em>queens</em>, <em>web</em> and <em>teenager</em> are common enough across the corpus that Spider-Man's 10,210 words
+  dilute them to rank 16. Next week's TF-IDF is built for exactly this. The second pile is not the engine's fault at
+  all. There is no Thor.</p>
+
+  <figure>
+    <img src="../../assets/figures/week5_absent.png" alt="Horizontal bar chart of mention counts across the 303 pages. Cyan bars for characters with a page: Spider-Man 1930 mentions on 142 pages, Hulk 835, Wolverine 681, Deadpool 535. Red bars for characters without a page: Captain America 625 mentions on 115 pages, Iron Man 401 on 99, Thor 333 on 63, Magneto 226, Apocalypse 187, Thanos 177, Daredevil 156, Namor 137, Mary Jane 131, Vision 129, and more.">
+    <figcaption>Who the 303 pages talk about. Cyan characters have a page in the playground; red ones are named
+    constantly and have none. Iron Man's only page here is the Ultimate universe's version of him.</figcaption>
+  </figure>
+
+  <p>The playground is <em>Category:Marvel Comics superheroes</em>, which is not the list of Marvel's superheroes. It
+  is the list of articles an editor tagged with exactly that category, and Wikipedia files its biggest names one
+  level down or somewhere else entirely. Captain America is named on 115 of the 303 pages, more pages than the Hulk
+  or Wolverine, 625 times in all, and has no page. Iron Man is named 401 times on 99 pages; the only Iron Man in the
+  roster is the Ultimate Marvel one. Thor, 333 mentions. Magneto, Thanos, Doctor Doom and Ultron are villains and
+  were never going to be here, but Daredevil, Namor, Vision, Nick Fury, the Fantastic Four, Ant-Man, Falcon and the
+  entire X-Men front bench (Beast, Rogue, Nightcrawler, Colossus, Gambit, Professor X) are absent too. Every
+  search-engine query that named one of them was a query about a character the corpus describes only from the
+  outside. Week 1 counted 58 characters nobody links to. The text adds the opposite list: the characters everybody
+  talks about who are not in the room. Both are facts about the category, not about the universe, and for a final
+  project built on a crawled category that is the first thing to check.</p>
+
+  <h2><span class="num">VI.</span>Lookalikes, and the weirdest page</h2>
+  <p>The course's lookalikes explorable asked whether text rediscovers the network. It does. Take each page's ten
+  nearest neighbours by cosine on stopword-free counts: 2.77 of them, on average, are also network neighbours, against
+  0.36 for ten random pages. Wolverine's five nearest are the Ultimate Wolverine, Cyclops, Jubilee, Storm and Jean Grey,
+  all linked to him. The closest pairs that are <em>not</em> linked are all Spider-people who never mention each other:
+  the Mangaverse Spider-Man and Spider-Man Noir (0.81), Spider-Girl and Spider-UK (0.79), the Scarlet Spider and
+  Spider-Man Noir. Same words, no links: alternate versions of one character are written from one template and,
+  living in different universes, have no reason to link. Copying (section IV) and lookalikes find the same seams from
+  opposite ends.</p>
+
+  <p>Weirdest page, defined with this week's tools only: the page whose bag of words points least in the corpus's
+  average direction. Among pages of at least 800 words that is Mania (cosine 0.20 to the centroid), a symbiote whose
+  article is about its hosts (<em>Andi</em>, <em>Patricia</em>, <em>Malone</em>), then Chase Stein (<em>Gert, Nico,
+  Karolina, the Leapfrog</em>: a Runaways page in a universe with no other Runaways), Baymax (<em>Hiro, Disney,
+  synthformer</em>), Balder the Brave (Asgard, in a corpus with no Thor) and Radian of the Morituri island from week
+  1, which the text isolates as cleanly as the links did. Among all pages, Box is weirdest (0.15): a robot suit with
+  a section on its "other users", and Mark Hazzard: Merc, which is not a character at all but a comic book series
+  that somebody filed under superheroes. The pages <em>most</em> like the corpus are Black Marvel, Ms. Marvel and
+  Captain Marvel, because the most frequent content word in the corpus is <em>marvel</em>, and a metric that
+  rewards being average rewards having it in your name. Inspect the text before you believe the metric.</p>
+
+  <h2><span class="num">VII.</span>So we made the words a game</h2>
+  <p>All of the above is the god's-eye view again. We wanted the view from inside a bag of words: given the words on
+  a page and nothing else, can you tell who it is, and can a machine? <strong>SECRET IDENTITY</strong> deals a case
+  file of three kinds of round, linked at the top of this page or <a href="game/index.html">here</a>.</p>
+
+  <ul>
+    <li><strong>Unmask.</strong> One character's page reduced to its words, revealed one at a time with its count
+    on the page and the number of pages it appears in, against four suspects. Name them after one clue for ten points,
+    after all ten for one. The clue order is yours: <em>distinctive</em> (count &times; ln(303 / pages containing the
+    word), which is next week's TF-IDF a week early), <em>no stopwords</em>, or <em>raw counts</em>, where every case
+    opens with <em>the</em>, <em>to</em>, <em>in</em> and <em>and</em>. The decoys are random characters, or the three
+    pages whose vectors point most in the same direction, which for Spider-Man means Venom, Black Cat and a
+    Spider-Woman. Suspects come from the 80 best-known characters by default, or from the full roster of everyone
+    with 500 words or more, obscurities included. A character's own names are never clues.</li>
+    <li><strong>Impostor.</strong> One sentence: from a real page, or from a trigram model trained on the pages of one
+    Louvain community? We trained seven generators; a generated sentence is rejected if it shares any nine-word run
+    with the corpus, so nothing you see is a copied sentence in disguise, and real and generated sentences go through
+    the same detokenizer and have the same length distribution, so nothing cheap works. What works is noticing that a
+    trigram model forgets its subject after two words.</li>
+    <li><strong>Redacted.</strong> A concordance line from a page with the key word blacked out and four candidates.
+    Two of the wrong ones are NLTK's <em>similar()</em> words: words that occur somewhere in the corpus between the
+    same left and right neighbours as the answer. <em>Character</em> and <em>member</em> are similar to
+    <em>company</em> in this sense. Similar context is not similar meaning, and the round is built to make you feel
+    the difference.</li>
+  </ul>
+
+  <p><strong>The machine</strong> plays the unmask rounds against you, and it is a race. Each suspect is its page as
+  a bag of words, stopwords removed, scaled to length one; the machine scores a suspect by adding up that suspect's
+  weights for the clues revealed so far, which is the cosine between your clue list and the page, the lookalikes
+  measure with the query being the clues. It never sees the answer. It reads at least two clues and commits as soon
+  as one suspect scores twice the runner-up, or is forced to guess on the tenth; a wrong commitment scores zero, like
+  yours. While you read, a widget on the card tells you <em>when</em> it has committed, never to whom, so you know the
+  machine is done and you are still hesitating. On the reveal you see the cosine of all four suspects at the moment it
+  committed, and at which clue each one took the lead. We simulated 300 rounds per setting. With distinctive clues,
+  lookalike decoys and the famous roster it commits after 4.8 clues, is right 86 percent of the time and scores 5.6
+  points a round, which a fan beats and a newcomer does not. With raw counts it reads 9.4 clues, is right 31 percent
+  of the time and scores 0.7 points a round: a list that begins <em>the, to, in, and, of, a, is</em> tells cosine
+  nothing, and it tells you nothing either. That is Zipf's law and the reason for stopword removal, in a form you can
+  lose at. The <strong>case of the day</strong> is one fixed case for everyone, seeded by the date, with a result you can
+  copy and compare. A test script runs the shipped engine under node and checks its scores, picks and commitments
+  against Python, that no generated sentence copies the corpus, and that no clue is a character's own name.</p>
+
+  <div class="callout">
+    <b>Community autocomplete.</b> The trigram generators are the course's fourth opener on their own: one sentence
+    from each community's model, picked with a fixed seed, no editing. Hulk / She-Hulk: <em>Marvel Apes An alternate
+    universe version of Machine Man assists the New Warriors, Fabian Nicieza.</em> Black Panther / Iron Fist: <em>He is a
+    founding member of Heroes for Hire agency on numerous cases.</em> Wolverine / Phoenix Force: <em>Guardian appears as a
+    result of her power to defeat him once more, choosing to part ways.</em> Hercules / Adam Warlock: <em>After awaking,
+    he lost his memory with questions about his ancestry.</em> Spider-Man / Venom: <em>Venom repeatedly tries to kill her
+    father turned out to restore the universe of Spider-Man.</em> Scarlet Witch / Human Torch: <em>This version is a spy
+    sent to Earth.</em> Doctor Strange / Deadpool: <em>The smaller the opening, the glass covering rises and the two of
+    them.</em> Every three consecutive words of each occurred in the corpus. The seams are where the sentence forgets
+    what it was about, and the community shows in the names, not the grammar.
+  </div>
+
+  <h2><span class="num">&nbsp;</span>What surprised us</h2>
+  <ol>
+    <li><b>Enemies sit at the same table.</b> We expected foes to cross community lines and found them crossing at
+    exactly the rate of any link. A Marvel community is a franchise, and a franchise ships with its villains.</li>
+    <li><b>Family is the strongest signal in the network.</b> Fourteen percent of family links cross a community line
+    against 43 for everything else. Blood is the one relationship Louvain can see.</li>
+    <li><b>Our first foe detector was 20 percent right.</b> "Attack" near a name means "attacked side by side" in this
+    corpus. Reading twenty sentences saved the section; the course said to inspect the text and it was not joking.</li>
+    <li><b>There is no Captain America.</b> Named on 115 pages, absent from all 303. Seven of our search engine's
+    eleven failures were the roster's, not the engine's.</li>
+    <li><b>164 words, twice.</b> Mayday Parker's and Spider-Woman's pages share a paragraph longer than most
+    characters' whole articles.</li>
+    <li><b>Quasar is a name, not a person.</b> The one character far below the fame-buys-words line is a page about
+    four people who wore the same bands, and week 1 counted links to the name.</li>
+    <li><b>Raw counts break the machine too.</b> We built the machine to be hard to beat and then watched it lose seven
+    rounds in ten on <em>the, of, and</em>. The lesson of stopwords is that they are democratic: they hide everyone
+    equally.</li>
+  </ol>
+
+  <h2><span class="num">&nbsp;</span>Reproduce it</h2>
+  <p>One module holds the text machinery (loading, tokenizing with a cache, the trigram model, the relationship
+  labeller, Louvain), one script builds every figure and number in this post, one builds the game's data, and one
+  checks the game's engine against Python by running the shipped file under node.</p>
+<pre><code>git clone https://github.com/Oddvar112/Social-Graphs-and-Interactions
+cd Social-Graphs-and-Interactions
+
+python scripts/analyse_week5.py          # every figure and number in this post (three to four minutes;
+                                         # the first run tokenizes the 303 pages with spaCy and caches them)
+python scripts/build_week5_data.py       # bags of words, generated sentences, blanks -> data/week5_secret.js
+python scripts/test_secret_identity.py   # runs weeks/week5/game/core.js under node, diffs it against Python,
+                                         # and checks that no generated sentence copies the corpus
+
+python -m http.server 8000               # then open http://localhost:8000/weeks/week5/game/</code></pre>
+  <p>The text is the course's frozen release, <code>marvel_pages.zip</code>, unmodified in the repository root.
+  Every number above is written to <code>data/stats_week5.json</code> by <code>analyse_week5.py</code>. The sixty
+  sentences we read and our verdict on each are in <code>data/week5_label_audit.tsv</code>; the analysis reads that
+  file back and fails loudly if its labels have drifted from what was audited. Requires spaCy with
+  <code>en_core_web_sm</code>, NLTK with its stopword list, scikit-learn, networkx and the usual. Moby Dick comes from
+  NLTK's Gutenberg sample if it is installed and is skipped otherwise. The character pictures in the game are the
+  lead images of the Wikipedia articles, loaded from Wikipedia as you play and credited on the card; we store only
+  their URLs.</p>
+
+  <div class="postnav">
+    <a href="../../index.html">&larr; Back to all weeks</a>
+    <a class="cta" href="game/index.html" target="_blank" rel="noopener">Open SECRET IDENTITY full screen &rarr;</a>
+  </div>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    <span>Oddvar, David and Milena &middot; 02805 Social Graphs and Interactions &middot; DTU</span>
+    <span class="sp"><a href="https://github.com/Oddvar112/Social-Graphs-and-Interactions">Source on GitHub</a></span>
+  </div>
+</footer>
+
+</body>
+</html>

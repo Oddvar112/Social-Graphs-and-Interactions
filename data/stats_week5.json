@@ -1,0 +1,2105 @@
+{
+  "network": {
+    "n": 303,
+    "m": 1784
+  },
+  "counts": {
+    "raw": {
+      "tokens": 862787,
+      "types": 30887,
+      "hapax": 11583,
+      "hapax_share": 0.375,
+      "top": [
+        [
+          ",",
+          41272
+        ],
+        [
+          "the",
+          39955
+        ],
+        [
+          ".",
+          32439
+        ],
+        [
+          "and",
+          21866
+        ],
+        [
+          "of",
+          19903
+        ],
+        [
+          "to",
+          19120
+        ],
+        [
+          "a",
+          16639
+        ],
+        [
+          "in",
+          15280
+        ],
+        [
+          "-",
+          14814
+        ],
+        [
+          "\"",
+          9177
+        ],
+        [
+          "'s",
+          8117
+        ],
+        [
+          "is",
+          7963
+        ]
+      ]
+    },
+    "lower": {
+      "tokens": 718552,
+      "types": 25138,
+      "hapax": 8687,
+      "hapax_share": 0.346,
+      "top": [
+        [
+          "the",
+          45473
+        ],
+        [
+          "and",
+          21936
+        ],
+        [
+          "of",
+          20011
+        ],
+        [
+          "to",
+          19291
+        ],
+        [
+          "in",
+          17885
+        ],
+        [
+          "a",
+          17282
+        ],
+        [
+          "is",
+          7971
+        ],
+        [
+          "as",
+          7941
+        ],
+        [
+          "by",
+          7879
+        ],
+        [
+          "his",
+          7705
+        ],
+        [
+          "with",
+          6743
+        ],
+        [
+          "he",
+          6379
+        ]
+      ]
+    },
+    "nostop": {
+      "tokens": 426073,
+      "types": 25003,
+      "hapax": 8683,
+      "hapax_share": 0.347,
+      "top": [
+        [
+          "marvel",
+          4877
+        ],
+        [
+          "man",
+          3544
+        ],
+        [
+          "spider",
+          3373
+        ],
+        [
+          "character",
+          3176
+        ],
+        [
+          "new",
+          2270
+        ],
+        [
+          "x",
+          2234
+        ],
+        [
+          "series",
+          2177
+        ],
+        [
+          "appears",
+          2077
+        ],
+        [
+          "avengers",
+          1926
+        ],
+        [
+          "later",
+          1658
+        ],
+        [
+          "black",
+          1649
+        ],
+        [
+          "men",
+          1630
+        ]
+      ]
+    },
+    "coverage": {
+      "top10": 0.241,
+      "top100": 0.469,
+      "top1000": 0.735
+    },
+    "power_count": 820,
+    "chars": 4447666,
+    "descriptions": {
+      "tokens": 5369,
+      "types": 906,
+      "top": [
+        [
+          "by",
+          311
+        ],
+        [
+          "marvel",
+          306
+        ],
+        [
+          "in",
+          305
+        ],
+        [
+          "is",
+          302
+        ],
+        [
+          "comics",
+          302
+        ],
+        [
+          "comic",
+          300
+        ],
+        [
+          "published",
+          298
+        ],
+        [
+          "books",
+          294
+        ]
+      ],
+      "zipf_s_all": 0.79,
+      "zipf_s_top100": 1.56
+    },
+    "zipf": {
+      "full_top100": 0.98,
+      "full_top1000": 0.92,
+      "full_all": 1.44
+    },
+    "moby_dick": {
+      "tokens": 218361,
+      "types": 16948,
+      "hapax_share": 0.436,
+      "zipf_s_top1000": 1.07,
+      "zipf_s_all": 1.16
+    }
+  },
+  "fame": {
+    "spearman": 0.751,
+    "spearman_p": 3.240650987891267e-56,
+    "loglog_slope": 0.655,
+    "median_tokens": 1221.0,
+    "min_tokens": 191,
+    "max_tokens": 14138,
+    "spread": 74.0,
+    "short_for_fame": [
+      [
+        "Quasar",
+        24,
+        1005
+      ],
+      [
+        "Hellfire (J. T. Slade)",
+        0,
+        191
+      ],
+      [
+        "Helix",
+        0,
+        194
+      ],
+      [
+        "Ch'od",
+        4,
+        486
+      ],
+      [
+        "Blue Bullet",
+        2,
+        324
+      ],
+      [
+        "Lei Kung",
+        3,
+        442
+      ]
+    ],
+    "long_for_fame": [
+      [
+        "Brian Braddock",
+        1,
+        7180
+      ],
+      [
+        "Miracleman",
+        0,
+        4351
+      ],
+      [
+        "Betsy Braddock",
+        7,
+        12904
+      ],
+      [
+        "U.S. Agent",
+        6,
+        9327
+      ],
+      [
+        "Mania",
+        1,
+        2688
+      ],
+      [
+        "Beta Ray Bill",
+        2,
+        3819
+      ]
+    ],
+    "longest": [
+      [
+        "Scarlet Witch",
+        14138,
+        28
+      ],
+      [
+        "Betsy Braddock",
+        12904,
+        7
+      ],
+      [
+        "She-Hulk",
+        12386,
+        29
+      ],
+      [
+        "Jean Grey",
+        11529,
+        23
+      ],
+      [
+        "Venom",
+        10476,
+        17
+      ]
+    ],
+    "shortest": [
+      [
+        "Hellfire (J. T. Slade)",
+        191,
+        0
+      ],
+      [
+        "Helix",
+        194,
+        0
+      ],
+      [
+        "Illuminator",
+        249,
+        0
+      ],
+      [
+        "Redneck",
+        254,
+        0
+      ],
+      [
+        "Black Fox (Robert Paine)",
+        275,
+        0
+      ]
+    ],
+    "heaps": {
+      "beta_hub_first": 0.493,
+      "beta_minor_first": 0.541,
+      "types_at_100k_hub_first": 10167,
+      "types_at_100k_minor_first": 10628,
+      "new_per_1000_last50_hub_first": 21.7,
+      "new_per_1000_last50_minor_first": 17.4,
+      "total_types": 25138
+    }
+  },
+  "relations": {
+    "counts": {
+      "unlabelled": 971,
+      "ally": 109,
+      "foe": 78,
+      "none": 258,
+      "ambiguous": 309,
+      "family": 51,
+      "mixed": 8
+    },
+    "edges": 1784,
+    "with_sentence": 1217,
+    "louvain": {
+      "q": 0.388,
+      "k": 7,
+      "seed": 6,
+      "sizes": [
+        48,
+        46,
+        43,
+        42,
+        36,
+        31,
+        31
+      ],
+      "names": [
+        "Hulk / She-Hulk",
+        "Black Panther / Iron Fist",
+        "Wolverine / Phoenix Force",
+        "Hercules / Adam Warlock",
+        "Spider-Man / Venom",
+        "Scarlet Witch / Human Torch (android)",
+        "Doctor Strange / Deadpool"
+      ],
+      "members_top": [
+        [
+          "Hulk",
+          "She-Hulk",
+          "Cloak and Dagger",
+          "Deathlok",
+          "Darkhawk",
+          "Robbie Baldwin"
+        ],
+        [
+          "Black Panther",
+          "Iron Fist",
+          "Moon Knight",
+          "Luke Cage",
+          "Hank Pym",
+          "Black Widow (Natasha Romanova)"
+        ],
+        [
+          "Wolverine",
+          "Phoenix Force",
+          "Emma Frost",
+          "Cyclops",
+          "Storm",
+          "Betsy Braddock"
+        ],
+        [
+          "Hercules",
+          "Adam Warlock",
+          "Nova (Richard Rider)",
+          "Quasar",
+          "Captain Marvel",
+          "Noh-Varr"
+        ],
+        [
+          "Spider-Man",
+          "Venom",
+          "Black Cat",
+          "Mayday Parker",
+          "Eddie Brock",
+          "Spider-Woman (Jessica Drew)"
+        ],
+        [
+          "Scarlet Witch",
+          "Human Torch (android)",
+          "Black Bolt",
+          "Human Torch",
+          "Quicksilver",
+          "Bucky"
+        ],
+        [
+          "Doctor Strange",
+          "Deadpool",
+          "Blade",
+          "Ghost Rider",
+          "Man-Thing",
+          "Morbius"
+        ]
+      ]
+    },
+    "cross_all": 0.431,
+    "test": {
+      "foe": {
+        "n": 78,
+        "cross": 0.385,
+        "null_mean": 0.431,
+        "null_sd": 0.056,
+        "z": -0.8,
+        "p": 0.2429
+      },
+      "ally": {
+        "n": 103,
+        "cross": 0.301,
+        "null_mean": 0.43,
+        "null_sd": 0.048,
+        "z": -2.7,
+        "p": 0.0027
+      },
+      "family": {
+        "n": 51,
+        "cross": 0.137,
+        "null_mean": 0.432,
+        "null_sd": 0.069,
+        "z": -4.3,
+        "p": 0.0003
+      }
+    },
+    "mutual_agreement": {
+      "family/family": 10,
+      "ally/ally": 6,
+      "family/foe": 4,
+      "foe/foe": 2,
+      "ally/foe": 2
+    },
+    "mutual": {
+      "family": [
+        [
+          "Anne Weying",
+          "Eddie Brock"
+        ],
+        [
+          "Betsy Braddock",
+          "Brian Braddock"
+        ],
+        [
+          "Cable",
+          "Cyclops"
+        ],
+        [
+          "Cyclops",
+          "Rachel Summers"
+        ],
+        [
+          "Cyclops",
+          "Vulcan"
+        ],
+        [
+          "Franklin Richards",
+          "Rachel Summers"
+        ],
+        [
+          "Genis-Vell",
+          "Phyla-Vell"
+        ],
+        [
+          "Quicksilver",
+          "Scarlet Witch"
+        ],
+        [
+          "Scarlet Witch",
+          "Speed"
+        ],
+        [
+          "Scarlet Witch",
+          "Whizzer (Robert Frank)"
+        ]
+      ],
+      "foe": [
+        [
+          "Ares",
+          "Hercules"
+        ],
+        [
+          "Eddie Brock",
+          "Venom"
+        ]
+      ],
+      "ally": [
+        [
+          "Battlestar",
+          "U.S. Agent"
+        ],
+        [
+          "Betsy Braddock",
+          "Rachel Summers"
+        ],
+        [
+          "Iron Fist",
+          "Jessica Jones"
+        ],
+        [
+          "Iron Fist",
+          "Luke Cage"
+        ],
+        [
+          "Jessica Jones",
+          "Luke Cage"
+        ],
+        [
+          "Radian (Morituri)",
+          "Scaredycat"
+        ]
+      ]
+    },
+    "frenemies": [
+      [
+        "Blade",
+        "foe",
+        "Morbius",
+        "ally"
+      ],
+      [
+        "Luke Cage",
+        "ally",
+        "Misty Knight",
+        "foe"
+      ]
+    ],
+    "incoming": {
+      "foe": [
+        [
+          "Hulk",
+          16
+        ],
+        [
+          "Venom",
+          3
+        ],
+        [
+          "Hercules",
+          3
+        ],
+        [
+          "Deadpool",
+          3
+        ],
+        [
+          "Storm",
+          3
+        ],
+        [
+          "Ms. Marvel",
+          2
+        ],
+        [
+          "Morbius",
+          2
+        ],
+        [
+          "Emma Frost",
+          2
+        ]
+      ],
+      "ally": [
+        [
+          "Doctor Strange",
+          6
+        ],
+        [
+          "Iron Fist",
+          5
+        ],
+        [
+          "Spitfire",
+          4
+        ],
+        [
+          "Storm",
+          4
+        ],
+        [
+          "Emma Frost",
+          3
+        ],
+        [
+          "Luke Cage",
+          3
+        ],
+        [
+          "Deadpool",
+          3
+        ],
+        [
+          "Black Widow (Natasha Romanova)",
+          3
+        ]
+      ],
+      "family": [
+        [
+          "Cyclops",
+          5
+        ],
+        [
+          "Rachel Summers",
+          3
+        ],
+        [
+          "Scarlet Witch",
+          3
+        ],
+        [
+          "Quicksilver",
+          3
+        ],
+        [
+          "Genis-Vell",
+          2
+        ],
+        [
+          "Phyla-Vell",
+          2
+        ],
+        [
+          "Vulcan",
+          2
+        ],
+        [
+          "Anne Weying",
+          2
+        ]
+      ]
+    },
+    "audit": {
+      "foe": {
+        "read": 20,
+        "right": 15,
+        "precision": 0.75
+      },
+      "ally": {
+        "read": 20,
+        "right": 20,
+        "precision": 1.0
+      },
+      "family": {
+        "read": 20,
+        "right": 17,
+        "precision": 0.85
+      },
+      "stale_rows": 0
+    }
+  },
+  "copying": {
+    "pairs_15plus": 61,
+    "pages_15plus": 78,
+    "ngram": 8,
+    "distinct_ngrams": 701335,
+    "in_one_page": 695528,
+    "in_two_pages": 4725,
+    "boilerplate_30plus": 26,
+    "boilerplate_examples": [
+      "in american comic books published by marvel comics",
+      "appearing in american comic books published by marvel",
+      "character appearing in american comic books published by",
+      "american comic books published by marvel comics created",
+      "comic books published by marvel comics created by",
+      "superhero appearing in american comic books published by"
+    ],
+    "most_shared": {
+      "in american comic books published by marvel comics": 282
+    },
+    "pairs_any": 1452,
+    "pairs_5plus": 288,
+    "pairs_20plus": 39,
+    "top_pairs": [
+      {
+        "a": "Eddie Brock",
+        "b": "Venom",
+        "shared": 471,
+        "run": 57,
+        "snippet": "explaining that he ended up not using the idea on that title, but that Roger Stern later asked him if he could use the idea for Spider-Man's alien costume. Stern in turn",
+        "same_community": true
+      },
+      {
+        "a": "Cyclops",
+        "b": "Jean Grey",
+        "shared": 456,
+        "run": 102,
+        "snippet": "Cyclops leaves his wife and child behind to lead the reunited original X-Men, under the X-Factor name. Claremont expressed dismay that Jean's resurrection ultimately resu",
+        "same_community": true
+      },
+      {
+        "a": "Mayday Parker",
+        "b": "Spider-Woman",
+        "shared": 187,
+        "run": 164,
+        "snippet": "For the first ten years of their lives, the two were solely raised by Mary Jane in Portland, Oregon after she left Peter following a traumatic incident. In 1995, Peter le",
+        "same_community": true
+      },
+      {
+        "a": "Spitfire",
+        "b": "Union Jack",
+        "shared": 185,
+        "run": 56,
+        "snippet": "December 1998 - February 1999, TPB, 96 pages, April 2002, ISBN 0-7851-0934-X) New Invaders: To End All Wars (written by Allan Jacobsen, with art by Jorge Lucas and C. P.",
+        "same_community": true
+      },
+      {
+        "a": "Spitfire",
+        "b": "Union Jack (Joseph Chapman)",
+        "shared": 178,
+        "run": 101,
+        "snippet": "Captain America: War and Remembrance (by John Byrne and Roger Stern, with pencils by John Byrne and inks by Josef Rubinstein, TPB includes Captain America #253-254, 1981,",
+        "same_community": true
+      },
+      {
+        "a": "Ghost Rider",
+        "b": "Ghost Rider (Johnny Blaze)",
+        "shared": 174,
+        "run": 62,
+        "snippet": "Seven riders show their flaming heads for the first time in this story arc by writer Jason Aaron and artist Tan Eng Huat. Daniel Ketch returns with a new mission: to coll",
+        "same_community": true
+      },
+      {
+        "a": "Spider-Girl",
+        "b": "Spider-Woman",
+        "shared": 173,
+        "run": 154,
+        "snippet": "is the daughter of Tonya Parker and Hawkeye who did not like the way that Kingpin was running Hammer Falls. She becomes \"Spider-Bitch\", allying herself with a new Punishe",
+        "same_community": true
+      },
+      {
+        "a": "Spider-Woman",
+        "b": "Spider-Woman (Jessica Drew)",
+        "shared": 164,
+        "run": 129,
+        "snippet": "the character originated because, I suddenly realized that some other company may quickly put out a book like that and claim they have the right to use the name, and I t",
+        "same_community": true
+      },
+      {
+        "a": "Union Jack (Joseph Chapman)",
+        "b": "Union Jack",
+        "shared": 133,
+        "run": 74,
+        "snippet": "December 1998 - February 1999, tpb, 96 pages, April 2002, ISBN 0-7851-0934-X) New Invaders: To End All Wars (written by Allan Jacobsen, with art by Jorge Lucas and C. P.",
+        "same_community": true
+      },
+      {
+        "a": "Blue Diamond",
+        "b": "Jack Frost",
+        "shared": 128,
+        "run": 82,
+        "snippet": "five stories in 1976. The team was introduced in Marvel Premiere #29 and 30 (April and May 1976), as well as an issue of The Invaders and two issues of Marvel Two-in-One.",
+        "same_community": true
+      },
+      {
+        "a": "Mayday Parker",
+        "b": "Spider-Girl",
+        "shared": 107,
+        "run": 46,
+        "snippet": "On November 8, 2008, Marvel EIC Joe Quesada confirmed that Spider-Girl would become a feature in the monthly anthology magazine Amazing Spider-Man Family. The series woul",
+        "same_community": true
+      },
+      {
+        "a": "Ch'od",
+        "b": "Raza Longknife",
+        "shared": 91,
+        "run": 48,
+        "snippet": "Publication history Dave Cockrum created the Starjammers with the intent of having them star in their own series. However, when he submitted the concept for Marvel's two",
+        "same_community": true
+      },
+      {
+        "a": "Bucky",
+        "b": "Rikki Barnes",
+        "shared": 67,
+        "run": 49,
+        "snippet": "As Bucky she wore a bulletproof costume modeled after the original Bucky. She also made use of a vibranium-photonic energy shield along with vibranium soled boots that al",
+        "same_community": true
+      },
+      {
+        "a": "Rocket Raccoon",
+        "b": "Star-Lord",
+        "shared": 63,
+        "run": 38,
+        "snippet": "in the Marvel Cinematic Universe films Guardians of the Galaxy (2014), Guardians of the Galaxy Vol. 2 (2017), Avengers: Infinity War (2018), Avengers: Endgame (2019), Tho",
+        "same_community": true
+      },
+      {
+        "a": "Battlestar",
+        "b": "U.S. Agent",
+        "shared": 55,
+        "run": 29,
+        "snippet": "has superhuman strength (capable of lifting 10 tons under maximum exertion), agility, reflexes and endurance. His speed, dexterity, coordination, and balance are of the o",
+        "same_community": false
+      },
+      {
+        "a": "Rachel Summers",
+        "b": "Storm",
+        "shared": 43,
+        "run": 34,
+        "snippet": "In the new status quo for mutants post House of X and Powers of X, Professor X and Magneto invite all mutants to live on Krakoa and welcome even former enemies into their",
+        "same_community": true
+      },
+      {
+        "a": "Ghost Rider",
+        "b": "Ghost Rider (Danny Ketch)",
+        "shared": 40,
+        "run": 19,
+        "snippet": "Ghost Rider makes a non-speaking cameo appearance in the X-Men: The Animated Series episode \"The Final Decision\". The Danny Ketch incarnation of Ghost Rider appears in th",
+        "same_community": true
+      },
+      {
+        "a": "Mockingbird",
+        "b": "Quicksilver",
+        "shared": 36,
+        "run": 39,
+        "snippet": "fight with the Cotati near Navojoa. When Quicksilver is hit by special spheres fired by the Cotati magicians, Mockingbird and Wonder Man come to his aid and help the Kree",
+        "same_community": false
+      },
+      {
+        "a": "Makkari",
+        "b": "Thena",
+        "shared": 34,
+        "run": 19,
+        "snippet": "introduced in Red Raven Comics #1 (\"Mercury in the 20th Century\" by artist Kirby and writer Martin A. Bursten; August 1940), was actually Makkari. Mercury was only seen i",
+        "same_community": true
+      },
+      {
+        "a": "Black Panther",
+        "b": "Storm",
+        "shared": 30,
+        "run": 35,
+        "snippet": "and she appeared as a prominent supporting character in many subsequent storylines. Readers and critics compared the wedding to the relationship of Jay-Z and Beyoncé, alt",
+        "same_community": false
+      }
+    ],
+    "network_nodes": 202,
+    "network_edges": 288,
+    "clusters": [
+      [
+        "She-Hulk",
+        "Jean Grey",
+        "Captain Marvel",
+        "Rachel Summers",
+        "Black Cat",
+        "Spider-Woman (Jessica Drew)",
+        "Phyla-Vell",
+        "Anya Corazon",
+        "Black Bolt",
+        "Quicksilver",
+        "Scarlet Witch",
+        "Morbius",
+        "Cloak and Dagger",
+        "Storm",
+        "Noh-Varr",
+        "Spitfire",
+        "Northstar",
+        "Blade",
+        "Jessica Jones",
+        "Makkari",
+        "Eddie Brock",
+        "Spider-Girl",
+        "Doctor Strange",
+        "Abomination",
+        "Ghost Rider (Johnny Blaze)",
+        "Rocket Raccoon",
+        "Cable",
+        "Wild Child",
+        "Cyclops",
+        "U.S. Agent",
+        "Jubilee",
+        "Hercules",
+        "Whizzer (Robert Frank)",
+        "Mayday Parker",
+        "Spider-Woman",
+        "Black Panther",
+        "Elsa Bloodstone",
+        "Human Torch (android)",
+        "Moondragon",
+        "Spider-Woman (Gwen Stacy)",
+        "Bucky",
+        "Star-Lord",
+        "Janice Lincoln",
+        "Werewolf by Night",
+        "Emma Frost",
+        "Frankenstein's Monster",
+        "Iron Fist",
+        "Mockingbird",
+        "Robbie Baldwin",
+        "Thena",
+        "White Tiger",
+        "Firebird",
+        "Venom",
+        "John Jameson",
+        "Fin Fang Foom",
+        "Toro",
+        "Ghost Rider",
+        "Satana",
+        "Genis-Vell",
+        "Mahr Vehl",
+        "Misty Knight",
+        "Kismet",
+        "She-Hulk (Lyra)",
+        "Ikaris",
+        "Darkhawk",
+        "Adam Warlock",
+        "Patsy Walker",
+        "Human Torch",
+        "Power Man (Victor Alvarez)",
+        "Ares",
+        "Spider-Bitch (Ashley Barton)",
+        "Alex Wilder",
+        "Betsy Braddock",
+        "Captain Universe",
+        "Brian Braddock",
+        "Union Jack (Joseph Chapman)",
+        "Hulk",
+        "Ajak",
+        "Devil Dinosaur",
+        "Hellion",
+        "Hank Pym",
+        "Nova (Richard Rider)",
+        "Hyperion",
+        "Sentry (Robert Reynolds)",
+        "Shuri",
+        "Ursa Major",
+        "Kid Colt",
+        "Phoenix Force",
+        "Silk",
+        "Spider-UK",
+        "Junior Juniper",
+        "Ch'od",
+        "Ruby Summers",
+        "Ghost Rider (Danny Ketch)",
+        "Typeface",
+        "Yo-Yo Rodriguez",
+        "Shang-Chi",
+        "William Burnside",
+        "Thunderbolt",
+        "Balder the Brave",
+        "Nomad",
+        "Captain Ultra",
+        "Rikki Barnes",
+        "Ms. Marvel",
+        "Spider-Man Noir",
+        "Captain Marvel (Khn'nr)",
+        "Gremlin",
+        "Red Guardian",
+        "Flatman",
+        "Devil Hulk",
+        "Quasar",
+        "Peggy Carter",
+        "Spider-Man (Marvel Mangaverse)",
+        "Karnak",
+        "Battlestar",
+        "Hulkling",
+        "Luke Cage",
+        "Gwenpool",
+        "Anole",
+        "Union Jack",
+        "Vance Astrovik",
+        "Delroy Garrett",
+        "Jack Monroe",
+        "Radioactive Man",
+        "Wolverine",
+        "Zombie",
+        "Deadpool",
+        "Man-Thing",
+        "Black Widow (Natasha Romanova)",
+        "Speed",
+        "Chase Stein",
+        "Timeslip",
+        "Spider-Man",
+        "Gorgon (Inhuman)",
+        "Rockslide",
+        "Starhawk",
+        "Steel Spider",
+        "Silhouette",
+        "White Tiger (Heroes for Hire)",
+        "Moon Knight",
+        "Scarlet Spider",
+        "Lei Kung",
+        "Agent X",
+        "Father Time",
+        "Raza Longknife",
+        "Hybrid (Scott Washington)",
+        "Jericho Drumm",
+        "Ronin",
+        "War Machine",
+        "Ulysses Bloodstone",
+        "Yelena Belova",
+        "Doctor Spectrum",
+        "Shamrock",
+        "Sabra",
+        "Isaiah Bradley",
+        "Paladin",
+        "Tarantula",
+        "Phil Urich",
+        "Surge",
+        "Rom the Space Knight",
+        "Empath",
+        "Beta Ray Bill"
+      ],
+      [
+        "Dusk",
+        "Guardsman",
+        "Ricochet",
+        "Silencer",
+        "Hornet",
+        "NFL SuperPro"
+      ],
+      [
+        "Outlaw",
+        "Doctor Nemesis",
+        "Leech",
+        "Synapse",
+        "Xorn"
+      ],
+      [
+        "Vyking",
+        "Radian (Morituri)",
+        "Shear",
+        "Snapdragon (Morituri)"
+      ],
+      [
+        "Jack Frost",
+        "Blue Diamond",
+        "Black Marvel",
+        "Blazing Skull"
+      ],
+      [
+        "Nightmask",
+        "Star Brand",
+        "Justice (New Universe)"
+      ],
+      [
+        "Blackthorn",
+        "Backhand"
+      ],
+      [
+        "Machine Man",
+        "Arabian Knight"
+      ]
+    ]
+  },
+  "search": {
+    "matrix_shape": [
+      303,
+      25003
+    ],
+    "zero_share": 0.973,
+    "results": [
+      {
+        "query": "norse god of thunder",
+        "wanted": "Thor",
+        "in_corpus": false,
+        "rank": null,
+        "top3": [
+          [
+            "Starhawk",
+            0.073
+          ],
+          [
+            "Hercules",
+            0.063
+          ],
+          [
+            "Ares",
+            0.06
+          ]
+        ]
+      },
+      {
+        "query": "web slinging teenager from queens",
+        "wanted": "Spider-Man",
+        "in_corpus": true,
+        "rank": 16,
+        "top3": [
+          [
+            "Nightwatch",
+            0.045
+          ],
+          [
+            "Anya Corazon",
+            0.039
+          ],
+          [
+            "Spider-UK",
+            0.039
+          ]
+        ]
+      },
+      {
+        "query": "king of wakanda",
+        "wanted": "Black Panther",
+        "in_corpus": true,
+        "rank": 1,
+        "top3": [
+          [
+            "Black Panther",
+            0.18
+          ],
+          [
+            "Shuri",
+            0.18
+          ],
+          [
+            "Blade",
+            0.041
+          ]
+        ]
+      },
+      {
+        "query": "sorcerer supreme",
+        "wanted": "Doctor Strange",
+        "in_corpus": true,
+        "rank": 5,
+        "top3": [
+          [
+            "Moonglow",
+            0.316
+          ],
+          [
+            "Doctor Spectrum",
+            0.174
+          ],
+          [
+            "Hyperion",
+            0.165
+          ]
+        ]
+      },
+      {
+        "query": "mutant with adamantium claws and a healing factor",
+        "wanted": "Wolverine",
+        "in_corpus": true,
+        "rank": 5,
+        "top3": [
+          [
+            "Rusty Collins",
+            0.136
+          ],
+          [
+            "Redneck",
+            0.133
+          ],
+          [
+            "Wolverine (Ultimate Marvel character)",
+            0.122
+          ]
+        ]
+      },
+      {
+        "query": "green monster gamma radiation",
+        "wanted": "Hulk",
+        "in_corpus": true,
+        "rank": 2,
+        "top3": [
+          [
+            "Frankenstein's Monster",
+            0.281
+          ],
+          [
+            "Hulk",
+            0.085
+          ],
+          [
+            "Phil Urich",
+            0.081
+          ]
+        ]
+      },
+      {
+        "query": "blind lawyer from hell's kitchen",
+        "wanted": "Daredevil",
+        "in_corpus": false,
+        "rank": null,
+        "top3": [
+          [
+            "Anne Weying",
+            0.021
+          ],
+          [
+            "Jessica Jones",
+            0.016
+          ],
+          [
+            "Two-Gun Kid",
+            0.016
+          ]
+        ]
+      },
+      {
+        "query": "russian spy avenger",
+        "wanted": "Black Widow (Natasha Romanova)",
+        "in_corpus": true,
+        "rank": 2,
+        "top3": [
+          [
+            "Ursa Major",
+            0.056
+          ],
+          [
+            "Black Widow (Natasha Romanova)",
+            0.049
+          ],
+          [
+            "Yelena Belova",
+            0.038
+          ]
+        ]
+      },
+      {
+        "query": "master archer avenger",
+        "wanted": "Hawkeye",
+        "in_corpus": true,
+        "rank": 1,
+        "top3": [
+          [
+            "Hawkeye",
+            0.061
+          ],
+          [
+            "Blue Eagle",
+            0.049
+          ],
+          [
+            "Dusk",
+            0.047
+          ]
+        ]
+      },
+      {
+        "query": "super soldier with a shield",
+        "wanted": "Captain America",
+        "in_corpus": false,
+        "rank": null,
+        "top3": [
+          [
+            "Super Rabbit",
+            0.217
+          ],
+          [
+            "Isaiah Bradley",
+            0.215
+          ],
+          [
+            "U.S. Agent",
+            0.136
+          ]
+        ]
+      },
+      {
+        "query": "billionaire in a suit of armor",
+        "wanted": "Iron Man",
+        "in_corpus": false,
+        "rank": null,
+        "top3": [
+          [
+            "Turbo",
+            0.347
+          ],
+          [
+            "Guardsman",
+            0.181
+          ],
+          [
+            "Gremlin",
+            0.156
+          ]
+        ]
+      },
+      {
+        "query": "talking raccoon",
+        "wanted": "Rocket Raccoon",
+        "in_corpus": true,
+        "rank": 1,
+        "top3": [
+          [
+            "Rocket Raccoon",
+            0.313
+          ],
+          [
+            "Super Rabbit",
+            0.048
+          ],
+          [
+            "Ch'od",
+            0.027
+          ]
+        ]
+      },
+      {
+        "query": "healthcare robot big hero 6",
+        "wanted": "Baymax",
+        "in_corpus": true,
+        "rank": 1,
+        "top3": [
+          [
+            "Baymax",
+            0.14
+          ],
+          [
+            "Brain Drain",
+            0.046
+          ],
+          [
+            "Living Lightning",
+            0.04
+          ]
+        ]
+      },
+      {
+        "query": "merc with a mouth",
+        "wanted": "Deadpool",
+        "in_corpus": true,
+        "rank": 3,
+        "top3": [
+          [
+            "Mark Hazzard: Merc",
+            0.241
+          ],
+          [
+            "Firebird",
+            0.043
+          ],
+          [
+            "Deadpool",
+            0.024
+          ]
+        ]
+      },
+      {
+        "query": "symbiote",
+        "wanted": "Venom",
+        "in_corpus": true,
+        "rank": 3,
+        "top3": [
+          [
+            "Mania",
+            0.611
+          ],
+          [
+            "Eddie Brock",
+            0.31
+          ],
+          [
+            "Venom",
+            0.286
+          ]
+        ]
+      },
+      {
+        "query": "queen of the inhumans",
+        "wanted": "Medusa",
+        "in_corpus": false,
+        "rank": null,
+        "top3": [
+          [
+            "Karnak",
+            0.232
+          ],
+          [
+            "Inferno (Dante Pertuz)",
+            0.19
+          ],
+          [
+            "Gorgon (Inhuman)",
+            0.173
+          ]
+        ]
+      },
+      {
+        "query": "vampire hunter",
+        "wanted": "Blade",
+        "in_corpus": true,
+        "rank": 1,
+        "top3": [
+          [
+            "Blade",
+            0.191
+          ],
+          [
+            "Morbius",
+            0.152
+          ],
+          [
+            "Elsa Bloodstone",
+            0.063
+          ]
+        ]
+      },
+      {
+        "query": "canadian superhero team",
+        "wanted": "Guardian",
+        "in_corpus": true,
+        "rank": 4,
+        "top3": [
+          [
+            "The Union (Marvel)",
+            0.202
+          ],
+          [
+            "Flatman",
+            0.196
+          ],
+          [
+            "Radian (Morituri)",
+            0.182
+          ]
+        ]
+      },
+      {
+        "query": "sister of thor",
+        "wanted": "Angela",
+        "in_corpus": false,
+        "rank": null,
+        "top3": [
+          [
+            "Thor Girl",
+            0.416
+          ],
+          [
+            "Dargo Ktor",
+            0.372
+          ],
+          [
+            "Fandral",
+            0.252
+          ]
+        ]
+      },
+      {
+        "query": "the first mutant",
+        "wanted": "Apocalypse",
+        "in_corpus": false,
+        "rank": null,
+        "top3": [
+          [
+            "Redneck",
+            0.252
+          ],
+          [
+            "Rusty Collins",
+            0.172
+          ],
+          [
+            "Fabio Medina",
+            0.159
+          ]
+        ]
+      }
+    ],
+    "hits_top3": 9,
+    "not_in_corpus": [
+      "Thor",
+      "Daredevil",
+      "Captain America",
+      "Iron Man",
+      "Medusa",
+      "Angela",
+      "Apocalypse"
+    ],
+    "absent": [
+      {
+        "name": "Captain America",
+        "mentions": 625,
+        "pages": 115,
+        "in_roster": false
+      },
+      {
+        "name": "Iron Man",
+        "mentions": 401,
+        "pages": 99,
+        "in_roster": false
+      },
+      {
+        "name": "Thor",
+        "mentions": 333,
+        "pages": 63,
+        "in_roster": false
+      },
+      {
+        "name": "Magneto",
+        "mentions": 226,
+        "pages": 34,
+        "in_roster": false
+      },
+      {
+        "name": "Apocalypse",
+        "mentions": 187,
+        "pages": 45,
+        "in_roster": false
+      },
+      {
+        "name": "Thanos",
+        "mentions": 177,
+        "pages": 32,
+        "in_roster": false
+      },
+      {
+        "name": "Daredevil",
+        "mentions": 156,
+        "pages": 47,
+        "in_roster": false
+      },
+      {
+        "name": "Namor",
+        "mentions": 137,
+        "pages": 45,
+        "in_roster": false
+      },
+      {
+        "name": "Mary Jane",
+        "mentions": 131,
+        "pages": 19,
+        "in_roster": false
+      },
+      {
+        "name": "Vision",
+        "mentions": 129,
+        "pages": 29,
+        "in_roster": false
+      },
+      {
+        "name": "Steve Rogers",
+        "mentions": 108,
+        "pages": 36,
+        "in_roster": false
+      },
+      {
+        "name": "Mephisto",
+        "mentions": 106,
+        "pages": 33,
+        "in_roster": false
+      },
+      {
+        "name": "Doctor Doom",
+        "mentions": 103,
+        "pages": 49,
+        "in_roster": false
+      },
+      {
+        "name": "Ultron",
+        "mentions": 100,
+        "pages": 35,
+        "in_roster": false
+      },
+      {
+        "name": "Nick Fury",
+        "mentions": 100,
+        "pages": 44,
+        "in_roster": false
+      },
+      {
+        "name": "Kingpin",
+        "mentions": 88,
+        "pages": 26,
+        "in_roster": false
+      },
+      {
+        "name": "Norman Osborn",
+        "mentions": 85,
+        "pages": 46,
+        "in_roster": false
+      },
+      {
+        "name": "Galactus",
+        "mentions": 80,
+        "pages": 32,
+        "in_roster": false
+      },
+      {
+        "name": "Tony Stark",
+        "mentions": 79,
+        "pages": 39,
+        "in_roster": false
+      },
+      {
+        "name": "Loki",
+        "mentions": 78,
+        "pages": 32,
+        "in_roster": false
+      },
+      {
+        "name": "Punisher",
+        "mentions": 78,
+        "pages": 37,
+        "in_roster": false
+      },
+      {
+        "name": "Dracula",
+        "mentions": 77,
+        "pages": 19,
+        "in_roster": false
+      },
+      {
+        "name": "Ant-Man",
+        "mentions": 75,
+        "pages": 16,
+        "in_roster": false
+      },
+      {
+        "name": "Beast",
+        "mentions": 72,
+        "pages": 29,
+        "in_roster": false
+      },
+      {
+        "name": "Kang",
+        "mentions": 70,
+        "pages": 22,
+        "in_roster": false
+      },
+      {
+        "name": "Green Goblin",
+        "mentions": 63,
+        "pages": 13,
+        "in_roster": false
+      },
+      {
+        "name": "Sabretooth",
+        "mentions": 62,
+        "pages": 15,
+        "in_roster": false
+      },
+      {
+        "name": "Red Skull",
+        "mentions": 60,
+        "pages": 26,
+        "in_roster": false
+      },
+      {
+        "name": "Wasp",
+        "mentions": 58,
+        "pages": 19,
+        "in_roster": false
+      },
+      {
+        "name": "Silver Surfer",
+        "mentions": 55,
+        "pages": 27,
+        "in_roster": false
+      },
+      {
+        "name": "Bruce Banner",
+        "mentions": 53,
+        "pages": 17,
+        "in_roster": false
+      },
+      {
+        "name": "Rogue",
+        "mentions": 51,
+        "pages": 24,
+        "in_roster": false
+      },
+      {
+        "name": "Professor X",
+        "mentions": 47,
+        "pages": 23,
+        "in_roster": false
+      },
+      {
+        "name": "Doctor Octopus",
+        "mentions": 44,
+        "pages": 18,
+        "in_roster": false
+      },
+      {
+        "name": "Reed Richards",
+        "mentions": 42,
+        "pages": 27,
+        "in_roster": false
+      },
+      {
+        "name": "Colossus",
+        "mentions": 42,
+        "pages": 17,
+        "in_roster": false
+      },
+      {
+        "name": "Charles Xavier",
+        "mentions": 35,
+        "pages": 19,
+        "in_roster": false
+      },
+      {
+        "name": "Mister Fantastic",
+        "mentions": 34,
+        "pages": 20,
+        "in_roster": false
+      },
+      {
+        "name": "Falcon",
+        "mentions": 31,
+        "pages": 19,
+        "in_roster": false
+      },
+      {
+        "name": "Nightcrawler",
+        "mentions": 29,
+        "pages": 19,
+        "in_roster": false
+      },
+      {
+        "name": "Gambit",
+        "mentions": 28,
+        "pages": 13,
+        "in_roster": false
+      },
+      {
+        "name": "Juggernaut",
+        "mentions": 23,
+        "pages": 12,
+        "in_roster": false
+      },
+      {
+        "name": "Mister Sinister",
+        "mentions": 22,
+        "pages": 12,
+        "in_roster": false
+      },
+      {
+        "name": "Invisible Woman",
+        "mentions": 19,
+        "pages": 11,
+        "in_roster": false
+      }
+    ],
+    "hubs": [
+      {
+        "name": "Spider-Man",
+        "mentions": 1930,
+        "pages": 142,
+        "in_roster": true
+      },
+      {
+        "name": "Hulk",
+        "mentions": 835,
+        "pages": 88,
+        "in_roster": true
+      },
+      {
+        "name": "Wolverine",
+        "mentions": 681,
+        "pages": 85,
+        "in_roster": true
+      },
+      {
+        "name": "Deadpool",
+        "mentions": 535,
+        "pages": 49,
+        "in_roster": true
+      },
+      {
+        "name": "Doctor Strange",
+        "mentions": 264,
+        "pages": 53,
+        "in_roster": true
+      },
+      {
+        "name": "Black Widow",
+        "mentions": 238,
+        "pages": 28,
+        "in_roster": true
+      }
+    ]
+  },
+  "lookalikes": {
+    "network_neighbours_in_top10": 2.77,
+    "random_baseline": 0.36,
+    "wolverine": [
+      [
+        "Wolverine (Ultimate Marvel character)",
+        0.789,
+        true
+      ],
+      [
+        "Cyclops",
+        0.474,
+        true
+      ],
+      [
+        "Jubilee",
+        0.444,
+        true
+      ],
+      [
+        "Storm",
+        0.414,
+        true
+      ],
+      [
+        "Jean Grey",
+        0.396,
+        true
+      ]
+    ],
+    "closest_unlinked": [
+      [
+        0.809,
+        "Spider-Man (Marvel Mangaverse)",
+        "Spider-Man Noir"
+      ],
+      [
+        0.787,
+        "Spider-Girl",
+        "Spider-UK"
+      ],
+      [
+        0.758,
+        "Spider-Bitch (Ashley Barton)",
+        "Spider-UK"
+      ],
+      [
+        0.744,
+        "Scarlet Spider",
+        "Spider-Man Noir"
+      ],
+      [
+        0.732,
+        "Spider-Girl",
+        "Spider-Man Noir"
+      ],
+      [
+        0.731,
+        "Scarlet Spider",
+        "Spider-Girl"
+      ]
+    ],
+    "least_like_corpus": [
+      [
+        "Mania",
+        0.204,
+        1513
+      ],
+      [
+        "Chase Stein",
+        0.216,
+        2136
+      ],
+      [
+        "Baymax",
+        0.242,
+        978
+      ],
+      [
+        "Balder the Brave",
+        0.255,
+        1044
+      ],
+      [
+        "Radian (Morituri)",
+        0.255,
+        887
+      ],
+      [
+        "Red Raven",
+        0.266,
+        918
+      ]
+    ],
+    "least_like_corpus_any_size": [
+      [
+        "Box",
+        0.152,
+        516
+      ],
+      [
+        "Mark Hazzard: Merc",
+        0.157,
+        502
+      ],
+      [
+        "Black Jack Tarr",
+        0.172,
+        283
+      ],
+      [
+        "Citizen V",
+        0.181,
+        463
+      ],
+      [
+        "Crane Mother",
+        0.191,
+        342
+      ]
+    ],
+    "most_like_corpus": [
+      [
+        "Black Marvel",
+        0.598,
+        699
+      ],
+      [
+        "Ms. Marvel",
+        0.57,
+        1102
+      ],
+      [
+        "Captain Marvel",
+        0.55,
+        1781
+      ],
+      [
+        "Sabra",
+        0.539,
+        1625
+      ]
+    ],
+    "distinctive_words": {
+      "Mania": [
+        "delacroix",
+        "voici",
+        "malone",
+        "andi",
+        "maniac",
+        "mania",
+        "perry",
+        "frankie"
+      ],
+      "Chase Stein": [
+        "gert",
+        "fistigons",
+        "klara",
+        "talkback",
+        "lace",
+        "chase",
+        "leapfrog",
+        "nico"
+      ],
+      "Baymax": [
+        "synthformer",
+        "dabai",
+        "baymax",
+        "adsit",
+        "hiro",
+        "mecha",
+        "programmed",
+        "default"
+      ],
+      "Balder the Brave": [
+        "mutilated",
+        "kelda",
+        "karnilla",
+        "balder",
+        "mikaboshi",
+        "amatsu",
+        "asgardians",
+        "volstagg"
+      ],
+      "Radian (Morituri)": [
+        "armanetti",
+        "inquirer",
+        "cassette",
+        "higashi",
+        "radian",
+        "horde",
+        "tuolema",
+        "louis"
+      ],
+      "Red Raven": [
+        "dania",
+        "navajo",
+        "redford",
+        "raven",
+        "bird",
+        "sky",
+        "diablo",
+        "rawhide"
+      ]
+    }
+  },
+  "generators": {
+    "clean_sentences": 19258,
+    "per_community": [
+      {
+        "community": "Hulk / She-Hulk",
+        "size": 48,
+        "sentences": 2717,
+        "generated": [
+          "After the war's end, along with his gloves.",
+          "Marvel Apes An alternate universe version of Machine Man assists the New Warriors, Fabian Nicieza."
+        ]
+      },
+      {
+        "community": "Black Panther / Iron Fist",
+        "size": 46,
+        "sentences": 3232,
+        "generated": [
+          "After many missions with the final power he sought.",
+          "He is a founding member of Heroes for Hire agency on numerous cases."
+        ]
+      },
+      {
+        "community": "Wolverine / Phoenix Force",
+        "size": 43,
+        "sentences": 3524,
+        "generated": [
+          "The Hellfire Club and headmistress of the Shi'ar Empire and he is less articulate and shrewd.",
+          "Guardian appears as a result of her power to defeat him once more, choosing to part ways."
+        ]
+      },
+      {
+        "community": "Hercules / Adam Warlock",
+        "size": 42,
+        "sentences": 2569,
+        "generated": [
+          "After awaking, he lost his memory with questions about his ancestry.",
+          "Ken spends the next morning, Kitty shows it to Mjolnir."
+        ]
+      },
+      {
+        "community": "Spider-Man / Venom",
+        "size": 36,
+        "sentences": 2547,
+        "generated": [
+          "Venom repeatedly tries to kill her father turned out to restore the universe of Spider-Man.",
+          "On the loop's breakage, Eddie is seen by some FBI Agents."
+        ]
+      },
+      {
+        "community": "Scarlet Witch / Human Torch (android)",
+        "size": 31,
+        "sentences": 1804,
+        "generated": [
+          "Red Raven ends up on Earth-616, where he learned martial arts.",
+          "This version is a spy sent to Earth."
+        ]
+      },
+      {
+        "community": "Doctor Strange / Deadpool",
+        "size": 31,
+        "sentences": 2328,
+        "generated": [
+          "The smaller the opening, the glass covering rises and the two of them.",
+          "Devil Dinosaur encounter Mole Man, Melissa Hanover turns over the course of the members of Merlin's army."
+        ]
+      }
+    ]
+  }
+}

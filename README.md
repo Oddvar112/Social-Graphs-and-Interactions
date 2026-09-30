@@ -25,12 +25,15 @@ network, every philosopher on Wikipedia born before 1900, 1444 of them with 9140
 | `weeks/week3/game/` | **KINGPIN**, a fragmentation game scored against rival centrality strategies |
 | `weeks/week4/index.html` | Week 4 post, on the philosophers: communities as a seating plan, Louvain against two nulls, greedy and a historian, twenty seeds that disagree about Aristotle |
 | `weeks/week4/game/` | **SYMPOSIUM**, a seating game scored by modularity against Louvain, with the engine in `core.js` |
+| `weeks/week5/index.html` | Week 5 post: the network gets its text. Counts and Zipf, fame against page length, every link as a typed sentence tested against the communities, Wikipedia copying itself, a search engine and the heroes who are not in the roster |
+| `weeks/week5/game/` | **SECRET IDENTITY**, three kinds of bag-of-words round against a cosine machine, with the engine in `core.js` |
 | `scripts/` | Everything that produces the data and the figures |
 | `assets/figures/` | Generated figures: `analyse.py` writes the week 1 ones, `analyse_week2.py` the `week2_*` ones |
 | `data/` | Generated: graph for the game, stats, API verification output, the week 2 crawl |
 | `week1_edges.tsv`, `week1_nodes.tsv` | The frozen course snapshot, unmodified |
 | `week4_philosophers_nodes.tsv`, `week4_philosophers_edges.tsv` | The course's week 4 philosophers snapshot (15 September 2026), unmodified |
 | `week4_edges_weighted.tsv` | The week 1 Marvel edges with a weight, from the course's week 4 release |
+| `marvel_pages.zip` | The course's week 5 release: the full plain-text Wikipedia article of all 303 characters, unmodified |
 
 ## The game
 
@@ -102,6 +105,34 @@ Portraits are Wikipedia's page images, loaded at view time and credited; only UR
 the one-table score, the greedy host and the swap search against networkx, scikit-learn and plain Python
 re-implementations, guest for guest.
 
+## The word game
+
+**SECRET IDENTITY** (week 5) is played on the text of the 303 pages. A case file deals three kinds of round:
+
+* **Unmask.** One character's page as a bag of words, one clue at a time (with its count on the page and the number
+  of pages it occurs in), four suspects; fewer clues, more points. Clue order is raw counts, NLTK stopwords removed,
+  or distinctive (count × ln(303 / document frequency), next week's TF-IDF). Decoys are random or the three pages
+  whose vectors point most in the same direction. A character's own names are never clues.
+* **Impostor.** A real sentence from a page or a sentence from a trigram model trained on one Louvain community; the
+  generator refuses anything that shares a nine-word run with the corpus, and both kinds go through the same
+  detokenizer with matched lengths.
+* **Redacted.** A concordance line with the key word blacked out; two of the three decoys are NLTK `similar()` words.
+
+A bag-of-words machine plays every unmask round against you: the cosine between the revealed clues and each
+suspect's stopword-free page vector. It never sees the answer; it reads at least two clues and commits as soon as one
+suspect scores twice the runner-up (or is forced to guess on the tenth), and a wrong commitment scores zero. You see
+when it commits, not to whom, until you commit yourself; the reveal shows the four cosines at that moment. Suspects
+come from the 80 best-known characters or the full roster. A case of the day (seeded by the date) gives everyone the
+same twelve rounds and a result to copy. The engine lives in `weeks/week5/game/core.js`; `scripts/build_week5_data.py`
+writes `data/week5_secret.js`; `scripts/test_secret_identity.py` runs the shipped engine under node and diffs its
+scores, picks and commitments against Python, checks that no generated sentence copies the corpus and that no clue
+leaks a name, and reports how the machine fares over 300 simulated rounds per setting (5.6 points a round on the
+default settings, 0.7 on raw counts).
+
+The shared text machinery (loading, spaCy tokenization with a cache in `.cache/`, the trigram model, the
+dependency-parsed relationship labeller, Louvain) is `scripts/week5_text.py`; `scripts/analyse_week5.py` produces every
+figure and number in the post, and `data/week5_label_audit.tsv` holds the sixty labelled sentences we read by hand.
+
 ## Reproducing everything
 
 Requires Python 3.9+ with `networkx`, `numpy`, `matplotlib` and (from week 2) `scipy`.
@@ -124,7 +155,13 @@ python scripts/test_kingpin_rules.py # runs KINGPIN's shipped core.js under node
 python scripts/build_week4_data.py --png assets/figures  # Louvain x20, greedy, century seating, both nulls, layout, figure -> data/week4_symposium.js (a few minutes)
 python scripts/fetch_week4_images.py                     # portrait URLs from Wikipedia -> data/week4_images.js
 python scripts/test_symposium_rules.py                   # runs SYMPOSIUM's shipped core.js under node and diffs it against networkx
+
+python scripts/analyse_week5.py         # every figure and number in the week 5 post (3-4 minutes; the first run tokenizes and caches)
+python scripts/build_week5_data.py      # bags of words, generated sentences, blanks -> data/week5_secret.js
+python scripts/test_secret_identity.py  # runs SECRET IDENTITY's shipped core.js under node and diffs it against Python
 ```
+
+Week 5 additionally needs spaCy with `en_core_web_sm`, NLTK with its stopword list, and scikit-learn.
 
 The week 2 crawl is not frozen by the course, so `data/week2_*.tsv` is committed as our own snapshot (8 September
 2026) and `data/week2_crawl.json` records which category members were dropped and why. Re-running the crawl will
