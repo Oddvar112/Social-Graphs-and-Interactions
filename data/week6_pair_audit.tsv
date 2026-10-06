@@ -1,0 +1,50 @@
+# 45 pairs from the ten nearest neighbours of every page under TF-IDF with names kept, sampled at random
+# in five name-share bins (nine per bin) and read by hand: the shared words, with a sentence from each page.
+# label: N = the match is carried by names, S = by story words, H = by pronouns and other function words,
+# M = mixed. The analysis script reads this file back and reports how often the rule agrees.
+page_a	page_b	label	note
+Radioactive_Man_(comics)	Venom_(character)	N	Venom and Spider-Man are named on Radioactive Man's page
+Captain_Marvel_(Marvel_Comics)	Hank_Pym	N	Hank Pym is named on Captain Marvel's page (Age of Ultron)
+Deadpool	Mark_Hazzard:_Merc	N	'merc' is the title word of Mark Hazzard: Merc
+Black_Widow_(Natasha_Romanova)	Sabra_(character)	M	Black Widow's name plus she and her
+Emma_Frost	Jack_Frost_(Marvel_Comics)	N	Frost is a surname shared by two unrelated people
+Garrison_Kane	Raza_Longknife	S	bionic parts, cyborg
+Jessica_Jones	Spider-Woman_(Jessica_Drew)	N	Jessica is a shared first name
+Black_Bolt	Black_Cat_(Marvel_Comics)	N	Black: a shared first word of two titles
+Anne_Weying	Turbo_(comics)	N	Brock coincidence: Eddie Brock on one page, Brock Jones on the other
+Coldblood	Guardian_(Marvel_Comics)	S	cyborg, cybernetic systems
+She-Hulk	Vance_Astrovik	N	Jennifer Walters is She-Hulk's real name, named on Vance Astrovik's page
+Vindicator_(comics)	Wolverine_(character)	N	Wolverine is named on Vindicator's page
+Detroit_Steel	Machine_Man	N	Machine, Iron, Stark: a Machine Man page and an Iron Man storyline
+Fabio_Medina	Jean_Grey_(X-Men_film_series)	N	X-Men franchise and the name Jean
+Ares_(Marvel_Comics)	She-Hulk	M	Hercules (a name) plus she and her
+Miracleman_(character)	Spitfire_(character)	S	British setting
+She-Hulk	Toxyn	H	she and her
+Devil_Hulk	Thin_Man_(character)	N	Bruce coincidence: Bruce Banner on one page, Bruce Dickson on the other
+She-Hulk	Silhouette_(comics)	H	she and her
+Battlestar_(character)	Wild_Child_(character)	N	Wild: Wild Pack against Wild Child
+Captain_Midlands	William_Burnside_(character)	N	Captain: shared title word
+Solomon_Kane_(comics)	Wolverine_(character)	N	Conan the Barbarian and Solomon Kane are Robert E. Howard characters at Marvel
+Rockman_(character)	The_Witness_(character)	N	The Witness is the title; Timely Comics
+Ghost_Rider_(Johnny_Blaze)	Ricochet_(comics)	N	Johnny coincidence: Johnny Blaze against Johnny Gallo
+Shear_(character)	Toxyn	N	Strikeforce: Morituri, a team name
+Spider-Man_Noir	Tarantula_(Marvel_Comics)	N	Spider is the franchise name
+Silencer_(comics)	Toxyn	N	Strikeforce: Morituri, a team name
+Firebird_(Marvel_Comics)	She-Hulk	H	she and her
+Leech_(character)	Wolverine_(Ultimate_Marvel_character)	N	Wolverine and the X-Men named on Leech's page
+Nightmask	Spider-Man	N	Ditko (creator) and Star Brand
+Thunderclap_(comics)	Venom_(character)	N	Spider-Man named on both
+Black_Rider_(character)	Radioactive_Man_(comics)	N	Masters of Evil
+She-Hulk	Yo-Yo_Rodriguez	H	she and her
+Firebird_(Marvel_Comics)	Spider-Woman_(Jessica_Drew)	H	she and her
+Betsy_Braddock	Jubilee_(character)	N	X-Men, Jubilee, Betsy
+NFL_SuperPro	Spider-Woman_(Jessica_Drew)	N	'drew' is the verb on one page and Jessica Drew's surname on the other
+Blue_Diamond_(character)	The_Witness_(character)	N	Timely Comics is the publisher
+Fabio_Medina	Storm_(Marvel_Comics)	N	X-Men franchise
+Outlaw_(Marvel_Comics)	Storm_(Marvel_Comics)	M	X-Men plus she and her
+Doom_2099	Ogre_(Marvel_Comics)	S	techno-organic, blasters, particle engineering
+Black_Rider_(character)	Miracleman_(character)	M	Kid (Kid Colt, Young Marvelman) with a little shared story
+Brian_Braddock	Union_Jack_(Marvel_Comics)	N	Brian is a shared first name
+Blackwulf	Iron_Fist_(character)	N	Iron fist is an idiom on one page and the title of the other
+Miracleman_(character)	Spider-Woman_(Jessica_Drew)	N	'drew' is the verb on one page and Jessica Drew's surname on the other
+Human_Torch	Man-Thing	N	Thing: Man-Thing and the Thing

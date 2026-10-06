@@ -27,6 +27,9 @@ network, every philosopher on Wikipedia born before 1900, 1444 of them with 9140
 | `weeks/week4/game/` | **SYMPOSIUM**, a seating game scored by modularity against Louvain, with the engine in `core.js` |
 | `weeks/week5/index.html` | Week 5 post: the network gets its text. Counts and Zipf, fame against page length, every link as a typed sentence tested against the communities, Wikipedia copying itself, a search engine and the heroes who are not in the roster |
 | `weeks/week5/game/` | **SECRET IDENTITY**, three kinds of bag-of-words round against a cosine machine, with the engine in `core.js` |
+| `weeks/week6/index.html` | Week 6 post: names or meaning. Every TF-IDF cosine split exactly into names, habit words and other words, tested against 45 pairs read by hand; the lookalikes with and without their names; story twins that the network never linked |
+| `weeks/week6/taboo/` | **TABOO-IDF**, a word game: describe a secret character one word at a time while a cosine machine ranks all 303 pages; names are taboo; the engine is in `core.js` |
+| `weeks/week6/dial/` | **THE NAME DIAL**, an explorable: pick a page, turn how much names and habit words count, and watch its lookalikes re-rank, with the network's agreement measured live; the engine is in `core.js` |
 | `scripts/` | Everything that produces the data and the figures |
 | `assets/figures/` | Generated figures: `analyse.py` writes the week 1 ones, `analyse_week2.py` the `week2_*` ones |
 | `data/` | Generated: graph for the game, stats, API verification output, the week 2 crawl |
@@ -133,6 +136,44 @@ The shared text machinery (loading, spaCy tokenization with a cache in `.cache/`
 dependency-parsed relationship labeller, Louvain) is `scripts/week5_text.py`; `scripts/analyse_week5.py` produces every
 figure and number in the post, and `data/week5_label_audit.tsv` holds the sixty labelled sentences we read by hand.
 
+## The name dial
+
+**THE NAME DIAL** (week 6) is the course's last 6.11 opener as an instrument: *find a way to tell name-driven matches from
+story-driven ones.* The way is arithmetic. With TF-IDF as the course page defines it (tf = count / words, idf = ln(303 / df)) and
+unit-length rows, the cosine of two pages is a sum with one term per word, so it splits exactly into three parts that add up
+to it: the part from **names** (capitalised in the middle of a sentence, or in a page title), the part from **habit words**
+(NLTK stopwords, and any word on at least a third of the 303 pages: *she*, *her*, *voiced*, *playable*, *series*) and the part
+from every other word. The verdict on a pair is a rule on the three numbers: NAME if names are at least half of the cosine,
+otherwise HABIT if habit words are at least as big as the rest, otherwise STORY. Nothing is learned.
+
+The dial turns that split into a knob. Multiply the names part of every vector by a setting between 0 and 1, the habit part by another,
+renormalise, and the cosine at that setting is `(wn^2 Pn + wh^2 Ph + Po) / (norm norm)` where Pn, Ph, Po are the three 303 x 303 matrices
+of the split. So the whole thing runs in the browser from `data/week6_dial.js` (three matrices in millionths plus the links, 1.4 MB), no server:
+choose a page, drag the two sliders, and its twelve nearest pages re-rank live as bars split into names, habit words and the rest; a meter
+shows how many of its ten nearest are linked in the network, another the average over all 303 pages, and a curve shows that average as the
+names dial goes from 0 to 100 (4.0 at 100, 2.0 at 0). The state is in the address, so a link keeps the dials.
+
+`scripts/week6_text.py` is the shared pipeline (corpus, name rule, TF-IDF, decomposition, verdict, network distances, Louvain);
+`scripts/analyse_week6.py` produces every figure and number in the post and reads `data/week6_pair_audit.tsv`, 45 pairs read by hand
+and labelled before looking at the rule's verdict, back in to report how often the rule agrees (36 of 41 clear cases);
+`scripts/build_week6_dial.py` writes the dial's data; `scripts/test_name_dial.py` recomputes the matrices from scratch in plain Python,
+checks the shipped `core.js` against numpy and against the analysis' agreement numbers, and drives the shipped `dial.js` against a stub page,
+under node or, if node is missing, macOS's built-in JavaScript engine.
+
+## The Taboo game
+
+**TABOO-IDF** (week 6) turns the machine round: a secret character is on screen and you make a cosine-similarity machine find them by
+typing words. After every word all 303 pages are ranked by the cosine between your word list and their TF-IDF vectors (the sum of each
+page's weight for your words over the square root of how many you typed); you win when the target is first. A word the name rule calls a
+name is a strike when names are banned (it costs a word and the machine ignores it); a word fewer than two pages use is unknown and free;
+you have twelve words, strikes and hints included, and score 11 minus the words you used. A hint spells the first letter, then three
+letters, of one of the page's strongest plain words, for three words each. `data/week6_taboo.js` holds 14,860 words (every word on at least two
+pages), their postings (217,026 page weights) and, for the 216 pages with 800 or more words, the oracle: the one word that puts the page ahead of every
+other by the widest margin, with names banned and with names allowed, and its twelve strongest plain words. An oracle wins in one word whatever the
+rule; with names allowed its word is a name for 212 of 216 pages and wins by a median margin of 0.58, with names banned 0.04. The game is the distance between
+what the machine can do and what you can guess about a page's vocabulary. `scripts/build_week6_taboo.py` writes the data; `scripts/test_taboo.py`
+recomputes every posting from the corpus, runs the shipped `core.js` against numpy and plays whole games through the shipped `game.js` against a stub page.
+
 ## Reproducing everything
 
 Requires Python 3.9+ with `networkx`, `numpy`, `matplotlib` and (from week 2) `scipy`.
@@ -159,9 +200,19 @@ python scripts/test_symposium_rules.py                   # runs SYMPOSIUM's ship
 python scripts/analyse_week5.py         # every figure and number in the week 5 post (3-4 minutes; the first run tokenizes and caches)
 python scripts/build_week5_data.py      # bags of words, generated sentences, blanks -> data/week5_secret.js
 python scripts/test_secret_identity.py  # runs SECRET IDENTITY's shipped core.js under node and diffs it against Python
+
+python scripts/analyse_week6.py         # every figure and number in the week 6 post (a few seconds)
+python scripts/build_week6_dial.py      # the three matrices behind the dial -> data/week6_dial.js
+python scripts/test_name_dial.py        # recomputes the data from scratch, runs THE NAME DIAL's shipped core.js and dial.js
+python scripts/build_week6_taboo.py     # postings, kinds and oracles for the game -> data/week6_taboo.js
+python scripts/test_taboo.py            # recomputes every posting, runs TABOO-IDF's shipped core.js and game.js
 ```
 
 Week 5 additionally needs spaCy with `en_core_web_sm`, NLTK with its stopword list, and scikit-learn.
+
+Week 6 needs no spaCy or NLTK (the stopword list is inlined in `week5_text.py`), only `numpy`, `networkx` and `matplotlib`. Louvain is
+networkx's, and its partition depends on the version: networkx 3.7 gives eight communities of the 277-node giant component where the
+week 5 run had seven, so community numbers in the week 6 post are from the partition it recomputes.
 
 The week 2 crawl is not frozen by the course, so `data/week2_*.tsv` is committed as our own snapshot (8 September
 2026) and `data/week2_crawl.json` records which category members were dropped and why. Re-running the crawl will

@@ -7,11 +7,12 @@
 <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
 <link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-32.png">
 <link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
-<meta name="description" content="Oddvar, David and Milena take eight weeks apart inside Wikipedia's Marvel network. 02805 Social Graphs and Interactions, DTU.">
+<meta name="description" content="Oddvar, David and Milena's project for 02805 Social Graphs and Interactions at DTU: a new topic every week, written up as a post and built into a game or an explorable.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Bangers&family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="assets/site.css">
+<script>document.documentElement.className+=" js"</script>
 </head>
 <body>
 
@@ -24,6 +25,7 @@
       <a href="weeks/week3/">Week 3</a>
       <a href="weeks/week4/">Week 4</a>
       <a href="weeks/week5/">Week 5</a>
+      <a href="weeks/week6/">Week 6</a>
       <a href="https://github.com/Oddvar112/Social-Graphs-and-Interactions">Code</a>
     </nav>
   </div>
@@ -31,196 +33,200 @@
 
 <main>
   <section class="wrap hero">
-    <div class="eyebrow">02805 Social Graphs and Interactions &middot; DTU &middot; Autumn 2026</div>
     <h1 class="comic">CAPES &amp; EDGES</h1>
-    <p class="tagline">Eight weeks, one dataset: the 303 Marvel characters on Wikipedia and every link between their pages.
-    We take it apart a different way each week.</p>
-
+    <p class="course">Course project for <b>02805 Social Graphs and Interactions</b>, Technical University of Denmark.</p>
     <div class="by">
       <span class="lbl">Made by</span>
       <span class="who">Oddvar</span>
       <span class="who">David</span>
       <span class="who">Milena</span>
     </div>
-    <p class="course">Course project for <b>02805 Social Graphs and Interactions</b>, Technical University of Denmark.
-    Every post computes on the same frozen snapshot the whole class shares, so the numbers are comparable across groups.</p>
-
-    <div class="factstrip">
-      <div class="fact"><b>303</b><span>Characters</span></div>
-      <div class="fact"><b>1784</b><span>Directed links</span></div>
-      <div class="fact"><b>106</b><span>Point at Spidey</span></div>
-      <div class="fact"><b>17</b><span>Isolated</span></div>
-    </div>
   </section>
 
-  <section class="wrap">
-    <div class="sectionhead">
-      <h2 class="comic">THE WEEKS</h2>
-    </div>
-
-    <div class="weeks">
-
-      <a class="week" href="weeks/week1/">
-        <div class="no">Week 1 <span class="pill live">Published</span></div>
-        <h3 class="comic">EVERYBODY LINKS TO SPIDER-MAN</h3>
-        <p>Degree distributions on linear and log-log axes, in-degree against out-degree, the giant component drawn
-        out, and the one island that refuses to touch the rest of the universe. Then we turned the graph into a game.</p>
-        <div class="tags">
-          <span class="tag cool">Structure</span>
-          <span class="tag">Degree distributions</span>
-          <span class="tag">Components</span>
-          <span class="tag hot">Playable</span>
-        </div>
-        <div class="go">Read the post &rarr;</div>
-      </a>
-
-      <a class="week" href="weeks/week2/">
-        <div class="no">Week 2 <span class="pill live">Published</span></div>
-        <h3 class="comic">SHUFFLE THE UNIVERSE</h3>
-        <p>A proper power-law fit and what it cannot say, the friendship paradox and the two characters nobody
-        out-popularities, twelve numbers shuffle-tested against two nulls, a preferential-attachment Marvel next to
-        the real one, and the villains crawled in. Then we replayed the universe from 1939.</p>
-        <div class="tags">
-          <span class="tag cool">Structure</span>
-          <span class="tag">Null models</span>
-          <span class="tag">Preferential attachment</span>
-          <span class="tag">Villains</span>
-          <span class="tag hot">Playable</span>
-          <span class="tag hot">Explorable</span>
-        </div>
-        <div class="go">Read the post &rarr;</div>
-      </a>
-
-      <a class="week" href="weeks/week3/">
-        <div class="no">Week 3 <span class="pill live">Published</span></div>
-        <h3 class="comic">THE NETWORK SHRUGGED</h3>
-        <p>Four definitions of importance and the shuffle test that sorts them: Spider-Man's famous betweenness is
-        just his degree, the real brokers are Black Widow, Hercules and a forgotten character with two links, and
-        the biggest clique is six X-Men with two guest chairs. Then we built an assassination game about it.</p>
-        <div class="tags">
-          <span class="tag cool">Structure</span>
-          <span class="tag">Centrality</span>
-          <span class="tag">Null models</span>
-          <span class="tag">Cliques</span>
-          <span class="tag hot">Playable</span>
-        </div>
-        <div class="go">Read the post &rarr;</div>
-      </a>
-
-      <a class="week" href="weeks/week4/">
-        <div class="no">Week 4 <span class="pill live">Published</span></div>
-        <h3 class="comic">THE SEATING PLAN</h3>
-        <p>A change of guests: every philosopher on Wikipedia born before 1900. Communities as tables at a dinner,
-        modularity as the score, Louvain against a shuffled network, a greedy merger and a historian, and the
-        finding that Louvain cannot decide where Aristotle sits. Then we made you the host: one philosopher, an
-        empty table, and the seats to fill.</p>
-        <div class="tags">
-          <span class="tag cool">Structure</span>
-          <span class="tag">Communities</span>
-          <span class="tag">Modularity</span>
-          <span class="tag">Philosophers</span>
-          <span class="tag hot">Playable</span>
-        </div>
-        <div class="go">Read the post &rarr;</div>
-      </a>
-
-      <a class="week" href="weeks/week5/">
-        <div class="no">Week 5 <span class="pill live">Published</span></div>
-        <h3 class="comic">ENEMIES SIT AT THE SAME TABLE</h3>
-        <p>The network gets its text. Every link becomes the sentence that carries it, parsed and labelled foe, ally
-        or family: foes cross communities like any link, family never does. Zipf on 718,552 tokens, Wikipedia copying
-        itself, a search engine that cannot find Thor because he is not there. Then we made the words a game.</p>
-        <div class="tags">
-          <span class="tag hot">Text</span>
-          <span class="tag">Tokens &amp; Zipf</span>
-          <span class="tag">Bag of words</span>
-          <span class="tag">Typed network</span>
-          <span class="tag hot">Playable</span>
-        </div>
-        <div class="go">Read the post &rarr;</div>
-      </a>
-
-      <div class="week soon">
-        <div class="no">Week 6 <span class="pill">Not yet</span></div>
-        <h3 class="comic">COMING UP</h3>
-        <p>Slot reserved. It fills in when week 6 lands.</p>
-        <div class="tags"><span class="tag hot">Text</span></div>
-      </div>
-
-      <div class="week soon">
-        <div class="no">Week 7 <span class="pill">Not yet</span></div>
-        <h3 class="comic">COMING UP</h3>
-        <p>Slot reserved. It fills in when week 7 lands.</p>
-        <div class="tags"><span class="tag hot">Text</span></div>
-      </div>
-
-      <div class="week soon">
-        <div class="no">Week 8 <span class="pill">Not yet</span></div>
-        <h3 class="comic">COMING UP</h3>
-        <p>Slot reserved. It fills in when week 8 lands.</p>
-        <div class="tags"><span class="tag hot">Text</span></div>
-      </div>
-
-    </div>
+  <section class="wrap how" id="how">
+    <p>Every week of the course brings a new topic, and every week we do the same things with it. We ask a question that numbers
+    can answer and write the answer up as a post, with the figures, the dead ends and the checks. And we build something you can
+    play with: a game that turns the week's idea into something you do instead of read, or an explorable that lets you turn the
+    knobs yourself.</p>
   </section>
 
-  <section class="wrap">
+  <section class="wrap" id="work">
     <div class="sectionhead">
-      <h2 class="comic">THE GAMES</h2>
+      <h2 class="comic">THE WORK</h2>
+      <div class="switch" role="tablist" aria-label="How to browse the work">
+        <button type="button" role="tab" id="tab-weeks" aria-controls="view-weeks" aria-selected="true" data-view="weeks">By week</button>
+        <button type="button" role="tab" id="tab-games" aria-controls="view-games" aria-selected="false" data-view="games">All games <span>8</span></button>
+      </div>
     </div>
 
-    <a class="playcard" href="weeks/week5/game/">
-      <div class="lbl">Built in week 5</div>
-      <h3 class="comic">SECRET IDENTITY</h3>
-      <p>Every Marvel page reduced to a bag of words. Unmask the character from as few words as you can while a
-      bag-of-words machine reads the same clues and commits on its own schedule; tell a real Wikipedia sentence from
-      one a trigram model dreamed up; put the blanked word back into a concordance line. One case of the day for
-      everyone, with a result to copy.</p>
-      <span class="cta">Play it</span>
-    </a>
-    <a class="playcard" href="weeks/week4/game/">
-      <div class="lbl">Built in week 4 &middot; on the philosophers</div>
-      <h3 class="comic">SYMPOSIUM</h3>
-      <p>You get one philosopher at the head of an empty table and 3, 5 or 9 seats to fill. The score is the links
-      inside the table beyond what chance would give, one table's share of modularity, and hubs are expensive. Then
-      a greedy host, a random host and the best table we ever found sit down beside yours. Or host the whole room,
-      1374 philosophers and a handful of place cards, and take on Louvain.</p>
-      <span class="cta">Host it</span>
-    </a>
-    <a class="playcard" href="weeks/week3/game/">
-      <div class="lbl">Built in week 3</div>
-      <h3 class="comic">KINGPIN</h3>
-      <p>You get eight hits. Remove characters from the real network and try to shatter its core; whoever loses
-      their last route to the big cluster is cut off. Then three rival hitmen run the same contract: one shoots
-      the most connected, one the biggest broker, one at random. The map shows who is popular. It does not show
-      who holds the network together.</p>
-      <span class="cta">Play it</span>
-    </a>
-    <a class="playcard" href="weeks/week2/grow/">
-      <div class="lbl">Built in week 2</div>
-      <h3 class="comic">ORIGIN STORY</h3>
-      <p>Watch the Marvel universe grow one character at a time from 1939 to 2020, each arrival with its comic
-      panel, with or without the villains, and see who collects the links. Then grow a preferential-attachment
-      universe of the same size next to it. In the model, whoever arrives first becomes a hub. On Wikipedia, the
-      hubs are the class of 1962.</p>
-      <span class="cta">Play it</span>
-    </a>
-    <a class="playcard" href="weeks/week2/hubdial/index.html?theme=dark">
-      <div class="lbl">Built in week 2 for the course page &middot; exercise 2.10</div>
-      <h3 class="comic">THE HUB DIAL</h3>
-      <p>Grow a network where newcomers attach with probability proportional to k to the power &alpha;, and turn
-      &alpha;. Below 1 the hubs never form. At 1 you get Barab&aacute;si-Albert. Above 1 one node takes a fixed share
-      of every link, however big the network gets. Spider-Man reads 1.1 on the dial.</p>
-      <span class="cta">Turn it</span>
-    </a>
-    <a class="playcard" href="weeks/week1/game/">
-      <div class="lbl">Built in week 1</div>
-      <h3 class="comic">WEB-CRAWLER</h3>
-      <p>Pick Spider-Man, Wolverine or Doctor Strange. You get sent somewhere out in the network and have to click your
-      way home along real Wikipedia links, one page at a time. The map only exists where you have walked, and your score
-      is measured against the shortest route that actually exists in the graph.</p>
-      <span class="cta">Play it</span>
-    </a>
+    <div id="view-weeks" role="tabpanel" aria-labelledby="tab-weeks">
+      <ol class="timeline" aria-label="Progress through the eight weeks">
+        <li class="done"><a href="#week-1"><i>1</i><span>Degrees</span></a></li>
+        <li class="done"><a href="#week-2"><i>2</i><span>Growth</span></a></li>
+        <li class="done"><a href="#week-3"><i>3</i><span>Centrality</span></a></li>
+        <li class="done"><a href="#week-4"><i>4</i><span>Communities</span></a></li>
+        <li class="done"><a href="#week-5"><i>5</i><span>Text</span></a></li>
+        <li class="done"><a href="#week-6"><i>6</i><span>Similarity</span></a></li>
+        <li class="todo"><b><i>7</i><span>Soon</span></b></li>
+        <li class="todo"><b><i>8</i><span>Soon</span></b></li>
+      </ol>
+
+      <div class="weeks">
+
+        <article class="week" id="week-1">
+          <div class="no"><span>Week 1</span><span class="half cool">Network</span></div>
+          <h3 class="comic"><a href="weeks/week1/">EVERYBODY LINKS TO SPIDER-MAN</a></h3>
+          <p>Degree distributions on linear and log-log axes, in-degree against out-degree, the giant component drawn
+          out, and the one island that refuses to touch the rest of the universe.</p>
+          <div class="tags"><span class="tag">Degree distributions</span><span class="tag">Components</span></div>
+          <div class="foot"><a class="read" href="weeks/week1/">Read the post &rarr;</a>
+            <div class="plays"><a href="weeks/week1/game/"><i>&#9654;</i> WEB-CRAWLER</a></div></div>
+        </article>
+
+        <article class="week" id="week-2">
+          <div class="no"><span>Week 2</span><span class="half cool">Network</span></div>
+          <h3 class="comic"><a href="weeks/week2/">SHUFFLE THE UNIVERSE</a></h3>
+          <p>A proper power-law fit and what it cannot say, the friendship paradox and the two characters nobody
+          out-popularities, twelve numbers shuffle-tested against two nulls, a preferential-attachment Marvel next to
+          the real one, and the villains crawled in.</p>
+          <div class="tags"><span class="tag">Null models</span><span class="tag">Preferential attachment</span><span class="tag">Villains</span></div>
+          <div class="foot"><a class="read" href="weeks/week2/">Read the post &rarr;</a>
+            <div class="plays"><a href="weeks/week2/grow/"><i>&#9654;</i> ORIGIN STORY</a><a href="weeks/week2/hubdial/index.html?theme=dark"><i>&#9654;</i> THE HUB DIAL</a></div></div>
+        </article>
+
+        <article class="week" id="week-3">
+          <div class="no"><span>Week 3</span><span class="half cool">Network</span></div>
+          <h3 class="comic"><a href="weeks/week3/">THE NETWORK SHRUGGED</a></h3>
+          <p>Four definitions of importance and the shuffle test that sorts them: Spider-Man's famous betweenness is
+          just his degree, the real brokers are Black Widow, Hercules and a forgotten character with two links, and
+          the biggest clique is six X-Men with two guest chairs.</p>
+          <div class="tags"><span class="tag">Centrality</span><span class="tag">Null models</span><span class="tag">Cliques</span></div>
+          <div class="foot"><a class="read" href="weeks/week3/">Read the post &rarr;</a>
+            <div class="plays"><a href="weeks/week3/game/"><i>&#9654;</i> KINGPIN</a></div></div>
+        </article>
+
+        <article class="week" id="week-4">
+          <div class="no"><span>Week 4</span><span class="half cool">Network</span></div>
+          <h3 class="comic"><a href="weeks/week4/">THE SEATING PLAN</a></h3>
+          <p>A change of guests: every philosopher on Wikipedia born before 1900. Communities as tables at a dinner,
+          modularity as the score, Louvain against a shuffled network, a greedy merger and a historian, and the
+          finding that Louvain cannot decide where Aristotle sits.</p>
+          <div class="tags"><span class="tag">Communities</span><span class="tag">Modularity</span><span class="tag">Philosophers</span></div>
+          <div class="foot"><a class="read" href="weeks/week4/">Read the post &rarr;</a>
+            <div class="plays"><a href="weeks/week4/game/"><i>&#9654;</i> SYMPOSIUM</a></div></div>
+        </article>
+
+        <article class="week" id="week-5">
+          <div class="no"><span>Week 5</span><span class="half hot">Language</span></div>
+          <h3 class="comic"><a href="weeks/week5/">ENEMIES SIT AT THE SAME TABLE</a></h3>
+          <p>The network gets its text. Every link becomes the sentence that carries it, parsed and labelled foe, ally
+          or family: foes cross communities like any link, family never does. Zipf on 718,552 tokens, Wikipedia copying
+          itself, a search engine that cannot find Thor because he is not there.</p>
+          <div class="tags"><span class="tag">Tokens &amp; Zipf</span><span class="tag">Bag of words</span><span class="tag">Typed network</span></div>
+          <div class="foot"><a class="read" href="weeks/week5/">Read the post &rarr;</a>
+            <div class="plays"><a href="weeks/week5/game/"><i>&#9654;</i> SECRET IDENTITY</a></div></div>
+        </article>
+
+        <article class="week" id="week-6">
+          <div class="no"><span>Week 6</span><span class="half hot">Language</span></div>
+          <h3 class="comic"><a href="weeks/week6/">A SURNAME IS NOT A STORY</a></h3>
+          <p>TF-IDF put Storm next to the Human Torch because of a surname. We split every cosine similarity exactly into
+          names, habit words and everything else: 99 percent of the strongest lookalikes are names, half of the text's
+          agreement with the network is names, and the story twins are linked no more than two random pages.</p>
+          <div class="tags"><span class="tag">TF-IDF &amp; cosine</span><span class="tag">Names vs meaning</span><span class="tag">Story twins</span></div>
+          <div class="foot"><a class="read" href="weeks/week6/">Read the post &rarr;</a>
+            <div class="plays"><a href="weeks/week6/taboo/"><i>&#9654;</i> TABOO-IDF</a><a href="weeks/week6/dial/"><i>&#9654;</i> THE NAME DIAL</a></div></div>
+        </article>
+
+        <article class="week soon" id="week-7">
+          <div class="no"><span>Week 7</span><span class="half hot">Language</span></div>
+          <h3 class="comic">COMING UP</h3>
+          <p>A slot is reserved. It fills in when week 7 lands, with its post and something to play.</p>
+        </article>
+
+        <article class="week soon" id="week-8">
+          <div class="no"><span>Week 8</span><span class="half hot">Language</span></div>
+          <h3 class="comic">COMING UP</h3>
+          <p>A slot is reserved. It fills in when week 8 lands, with its post and something to play.</p>
+        </article>
+
+      </div>
+    </div>
+
+    <div id="view-games" role="tabpanel" aria-labelledby="tab-games">
+      <p class="gintro">Eight things to play with, newest first: five games and three explorables. A <b>game</b> scores you against something; an <b>explorable</b> lets you turn the knobs. Each one is built on the week's idea and the data we were working with that week.</p>
+      <div class="games">
+
+        <a class="gcard" href="weeks/week6/taboo/">
+          <div class="meta"><span>Week 6</span><span class="kind game">Game</span></div>
+          <h3 class="comic">TABOO-IDF</h3>
+          <p>Describe a secret Marvel character one word at a time while a cosine-similarity machine ranks all 303 Wikipedia
+          pages against your words. You win when yours is first; names are taboo and cost a strike. Allow names and one word
+          wins almost every time, which is the whole week in one switch.</p>
+          <span class="cta">Play it</span>
+        </a>
+        <a class="gcard" href="weeks/week6/dial/">
+          <div class="meta"><span>Week 6</span><span class="kind expl">Explorable</span></div>
+          <h3 class="comic">THE NAME DIAL</h3>
+          <p>Pick a Marvel page and watch its textual lookalikes re-rank while you turn two dials: how much names count and how
+          much Wikipedia's habit words (<em>she</em>, <em>her</em>, <em>voiced</em>) count. Every neighbour is a bar split into
+          names, habit words and everything else, and the network's agreement with the text is measured live as you drag.</p>
+          <span class="cta">Turn it</span>
+        </a>
+        <a class="gcard" href="weeks/week5/game/">
+          <div class="meta"><span>Week 5</span><span class="kind game">Game</span></div>
+          <h3 class="comic">SECRET IDENTITY</h3>
+          <p>Every Marvel page reduced to a bag of words. Unmask the character from as few words as you can while a
+          bag-of-words machine reads the same clues and commits on its own schedule; tell a real Wikipedia sentence from
+          one a trigram model dreamed up; put the blanked word back into a concordance line. One case of the day for
+          everyone, with a result to copy.</p>
+          <span class="cta">Play it</span>
+        </a>
+        <a class="gcard" href="weeks/week4/game/">
+          <div class="meta"><span>Week 4 &middot; philosophers</span><span class="kind game">Game</span></div>
+          <h3 class="comic">SYMPOSIUM</h3>
+          <p>You get one philosopher at the head of an empty table and 3, 5 or 9 seats to fill. The score is the links
+          inside the table beyond what chance would give, one table's share of modularity, and hubs are expensive. Then
+          a greedy host, a random host and the best table we ever found sit down beside yours. Or host the whole room,
+          1374 philosophers and a handful of place cards, and take on Louvain.</p>
+          <span class="cta">Host it</span>
+        </a>
+        <a class="gcard" href="weeks/week3/game/">
+          <div class="meta"><span>Week 3</span><span class="kind game">Game</span></div>
+          <h3 class="comic">KINGPIN</h3>
+          <p>You get eight hits. Remove characters from the real network and try to shatter its core; whoever loses
+          their last route to the big cluster is cut off. Then three rival hitmen run the same contract: one shoots
+          the most connected, one the biggest broker, one at random. The map shows who is popular. It does not show
+          who holds the network together.</p>
+          <span class="cta">Play it</span>
+        </a>
+        <a class="gcard" href="weeks/week2/grow/">
+          <div class="meta"><span>Week 2</span><span class="kind expl">Explorable</span></div>
+          <h3 class="comic">ORIGIN STORY</h3>
+          <p>Watch the Marvel universe grow one character at a time from 1939 to 2020, each arrival with its comic
+          panel, with or without the villains, and see who collects the links. Then grow a preferential-attachment
+          universe of the same size next to it. In the model, whoever arrives first becomes a hub. On Wikipedia, the
+          hubs are the class of 1962.</p>
+          <span class="cta">Watch it</span>
+        </a>
+        <a class="gcard" href="weeks/week2/hubdial/index.html?theme=dark">
+          <div class="meta"><span>Week 2 &middot; exercise 2.10</span><span class="kind expl">Explorable</span></div>
+          <h3 class="comic">THE HUB DIAL</h3>
+          <p>Grow a network where newcomers attach with probability proportional to k to the power &alpha;, and turn
+          &alpha;. Below 1 the hubs never form. At 1 you get Barab&aacute;si-Albert. Above 1 one node takes a fixed share
+          of every link, however big the network gets. Spider-Man reads 1.1 on the dial.</p>
+          <span class="cta">Turn it</span>
+        </a>
+        <a class="gcard" href="weeks/week1/game/">
+          <div class="meta"><span>Week 1</span><span class="kind game">Game</span></div>
+          <h3 class="comic">WEB-CRAWLER</h3>
+          <p>Pick Spider-Man, Wolverine or Doctor Strange. You get sent somewhere out in the network and have to click your
+          way home along real Wikipedia links, one page at a time. The map only exists where you have walked, and your score
+          is measured against the shortest route that actually exists in the graph.</p>
+          <span class="cta">Play it</span>
+        </a>
+      </div>
+    </div>
   </section>
 </main>
 
@@ -231,5 +237,34 @@
   </div>
 </footer>
 
+
+<script>
+/* "By week" / "All games": two views of the same work. Without JavaScript both are simply shown, one after the other. */
+(function () {
+  var tabs = Array.prototype.slice.call(document.querySelectorAll('.switch [data-view]'));
+  var views = { weeks: document.getElementById('view-weeks'), games: document.getElementById('view-games') };
+  if (!tabs.length || !views.weeks || !views.games) return;
+  function show(name, push) {
+    tabs.forEach(function (t) { t.setAttribute('aria-selected', String(t.dataset.view === name)); });
+    views.weeks.hidden = name !== 'weeks';
+    views.games.hidden = name !== 'games';
+    if (push) { try { history.replaceState(null, '', name === 'games' ? '#games' : location.pathname + location.search); } catch (e) {} }
+  }
+  tabs.forEach(function (t) {
+    t.addEventListener('click', function () { show(t.dataset.view, true); });
+    t.addEventListener('keydown', function (e) {
+      var i = tabs.indexOf(t);
+      if (e.key === 'ArrowRight' || e.key === 'ArrowLeft') { var n = tabs[(i + (e.key === 'ArrowRight' ? 1 : tabs.length - 1)) % tabs.length]; n.focus(); show(n.dataset.view, true); }
+    });
+  });
+  function fromHash() {
+    var h = location.hash.slice(1);
+    if (h === 'games') show('games', false);
+    else { show('weeks', false); if (/^week-\d$/.test(h)) { var el = document.getElementById(h); if (el && el.scrollIntoView) el.scrollIntoView(); } }
+  }
+  window.addEventListener('hashchange', fromHash);
+  fromHash();
+})();
+</script>
 </body>
 </html>

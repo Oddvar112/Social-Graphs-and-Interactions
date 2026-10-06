@@ -1,0 +1,1807 @@
+{
+  "names": {
+    "pages": 303,
+    "tokens": 736658,
+    "types": 25254,
+    "name_types": 8651,
+    "by_reason": {
+      "capitalised": 8288,
+      "both": 345,
+      "title": 18
+    },
+    "name_token_share": 0.20991830673121042,
+    "course_rule_types": 9026,
+    "course_rule_only": 389,
+    "course_rule_only_examples": [
+      "during",
+      "i",
+      "however",
+      "d",
+      "fictional",
+      "m",
+      "young",
+      "publication",
+      "references",
+      "external",
+      "despite",
+      "video"
+    ],
+    "title_only": [
+      "agent",
+      "bullet",
+      "child",
+      "emrys",
+      "fly",
+      "gun",
+      "hit",
+      "human",
+      "hybrid",
+      "illuminator",
+      "living",
+      "major",
+      "merc",
+      "od",
+      "power",
+      "ruby",
+      "witness",
+      "zombie"
+    ],
+    "title_words_left_alone": [
+      "brain",
+      "father",
+      "happy",
+      "mother",
+      "solo",
+      "space",
+      "speed",
+      "time",
+      "two"
+    ]
+  },
+  "agreement": {
+    "raw counts": 1.8646864686468647,
+    "counts, stopwords out": 2.8052805280528053,
+    "TF-IDF": 4.016501650165017,
+    "TF-IDF, names out": 1.9867986798679869,
+    "TF-IDF, names and stopwords out": 2.2475247524752477,
+    "TF-IDF, names and habit words out": 2.277227722772277,
+    "ten random pages": 0.3194719471947195
+  },
+  "anchor": {
+    "links": 1784,
+    "links_with_usable_name": 1479,
+    "named_on_source_page": 1242,
+    "share": 0.8397565922920892
+  },
+  "split_kept_lists": {
+    "pairs": 2242,
+    "name": {
+      "n": 2000,
+      "share": 0.8920606601248885,
+      "linked": 0.376,
+      "same_community": 0.5106499180775532,
+      "mean_distance": 1.8481703986892408,
+      "median_cos": 0.05660117057146752
+    },
+    "habit": {
+      "n": 93,
+      "share": 0.041480820695807316,
+      "linked": 0.15053763440860216,
+      "same_community": 0.2261904761904762,
+      "mean_distance": 2.0714285714285716,
+      "median_cos": 0.039349550284796954
+    },
+    "story": {
+      "n": 149,
+      "share": 0.06645851917930419,
+      "linked": 0.11409395973154363,
+      "same_community": 0.27835051546391754,
+      "mean_distance": 2.268041237113402,
+      "median_cos": 0.0282769269130538
+    },
+    "name_kinds": {
+      "own": 1230,
+      "roster": 249,
+      "other": 521
+    },
+    "share_quantiles": {
+      "p10": 0.4876002637590711,
+      "p25": 0.6737291202891703,
+      "p50": 0.8022284472929322,
+      "p75": 0.8851918574434647,
+      "p90": 0.9348825524988205
+    }
+  },
+  "split_clean_lists": {
+    "pairs": 2520,
+    "name": {
+      "n": 868,
+      "share": 0.34444444444444444,
+      "linked": 0.4792626728110599,
+      "same_community": 0.6032338308457711,
+      "mean_distance": 1.6119402985074627,
+      "median_cos": 0.06371094004955438
+    },
+    "habit": {
+      "n": 254,
+      "share": 0.1007936507936508,
+      "linked": 0.07086614173228346,
+      "same_community": 0.08264462809917356,
+      "mean_distance": 2.1611570247933884,
+      "median_cos": 0.02854275769291221
+    },
+    "story": {
+      "n": 1398,
+      "share": 0.5547619047619048,
+      "linked": 0.0407725321888412,
+      "same_community": 0.13714285714285715,
+      "mean_distance": 2.456326530612245,
+      "median_cos": 0.016608342654973834
+    },
+    "name_kinds": {
+      "own": 493,
+      "roster": 174,
+      "other": 201
+    }
+  },
+  "top500": {
+    "name": 496,
+    "median_share": 0.9055172891767373
+  },
+  "names_out_only": {
+    "pairs": 2728,
+    "top_term_is_pronoun": 771,
+    "most_common_top_terms": [
+      [
+        "her",
+        525
+      ],
+      [
+        "she",
+        246
+      ],
+      [
+        "mutants",
+        110
+      ],
+      [
+        "list",
+        70
+      ],
+      [
+        "symbiote",
+        58
+      ],
+      [
+        "armor",
+        56
+      ],
+      [
+        "i",
+        46
+      ],
+      [
+        "ar",
+        36
+      ]
+    ]
+  },
+  "all_pairs": {
+    "pairs": 45753,
+    "by_min_cosine": {
+      ">=0.0": {
+        "pairs": 45753,
+        "name": 0.22243350162830852,
+        "habit": 0.2629772911065941,
+        "story": 0.5145892072650974
+      },
+      ">=0.02": {
+        "pairs": 7549,
+        "name": 0.580341767121473,
+        "habit": 0.1563120943171281,
+        "story": 0.2633461385613989
+      },
+      ">=0.05": {
+        "pairs": 1435,
+        "name": 0.9017421602787457,
+        "habit": 0.05714285714285714,
+        "story": 0.04111498257839721
+      },
+      ">=0.1": {
+        "pairs": 506,
+        "name": 0.9920948616600791,
+        "habit": 0.003952569169960474,
+        "story": 0.003952569169960474
+      },
+      ">=0.2": {
+        "pairs": 214,
+        "name": 0.9953271028037384,
+        "habit": 0.0,
+        "story": 0.004672897196261682
+      }
+    },
+    "median_cosine": 0.009025075977769813,
+    "p99_cosine": 0.10808460937711237
+  },
+  "audit": {
+    "pairs": 45,
+    "mixed": 4,
+    "clear": 41,
+    "agree": 36,
+    "by_label": {
+      "N": 32,
+      "S": 4,
+      "H": 5,
+      "M": 4
+    },
+    "disagree": [
+      {
+        "a": "She-Hulk",
+        "b": "Vance Astrovik",
+        "label": "N",
+        "rule": "story",
+        "share": 0.49,
+        "note": "Jennifer Walters is She-Hulk's real name, named on Vance Astrovik's page"
+      },
+      {
+        "a": "Rockman",
+        "b": "The Witness",
+        "label": "N",
+        "rule": "story",
+        "share": 0.48,
+        "note": "The Witness is the title; Timely Comics"
+      },
+      {
+        "a": "Nightmask",
+        "b": "Spider-Man",
+        "label": "N",
+        "rule": "story",
+        "share": 0.49,
+        "note": "Ditko (creator) and Star Brand"
+      },
+      {
+        "a": "NFL SuperPro",
+        "b": "Spider-Woman",
+        "label": "N",
+        "rule": "story",
+        "share": 0.39,
+        "note": "'drew' is the verb on one page and Jessica Drew's surname on the other"
+      },
+      {
+        "a": "Miracleman",
+        "b": "Spider-Woman",
+        "label": "N",
+        "rule": "story",
+        "share": 0.28,
+        "note": "'drew' is the verb on one page and Jessica Drew's surname on the other"
+      }
+    ],
+    "near_boundary": 3
+  },
+  "spotlights": [
+    {
+      "a": "Emma Frost",
+      "b": "Jack Frost",
+      "cos": 0.46332534817221027,
+      "name": 0.45187010055452903,
+      "habit": 0.004428509212976711,
+      "other": 0.007026738404704539,
+      "share": 0.9752760178935354,
+      "klass": "name",
+      "cos_clean": 0.0499003434163299,
+      "linked": false,
+      "dist": 3,
+      "terms": [
+        [
+          "frost",
+          true,
+          0.9605979802100882
+        ],
+        [
+          "men",
+          true,
+          0.0025872641515164345
+        ],
+        [
+          "diamond",
+          true,
+          0.002477491883131537
+        ],
+        [
+          "ice",
+          false,
+          0.0023574902515994425
+        ],
+        [
+          "x",
+          true,
+          0.0015890283765219045
+        ]
+      ]
+    },
+    {
+      "a": "Anne Weying",
+      "b": "Turbo",
+      "cos": 0.04969927200518811,
+      "name": 0.04269439993106283,
+      "habit": 0.0037571297536390475,
+      "other": 0.0032477423204862296,
+      "share": 0.8590548353828193,
+      "klass": "name",
+      "cos_clean": 0.02900396298638422,
+      "linked": false,
+      "dist": 3,
+      "terms": [
+        [
+          "brock",
+          true,
+          0.8569523517251686
+        ],
+        [
+          "she",
+          false,
+          0.036789610206514306
+        ],
+        [
+          "suit",
+          false,
+          0.022785584545835
+        ],
+        [
+          "her",
+          false,
+          0.017510767707188027
+        ],
+        [
+          "gang",
+          false,
+          0.00727367646561144
+        ]
+      ]
+    },
+    {
+      "a": "Storm",
+      "b": "Human Torch",
+      "cos": 0.32479349587800993,
+      "name": 0.29854096698889493,
+      "habit": 0.01104319655775125,
+      "other": 0.015209332331363755,
+      "share": 0.9191716299054977,
+      "klass": "name",
+      "cos_clean": 0.11293949286318875,
+      "linked": false,
+      "dist": 2,
+      "terms": [
+        [
+          "storm",
+          true,
+          0.869775702219972
+        ],
+        [
+          "relationship",
+          false,
+          0.00932655585570494
+        ],
+        [
+          "fantastic",
+          true,
+          0.008834251444925723
+        ],
+        [
+          "her",
+          false,
+          0.005682460003036929
+        ],
+        [
+          "four",
+          true,
+          0.003684999031515005
+        ]
+      ]
+    },
+    {
+      "a": "Shear",
+      "b": "Toxyn",
+      "cos": 0.2805708288711616,
+      "name": 0.25433634181997516,
+      "habit": 0.0034826006533839886,
+      "other": 0.022751886397802425,
+      "share": 0.9064960275566163,
+      "klass": "name",
+      "cos_clean": 0.10600761765307526,
+      "linked": false,
+      "dist": null,
+      "terms": [
+        [
+          "morituri",
+          true,
+          0.6547739971028793
+        ],
+        [
+          "strikeforce",
+          true,
+          0.09374172105365362
+        ],
+        [
+          "horde",
+          true,
+          0.056594998271247816
+        ],
+        [
+          "recipients",
+          false,
+          0.02811502309695927
+        ],
+        [
+          "paedia",
+          true,
+          0.02622923992210873
+        ]
+      ]
+    },
+    {
+      "a": "Jessica Jones",
+      "b": "Spider-Woman (Jessica Drew)",
+      "cos": 0.6686691029447297,
+      "name": 0.6219648399180552,
+      "habit": 0.02626279575085852,
+      "other": 0.020441467275816024,
+      "share": 0.9301534005070742,
+      "klass": "name",
+      "cos_clean": 0.2757699243668091,
+      "linked": true,
+      "dist": 1,
+      "terms": [
+        [
+          "jessica",
+          true,
+          0.8710433987843514
+        ],
+        [
+          "drew",
+          true,
+          0.019768703236136432
+        ],
+        [
+          "spider",
+          true,
+          0.012613506115501223
+        ],
+        [
+          "her",
+          false,
+          0.009254909601326916
+        ],
+        [
+          "she",
+          false,
+          0.0069566966266036145
+        ]
+      ]
+    },
+    {
+      "a": "NFL SuperPro",
+      "b": "Spider-Woman (Jessica Drew)",
+      "cos": 0.022133599895329897,
+      "name": 0.008741497018848736,
+      "habit": 0.005043325756296744,
+      "other": 0.008348777120184418,
+      "share": 0.39494239799162345,
+      "klass": "story",
+      "cos_clean": 0.05833192664456571,
+      "linked": false,
+      "dist": 3,
+      "terms": [
+        [
+          "drew",
+          true,
+          0.24330011601724294
+        ],
+        [
+          "spider",
+          true,
+          0.11776727853499144
+        ],
+        [
+          "issue",
+          false,
+          0.044228209361749475
+        ],
+        [
+          "player",
+          false,
+          0.033070595675978136
+        ],
+        [
+          "issues",
+          false,
+          0.02683248344086066
+        ]
+      ]
+    },
+    {
+      "a": "Eddie Brock",
+      "b": "Venom",
+      "cos": 0.8668995579362164,
+      "name": 0.7092695114587959,
+      "habit": 0.007485143367332206,
+      "other": 0.15014490311008827,
+      "share": 0.8181680391524454,
+      "klass": "name",
+      "cos_clean": 0.8577658345309206,
+      "linked": true,
+      "dist": 1,
+      "terms": [
+        [
+          "venom",
+          true,
+          0.30178757157935726
+        ],
+        [
+          "brock",
+          true,
+          0.2929930608087134
+        ],
+        [
+          "symbiote",
+          false,
+          0.14481985235946213
+        ],
+        [
+          "eddie",
+          true,
+          0.1352490675069612
+        ],
+        [
+          "spider",
+          true,
+          0.02726425241920169
+        ]
+      ]
+    },
+    {
+      "a": "Mania",
+      "b": "Venom",
+      "cos": 0.5058271734423202,
+      "name": 0.2798401183629082,
+      "habit": 0.005343296981676673,
+      "other": 0.22064375809773537,
+      "share": 0.5532326712669551,
+      "klass": "name",
+      "cos_clean": 0.8084355677113267,
+      "linked": true,
+      "dist": 1,
+      "terms": [
+        [
+          "venom",
+          true,
+          0.39200607834895174
+        ],
+        [
+          "symbiote",
+          false,
+          0.3835502978674869
+        ],
+        [
+          "brock",
+          true,
+          0.045132152142967154
+        ],
+        [
+          "flash",
+          true,
+          0.017952516796342494
+        ],
+        [
+          "carnage",
+          true,
+          0.014525640535442473
+        ]
+      ]
+    },
+    {
+      "a": "Blade",
+      "b": "Morbius",
+      "cos": 0.16733769371317125,
+      "name": 0.08034052505569719,
+      "habit": 0.004906433913089529,
+      "other": 0.08209073474438451,
+      "share": 0.4801101489626514,
+      "klass": "story",
+      "cos_clean": 0.4920104572609036,
+      "linked": true,
+      "dist": 1,
+      "terms": [
+        [
+          "vampire",
+          false,
+          0.3339881460282209
+        ],
+        [
+          "morbius",
+          true,
+          0.2746783459264555
+        ],
+        [
+          "blade",
+          true,
+          0.12646665120874545
+        ],
+        [
+          "vampires",
+          false,
+          0.05418419579306434
+        ],
+        [
+          "blood",
+          false,
+          0.022084739551487056
+        ]
+      ]
+    },
+    {
+      "a": "Iron Fist",
+      "b": "Lei Kung",
+      "cos": 0.43174935697631217,
+      "name": 0.33863934049380506,
+      "habit": 0.0016889594642975824,
+      "other": 0.09142105701820952,
+      "share": 0.7843424316029368,
+      "klass": "name",
+      "cos_clean": 0.6522900483750786,
+      "linked": true,
+      "dist": 1,
+      "terms": [
+        [
+          "un",
+          false,
+          0.19437687590416072
+        ],
+        [
+          "rand",
+          true,
+          0.1415329038953517
+        ],
+        [
+          "fist",
+          true,
+          0.11441094562916661
+        ],
+        [
+          "kung",
+          true,
+          0.10575601810092768
+        ],
+        [
+          "lei",
+          true,
+          0.09431693521765057
+        ]
+      ]
+    },
+    {
+      "a": "She-Hulk",
+      "b": "Toxyn",
+      "cos": 0.038421285591788555,
+      "name": 0.0013002935206440115,
+      "habit": 0.03027886989287188,
+      "other": 0.006842122178272661,
+      "share": 0.03384305081457014,
+      "klass": "habit",
+      "cos_clean": 0.043065100675233454,
+      "linked": false,
+      "dist": null,
+      "terms": [
+        [
+          "she",
+          false,
+          0.3546930296665789
+        ],
+        [
+          "her",
+          false,
+          0.33691664932667437
+        ],
+        [
+          "skin",
+          false,
+          0.010194117775177586
+        ],
+        [
+          "issue",
+          false,
+          0.00841875644340107
+        ],
+        [
+          "harmful",
+          false,
+          0.008195207724750997
+        ]
+      ]
+    },
+    {
+      "a": "Betsy Braddock",
+      "b": "Emma Frost",
+      "cos": 0.06592953917572095,
+      "name": 0.03723176753530405,
+      "habit": 0.014059396848765376,
+      "other": 0.014638374791651514,
+      "share": 0.5647205789816127,
+      "klass": "name",
+      "cos_clean": 0.3524754666333567,
+      "linked": true,
+      "dist": 1,
+      "terms": [
+        [
+          "x",
+          true,
+          0.15120319405368957
+        ],
+        [
+          "her",
+          false,
+          0.0925602805485136
+        ],
+        [
+          "men",
+          true,
+          0.07180536298810364
+        ],
+        [
+          "frost",
+          true,
+          0.07052871644910201
+        ],
+        [
+          "she",
+          false,
+          0.048665137242804135
+        ]
+      ]
+    },
+    {
+      "a": "Garrison Kane",
+      "b": "Raza Longknife",
+      "cos": 0.02960616188693894,
+      "name": 0.004279585618582941,
+      "habit": 0.00341473276428417,
+      "other": 0.02191184350407183,
+      "share": 0.14455050387571255,
+      "klass": "story",
+      "cos_clean": 0.1243041435177652,
+      "linked": false,
+      "dist": 2,
+      "terms": [
+        [
+          "bionic",
+          false,
+          0.36868299791685316
+        ],
+        [
+          "parts",
+          false,
+          0.13183536403493346
+        ],
+        [
+          "x",
+          true,
+          0.11482367603316235
+        ],
+        [
+          "cyborg",
+          false,
+          0.09380145459410064
+        ],
+        [
+          "various",
+          false,
+          0.03659800346548411
+        ]
+      ]
+    },
+    {
+      "a": "Doom 2099",
+      "b": "Ogre",
+      "cos": 0.015701939509243666,
+      "name": 0.000819475984326801,
+      "habit": 0.0013681427387791372,
+      "other": 0.013514320786137728,
+      "share": 0.0521894753093641,
+      "klass": "story",
+      "cos_clean": 0.0815991498238121,
+      "linked": false,
+      "dist": null,
+      "terms": [
+        [
+          "techno",
+          false,
+          0.4190231329183391
+        ],
+        [
+          "blasters",
+          false,
+          0.08125904210837408
+        ],
+        [
+          "systems",
+          false,
+          0.07805334064990274
+        ],
+        [
+          "particle",
+          false,
+          0.07499690333546802
+        ],
+        [
+          "engineering",
+          false,
+          0.045697771966812024
+        ]
+      ]
+    },
+    {
+      "a": "Anole",
+      "b": "Shatterstar",
+      "cos": 0.024882507751415327,
+      "name": 0.0074914736156784815,
+      "habit": 0.003648199407868158,
+      "other": 0.013742834727868688,
+      "share": 0.30107389860060885,
+      "klass": "story",
+      "cos_clean": 0.1850120045521938,
+      "linked": false,
+      "dist": 3,
+      "terms": [
+        [
+          "x",
+          true,
+          0.18205002498090916
+        ],
+        [
+          "gay",
+          false,
+          0.08408931626642675
+        ],
+        [
+          "mutants",
+          false,
+          0.07371209433186174
+        ],
+        [
+          "sexual",
+          false,
+          0.058608878320153754
+        ],
+        [
+          "mutant",
+          false,
+          0.03504412131326916
+        ]
+      ]
+    }
+  ],
+  "neighbour_lists": {
+    "Storm": {
+      "names kept": [
+        {
+          "page": "Human Torch",
+          "cos": 0.32479349587801,
+          "linked": false
+        },
+        {
+          "page": "Black Panther",
+          "cos": 0.2649133476272814,
+          "linked": true
+        },
+        {
+          "page": "Cyclops",
+          "cos": 0.21028207732409032,
+          "linked": true
+        },
+        {
+          "page": "Jean Grey",
+          "cos": 0.1757270138169192,
+          "linked": true
+        },
+        {
+          "page": "Wolverine",
+          "cos": 0.1656241734069224,
+          "linked": true
+        }
+      ],
+      "names out": [
+        {
+          "page": "Jean Grey",
+          "cos": 0.4145982911852746,
+          "linked": true
+        },
+        {
+          "page": "She-Hulk",
+          "cos": 0.39300498871270434,
+          "linked": false
+        },
+        {
+          "page": "Emma Frost",
+          "cos": 0.37775650427762875,
+          "linked": true
+        },
+        {
+          "page": "Scarlet Witch",
+          "cos": 0.3649212704446878,
+          "linked": true
+        },
+        {
+          "page": "Black Widow (Natasha Romanova)",
+          "cos": 0.35667999370614034,
+          "linked": false
+        }
+      ],
+      "names and habit words out": [
+        {
+          "page": "Jean Grey",
+          "cos": 0.25376143233340487,
+          "linked": true
+        },
+        {
+          "page": "Cyclops",
+          "cos": 0.2359388682779824,
+          "linked": true
+        },
+        {
+          "page": "Emma Frost",
+          "cos": 0.22822020225027326,
+          "linked": true
+        },
+        {
+          "page": "Scarlet Witch",
+          "cos": 0.2247476222553907,
+          "linked": true
+        },
+        {
+          "page": "Black Panther",
+          "cos": 0.22077298268770798,
+          "linked": true
+        }
+      ]
+    },
+    "Wolverine": {
+      "names kept": [
+        {
+          "page": "Wolverine (Ultimate Marvel character)",
+          "cos": 0.6084424170431322,
+          "linked": true
+        },
+        {
+          "page": "Cyclops",
+          "cos": 0.2307614315609795,
+          "linked": true
+        },
+        {
+          "page": "Jean Grey",
+          "cos": 0.18370094447664181,
+          "linked": true
+        },
+        {
+          "page": "Storm",
+          "cos": 0.1656241734069224,
+          "linked": true
+        },
+        {
+          "page": "Jean Grey (X-Men film series)",
+          "cos": 0.15743972877922896,
+          "linked": false
+        }
+      ],
+      "names out": [
+        {
+          "page": "Deadpool",
+          "cos": 0.248484035252109,
+          "linked": true
+        },
+        {
+          "page": "Cyclops",
+          "cos": 0.24268397540587214,
+          "linked": true
+        },
+        {
+          "page": "Shang-Chi",
+          "cos": 0.23906842146401167,
+          "linked": false
+        },
+        {
+          "page": "Black Panther",
+          "cos": 0.23853967056162956,
+          "linked": false
+        },
+        {
+          "page": "Spider-Man",
+          "cos": 0.23794988822891408,
+          "linked": true
+        }
+      ],
+      "names and habit words out": [
+        {
+          "page": "Black Panther",
+          "cos": 0.20389602008405736,
+          "linked": false
+        },
+        {
+          "page": "Wolverine (Ultimate Marvel character)",
+          "cos": 0.2038015595765711,
+          "linked": true
+        },
+        {
+          "page": "Deadpool",
+          "cos": 0.19826572137660975,
+          "linked": true
+        },
+        {
+          "page": "Cyclops",
+          "cos": 0.19195972153990015,
+          "linked": true
+        },
+        {
+          "page": "Black Cat",
+          "cos": 0.18793274136549368,
+          "linked": true
+        }
+      ]
+    },
+    "Venom": {
+      "names kept": [
+        {
+          "page": "Eddie Brock",
+          "cos": 0.8668995579362151,
+          "linked": true
+        },
+        {
+          "page": "Anne Weying",
+          "cos": 0.5182543452848675,
+          "linked": true
+        },
+        {
+          "page": "Mania",
+          "cos": 0.50582717344232,
+          "linked": true
+        },
+        {
+          "page": "Hybrid (Scott Washington)",
+          "cos": 0.2745779575759453,
+          "linked": true
+        },
+        {
+          "page": "Spider-Man",
+          "cos": 0.24319527654318782,
+          "linked": true
+        }
+      ],
+      "names out": [
+        {
+          "page": "Eddie Brock",
+          "cos": 0.8522228378150191,
+          "linked": true
+        },
+        {
+          "page": "Mania",
+          "cos": 0.7912483800986662,
+          "linked": true
+        },
+        {
+          "page": "Hybrid (Scott Washington)",
+          "cos": 0.4869470528571597,
+          "linked": true
+        },
+        {
+          "page": "Anne Weying",
+          "cos": 0.3514894906163076,
+          "linked": true
+        },
+        {
+          "page": "Spider-Woman (Gwen Stacy)",
+          "cos": 0.2500944886116098,
+          "linked": true
+        }
+      ],
+      "names and habit words out": [
+        {
+          "page": "Eddie Brock",
+          "cos": 0.8577658345309206,
+          "linked": true
+        },
+        {
+          "page": "Mania",
+          "cos": 0.8084355677113267,
+          "linked": true
+        },
+        {
+          "page": "Hybrid (Scott Washington)",
+          "cos": 0.49666947441316184,
+          "linked": true
+        },
+        {
+          "page": "Anne Weying",
+          "cos": 0.3515846178575512,
+          "linked": true
+        },
+        {
+          "page": "Mayday Parker",
+          "cos": 0.2235651232144185,
+          "linked": true
+        }
+      ]
+    },
+    "Doctor Strange": {
+      "names kept": [
+        {
+          "page": "Jericho Drumm",
+          "cos": 0.18630319607065568,
+          "linked": true
+        },
+        {
+          "page": "Doctor Druid",
+          "cos": 0.1351101820078645,
+          "linked": true
+        },
+        {
+          "page": "Cloak and Dagger",
+          "cos": 0.09860732879574152,
+          "linked": true
+        },
+        {
+          "page": "Spider-Man",
+          "cos": 0.09856691418771893,
+          "linked": true
+        },
+        {
+          "page": "Man-Thing",
+          "cos": 0.08607165805851415,
+          "linked": true
+        }
+      ],
+      "names out": [
+        {
+          "page": "Scarlet Witch",
+          "cos": 0.23490437958292645,
+          "linked": true
+        },
+        {
+          "page": "Doctor Druid",
+          "cos": 0.22814041301497084,
+          "linked": true
+        },
+        {
+          "page": "Brian Braddock",
+          "cos": 0.22541808496068766,
+          "linked": false
+        },
+        {
+          "page": "Hercules",
+          "cos": 0.21841580572189354,
+          "linked": false
+        },
+        {
+          "page": "Gwenpool",
+          "cos": 0.2071352561555607,
+          "linked": true
+        }
+      ],
+      "names and habit words out": [
+        {
+          "page": "Doctor Druid",
+          "cos": 0.20584069314699355,
+          "linked": true
+        },
+        {
+          "page": "Scarlet Witch",
+          "cos": 0.1976565004735175,
+          "linked": true
+        },
+        {
+          "page": "Brian Braddock",
+          "cos": 0.16503133649628604,
+          "linked": false
+        },
+        {
+          "page": "Satana",
+          "cos": 0.16375156719546244,
+          "linked": true
+        },
+        {
+          "page": "Hercules",
+          "cos": 0.15915712995635384,
+          "linked": false
+        }
+      ]
+    },
+    "Black Widow (Natasha Romanova)": {
+      "names kept": [
+        {
+          "page": "Yelena Belova",
+          "cos": 0.32836619643699105,
+          "linked": true
+        },
+        {
+          "page": "Red Guardian",
+          "cos": 0.18522343332182434,
+          "linked": true
+        },
+        {
+          "page": "Iron Man (Ultimate Marvel character)",
+          "cos": 0.10199233011636036,
+          "linked": true
+        },
+        {
+          "page": "Ursa Major",
+          "cos": 0.09595259399533035,
+          "linked": true
+        },
+        {
+          "page": "She-Hulk",
+          "cos": 0.09595130947902886,
+          "linked": false
+        }
+      ],
+      "names out": [
+        {
+          "page": "She-Hulk",
+          "cos": 0.4494497210279983,
+          "linked": false
+        },
+        {
+          "page": "Spider-Woman (Jessica Drew)",
+          "cos": 0.39066470510490436,
+          "linked": true
+        },
+        {
+          "page": "Jean Grey",
+          "cos": 0.3789842319411484,
+          "linked": false
+        },
+        {
+          "page": "Storm",
+          "cos": 0.35667999370614034,
+          "linked": false
+        },
+        {
+          "page": "Emma Frost",
+          "cos": 0.3409296555181193,
+          "linked": false
+        }
+      ],
+      "names and habit words out": [
+        {
+          "page": "Luke Cage",
+          "cos": 0.2276439995884448,
+          "linked": false
+        },
+        {
+          "page": "Spider-Woman (Jessica Drew)",
+          "cos": 0.19953667736267358,
+          "linked": true
+        },
+        {
+          "page": "Shang-Chi",
+          "cos": 0.19109204726085383,
+          "linked": false
+        },
+        {
+          "page": "Wolverine",
+          "cos": 0.1853750167545365,
+          "linked": true
+        },
+        {
+          "page": "Storm",
+          "cos": 0.18235793907298914,
+          "linked": false
+        }
+      ]
+    }
+  },
+  "story_twins": [
+    {
+      "a": "Blue Eagle",
+      "b": "Red Raven",
+      "cos_clean": 0.22934926893290467,
+      "cos_kept": 0.02492892902499151,
+      "dist": 4,
+      "same_community": false,
+      "terms": [
+        "wings",
+        "artificial",
+        "winged",
+        "gravity",
+        "airplane",
+        "flying"
+      ]
+    },
+    {
+      "a": "Anole",
+      "b": "Living Lightning",
+      "cos_clean": 0.22663630651399824,
+      "cos_kept": 0.04632432065281156,
+      "dist": 3,
+      "same_community": false,
+      "terms": [
+        "gay",
+        "sexuality",
+        "lesbian",
+        "school",
+        "unhappy",
+        "student"
+      ]
+    },
+    {
+      "a": "Blackthorn",
+      "b": "Scaredycat",
+      "cos_clean": 0.20815376068831903,
+      "cos_kept": 0.3089224321003764,
+      "dist": null,
+      "same_community": null,
+      "terms": [
+        "recipients",
+        "organism",
+        "effect",
+        "metabolism",
+        "panic",
+        "superiors"
+      ]
+    },
+    {
+      "a": "Garrison Kane",
+      "b": "Yo-Yo Rodriguez",
+      "cos_clean": 0.19035007904335674,
+      "cos_kept": 0.032884379507299485,
+      "dist": null,
+      "same_community": null,
+      "terms": [
+        "arms",
+        "bionic",
+        "weapon",
+        "gained",
+        "firearms",
+        "spot"
+      ]
+    },
+    {
+      "a": "Morbius",
+      "b": "Union Jack",
+      "cos_clean": 0.18885077435740588,
+      "cos_kept": 0.027155502732316514,
+      "dist": 3,
+      "same_community": false,
+      "terms": [
+        "blood",
+        "vampire",
+        "vampiric",
+        "cure",
+        "featured",
+        "condition"
+      ]
+    },
+    {
+      "a": "Anole",
+      "b": "Shatterstar",
+      "cos_clean": 0.1850120045521938,
+      "cos_kept": 0.024882507751415327,
+      "dist": 3,
+      "same_community": true,
+      "terms": [
+        "gay",
+        "mutants",
+        "sexual",
+        "mutant",
+        "sexuality",
+        "orientation"
+      ]
+    },
+    {
+      "a": "Morbius",
+      "b": "Union Jack (Joseph Chapman)",
+      "cos_clean": 0.18006786048998488,
+      "cos_kept": 0.029213624339593323,
+      "dist": 3,
+      "same_community": false,
+      "terms": [
+        "blood",
+        "vampire",
+        "vampires",
+        "vampiric",
+        "vampirism",
+        "featured"
+      ]
+    },
+    {
+      "a": "Scarlet Witch",
+      "b": "Shatterstar",
+      "cos_clean": 0.1783355947823435,
+      "cos_kept": 0.020559391926938703,
+      "dist": 3,
+      "same_community": false,
+      "terms": [
+        "mutants",
+        "mutant",
+        "relationship",
+        "magic",
+        "energies",
+        "memories"
+      ]
+    },
+    {
+      "a": "Eddie Brock",
+      "b": "The Union (Marvel)",
+      "cos_clean": 0.1719766130473245,
+      "cos_kept": 0.034910281676433536,
+      "dist": 3,
+      "same_community": false,
+      "terms": [
+        "symbiote",
+        "criminal",
+        "sonic",
+        "government",
+        "suit",
+        "bond"
+      ]
+    },
+    {
+      "a": "Jean Grey",
+      "b": "Mockingbird",
+      "cos_clean": 0.17092604452806626,
+      "cos_kept": 0.03606035035078595,
+      "dist": 3,
+      "same_community": false,
+      "terms": [
+        "relationship",
+        "conclusion",
+        "love",
+        "plot",
+        "writing",
+        "present"
+      ]
+    },
+    {
+      "a": "The Union (Marvel)",
+      "b": "Venom",
+      "cos_clean": 0.16876929345965422,
+      "cos_kept": 0.03786237136414419,
+      "dist": 3,
+      "same_community": false,
+      "terms": [
+        "symbiote",
+        "suit",
+        "sonic",
+        "government",
+        "bond",
+        "blood"
+      ]
+    },
+    {
+      "a": "Cloak and Dagger",
+      "b": "Starhawk",
+      "cos_clean": 0.16814058055170808,
+      "cos_kept": 0.016996982565380066,
+      "dist": 3,
+      "same_community": false,
+      "terms": [
+        "light",
+        "mutants",
+        "constructs",
+        "battled",
+        "darkness",
+        "faction"
+      ]
+    },
+    {
+      "a": "Kid Colt",
+      "b": "Solomon Kane",
+      "cos_clean": 0.16732672199470955,
+      "cos_kept": 0.024891332736674265,
+      "dist": 4,
+      "same_community": true,
+      "terms": [
+        "horse",
+        "featured",
+        "reprints",
+        "publishing",
+        "traveling",
+        "format"
+      ]
+    },
+    {
+      "a": "Deathlok",
+      "b": "Garrison Kane",
+      "cos_clean": 0.16541887505954644,
+      "cos_kept": 0.0329553038442419,
+      "dist": 3,
+      "same_community": false,
+      "terms": [
+        "cyborg",
+        "cybernetic",
+        "parts",
+        "metal",
+        "weapon",
+        "packaged"
+      ]
+    },
+    {
+      "a": "Frog-Man",
+      "b": "Turbo",
+      "cos_clean": 0.16501966989272573,
+      "cos_kept": 0.025251910155639008,
+      "dist": 3,
+      "same_community": false,
+      "terms": [
+        "suit",
+        "wearer",
+        "criminal",
+        "college",
+        "punch",
+        "arch"
+      ]
+    },
+    {
+      "a": "Guardsman",
+      "b": "Turbo",
+      "cos_clean": 0.1647665714420045,
+      "cos_kept": 0.03562456935238706,
+      "dist": 3,
+      "same_community": false,
+      "terms": [
+        "armor",
+        "suit",
+        "wearer",
+        "circuitry",
+        "cybernetic",
+        "disperse"
+      ]
+    },
+    {
+      "a": "Franklin Richards",
+      "b": "Mayday Parker",
+      "cos_clean": 0.16440631413484766,
+      "cos_kept": 0.03277536098156257,
+      "dist": 3,
+      "same_community": false,
+      "terms": [
+        "baby",
+        "family",
+        "parents",
+        "grandfather",
+        "younger",
+        "normal"
+      ]
+    },
+    {
+      "a": "Turbo",
+      "b": "War Machine",
+      "cos_clean": 0.1640247459122221,
+      "cos_kept": 0.028736703689984232,
+      "dist": 3,
+      "same_community": false,
+      "terms": [
+        "armor",
+        "cybernetic",
+        "suit",
+        "press",
+        "heavy",
+        "built"
+      ]
+    },
+    {
+      "a": "Gremlin",
+      "b": "Guardsman",
+      "cos_clean": 0.16059674203958307,
+      "cos_kept": 0.02361491750076972,
+      "dist": 3,
+      "same_community": false,
+      "terms": [
+        "armor",
+        "rays",
+        "controlling",
+        "armored",
+        "explode",
+        "worked"
+      ]
+    },
+    {
+      "a": "Force",
+      "b": "Guardian",
+      "cos_clean": 0.15959717101323773,
+      "cos_kept": 0.054153875056030476,
+      "dist": 4,
+      "same_community": false,
+      "terms": [
+        "suit",
+        "prototype",
+        "field",
+        "incorporating",
+        "professional",
+        "protective"
+      ]
+    },
+    {
+      "a": "Raza Longknife",
+      "b": "Venom",
+      "cos_clean": 0.15899654374496605,
+      "cos_kept": 0.028566535579898883,
+      "dist": 3,
+      "same_community": false,
+      "terms": [
+        "symbiote",
+        "host",
+        "alien",
+        "offs",
+        "contains",
+        "spin"
+      ]
+    },
+    {
+      "a": "Ares",
+      "b": "Beta Ray Bill",
+      "cos_clean": 0.1580146660775392,
+      "cos_kept": 0.024373346995660333,
+      "dist": 3,
+      "same_community": true,
+      "terms": [
+        "gods",
+        "god",
+        "sword",
+        "struck",
+        "race",
+        "worthiness"
+      ]
+    },
+    {
+      "a": "Anole",
+      "b": "Flatman",
+      "cos_clean": 0.15742485175528567,
+      "cos_kept": 0.026684586710741337,
+      "dist": 3,
+      "same_community": false,
+      "terms": [
+        "gay",
+        "sexuality",
+        "mutants",
+        "sucked",
+        "lesbian",
+        "message"
+      ]
+    },
+    {
+      "a": "Mania",
+      "b": "The Union (Marvel)",
+      "cos_clean": 0.1572936301311265,
+      "cos_kept": 0.05214520684960479,
+      "dist": 4,
+      "same_community": false,
+      "terms": [
+        "symbiote",
+        "suit",
+        "interrupted",
+        "hair",
+        "voice",
+        "leaving"
+      ]
+    },
+    {
+      "a": "Coldblood",
+      "b": "Garrison Kane",
+      "cos_clean": 0.15720453712433857,
+      "cos_kept": 0.03436839159708046,
+      "dist": 3,
+      "same_community": false,
+      "terms": [
+        "cybernetic",
+        "cyborg",
+        "organic",
+        "arms",
+        "holograms",
+        "synthetic"
+      ]
+    },
+    {
+      "a": "Miracleman",
+      "b": "Shang-Chi",
+      "cos_clean": 0.15712215135060711,
+      "cos_kept": 0.012857447524836871,
+      "dist": null,
+      "same_community": null,
+      "terms": [
+        "strip",
+        "revival",
+        "rights",
+        "monthly",
+        "ten",
+        "creators"
+      ]
+    },
+    {
+      "a": "Genis-Vell",
+      "b": "Jean Grey",
+      "cos_clean": 0.15597130858837993,
+      "cos_kept": 0.019859710283495254,
+      "dist": 3,
+      "same_community": false,
+      "terms": [
+        "cosmic",
+        "telepathic",
+        "entity",
+        "present",
+        "timeline",
+        "relationship"
+      ]
+    },
+    {
+      "a": "Eddie Brock",
+      "b": "Raza Longknife",
+      "cos_clean": 0.1556336432694639,
+      "cos_kept": 0.023457189336056804,
+      "dist": 3,
+      "same_community": false,
+      "terms": [
+        "symbiote",
+        "host",
+        "alien",
+        "environments",
+        "patience",
+        "repeatedly"
+      ]
+    },
+    {
+      "a": "Backhand",
+      "b": "Blackthorn",
+      "cos_clean": 0.15401097699474836,
+      "cos_kept": 0.34272209415643756,
+      "dist": null,
+      "same_community": null,
+      "terms": [
+        "effect",
+        "generation",
+        "hailed",
+        "inescapable",
+        "criteria",
+        "undergo"
+      ]
+    },
+    {
+      "a": "Darkhawk",
+      "b": "Zombie",
+      "cos_clean": 0.15244216956417556,
+      "cos_kept": 0.04235859905545324,
+      "dist": 3,
+      "same_community": false,
+      "terms": [
+        "amulet",
+        "thereafter",
+        "co",
+        "transform",
+        "standalone",
+        "head"
+      ]
+    }
+  ],
+  "twins_universe": {
+    "pairs_long_enough": 37128,
+    "unlinked_and_far": 22738
+  },
+  "louvain": {
+    "modularity": 0.3888295156447398,
+    "communities": 8,
+    "sizes": [
+      45,
+      43,
+      41,
+      36,
+      34,
+      31,
+      31,
+      16
+    ],
+    "networkx": "3.7"
+  },
+  "baseline": {
+    "link_density": 0.03134220706838896,
+    "undirected_links": 1434,
+    "pairs": 45753,
+    "same_community_chance": 0.13273990277470057
+  }
+}

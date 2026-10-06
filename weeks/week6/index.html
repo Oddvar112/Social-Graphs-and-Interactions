@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Week 6: A surname is not a story</title>
+<link rel="icon" type="image/svg+xml" href="../../assets/favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="../../assets/favicon-32.png">
+<link rel="apple-touch-icon" href="../../assets/apple-touch-icon.png">
+<meta name="description" content="TF-IDF put Storm next to the Human Torch because of a surname. We split every cosine similarity exactly into names, habit words and everything else: 99 percent of the strongest lookalikes are names, story lookalikes are as unlinked as two random pages, a dial that turns the names out of any character's lookalike list, and a game of Taboo against the cosine.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bangers&family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../assets/site.css">
+<style>.nolink{color:#ff4b50;font-weight:800}
+.playlink{display:inline-flex;align-items:center;gap:10px;margin:2px 0 8px;padding:11px 24px;border-radius:12px;background:var(--red);color:#fff;font-weight:800;font-size:15px;box-shadow:0 4px 0 #6b0d10;text-decoration:none}
+.playlink:hover{background:var(--red2);text-decoration:none;transform:translateY(-1px)}
+.playlink small{font-weight:600;font-size:12px;opacity:.85}
+.post .explorable.dial iframe{height:1000px}   /* fallback; the dial reports its real height */
+@media(max-width:900px){.post .explorable.dial iframe{height:1900px}}</style>
+</head>
+<body>
+
+<header class="topbar">
+  <div class="wrap">
+    <a href="../../index.html" class="logo comic">CAPES &amp; EDGES</a>
+    <nav>
+      <a href="../week1/">Week 1</a>
+      <a href="../week2/">Week 2</a>
+      <a href="../week3/">Week 3</a>
+      <a href="../week4/">Week 4</a>
+      <a href="../week5/">Week 5</a>
+      <a href="index.html" class="on">Week 6</a>
+      <a href="https://github.com/Oddvar112/Social-Graphs-and-Interactions">Code</a>
+    </nav>
+  </div>
+</header>
+
+<section class="playfirst">
+  <div class="wrap">
+    <a class="playcard" href="taboo/index.html">
+      <div class="lbl">Week 6 &middot; play it before you read it</div>
+      <h3 class="comic">TABOO-IDF</h3>
+      <p>A secret Marvel character. You describe them one word at a time; after every word a cosine-similarity machine ranks
+      all 303 Wikipedia pages against your words, and you win when yours is first. <em>Names are taboo</em>: say one and
+      it is a strike. Switch names back on and watch the game collapse into one word.</p>
+      <span class="cta">Play it</span>
+    </a>
+  </div>
+</section>
+
+<main class="wrap post">
+
+  <div class="kicker">Week 6 &middot; From counts to meaning</div>
+  <h1>A surname is not a story.<br>99 percent of the strongest lookalikes are names.</h1>
+  <p class="lede">This week's lookalikes explorable put Storm next to the Human Torch, under TF-IDF, because Johnny Storm has her surname. The course
+  left us with an opener: <em>find a way to tell name-driven matches from story-driven ones across the whole corpus, and
+  show what the lookalikes look like once the names are handled.</em> A cosine similarity is a sum with one term per word,
+  so it can be split exactly, and that is the whole method: how much of a pair's cosine comes from names, how much from
+  the habits of Wikipedia, how much from what the pages actually say. Of the 506 pairs of pages with a cosine of 0.1 or more,
+  99.2 percent are held together by names. Take the names out and the network stops agreeing with the text, for a reason
+  that is almost embarrassing: a link is a name. What remains are lookalikes that are linked no more often than two
+  random pages, which is the interesting part. Then we made it playable: a game of Taboo against the cosine, and a dial that turns the names out of any lookalike list.</p>
+  <p class="byline">Oddvar, David and Milena &middot; 6 October 2026 &middot; text: the course's frozen week 5 release,
+  303 pages &middot; links: the week 1 snapshot, 1784 directed links (1434 undirected)</p>
+
+  <div class="tldr">
+    <span class="lbl">THE SHORT VERSION</span>
+    <ul>
+      <li><b>The split is exact.</b> With unit-length TF-IDF vectors, cos(a, b) is a sum over words of u<sub>w</sub>v<sub>w</sub>.
+      Call each word a name, a habit word (a stopword, or a word on a third of all pages) or neither, and the cosine is
+      names + habits + other, to the last decimal. The largest part gives the verdict: NAME, HABIT or STORY.</li>
+      <li><b>Lookalike lists are name lists.</b> Of the 2,242 distinct pairs in anyone's ten nearest neighbours, 2,000
+      (89 percent) are NAME, 149 STORY, 93 HABIT. Of the 500 highest cosines in the corpus, 496 are NAME. Names are the
+      rarest words, TF-IDF rewards rarity, and so a surname is the strongest possible signal.</li>
+      <li><b>Names are how text finds the network.</b> Ten TF-IDF neighbours include 4.0 linked pages on average; with the
+      names removed, 2.0 (ten random pages: 0.3). Of the 1,479 links whose target has a usable name, 84 percent are a page naming the page it links to.</li>
+      <li><b>What is left is a different map.</b> Pairs whose lookalike score is story words are linked 4.1 percent of the
+      time and share a Louvain community 13.7 percent of the time. Two random pages: 3.1 and 13.3. Anole and Shatterstar,
+      Blue Eagle and Red Raven, Morbius and Union Jack: same story, no path shorter than three.</li>
+      <li><b>Remove only the names and the pronouns win.</b> <em>her</em> or <em>she</em> is the top shared word in 28
+      percent of the lookalike pairs, a pattern that the course page warns about for GloVe and that TF-IDF has too.</li>
+      <li><b>We read 45 pairs.</b> The rule agrees with the reading on 36 of 41 clear cases; three of the five misses sit
+      at a name share of 48 to 49 percent and two are <em>drew</em>, a verb on one page and Jessica Drew's surname on the other.</li>
+      <li><b>TABOO-IDF, the game.</b> Describe a character one word at a time while a cosine machine ranks all 303 pages. With names allowed the best single word is a name for 212 of 216 characters and wins by 15 times the margin; with names banned you have to know the page.</li>
+      <li><b>THE NAME DIAL, the explorable.</b> Two sliders, names and habit words, from 100 to 0, re-rank any page's lookalikes live, with the agreement with the network measured as you drag. It is in the page, below.</li>
+    </ul>
+  </div>
+
+  <h2><span class="num">&nbsp;</span>What we asked</h2>
+  <ol>
+    <li><b>Which words are names?</b> A rule we can state, apply to the whole corpus, and audit.</li>
+    <li><b>How much of the text-network agreement is names?</b> The lookalikes explorable's 4.0 neighbours out of ten, with and without them.</li>
+    <li><b>Can a cosine be split into name-driven and story-driven?</b> Exactly, for every pair, with a verdict we test against pairs we read.</li>
+    <li><b>What do lookalikes look like once the names are handled?</b> Neighbour lists, and the pairs that are close in text and far in the network.</li>
+    <li><b>Can you feel the difference?</b> A game and an explorable that put the split in your hands.</li>
+  </ol>
+
+  <h2><span class="num">I.</span>Which words are names?</h2>
+  <p class="drop">The course page's own recipe for removing names (§3, topic models) is: a word that is capitalised in
+  most of its uses is a name. We used it, with two changes, and we stated them before computing a single similarity,
+  as the exercises ask. Tokens are letters-only, lowercased (736,658 of them, 25,254 types; this is a regular
+  expression, not week 5's spaCy, so apostrophes split <em>don't</em> into two tokens and the counts differ a little
+  from last week's 718,552 and 25,138).</p>
+
+  <ul>
+    <li><b>Sentence starts do not count.</b> The course rule, applied literally, calls 389 words names only because
+    they open sentences: <em>during, however, fictional, young, publication, references, external, despite, video</em>.
+    We count capitalisation only in the middle of a sentence, and a word never seen there is not a name.</li>
+    <li><b>Page titles do count.</b> A word in the title of any of the 303 pages is somebody's name even when it is also
+    a word: <em>Ruby</em> Summers, <em>Merc</em>, <em>Witness</em>, <em>Power</em> Man. We add it if at least a fifth of its
+    mid-sentence uses are capitalised (or it is too rare to tell); <em>time, two, father, space, brain</em> are in titles
+    too and nobody capitalises them on sight, so they stay words. NLTK's stopwords are never names.</li>
+  </ul>
+
+  <p>That makes 8,651 name types: 8,288 by capitalisation alone, 345 by both, 18 by title alone. A third of the
+  vocabulary, and 21.0 percent of all tokens. A second class we call <b>habit words</b>: the NLTK stopwords and every
+  word found on at least a third of the 303 pages (101 or more). That adds 232 words that no English stopword list has
+  heard of and every Wikipedia article about a comic character contains: <em>character, series, appears, issue, voiced,
+  playable, list, incarnation</em>. The function words of English and the function words of Wikipedia.</p>
+
+  <h2><span class="num">II.</span>Names are how text finds the network</h2>
+  <p>The lookalikes explorable asked: of a page's ten nearest neighbours by text, how many are linked to it in the
+  network? We recomputed the course's numbers first, as a check on our pipeline, and then removed things.</p>
+
+  <figure>
+    <img src="../../assets/figures/week6_names.png" alt="Left: horizontal bars of how many of a page's ten nearest neighbours are linked to it. TF-IDF 4.02, TF-IDF with names out 1.99, with names and stopwords out 2.25, with names and habit words out 2.28, counts with stopwords out 2.81, raw counts 1.86, ten random pages 0.32. Right: log-log scatter of 2,242 lookalike pairs, cosine with names kept against cosine with names and habit words removed; most NAME points in gold lie below the diagonal and STORY points in cyan lie above it.">
+    <figcaption>Left: network agreement of the ten nearest neighbours under each representation. The first three
+    bars reproduce the course page (1.9, 2.8, 4.0). Right: every lookalike pair, with its names (x) and without them (y).
+    Gold pairs lose almost everything; cyan ones gain.</figcaption>
+  </figure>
+
+  <p>Raw counts give 1.86 linked neighbours out of ten, stopwords removed 2.81, TF-IDF 4.02: the course page's 1.9,
+  2.8 and 4.0, to the decimal, so the pipeline is the same one. Take the names out of TF-IDF and the agreement falls to
+  1.99, below the stopword-removed counts that the course called the blunt fix. Take the habit words out too and it is
+  2.28. Ten random pages: 0.32. So what is left after removing names is real (seven times chance) and is less than half
+  of what TF-IDF reported.</p>
+
+  <p>The reason is not subtle once it is said. A link from A to B exists because A's page contains B's name, in a
+  sentence or an infobox. Of the 1,784 links, 1,479 have a target with a usable name (not shared with another page);
+  on 1,242 of them, 84 percent, the source page contains that name. Names are the text's own copy of the network, and
+  TF-IDF, which prizes rare words, finds them first. That does not make the agreement fake. It means the text and the
+  network are not two independent witnesses, and "text confirms the network" is mostly "the network was written as text".</p>
+
+  <h2><span class="num">III.</span>Splitting a cosine</h2>
+  <p>With <i>u = a / |a|</i> and <i>v = b / |b|</i>, cos(a, b) = &Sigma;<sub>w</sub> u<sub>w</sub>v<sub>w</sub>. One term
+  per word. Every word is a name, a habit word or neither, so the sum splits in three, exactly:</p>
+  <blockquote>cos(a, b) = <span style="color:#ffc93f">names</span> + <span style="color:#a678ff">habit words</span> +
+  <span style="color:#5fe3ff">other words</span>.</blockquote>
+  <p>The verdict is a rule on the three numbers, and nothing is learned: <b>NAME</b> if the names part is at least half
+  of the cosine; otherwise <b>HABIT</b> if the habit part is at least as big as the other words' part; otherwise
+  <b>STORY</b>. The parts add up to the number the course's lookalikes explorable already shows, so there is nothing to tune and nothing to
+  trust: the arithmetic is the explanation.</p>
+
+  <figure>
+    <img src="../../assets/figures/week6_split.png" alt="Horizontal stacked bars, one per pair, showing percent of the cosine from names in gold, habit words in purple and other words in cyan, sorted from most name-driven at the top. Emma Frost and Jack Frost 98 percent names; Jessica Jones and Spider-Woman (Jessica Drew) 93; Storm and Human Torch 92; Shear and Toxyn 91; Anne Weying and Turbo 86; Eddie Brock and Venom 82; down to Garrison Kane and Raza Longknife 14 percent names and 84 other words, Doom 2099 and Ogre mostly other words, and She-Hulk and Toxyn 72 percent habit words. Right column: the cosine before and after removing names and habit words.">
+    <figcaption>Fifteen pairs, each cosine split into its three parts, with the cosine before and after names and habit
+    words are removed on the right. The dotted line is the NAME threshold.</figcaption>
+  </figure>
+
+  <p>Storm and the Human Torch: cosine 0.325, 92 percent of it the word <em>storm</em>; without names and habit words
+  0.113. Emma Frost and Jack Frost, 0.463 and 98 percent <em>frost</em>: a surname shared by two strangers, 0.050 once
+  it is gone. Anne Weying and Turbo, 86 percent <em>brock</em>: Eddie Brock's ex-wife, and a Brock Jones who put on a stranger's
+  armour. Eddie Brock and Venom are 82 percent names and still 0.867 &rarr; 0.858, because they are the same character
+  and the names are the story: a split tells you what a match is made of, not whether it is a good match. Mania and Venom
+  go from 0.506 to 0.808 when the names go, and Blade and Morbius from 0.167 to 0.492: vampires. At the bottom,
+  Garrison Kane and Raza Longknife are 84 percent <em>bionic, parts, cyborg</em>, and She-Hulk and Toxyn are 72 percent
+  <em>she</em> and <em>her</em>, which is why HABIT exists.</p>
+
+  <p><b>Across the whole corpus.</b> Of all 45,753 pairs of pages, the median cosine is 0.009 and the 99th percentile
+  0.108. The 506 pairs at or above 0.1 are 99.2 percent NAME and the 1,435 at or above 0.05 are 90 percent. Other kinds of
+  match only show up further down: of the 7,549 pairs at or above 0.02, 58 percent are NAME, 26 percent STORY and
+  16 percent HABIT. Over everything, 22 percent of pairs are NAME, 26 percent HABIT and 51 percent STORY, because most
+  pairs have almost nothing in common and what little they share is not a name. A lookalike list is made of the top of
+  that distribution, and the top of the distribution is names.</p>
+
+  <p>In the ten-nearest-neighbour lists, 2,000 of 2,242 pairs are NAME, and the names come in three kinds. For the name
+  that carries the most of each pair's cosine we asked whether it is part of one of the two pages' own titles (1,230
+  pairs, 62 percent: <em>Ghost Rider, Ghost Rider (Johnny Blaze)</em>, Wikipedia calling two articles by one name),
+  somebody else's name on the roster (249, 12 percent: Cyclops on a page about Jean Grey), or a team, a publisher, a
+  creator or a place (521, 26 percent: <em>Morituri, Timely, Ditko</em>). Name-driven pairs are also the ones that are
+  linked: 37.6 percent of them, against 3.1 for any two pages, 11.4 for STORY and 15.1 for HABIT. Names are what the
+  network can see.</p>
+
+  <h3>Did the rule get it right?</h3>
+  <p>We drew 45 of the 2,242 pairs at random, nine from each of five name-share bins, and read them: the shared words
+  and a sentence from each page. We labelled each N (carried by names), S (story), H (habit) or M (mixed), without
+  looking at the rule's verdict first. The file is <code>data/week6_pair_audit.tsv</code>; the analysis reads it back
+  and recomputes the rule on every row. Of 45, we call 32 N, 4 S, 5 H and 4 M. On the 41 clear cases the rule agrees on
+  36. The five disagreements:</p>
+  <ul>
+    <li>Three are on the line: She-Hulk and Vance Astrovik (name share 49 percent: the shared words are Jennifer Walters,
+    She-Hulk's real name), Rockman and The Witness (48), Nightmask and Spider-Man (49: Ditko, creator, and Star Brand).
+    A hard cut at one half puts some pairs on the wrong side.</li>
+    <li>Two are <em>drew</em>: NFL SuperPro and Miracleman each pair with Spider-Woman (Jessica Drew) because <em>drew</em>
+    is a verb on their pages (<em>issue 6 &hellip; drew substantial complaints from Hopi representatives</em>; <em>Anglo
+    initially wrote and drew the strips himself</em>) and a surname on hers. Our rule counts it as a name on both sides, since it is in a title, and the other shared words keep
+    the name share under one half. A model of names that tells a surname from a verb needs the sentence, not the
+    word.</li>
+  </ul>
+  <p>All 45 are small, and the sample is stratified by name share, which is why 32 are N. It tells us the rule is
+  roughly right and wrong in the places we can name; it does not give a precision to two decimals.</p>
+
+  <h2><span class="num">IV.</span>What the lookalikes look like without the names</h2>
+  <p>Four characters, their four nearest pages three ways. A red &times; marks a page that is not linked to the character
+  in the network.</p>
+
+  <div class="tablewrap">
+    <table>
+      <thead><tr><th>Character</th><th>Names kept</th><th>Names out</th><th>Names and habit words out</th></tr></thead>
+      <tbody>
+        <tr><td><strong>Storm</strong></td><td>Human Torch <b class="nolink">&times;</b>, Black Panther, Cyclops, Jean Grey</td><td>Jean Grey, She-Hulk <b class="nolink">&times;</b>, Emma Frost, Scarlet Witch</td><td>Jean Grey, Cyclops, Emma Frost, Scarlet Witch</td></tr>
+        <tr><td><strong>Wolverine</strong></td><td>Wolverine (Ultimate Marvel character), Cyclops, Jean Grey, Storm</td><td>Deadpool, Cyclops, Shang-Chi <b class="nolink">&times;</b>, Black Panther <b class="nolink">&times;</b></td><td>Black Panther <b class="nolink">&times;</b>, Wolverine (Ultimate Marvel character), Deadpool, Cyclops</td></tr>
+        <tr><td><strong>Doctor Strange</strong></td><td>Jericho Drumm, Doctor Druid, Cloak and Dagger, Spider-Man</td><td>Scarlet Witch, Doctor Druid, Brian Braddock <b class="nolink">&times;</b>, Hercules <b class="nolink">&times;</b></td><td>Doctor Druid, Scarlet Witch, Brian Braddock <b class="nolink">&times;</b>, Satana</td></tr>
+        <tr><td><strong>Black Widow</strong></td><td>Yelena Belova, Red Guardian, Iron Man (Ultimate Marvel character), Ursa Major</td><td>She-Hulk <b class="nolink">&times;</b>, Spider-Woman (Jessica Drew), Jean Grey <b class="nolink">&times;</b>, Storm <b class="nolink">&times;</b></td><td>Luke Cage <b class="nolink">&times;</b>, Spider-Woman (Jessica Drew), Shang-Chi <b class="nolink">&times;</b>, Wolverine</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <p>Storm's closest page was the Human Torch, unlinked, on one word. With the names out her list is Jean Grey, She-Hulk,
+  Emma Frost, Scarlet Witch, and the second page is a pronoun accident: <em>she</em> and <em>her</em> are the top shared
+  word in 771 of the 2,728 distinct pairs in the names-out lists, 28 percent. This is the course page's own warning
+  about GloVe (<em>the home end is almost all women, pulled there mostly by the words her and she</em>) turning up one
+  level earlier, in a cosine that never saw a word vector. It is why habit words are a class of their own. Remove them
+  as well and Storm's list is Jean Grey, Cyclops, Emma Frost, Scarlet Witch and Black Panther: all five linked. Wolverine's list loses the Ultimate Wolverine (a name, written twice) and gains
+  Black Panther and Shang-Chi, which no link supports, and Doctor Strange's gains Brian Braddock and Hercules.
+  For these four, the names-kept lists are mostly the franchise and the namesakes; the names-out lists are people who do similar things.</p>
+
+  <h3>Close in text, far in the network</h3>
+  <p>Among pages of at least 500 words, there are 37,128 pairs. 22,738 of them are not linked and at least three steps apart or
+  not connected at all. Rank those by cosine with names and habit words removed, and read the top. The first pair
+  below, Blackthorn and Scaredycat, was already a lookalike with names kept (0.31), because the Morituri are named; the
+  other seven were not (0.03 to 0.05).</p>
+
+  <div class="tablewrap">
+    <table>
+      <thead><tr><th>Pair</th><th>Shared words</th><th class="num">Cosine kept &rarr; clean</th><th class="num">Steps apart</th><th>What the pages say</th></tr></thead>
+      <tbody>
+        <tr><td><strong>Blue Eagle</strong> &harr; <strong>Red Raven</strong></td><td>wings, artificial, winged, gravity, airplane</td><td class="num">0.025 &rarr; 0.23</td><td class="num">4</td><td>Two Golden Age heroes who fly on artificial wings.</td></tr>
+        <tr><td><strong>Anole</strong> &harr; <strong>Living Lightning</strong></td><td>gay, sexuality, lesbian, school, unhappy</td><td class="num">0.046 &rarr; 0.23</td><td class="num">3</td><td>Both pages are partly about the character coming out as gay.</td></tr>
+        <tr><td><strong>Garrison Kane</strong> &harr; <strong>Yo-Yo Rodriguez</strong></td><td>arms, bionic, weapon, gained, firearms</td><td class="num">0.033 &rarr; 0.19</td><td class="num">no path</td><td>Both lose their arms and are given bionic ones.</td></tr>
+        <tr><td><strong>Guardsman</strong> &harr; <strong>Turbo</strong></td><td>armor, suit, wearer, circuitry, cybernetic</td><td class="num">0.036 &rarr; 0.16</td><td class="num">3</td><td>Each is a suit of armour and the person inside it.</td></tr>
+        <tr><td><strong>Morbius</strong> &harr; <strong>Union Jack (Joseph Chapman)</strong></td><td>blood, vampire, vampires, vampiric, vampirism</td><td class="num">0.029 &rarr; 0.18</td><td class="num">3</td><td>Morbius is a living vampire; Chapman spent a stretch hunting them.</td></tr>
+        <tr><td><strong>The Union (Marvel)</strong> &harr; <strong>Venom</strong></td><td>symbiote, suit, sonic, government, bond</td><td class="num">0.038 &rarr; 0.17</td><td class="num">3</td><td>A team whose suits are made from the symbiote, and the symbiote.</td></tr>
+        <tr><td><strong>Deathlok</strong> &harr; <strong>Garrison Kane</strong></td><td>cyborg, cybernetic, parts, metal, weapon</td><td class="num">0.033 &rarr; 0.17</td><td class="num">3</td><td>Two cyborgs: a dead man reanimated with technology, and a Weapon X soldier.</td></tr>
+        <tr><td><strong>Blackthorn</strong> &harr; <strong>Scaredycat</strong></td><td>recipients, organism, effect, metabolism, panic</td><td class="num">0.309 &rarr; 0.21</td><td class="num">no path</td><td>The Morituri process, on both pages. The names were not hiding anything here.</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <p>Every pair above was checked against the text: Blue Eagle and Red Raven really are both on artificial wings, Anole
+  and Living Lightning really are both a page about coming out, Kane and Yo-Yo Rodriguez both lose their arms. None of
+  them is linked, none is within two steps, and most are in different communities. We measured the whole
+  population of such pairs. Of the 2,520 distinct pairs in anyone's ten nearest neighbours once names and habit words are
+  removed, 1,398 are STORY, and they are linked 4.1 percent of the time and share a Louvain community 13.7 percent of the time. Two random pages are linked 3.1 percent of the time and share a
+  community 13.3 percent of the time, with the partition recomputed here. The NAME pairs in the same lists are linked 47.9
+  percent and share a community 60.3. Story similarity is, to a first approximation, independent of the network. That is the
+  point of a text half: the links are a map of who was written about next to whom, and the story map is another one.</p>
+
+  <div class="callout warn">
+    <b>What still goes wrong.</b> Names that are also words: <em>drew</em>, <em>iron fist</em>, <em>brain</em> (Bird-Brain
+    and Brain Drain are the closest unlinked, far-apart pair in the corpus once names and habit words are out, 0.44, on
+    one word that is half a name).
+    Names that are not capitalised: <em>symbiote</em> is a thing and Symbiote is a name, and a bag of words cannot tell.
+    The cut at one half, and the cut at a third of the pages for habit words: both are choices, not facts. And the
+    verdicts are about pairs of pages; a page's own list on the dial mixes all three kinds.
+  </div>
+
+  <h2><span class="num">V.</span>So we made it playable</h2>
+  <p>Everything so far is a claim about arithmetic, and arithmetic is easy to nod along to. So we turned the split into two
+  things you can use instead of read: a game and an explorable. <strong>TABOO-IDF</strong> is the game. You describe a secret
+  character one word at a time, a cosine machine ranks all 303 pages after every word, and names are taboo.
+  <strong>THE NAME DIAL</strong> is the explorable behind it: two sliders, one for how much names count and one for how much
+  Wikipedia's habit words count, that re-rank any page's lookalikes as you drag. We built two because they answer different
+  questions. The dial lets you <em>watch</em> what names do to a lookalike list, continuously, for any page, with the network's
+  agreement measured as you drag; it is how you find out. Taboo makes you <em>produce</em> language for the machine, which is how
+  you feel why it matters. That is why Taboo is the main one: it is the only version where you are the writer and TF-IDF is the
+  reader, and the whole post collapses into one switch. With names allowed, you say the name and win; with names banned, you have to
+  know the page. Between them they show the same two things from opposite sides. Names are the cheapest signal TF-IDF has to offer, so
+  a lookalike list, or a clue-giver, that is allowed to use them will. And nothing is hidden: the dial's bars add up to the
+  cosine printed beside them, and Taboo's machine is a sum you could do by hand.</p>
+
+  <h3>Taboo</h3>
+  <p><strong><a href="taboo/index.html">TABOO-IDF</a></strong> turns the machine round. A secret character is on your screen and you have to make a
+  cosine-similarity machine find them by typing words, one at a time. After each word, all 303 pages are ranked by the cosine
+  between your word list and their TF-IDF vectors: the sum of each page's weight for your words, divided by the square root of how
+  many you typed. You win when your character is first. <em>Names are taboo</em>: a word the name rule calls a name is a strike,
+  it counts as a word used and the machine ignores it. You have twelve words, strikes and hints included, and points are
+  eleven minus the words you used. A hint spells the first letter, then three letters, of one of the page's strongest plain words
+  and costs three.</p>
+  <p>The machine is not the hard part. We checked, for each of the 216 characters with at least 800 words, the single word that
+  puts that page ahead of every other by the widest margin. An oracle that has read all 303 pages wins in one word, every
+  time, names banned or not. With names <em>allowed</em> that word is a name for 212 of the 216, and the winning margin has a median of
+  0.58; with names banned it is 0.04, fifteen times narrower, and the word is often one no person would guess (<em>kg</em> for the
+  Hulk, <em>approval</em> for Spider-Man). The game is the distance between what the machine can do and what you can guess about a
+  page's vocabulary. With names on you say <em>storm</em> and win; with names banned you have to know that Storm's page is about
+  <em>weather</em>, <em>mutants</em>, <em>marriage</em>.</p>
+
+  <p><a class="playlink" href="taboo/index.html" target="_blank" rel="noopener">&#9654; Play TABOO-IDF <small>names banned, twelve words</small></a></p>
+
+  <h3>The dial</h3>
+  <p>The dial is the same split, as a knob. A verdict on a pair is a snapshot; what the split really gives you is a knob. Write each page's TF-IDF vector as
+  names + habit words + the rest, multiply the first piece by a setting between 0 and 1, the second by another, and
+  renormalise. At 1 and 1 that is the course's TF-IDF; at 0 and 1 it is TF-IDF with the names removed; at 0 and 0 the names
+  and the habit words are both gone. The cosine of two pages at any setting is still a sum of three parts, because the
+  three pieces of the dot product are the same three matrices we already had, scaled. So the whole interactive
+  behaviour fits in three 303 &times; 303 tables and a few lines of arithmetic, and runs in the browser with no server.</p>
+  <p><strong>THE NAME DIAL</strong> is that. You choose a page, or click through from a neighbour, and get its twelve nearest
+  pages as bars split in gold, purple and cyan: names, habit words, everything else. Drag <em>names count</em> from 100 to 0
+  on Storm and the Human Torch, first in her list, drops out of the top twelve; with only the names gone She-Hulk is second and
+  Cyclops twelfth, and when <em>habit words</em> go down as well She-Hulk falls to eleventh and Cyclops climbs back to second.
+  Next to the list, two numbers: how many of this page's ten nearest are linked to it, and the
+  same average over all 303 pages, with the agreement curve as the names dial goes from 0 to 100, so you can watch the 4.0
+  of section II collapse towards 2.0 under your own hand. The state is in the address bar, so a link keeps your dials.</p>
+  <p>One thing the dial shows that we did not expect: take only the habit words down and the network agrees a little
+  <em>more</em> with the text, not less. On a grid in steps of five percent the best setting for the average agreement is names at
+  85 percent and habit words at 15, 4.08 linked neighbours in ten against TF-IDF's 4.02. A little less of Wikipedia's habit helps.</p>
+
+  <div class="explorable dial">
+    <iframe src="dial/index.html?embed=1" title="The name dial: turn how much names and habit words count and watch a page's lookalikes re-rank" loading="lazy"></iframe>
+  </div>
+  <script>
+  /* the embedded dial reports how tall its content is; fit the frame to it */
+  window.addEventListener('message', function (e) {
+    var d = e.data, f = document.querySelector('.explorable.dial iframe');
+    if (d && d.type === 'name-dial-height' && f && e.source === f.contentWindow) f.style.height = Math.ceil(d.h) + 'px';
+  });
+  </script>
+  <p class="figcap">The dial, running in the page. It opens on Storm: drag <strong>Names count</strong> to zero and watch the
+  Human Torch go. The data is three 303 &times; 303 tables, 1.4 MB, and nothing leaves your browser.
+  <a href="dial/index.html" target="_blank" rel="noopener">Open it full screen</a> for more room.</p>
+
+  <p>So the opener has an answer you can touch. To tell a name-driven match from a story-driven one, split the cosine and read
+  the largest part; to see what the lookalikes look like once the names are handled, turn the names dial down, or play Taboo and
+  find out how few words it takes when you cannot say who.</p>
+
+  <h2><span class="num">&nbsp;</span>What surprised us</h2>
+  <ol>
+    <li><b>The strongest lookalikes are names, almost without exception.</b> 496 of the 500 highest cosines. The
+    top of a TF-IDF similarity list is a list of names, mostly surnames and team names.</li>
+    <li><b>The network agrees with the text because the text is the network.</b> Where the target has a usable name, 84
+    percent of links are the source page naming it. Removing names removes half of the agreement, and the rest is still
+    seven times chance.</li>
+    <li><b>Story twins do not care about franchises.</b> At chance on links (4.1 against 3.1 percent) and on communities
+    (13.7 against 13.3). Wikipedia describes a vampire hunter and a vampire in the same words and the network has no
+    reason to link them.</li>
+    <li><b>Take away the names and she wins.</b> 28 percent of the names-out pairs hold together on <em>her</em> or <em>she</em>.
+    We had read the GloVe warning and did not expect to meet it in a TF-IDF.</li>
+    <li><b>Coincidences are the purest names.</b> Brock, Bruce, Johnny, Jessica: first names shared by strangers carry whole
+    cosines, and a surname that makes two pages "similar" is more common than one that makes them related.</li>
+    <li><b>In Taboo a name wins fifteen times more decisively than any other word.</b> The best single word is a name for 212 of 216
+    characters, with a median margin of 0.58 over the runner-up; the best non-name word manages 0.04. The game is hard exactly where
+    names are forbidden.</li>
+    <li><b>Our own rule was wrong in two ways we could name.</b> The sentence-start false positives and <em>drew</em>. We found
+    both by reading, and by checking the rule against pairs we had labelled before looking at its verdict.</li>
+  </ol>
+
+  <h2><span class="num">&nbsp;</span>Reproduce it</h2>
+  <p>One module holds the shared pipeline (the corpus, the name rule, TF-IDF as the course defines it, the split, the
+  verdict), one script builds every figure and number in this post, two build the data for the dial and the game, and two check
+  the data and the shipped pages by running them.</p>
+<pre><code>git clone https://github.com/Oddvar112/Social-Graphs-and-Interactions
+cd Social-Graphs-and-Interactions
+
+python scripts/analyse_week6.py        # every figure and number in this post (a few seconds)
+python scripts/build_week6_dial.py     # the three matrices behind the dial -> data/week6_dial.js
+python scripts/build_week6_taboo.py    # postings, kinds and oracles for the game -> data/week6_taboo.js
+python scripts/test_name_dial.py       # recomputes the dial's data, runs core.js and dial.js
+python scripts/test_taboo.py           # recomputes every posting, runs core.js and game.js (node, or macOS's own JavaScript engine)
+
+python -m http.server 8000             # then open http://localhost:8000/weeks/week6/taboo/ or .../dial/</code></pre>
+  <p>Needs <code>numpy</code>, <code>networkx</code> and <code>matplotlib</code>; there is no spaCy this week. Every number above is
+  written to <code>data/stats_week6.json</code> by <code>analyse_week6.py</code>, except the oracle figures, which come from
+  <code>data/week6_taboo.js</code>. The 45 pairs we read and our label for each are in <code>data/week6_pair_audit.tsv</code>.
+  The dial's test recomputes every diagonal entry and 600 random pairs of its three matrices with <code>math.log</code> and dictionaries,
+  and checks the engine against numpy at three dial settings and against the agreement numbers this post quotes. The game's test
+  recomputes every one of the 217,026 postings from the corpus, checks that each of the 216 oracle words wins alone in the shipped
+  engine in both modes (and, for 25 sampled characters, that no other word does better), and plays a full game against a stub page: a one-word win scores 10, a name
+  with names banned is a strike, an unknown word is free, a hint costs three, twelve words is a loss. We also broke the engines, the interfaces
+  and the data on purpose and confirmed the tests notice. Louvain is networkx's, version 3.7 here, so the partition has eight
+  communities (modularity 0.389) where week 5's run had seven; the community numbers on this page are from the partition we recomputed.
+  The text is the course's frozen release, <code>marvel_pages.zip</code>, unmodified. The links are the week 1 snapshot, in either direction.
+  Character pictures are the lead images of the Wikipedia articles, loaded as you play; we store only their URLs.</p>
+
+  <div class="postnav">
+    <a href="../week5/">&larr; Week 5</a>
+    <a class="cta" href="taboo/index.html" target="_blank" rel="noopener">Play TABOO-IDF &rarr;</a>
+    <a class="cta" href="dial/index.html" target="_blank" rel="noopener">Open THE NAME DIAL &rarr;</a>
+  </div>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    <span>Oddvar, David and Milena &middot; 02805 Social Graphs and Interactions &middot; DTU</span>
+    <span class="sp"><a href="https://github.com/Oddvar112/Social-Graphs-and-Interactions">Source on GitHub</a></span>
+  </div>
+</footer>
+
+</body>
+</html>

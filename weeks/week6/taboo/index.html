@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>TABOO-IDF · describe a Marvel character without saying who</title>
+<link rel="icon" type="image/svg+xml" href="../../../assets/favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="../../../assets/favicon-32.png">
+<link rel="apple-touch-icon" href="../../../assets/apple-touch-icon.png">
+<meta name="description" content="You describe a secret Marvel character one word at a time. After every word a cosine-similarity machine ranks all 303 Wikipedia pages against your words. Names are taboo: say one and you take a strike. Get your character to number one in as few words as you can.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bangers&family=Inter:wght@400;600;800&family=Special+Elite&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#070a14; --panel:#111830; --panel2:#18203c; --line:#26304f; --line2:#3b4a78; --text:#e9edf9; --dim:#8d99bd; --dim2:#66739a;
+  --red:#e62429; --red2:#ff4b50; --web:#5fe3ff; --gold:#ffc93f; --green:#4ade80; --purple:#a678ff; --orange:#ff9f43;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--text);font-family:Inter,system-ui,-apple-system,"Segoe UI",sans-serif;font-size:15px;line-height:1.5;-webkit-font-smoothing:antialiased;
+  background-image:radial-gradient(900px 520px at 10% -10%,rgba(230,36,41,.15),transparent 62%),radial-gradient(700px 500px at 100% 0%,rgba(95,227,255,.09),transparent 60%)}
+.comic{font-family:Bangers,Impact,"Arial Black",sans-serif;letter-spacing:.05em;font-weight:400}
+.type{font-family:"Special Elite","Courier New",monospace}
+a{color:var(--web);text-decoration:none} a:hover{text-decoration:underline}
+button{font-family:inherit;color:inherit;border:0;background:none;cursor:pointer}
+[hidden]{display:none!important}
+header{display:flex;align-items:center;gap:14px;padding:12px 18px;border-bottom:1px solid var(--line);background:linear-gradient(180deg,#131b35,#0b1020);flex-wrap:wrap}
+header .brand{font-size:28px;line-height:1;color:var(--red2);text-shadow:0 2px 0 #6b0d10}
+header .brand small{display:block;font-family:Inter,sans-serif;font-size:9px;letter-spacing:.22em;color:var(--dim);text-shadow:none;font-weight:600;margin-top:3px}
+.stats{display:flex;gap:8px;margin-left:auto;align-items:center;flex-wrap:wrap}
+.stat{background:var(--panel);border:1px solid var(--line);border-radius:9px;padding:5px 11px;min-width:62px;text-align:center}
+.stat b{display:block;font-size:19px;line-height:1.05;font-variant-numeric:tabular-nums}
+.stat span{display:block;font-size:8.5px;letter-spacing:.16em;color:var(--dim);text-transform:uppercase;font-weight:700}
+.stat.score b{color:var(--gold)} .stat.used b{color:var(--web)} .stat.streak b{color:var(--orange)}
+.back{font-size:12px;font-weight:700;color:var(--dim);padding:6px 10px;border:1px solid var(--line);border-radius:8px}
+.back:hover{color:var(--text);border-color:var(--web);text-decoration:none}
+main{max-width:1180px;margin:0 auto;padding:20px 18px 60px}
+.grid{display:grid;grid-template-columns:minmax(0,430px) minmax(0,1fr);gap:18px;align-items:start}
+@media(max-width:900px){.grid{grid-template-columns:1fr}}
+.box{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:16px 18px}
+.box+.box{margin-top:14px}
+.sec{font-size:9.5px;letter-spacing:.2em;color:var(--dim);text-transform:uppercase;font-weight:800;margin-bottom:8px}
+.target{display:grid;grid-template-columns:96px minmax(0,1fr);gap:14px;align-items:center}
+.pic{width:96px;height:120px;border-radius:8px;border:2px solid var(--line2);background:var(--panel2);overflow:hidden;position:relative}
+.pic img{width:100%;height:100%;object-fit:cover;object-position:top;display:block}
+.pic .ph{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:30px;color:var(--gold);text-align:center;line-height:1}
+.target h2{font-size:34px;line-height:1;color:var(--gold);text-shadow:0 2px 0 #7a5c11;overflow-wrap:anywhere}
+.target p{font-size:12px;color:var(--dim);margin-top:5px}
+.seg{display:flex;flex-wrap:wrap;gap:6px;margin-top:12px}
+.seg button{background:var(--panel2);border:1px solid var(--line);border-radius:9px;padding:7px 11px;font-size:12px;font-weight:700;color:var(--dim);text-align:left}
+.seg button small{display:block;font-weight:500;font-size:10.5px;color:var(--dim2)}
+.seg button:hover{color:var(--text);border-color:var(--web)}
+.seg button.on{color:var(--gold);border-color:var(--gold);background:rgba(255,201,63,.08)}
+form{display:flex;gap:8px;margin-top:14px}
+input[type=text]{flex:1;min-width:0;background:var(--panel2);border:2px solid var(--line2);border-radius:10px;color:var(--text);padding:12px 14px;font-size:18px}
+input[type=text]:focus{outline:none;border-color:var(--web)}
+input[type=text]:disabled{opacity:.5}
+.go{background:var(--red);color:#fff;font-weight:800;font-size:14px;padding:0 18px;border-radius:10px;box-shadow:0 3px 0 #6b0d10}
+.go:hover:not(:disabled){background:var(--red2)} .go:disabled{opacity:.45;cursor:not-allowed}
+.msg{min-height:22px;margin-top:8px;font-size:13px;color:var(--dim)}
+.msg.bad{color:var(--red2);font-weight:700} .msg.ok{color:var(--green)} .msg.warn{color:var(--orange)}
+.typed{list-style:none;display:flex;flex-wrap:wrap;gap:7px;margin-top:6px;min-height:36px}
+.typed li{background:var(--panel2);border:1px solid var(--line2);border-radius:9px;padding:5px 10px;font-size:15px;display:flex;gap:8px;align-items:baseline}
+.typed li small{font-family:Inter,sans-serif;font-size:11px;color:var(--dim);font-variant-numeric:tabular-nums}
+.typed li.taboo{border-color:var(--red2);color:var(--red2);text-decoration:line-through;text-decoration-thickness:2px}
+.typed li.taboo small{color:var(--red2);text-decoration:none;display:inline-block}
+.typed li.hint{border-style:dashed;border-color:var(--purple);color:var(--purple)}
+.typed li.up small{color:var(--green)} .typed li.down small{color:var(--red2)}
+.actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+.btn{background:var(--panel2);border:1px solid var(--line2);border-radius:9px;padding:8px 13px;font-size:12.5px;font-weight:800;color:var(--text)}
+.btn:hover:not(:disabled){border-color:var(--web)} .btn:disabled{opacity:.4;cursor:not-allowed}
+.btn.primary{background:var(--gold);color:#1a1710;border-color:var(--gold)}
+h3.t{font-size:26px;line-height:1;margin-bottom:2px}
+.sub{font-size:12.5px;color:var(--dim);margin-bottom:12px}
+.rank{font-size:13px;margin:0 0 12px;padding:8px 12px;border-radius:10px;background:var(--panel2);border:1px solid var(--line)}
+.rank b{color:var(--gold);font-size:18px;font-variant-numeric:tabular-nums}
+.rank.first{border-color:var(--green);background:rgba(74,222,128,.1)} .rank.first b{color:var(--green)}
+ol.board{list-style:none;display:flex;flex-direction:column;gap:5px}
+.row{display:grid;grid-template-columns:26px minmax(110px,200px) minmax(0,1fr) 54px;gap:10px;align-items:center;padding:6px 8px;border-radius:9px;background:rgba(255,255,255,.025);border:1px solid transparent}
+.row .rk{font-size:12px;font-weight:800;color:var(--dim2);text-align:right}
+.row .nm{font-weight:700;font-size:14px;line-height:1.2;overflow-wrap:anywhere}
+.row .bar{height:14px;border-radius:5px;background:var(--panel2);overflow:hidden}
+.row .bar i{display:block;height:100%;background:var(--web);transition:width .15s}
+.row .cs{font-variant-numeric:tabular-nums;font-size:12.5px;color:var(--dim);text-align:right}
+.row.me{border-color:var(--gold);background:rgba(255,201,63,.1)} .row.me .bar i{background:var(--gold)} .row.me .nm{color:var(--gold)}
+.row.gap{background:none;color:var(--dim2);font-size:12px;padding:0 8px;display:block;text-align:center;letter-spacing:.3em}
+.empty{padding:34px 10px;text-align:center;color:var(--dim)}
+.reveal{margin-top:16px;padding-top:14px;border-top:1px solid var(--line)}
+.reveal h3{font-size:34px;line-height:1}
+.reveal h3.ok{color:var(--green)} .reveal h3.bad{color:var(--red2)}
+.reveal p{font-size:13.5px;color:#c8d2ea;margin:6px 0}
+.reveal b{color:var(--text)}
+.pills{display:flex;flex-wrap:wrap;gap:6px;margin:6px 0 10px}
+.pills span{background:var(--panel2);border:1px solid var(--line2);border-radius:99px;padding:3px 11px;font-size:13px}
+.pills span.hit{border-color:var(--gold);color:var(--gold)}
+.how{font-size:12.5px;color:#c8d2ea;line-height:1.6}
+.how b{color:var(--text)}
+details summary{cursor:pointer;font-weight:800;font-size:13px}
+.foot{font-size:11px;color:var(--dim2);margin-top:10px;line-height:1.5}
+@media(max-width:600px){.row{grid-template-columns:22px minmax(0,1fr) 48px}.row .bar{grid-column:2/-1;grid-row:2}.target{grid-template-columns:72px minmax(0,1fr)}.pic{width:72px;height:92px}}
+</style>
+</head>
+<body>
+<header>
+  <div class="brand comic">TABOO-IDF<small>WEEK 6 &middot; DESCRIBE THEM WITHOUT SAYING WHO</small></div>
+  <div class="stats">
+    <div class="stat score"><b id="s-score">0</b><span>score</span></div>
+    <div class="stat used"><b id="s-used">0 / 12</b><span>words used</span></div>
+    <div class="stat streak"><b id="s-wins">0</b><span>solved</span></div>
+    <a class="back" href="../index.html">&larr; Week 6 post</a>
+  </div>
+</header>
+
+<main>
+  <div class="grid">
+    <div>
+      <section class="box">
+        <div class="sec">Your target</div>
+        <div class="target">
+          <div class="pic" id="pic"></div>
+          <div><h2 class="comic" id="tname">&nbsp;</h2><p id="tmeta"></p></div>
+        </div>
+        <form id="form" autocomplete="off">
+          <input id="word" type="text" aria-label="Type one word" placeholder="one word that describes them" autocapitalize="off" autocorrect="off" spellcheck="false">
+          <button class="go" id="send" type="submit">Say it</button>
+        </form>
+        <div class="msg" id="msg" role="status" aria-live="polite"></div>
+        <ul class="typed" id="typed"></ul>
+        <div class="actions">
+          <button class="btn" id="hint" type="button">Hint <span id="hintcost"></span></button>
+          <button class="btn" id="giveup" type="button">Give up</button>
+          <button class="btn primary" id="next" type="button" hidden>Next character</button>
+        </div>
+        <div class="seg" id="o-mode">
+          <button data-v="banned" class="on">Names banned <small>a name is a strike</small></button>
+          <button data-v="allowed">Names allowed <small>say the surname, see what happens</small></button>
+        </div>
+        <div class="seg" id="o-roster">
+          <button data-v="famous" class="on">The 80 best-known <small>most linked-to</small></button>
+          <button data-v="all">Anyone with 800+ words <small>216 characters</small></button>
+        </div>
+      </section>
+
+      <section class="box">
+        <details open>
+          <summary>How the machine guesses</summary>
+          <p class="how">After each word it ranks all 303 pages by the <b>cosine</b> between your list of words and the page's TF-IDF vector (tf = count / words on the page, idf = ln(303 / pages with the word), unit length): the sum of the page's weight for each of your words, divided by &radic;(words typed). A word on every page weighs nothing; a word on two pages weighs a lot on both. A <b>name</b> is a word capitalised in the middle of sentences or in a page title, the rule from the week 6 post. Say one with names banned and it is a strike: it counts as a word used and the machine ignores it. A word that fewer than two pages use is unknown to the machine, and costs you nothing. Win by getting the target to number one; points are 11 minus the words you used, at least 1. You have 12.</p>
+        </details>
+      </section>
+    </div>
+
+    <section class="box">
+      <h3 class="t comic">WHAT THE MACHINE THINKS</h3>
+      <p class="sub" id="sub">Type a word. The pages re-rank after every one.</p>
+      <div class="rank" id="rank" hidden></div>
+      <ol class="board" id="board"></ol>
+      <div class="reveal" id="reveal" hidden></div>
+      <p class="foot">Pictures are the lead images of the Wikipedia articles, loaded from Wikipedia and credited; only the URLs are stored. The art belongs to Marvel and is shown for identification.</p>
+    </section>
+  </div>
+</main>
+
+<script src="../../../data/week6_taboo.js"></script>
+<script src="core.js"></script>
+<script src="game.js"></script>
+</body>
+</html>
