@@ -1,0 +1,53 @@
+id	meaning_pick	label	what the matched passage says, read against the clue
+# Every clue written in other words where MEANING's number one is the wrong page (45 of 61), read by us on 20 October 2026.
+# Labels: story = the passage is about the right character's story, on someone else's page;
+#         lookalike = a different character who shares at least two of the clue's facts;
+#         word = one word or phrase of the clue taken literally (a pun, a homonym);
+#         theme = shares one theme with the clue and nothing specific;
+#         noise = nothing we could connect to the clue.
+# The labels are our reading of the passage the game shows (data/week7_show.js); scripts/analyse_week7.py counts them.
+spiderman-other	Alex Wilder	theme	runaway teenagers and their parents; nothing about spiders, bites or duty
+hulk-other	Fin Fang Foom	theme	a creature that hibernates and reshapes its body; not a scientist, no explosion
+wolverine-other	Shatterstar	theme	a fighter's strength, speed and combat training; no claws, no metal skeleton, no healing
+strange-other	Doctor Druid	story	magic and mysticism, and it names Doctor Strange: Druid is "not a full sorcerer like Doctor Strange"
+deadpool-other	Red Raven	word	a character killed in an arena and a bank robber; "killer", "killed" and the colour red, nothing about comedy or the fourth wall
+panther-other	Ulysses Bloodstone	theme	a meteorite that landed on Earth; the clue's "miracle ore" read as a rock from space
+moonknight-other	Black Marvel	noise	a Golden Age hero in the war and as an old man; nothing about Egypt, a god or several personalities
+widow-other	Red Guardian	story	the KGB trains Shostakov in secret and keeps his survival from Natasha: Black Widow's own story, on her husband's page
+ironfist-other	Living Lightning	theme	a body turned into glowing electrical energy; no hidden city, no martial arts
+emmafrost-other	Empath	story	Frost's students, the Hellions, and Empath trying to read her mind: her school, on a pupil's page
+cable-other	Storm	story	Forge's gun, the X-Men and Cyclops married to Madelyne Pryor, Cable's parents
+blackcat-other	Whizzer (Robert Frank)	theme	a burglary and petty criminals; no cat, no bad luck, no Spider-Man
+venom-other	Gorgon (Inhuman)	theme	a man turned into a beast with claws and rages; no ooze, no host, no tongue
+torch-other	Ghost Rider (Johnny Blaze)	lookalike	another Johnny who bursts into flame: bodies burnt to husks, Blaze and his brother
+jessicadrew-other	Spider-UK	lookalike	a girl with spider abilities in an organisation, and someone stung by wasps
+nova-other	Skull the Slayer	noise	a soldier with a power belt marooned on an alternate Earth; no helmet, no space police
+misty-other	Spider-Woman (Jessica Drew)	theme	a woman, her father's killer and a strong friendship; Drew is a private investigator but the passage does not say so
+manthing-other	U.S. Agent	noise	U.S. Agent and the Punisher against the Maggia; nothing about a swamp, fear or burning
+shangchi-other	Power Man (Victor Alvarez)	lookalike	a boy whose father died, who draws on chi and becomes a hero for hire
+blackbolt-other	Ghost Rider	theme	prehistoric humans who could speak a new language and had to hide it; speech, but no king and no silence
+warmachine-other	Stingray	lookalike	a man who designed and wears an armoured battlesuit; underwater, not an air force colonel
+starlord-other	Deathlok	noise	a brain transplanted into a machine body; no space, no crew, no music
+eddiebrock-other	Venom	story	how the alien costume came to Spider-Man: the symbiote's story, on the symbiote's page rather than its host's
+rocket-other	Hellfire (J. T. Slade)	noise	a two-sentence stub: an Inhuman demolitions expert and former mercenary
+quicksilver-other	Ghost Rider	word	Hell-lords and demons: the clue's "speed demon" taken literally
+jubilee-other	Silhouette	noise	a martial artist with crutches and leg braces; no fireworks, no coat, no clawed loner
+sentry-other	Balder the Brave	noise	gods in council against the Chaos King; nothing about a forgotten hero or a dark self
+jessicajones-other	Father Time	noise	a 1940s hero avenging his framed father; no drinking, no investigations, no husband
+warlock-other	Bill Foster	theme	a biochemical researcher at a research facility; the clue's lab and scientists, from the other side
+werewolf-other	Spider-Woman (Jessica Drew)	word	spies sent to live on the Moon; the clue's "moon" taken literally
+noir-other	Two-Gun Kid	lookalike	a man in a black suit and a broad-brimmed black hat with two revolvers: the clue's costume, on a cowboy
+gwenpool-other	Betsy Braddock	word	reading thoughts and minds; the clue's "used to read" taken literally
+elsa-other	Black Widow (Natasha Romanova)	theme	a woman trained in combat and espionage; no monsters, no shotgun, no father
+betaray-other	Nova (Richard Rider)	theme	a hero teaming with Thor and flying to another planet; no hammer, no horse face
+baymax-other	Doctor Nemesis	lookalike	an android built by a scientist and the scientist who built it
+finfang-other	Thin Man	word	an explorer who climbs a mountain in Tibet; the clue's "under a mountain"
+peggy-other	U.S. Agent	story	the Captain America role and Steve Rogers recovered from the ice: Peggy's super-soldier's story
+shuri-other	Eddie Brock	word	Eddie becomes the King in Black; the clue's "secretive king"
+yelena-other	Black Widow (Natasha Romanova)	story	Natasha herself: the "famous spy" of the clue, whose footsteps Yelena followed
+isaiah-other	Black Panther	theme	an African-American armoured unit of the US Army in World War II; Black soldiers in the war, not Isaiah
+northstar-other	Jean Grey (X-Men film series)	noise	a car crash and a girl's mental powers in the films; no speed, no Quebec, no coming out
+hulkling-other	Doctor Strange	word	sorcerers and a spell book; the clue's "young sorcerer", the husband, not the hero
+abomination-other	Gargoyle	lookalike	Yuri Topolov, a Soviet scientist and the Hulk's first foe, changed by an atomic accident
+killraven-other	Union Jack	word	the superhero team called the Invaders; the clue's invaders were Martians
+franklin-other	Miracleman	theme	a small child whose mind is already beyond the adults'; not a son of the Fantastic Four

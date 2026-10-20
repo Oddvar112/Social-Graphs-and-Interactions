@@ -1,0 +1,140 @@
+id	style	target	clue
+# Clues for IN OTHER WORDS (week 7). Written by hand before any ranking was computed; see scripts/build_week7_show.py.
+# style: page = in the page's own words: distinctive words that are on the target's Wikipedia page, never the
+#               character's own name (other characters, teams and places appear, as they do on the page)
+#        other = the same facts in other words, avoiding the page's rare words (on 30 pages or fewer) where we could
+#        absent = a character who is not among the 303 pages at all; the right answer is "nobody here"
+# target: node_id of the page (or, for absent, the name of the missing character)
+# Process: a first draft of every clue, then the vocabulary check (which of a clue's words are on its page, and how rare
+# they are: scripts/build_week7_show.py --check) and two passes of rewriting the "other" clues that leaked, all before
+# the first ranking was computed on 20 October 2026. Nothing was changed after seeing a ranking. Two "other" clues
+# still carry two rare page words each (blackcat-other: blonde, famous; storm-other: pickpocket, egypt): the check
+# that found them ran in the same command as the first ranking, so they stay as written and are counted as they are.
+spiderman-page	page	Spider-Man	a teenager bitten by a radioactive spider who learned that with great power comes great responsibility, raised by his aunt and uncle in Queens
+spiderman-other	other	Spider-Man	a bookish kid from the outer boroughs of New York who lost his parents, got sticky wall-walking powers from a bug bite and lives by a saying about duty
+hulk-page	page	Hulk	a physicist exposed to gamma radiation who transforms into a green-skinned brute of limitless strength when angry
+hulk-other	other	Hulk	a mild-mannered researcher who becomes an enormous emerald giant whenever he is provoked, after being caught in the explosion of a test weapon
+wolverine-page	page	Wolverine_(character)	a mutant with retractable claws, a healing factor and a skeleton reinforced with the unbreakable metal adamantium, a gruff loner from Canada
+wolverine-other	other	Wolverine_(character)	a short-tempered hairy brawler from north of the border whose frame is laced with an alloy nothing can break, who pops blades from his knuckles and recovers from any wound
+strange-page	page	Doctor_Strange	a former neurosurgeon whose hands were ruined in a car accident, now the Sorcerer Supreme who protects Earth with magic and spells
+strange-other	other	Doctor_Strange	a conceited physician whose hands shook after a crash, who went to a mountain monastery to study the occult and became the planet's chief mage
+deadpool-page	page	Deadpool	a disfigured Canadian mercenary with an artificial healing factor grafted onto his cancer-ridden cells, known for breaking the fourth wall and his comedic voice
+deadpool-other	other	Deadpool	a chatty hired killer in red who cannot be killed, knows he is in a comic book and talks to the audience
+shehulk-page	page	She-Hulk	a lawyer who received an emergency blood transfusion from her cousin and became a tall green attorney who retains her personality
+shehulk-other	other	She-Hulk	a courtroom litigator who shared her famous relative's blood after an attempt on her life and now argues in front of judges as a seven-foot jade woman
+scarletwitch-page	page	Scarlet_Witch	a sorceress who manipulates probability with hexes and chaos magic, twin sister of a speedster, mother of twins who are not real
+scarletwitch-other	other	Scarlet_Witch	a red-cloaked spellcaster who bends chance and reality itself, whose brother runs faster than sound and whose two boys turned out to be imaginary
+panther-page	page	Black_Panther_(character)	the king of the fictional African nation of Wakanda, a technologically advanced society sustained by deposits of the metal vibranium
+panther-other	other	Black_Panther_(character)	the crowned head of a secret, hyper-advanced country in the heart of Africa, built on the world's only source of a miracle ore
+cyclops-page	page	Cyclops_(Marvel_Comics)	a mutant who emits powerful optic beams from his eyes and must always wear a special visor, the first leader of the X-Men
+cyclops-other	other	Cyclops_(Marvel_Comics)	a strait-laced team leader who shoots red force from his gaze and can never take off his tinted glasses
+cage-page	page	Luke_Cage	a hero for hire with unbreakable skin, wrongly imprisoned, whose stories deal with race, class and police brutality in Harlem
+cage-other	other	Luke_Cage	a strongman from uptown New York with skin no bullet can pierce, framed and jailed, who got his powers in a cell and charges money to be a hero
+pym-page	page	Hank_Pym	a scientist who discovered particles that let him shrink to the size of an ant and grow into a giant, creator of the robot Ultron
+pym-other	other	Hank_Pym	a brilliant but troubled researcher who can become tiny enough to ride a bug or big as a building, and who built a murderous machine intelligence
+jeangrey-page	page	Jean_Grey	a telepathic and telekinetic mutant, founding member of the X-Men, host of the cosmic Phoenix Force
+jeangrey-other	other	Jean_Grey	a red-haired mind reader who lifts objects with her will and once carried a star-eating cosmic firebird inside her
+moonknight-page	page	Moon_Knight	a mercenary resurrected by the Egyptian moon god Khonshu as his avatar, a vigilante with dissociative identity disorder
+moonknight-other	other	Moon_Knight	a hired gun left for dead in Egypt and brought back by an old god of the night, now a white-cloaked avenger of the streets with several people living in his head
+widow-page	page	Black_Widow_(Natasha_Romanova)	a Soviet spy and ballerina who defected to the United States, joined S.H.I.E.L.D. and the Avengers, known for her bracelets
+widow-other	other	Black_Widow_(Natasha_Romanova)	a Russian secret agent trained from childhood who defected to the Americans and became an Avenger
+ironfist-page	page	Iron_Fist_(character)	a martial artist who wields a mystical force by focusing his chi, from the city of K'un-L'un which appears on Earth every ten years
+ironfist-other	other	Iron_Fist_(character)	a blond fighter raised in a hidden city that visits our world once in ten years, who fills his hand with glowing energy
+emmafrost-page	page	Emma_Frost	a telepathic mutant who can turn into organic diamond, the White Queen of the Hellfire Club, now a leader of the X-Men
+emmafrost-other	other	Emma_Frost	an icy fair-haired mind reader who can harden her skin into a gemstone, a former villain who now runs a school for mutant teens
+cable-page	page	Cable_(character)	a time-traveling mutant soldier from the future infected with a techno-organic virus, son of Cyclops and a clone of Jean Grey
+cable-other	other	Cable_(character)	a grizzled warrior sent back from a dystopian tomorrow, with a glowing eye, a metal arm and a huge gun, the child of two famous X-Men
+blackcat-page	page	Black_Cat_(Marvel_Comics)	a cat burglar with the power of bad luck, daughter of a famous burglar, on-off love interest of Spider-Man
+blackcat-other	other	Black_Cat_(Marvel_Comics)	a platinum blonde robber in a black catsuit who makes her enemies unlucky and once went out with a famous web-head
+storm-page	page	Storm_(Marvel_Comics)	a mutant who controls the weather, born in Kenya, descended from witch-priestesses, a leader of the X-Men with a mohawk
+storm-other	other	Storm_(Marvel_Comics)	a white-haired heroine who decides whether the sun shines, once a child pickpocket in Egypt, later married to a king
+venom-page	page	Venom_(character)	a sentient alien symbiote that bonds with a host, first worn by Spider-Man as a black costume, with a huge smile
+venom-other	other	Venom_(character)	a living black ooze from space that needs a body to wear and gives its wearer fangs and a very long tongue
+torch-page	page	Human_Torch	a founding member of the Fantastic Four who can engulf his body in flames and fly, with the catchphrase "Flame on!"
+torch-other	other	Human_Torch	the brash kid brother in a well-known foursome of explorers, who lights himself up like a bonfire and soars into the air
+blade-page	page	Blade_(character)	a vampire hunter, a dhampir born with vampire enzymes after his mother was attacked during childbirth
+blade-other	other	Blade_(character)	a sword-swinging hunter of bloodsuckers, half one himself since the night of his birth, who can walk in daylight
+jessicadrew-page	page	Spider-Woman_(Jessica_Drew)	a brainwashed spy working for Hydra who became a superhero and private investigator, with pheromones and venom blasts
+jessicadrew-other	other	Spider-Woman_(Jessica_Drew)	a heroine with spider powers who was once a pawn of a sinister organisation, now works as a private eye and zaps enemies with bio-electric stings
+nova-page	page	Nova_(Richard_Rider)	a member of the intergalactic police force known as the Nova Corps, with access to the Nova Force
+nova-other	other	Nova_(Richard_Rider)	a teenager from Long Island who inherited a golden helmet and the powers of a dying alien space policeman
+misty-page	page	Misty_Knight	a former NYPD officer whose arm was amputated after a bomb attack, with a bionic prosthetic from Tony Stark, a private investigator
+misty-other	other	Misty_Knight	an ex-cop who lost a limb in an explosion and got a robotic replacement, now running a detective agency with her best friend
+manthing-page	page	Man-Thing	a slow-moving empathic swamp monster in the Florida Everglades, whose touch burns whoever knows fear
+manthing-other	other	Man-Thing	a mute mossy creature from the marshes down south whose grip scorches anyone who is afraid
+shangchi-page	page	Shang-Chi	the Master of Kung Fu, son of an immortal criminal mastermind who trained him as an assassin, the greatest martial artist in the Marvel Universe
+shangchi-other	other	Shang-Chi	a fighter raised from birth by his ancient crime-lord father to kill, who rejected him and became the best hand-to-hand combatant alive
+blackbolt-page	page	Black_Bolt	the ruler of Attilan and the Inhumans, whose voice triggers a destructive shockwave, so he remains completely silent
+blackbolt-other	other	Black_Bolt	a king who must never make a sound, because one word from him flattens a city, so he talks with his hands
+warmachine-page	page	War_Machine	a military veteran and pilot who works for Tony Stark and wears a heavily armed version of the Iron Man armor
+warmachine-other	other	War_Machine	an air force colonel, best friend of a billionaire inventor, who flies a grey, gun-covered suit of powered battle gear
+starlord-page	page	Star-Lord	the son of a human mother and an alien father who became an interplanetary policeman and leader of the Guardians of the Galaxy
+starlord-other	other	Star-Lord	a half-human space outlaw who runs a ragtag crew of cosmic misfits and has a cassette player from Earth
+eddiebrock-page	page	Eddie_Brock	a journalist who exposed the wrong man as the Sin-Eater, lost his reputation, and became the second host of the symbiote
+eddiebrock-other	other	Eddie_Brock	a bodybuilding writer who lost his job and blamed a wall-crawler, then merged with an alien parasite to get even
+cloakdagger-page	page	Cloak_and_Dagger_(characters)	two teenage runaways who were experimented on and gained the twin powers of Light and Darkness
+cloakdagger-other	other	Cloak_and_Dagger_(characters)	a pair of kids who ran away from home, were drugged by criminals and came out as a dark teleporter and a girl who throws glowing blades
+rocket-page	page	Rocket_Raccoon	an intelligent anthropomorphic raccoon, expert marksman and master tactician, member of the Guardians of the Galaxy
+rocket-other	other	Rocket_Raccoon	a talking, gun-toting furry critter from a space colony who plans heists for a crew of cosmic misfits
+quicksilver-page	page	Quicksilver_(Marvel_Comics)	a speedster who moves and thinks at extreme speeds, twin brother of the Scarlet Witch, once thought to be the son of Magneto
+quicksilver-other	other	Quicksilver_(Marvel_Comics)	a silver-haired speed demon quicker than any car, rude to everyone, brother of a famous witch
+jubilee-page	page	Jubilee_(character)	a mutant who generates pyrotechnic energy blasts, found in a shopping mall, associated with Wolverine, later a vampire
+jubilee-other	other	Jubilee_(character)	a teenage girl in a yellow coat who shoots fireworks from her fingers and tags along with a clawed loner
+sentry-page	page	Sentry_(Robert_Reynolds)	a superhero with the power of a million exploding suns, whose existence was erased from everyone's memory, with a dark alter ego called the Void
+sentry-other	other	Sentry_(Robert_Reynolds)	a golden-haired hero whom the whole world forgot, who carries inside him a shadow self that destroys everything he loves
+morbius-page	page	Morbius	a scientist who tried to cure his rare blood disease and became a living vampire with bloodlust
+morbius-other	other	Morbius	a chemist who tried to fix his own dying blood and came out pale, fanged and thirsty for the living
+jessicajones-page	page	Jessica_Jones	a former superhero who became the owner of Alias Private Investigations, a hard-drinking detective
+jessicajones-other	other	Jessica_Jones	a hard-drinking, foul-mouthed ex-hero who runs a one-woman investigation office and is married to a bulletproof man
+warlock-page	page	Adam_Warlock	artificially created by the Enclave to be a perfect being, originally named Him, guardian of the Soul Gem who emerges from a cocoon
+warlock-other	other	Adam_Warlock	a golden-skinned man grown in a lab by scientists, who wears an orange stone on his forehead and sleeps in a chrysalis
+werewolf-page	page	Werewolf_by_Night	a man cursed with lycanthropy who turns into a werewolf under the full moon
+werewolf-other	other	Werewolf_by_Night	a young man who sprouts fur and fangs when the moon is full, because of something his family passed down
+noir-page	page	Spider-Man_Noir	a vigilante from the Great Depression bitten by a spider from a spider-god idol, who wears a fedora and a trench coat
+noir-other	other	Spider-Man_Noir	a black-and-white, 1930s version of a famous wall-crawler, with a hat, a long coat and a revolver
+gwenpool-page	page	Gwenpool	a girl from the real world transported to the Marvel Universe, who knows she is in a comic and can break panels and the fourth wall
+gwenpool-other	other	Gwenpool	a pink-haired fan who fell into the stories she used to read and uses her knowledge of the plots as a superpower
+usagent-page	page	U.S._Agent	introduced as the Super-Patriot, later a government-appointed replacement Captain America with a shield and a violent streak
+usagent-other	other	U.S._Agent	a violent, hot-headed soldier whom the authorities installed as a stand-in for the star-spangled hero, dressed in black
+redguardian-page	page	Red_Guardian	the Soviet equivalent of Captain America, a pilot with a disc on his belt buckle
+redguardian-other	other	Red_Guardian	Moscow's answer to the shield-carrying American hero, a test pilot in red who was married to a famous spy
+elsa-page	page	Elsa_Bloodstone	a monster hunter with a choker made from a fragment of the Bloodgem, daughter of Ulysses Bloodstone, member of Nextwave
+elsa-other	other	Elsa_Bloodstone	a red-haired British woman with a shotgun who kills things that go bump in the night, like her immortal father before her
+devildino-page	page	Devil_Dinosaur	an enormous crimson Tyrannosaurus-like dinosaur from Dinosaur World, with his ape-like friend Moon-Boy
+devildino-other	other	Devil_Dinosaur	a giant red prehistoric lizard who is friends with a little girl and a hairy primate
+betaray-page	page	Beta_Ray_Bill	an alien Korbinite warrior found worthy to wield Mjolnir, later given his own hammer called Stormbreaker
+betaray-other	other	Beta_Ray_Bill	an extraterrestrial warrior with an equine face who was found fit to carry the thunderer's mallet, then got one of his own
+baymax-page	page	Baymax	a robotic synthformer programmed to serve as Hiro's bodyguard, member of Big Hero 6
+baymax-other	other	Baymax	a shape-changing healthcare android built by a boy genius in a Japanese-inspired superhero team
+finfang-page	page	Fin_Fang_Foom	an extraterrestrial creature resembling a dragon, in hibernation in China, enemy of Iron Man
+finfang-other	other	Fin_Fang_Foom	a giant green winged reptile in purple shorts who sleeps for centuries under a mountain
+hitmonkey-page	page	Hit-Monkey	a Japanese macaque who became an assassin after a killer sheltered with his troop
+hitmonkey-other	other	Hit-Monkey	a snow primate in a suit who murders murderers with two pistols
+peggy-page	page	Peggy_Carter	a World War II love interest of Steve Rogers, aunt of Sharon Carter, later Captain Carter in the multiverse
+peggy-other	other	Peggy_Carter	a 1940s British secret agent who was the first love of a frozen super-soldier, and in one timeline took the shield herself
+shuri-page	page	Shuri_(character)	the princess of Wakanda, younger sister of T'Challa, who was tested and found suitable for the role of Black Panther
+shuri-other	other	Shuri_(character)	the brainy royal kid sister of a secretive king, who briefly took over his cat-themed role
+yelena-page	page	Yelena_Belova	trained as an assassin in the Red Room, the second Black Widow, later the White Widow
+yelena-other	other	Yelena_Belova	a blonde Russian killer raised in the same secret school as a famous spy, who followed in her footsteps and then took a lighter codename
+isaiah-page	page	Isaiah_Bradley	a Black soldier from the Super Soldier program during World War II who held the title of Captain America, from the Truth miniseries
+isaiah-other	other	Isaiah_Bradley	a Black GI used as a guinea pig by the army in the 1940s, the forgotten first man in the stars and stripes
+northstar-page	page	Northstar_(character)	a mutant from Alpha Flight who travels at superhuman speed and flies, a former Olympic skier, one of the first openly gay superheroes
+northstar-other	other	Northstar_(character)	a snide mutant from Quebec who moves at the speed of light and made headlines by coming out in 1992
+hulkling-page	page	Hulkling	a shapeshifting member of the Young Avengers, son of Captain Marvel and a Skrull princess, heir to the Skrull throne
+hulkling-other	other	Hulkling	a green, strong teenage shape-changer, secretly the prince of two feuding alien empires, married to a young sorcerer
+abomination-page	page	Abomination_(character)	a spy exposed to gamma rays who became a scaly green monster with gills, one of the main enemies of the Hulk
+abomination-other	other	Abomination_(character)	a Soviet agent who took a larger dose of the same radiation as his emerald rival and became a reptilian beast that cannot change back
+zombie-page	page	Zombie_(comics)	Simon Garth, a mindless zombie controlled by whoever holds the Amulet of Damballah, from a horror anthology
+zombie-other	other	Zombie_(comics)	a dead businessman who shambles through the bayou at night, obeying anyone who wears a certain charm
+killraven-page	page	Killraven	a freedom fighter in a post-apocalyptic future ruled by Martians, from a series with the first interracial kiss in color comics
+killraven-other	other	Killraven	a rebel fighter in a conquered Earth of the twenty-first century, battling the invaders from The War of the Worlds
+franklin-page	page	Franklin_Richards_(character)	the son of Mister Fantastic and the Invisible Woman, an immensely powerful child with reality-manipulating powers
+franklin-other	other	Franklin_Richards_(character)	the small son of a stretchy scientist and a woman who can vanish, able to create whole worlds while still in school
+mayday-page	page	Mayday_Parker	the teenage daughter of Peter Parker and Mary Jane Watson in the MC2 universe, who became Spider-Girl
+mayday-other	other	Mayday_Parker	in one possible future, the web-slinger's kid grows up and puts on a costume of her own
+thor-absent	absent	Thor	the Norse god of thunder who wields an enchanted hammer and was exiled to Earth by his father Odin
+cap-absent	absent	Captain America	a skinny kid from Brooklyn turned into a super-soldier in World War II, frozen in ice and thawed decades later, with an indestructible shield
+ironman-absent	absent	Iron Man	a billionaire industrialist and genius inventor who built a suit of powered armor to escape captivity and keep shrapnel from his heart
+daredevil-absent	absent	Daredevil	a blind lawyer from Hell's Kitchen whose remaining senses are superhuman, fighting crime in a red costume at night
+surfer-absent	absent	Silver Surfer	a chrome-skinned herald of a planet-eating giant, who rides a surfboard through space
+magneto-absent	absent	Magneto	a Holocaust survivor who controls magnetism and leads a brotherhood of mutants against humanity

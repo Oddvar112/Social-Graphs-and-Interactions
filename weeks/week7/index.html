@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Week 7: In other words</title>
+<link rel="icon" type="image/svg+xml" href="../../assets/favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="../../assets/favicon-32.png">
+<link rel="apple-touch-icon" href="../../assets/apple-touch-icon.png">
+<meta name="description" content="We wrote two clues for each of 61 Marvel characters, one in the words of their Wikipedia page and one in other words, and asked TF-IDF and a sentence encoder to find them. In the page's own words it is a tie; in other words keyword search hears one word, often somebody else's name. Plus six characters who are not there at all, and a game show.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bangers&family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../assets/site.css">
+<style>
+.kwc{color:var(--web);font-weight:800}
+.dnc{color:var(--purple);font-weight:800}
+.youc{color:var(--gold);font-weight:800}
+.playlink{display:inline-flex;align-items:center;gap:10px;margin:2px 0 8px;padding:11px 24px;border-radius:12px;background:var(--red);color:#fff;font-weight:800;font-size:15px;box-shadow:0 4px 0 #6b0d10;text-decoration:none}
+.playlink:hover{background:var(--red2);text-decoration:none;transform:translateY(-1px)}
+.playlink small{font-weight:600;font-size:12px;opacity:.85}
+.post td .w{display:inline-block;padding:0 6px;border-radius:5px;background:rgba(95,227,255,.22);color:#fff;font-weight:700}
+.post td .w.p{background:rgba(166,120,255,.25)}
+.post .duo{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:14px;margin:20px 0}
+.post .duo blockquote{margin:0;font-size:13.5px}
+.post .duo blockquote b{color:var(--text)}
+.post .duo blockquote mark{background:rgba(255,201,63,.25);color:#fff;border-radius:3px;padding:0 2px}
+@media(max-width:760px){.post .duo{grid-template-columns:1fr}}
+.post .playcard .cast{display:flex;gap:8px;margin-top:12px;flex-wrap:wrap}
+.post .playcard .cast span,.playfirst .playcard .cast span{font-size:11px;font-weight:800;letter-spacing:.12em;padding:4px 10px;border-radius:99px;border:1px solid var(--line);background:rgba(0,0,0,.25)}
+</style>
+</head>
+<body>
+
+<header class="topbar">
+  <div class="wrap">
+    <a href="../../index.html" class="logo comic">CAPES &amp; EDGES</a>
+    <nav>
+      <a href="../week1/">Week 1</a>
+      <a href="../week2/">Week 2</a>
+      <a href="../week3/">Week 3</a>
+      <a href="../week4/">Week 4</a>
+      <a href="../week5/">Week 5</a>
+      <a href="../week6/">Week 6</a>
+      <a href="index.html" class="on">Week 7</a>
+      <a href="https://github.com/Oddvar112/Social-Graphs-and-Interactions">Code</a>
+    </nav>
+  </div>
+</header>
+
+<section class="playfirst">
+  <div class="wrap">
+    <a class="playcard" href="show/index.html">
+      <div class="lbl">Week 7 &middot; play it before you read it</div>
+      <h3 class="comic">IN OTHER WORDS</h3>
+      <p>A game show. The host reads a description of a Marvel character and you point at the right portrait, while two search
+      engines play the same clue against all 303 Wikipedia pages: <b>KEYWORD</b> counts words, <b>MEANING</b> reads them. One clue
+      each episode is about somebody who is not there at all. After every clue, an instant replay of what each machine went on.</p>
+      <div class="cast"><span style="color:var(--gold)">YOU</span><span style="color:var(--web)">KEYWORD &middot; TF-IDF</span><span style="color:var(--purple)">MEANING &middot; MiniLM</span></div>
+      <span class="cta">Play it</span>
+    </a>
+  </div>
+</section>
+
+<main class="wrap post">
+
+  <div class="kicker">Week 7 &middot; From meaning to measurement</div>
+  <h1>Say it in other words and keyword search hears one word, often somebody else's name.</h1>
+  <p class="lede">The course's last opener this week: <em>find queries where sparse and dense retrieval disagree.</em> We made the
+  disagreement on purpose. For 61 Marvel characters we wrote two clues before computing any ranking for them, one in the words of
+  the character's own Wikipedia page and one with the same facts in other words, and then let two engines rank all 303 pages for
+  every clue: <span class="kwc">KEYWORD</span>, which is week 6's TF-IDF, and <span class="dnc">MEANING</span>, the course's MiniLM
+  sentence encoder reading 180-word passages. In the page's own words they are close to a tie. In other words KEYWORD finds the
+  right page in its top three 6 times out of 61 and MEANING 24 times. When KEYWORD misses, one word carries the wrong answer,
+  a median 96 percent of its score, and in 32 of 58 misses that word is part of the wrong character's name: <em>gun</em> and
+  <em>kid</em> sent six clues to the Two-Gun Kid. We also described six characters who have no page. Both engines answered anyway,
+  and MEANING was about as sure of Hercules being Thor as it was of its right answers. Then we turned it into a game show.</p>
+  <p class="byline">Oddvar, David and Milena &middot; 20 October 2026 &middot; text: the course's frozen week 5 release, 303 pages
+  &middot; encoder: all-MiniLM-L6-v2 &middot; 128 clues, written by us, in <code>data/week7_clues.tsv</code></p>
+
+  <div class="tldr">
+    <span class="lbl">THE SHORT VERSION</span>
+    <ul>
+      <li><b>We wrote the questions first.</b> 61 characters with two clues each (the page's own words, and other words), plus six
+      characters who are not in the corpus: 128 clues, checked for leaked page vocabulary and rewritten before the first ranking, and
+      not touched after it.</li>
+      <li><b>In the page's own words it is a tie.</b> The right page is in the top three for 54 of 61 clues under
+      <span class="kwc">KEYWORD</span> and 57 under <span class="dnc">MEANING</span>; first for 38 and 42.</li>
+      <li><b>In other words, KEYWORD goes deaf.</b> Top three: 6 of 61, median rank 13. <span class="dnc">MEANING</span>: 24 of 61,
+      median rank 5. For the same character, KEYWORD did worse with other words 57 times out of 61 and never better.</li>
+      <li><b>One word, often a name.</b> In 56 of KEYWORD's 58 misses on other words, one word of the clue carries at least half of the
+      wrong page's score, median 96 percent, and in 32 that word is in the wrong page's title: <em>gun</em> to Two-Gun Kid, <em>red</em>
+      to Red Wolf, <em>girl</em> to Spider-Girl, <em>bullet</em> to Blue Bullet. Week 6 again: a name is the strongest signal TF-IDF has.</li>
+      <li><b>MEANING matches meaning.</b> Where it finds the page from other words, the passage it matched contains a median 8 percent
+      of the clue's distinctive words. 32 of the 61 other-words clues use words that no page uses at all (<em>litigator, courtroom,
+      chrysalis</em>); KEYWORD cannot see them, MEANING can.</li>
+      <li><b>We read all 45 of MEANING's misses.</b> 7 are the right character's story on somebody else's page, 7 are lookalikes,
+      8 take one word literally (<em>speed demon</em> finds a passage about demons), 14 share a theme and nothing else, 9 are noise.</li>
+      <li><b>Nobody here.</b> Asked about Thor, KEYWORD says Beta Ray Bill and MEANING says Hercules. To answer "nobody" to all six
+      missing characters, MEANING would have to refuse every answer it scores 0.535 or lower, and that throws away 22 of its 58 right
+      answers, 15 of the 16 it found from other words.</li>
+      <li><b>Smaller passages help.</b> Other words, top three: 60-word passages 32 of 61, 180-word passages 24, one averaged vector
+      per page 18, the first 256 word pieces 17.</li>
+      <li><b>IN OTHER WORDS, the game.</b> Ten clues an episode against both engines, portraits, a clock, a NOBODY HERE buzzer, one
+      lifeline per machine, and an instant replay of the words and passages each machine went on.</li>
+    </ul>
+  </div>
+
+  <h2><span class="num">&nbsp;</span>What we asked</h2>
+  <ol>
+    <li><b>When does searching by meaning beat searching by words?</b> Measured, not anecdotal: the same facts, two wordings, two engines.</li>
+    <li><b>What does each engine hear when it is wrong?</b> The word that carries a keyword miss; the passage behind a meaning miss, read.</li>
+    <li><b>What happens when the answer is not there?</b> Six characters with no page.</li>
+    <li><b>Which choices matter?</b> Passage length, one vector per page, and what the encoder silently cuts off.</li>
+  </ol>
+
+  <h2><span class="num">I.</span>Writing the questions first</h2>
+  <p class="drop">A retrieval test is only as honest as its queries, and the easiest way to make a method look good is to write the
+  queries after seeing what it finds. So the clues came first. We picked 61 characters, most of them among the best-known pages
+  (the ones most pages link to) and a handful of obscure ones we knew well enough to describe, all with a portrait. For each we wrote
+  two clues with the same facts:</p>
+  <ul>
+    <li><b>In the page's own words.</b> Distinctive words that are on the character's Wikipedia page, but never the character's own
+    name. Other characters, teams and places appear, as they do on the page. <em>"A physicist exposed to gamma radiation who transforms
+    into a green-skinned brute of limitless strength when angry."</em></li>
+    <li><b>In other words.</b> The same facts, written to avoid the page's rare words: at most one word that is on the page and on 30
+    or fewer of the 303 pages. <em>"A mild-mannered researcher who becomes an enormous emerald giant whenever he is provoked, after
+    being caught in the explosion of a test weapon."</em></li>
+  </ul>
+  <p>And six clues about characters who have no page in the corpus at all: Thor, Captain America, Iron Man, Daredevil, the Silver
+  Surfer and Magneto. Week 5's search engine could not find Thor because he is not there; this week we wanted to see what an engine
+  says instead.</p>
+  <p>Then a vocabulary check (which of each clue's words are on its page, and on how many pages), two rounds of rewriting the
+  other-words clues that leaked, and only then the first ranking. Nothing was edited after it. Two clues still carry two rare page
+  words each (Black Cat's <em>blonde</em> and <em>famous</em>, Storm's <em>pickpocket</em> and <em>Egypt</em>): the check that found
+  them ran in the same command as the first ranking, so they stay as written and count as they are. In the end, of the 61 other-words
+  clues, 24 share no rare word with their page, 35 share one and 2 share two. One more thing we noticed only afterwards: the corpus has
+  the Ultimate Marvel version of Iron Man, and our Iron Man clue describes him too. It stays in every number below, flagged; the game
+  does not deal it.</p>
+
+  <h2><span class="num">II.</span>Two engines</h2>
+  <p><span class="kwc">KEYWORD</span> is week 6's machine: every page a TF-IDF vector (tf = count / words on the page, idf = ln(303 / pages
+  with the word), unit length), the clue weighted the same way, and the score the cosine between the two. A clue word that no page uses
+  has no idf; it does not exist for the engine. That is the whole of vocabulary mismatch in one sentence.</p>
+  <p><span class="dnc">MEANING</span> is the course's encoder, <code>all-MiniLM-L6-v2</code>: a text in, 384 numbers out, unit length,
+  and the score a dot product. It reads at most 256 word pieces, and 302 of the 303 pages are longer (the median page is 1,644 pieces),
+  so encoding a whole page silently keeps its first few paragraphs. We did what the course page does: cut every page into passages of
+  at most 180 words at sentence boundaries (4,479 passages; the course page has 4,473, our sentence splitter differs a little), encode
+  every passage, and score a page by its best passage. As a check, the course's own example query, <em>a Russian spy who became an
+  Avenger</em>, comes out the same: with one averaged vector per page Red Guardian is first and Black Widow 21st (the course page says
+  20th); scored by the best passage she is second, behind Red Guardian.</p>
+  <p>Both engines rank all 303 pages for every clue. What we record is the rank of the right page.</p>
+
+  <h2><span class="num">III.</span>The price of paraphrase</h2>
+  <figure>
+    <img src="../../assets/figures/week7_paraphrase.png" alt="Three panels. Left, KEYWORD: 61 lines from the rank of the right page with the page's own words (mostly first to fourth) to its rank with other words (mostly fifth to a hundred and fiftieth); only 6 of 61 stay in the top three; median rank 1 to 13. Middle, MEANING: the same lines; 24 of 61 stay in the top three; median rank 1 to 5. Right: the score of each engine's number one, split into right answers, wrong answers and the six characters with no page. KEYWORD: right answers median 0.15, wrong 0.07, absent 0.05 to 0.11. MEANING: right answers median 0.56, wrong 0.46, absent 0.42 to 0.54, with Thor to Hercules at 0.54 and Magneto to Xorn at 0.53 labelled.">
+    <figcaption>Left and middle: every character, from the clue in the page's own words (gold) to the clue in other words. A coloured line
+    means the right page is still in the top three; grey means it fell out. Right: how sure each engine's number one was, when it was
+    right, when it was wrong, and when the character it was asked about has no page. White bars are medians.</figcaption>
+  </figure>
+
+  <p>In the page's own words the two engines are close: <span class="kwc">KEYWORD</span> puts the right page first for 38 of 61 clues
+  and in the top three for 54; <span class="dnc">MEANING</span> 42 and 57. They tie on rank in 33 of the 61. Change the words and keep
+  the facts, and KEYWORD's median rank goes from 1 to 13: for 57 of the 61 characters the right page drops, for the other 4 it stays,
+  and it never rises. MEANING's median goes from 1 to 5, and 24 of the 61 stay in the top three. Head to head on the other-words clues,
+  MEANING ranks the right page higher 43 times, KEYWORD 16 times, and twice they tie.</p>
+  <p>That is the dense-retrieval story the course tells, and it holds. The rest of the post is about the part we did not expect: what
+  each engine hears when it gets it wrong.</p>
+
+  <h2><span class="num">IV.</span>Why KEYWORD misses: one word, often a name</h2>
+  <p>A TF-IDF cosine is a sum with one term per word (week 6's whole method), so for every miss we can ask which word carried the wrong
+  page. On the other-words clues, KEYWORD's number one is wrong 58 times. In 56 of them one word of the clue carries at least half of
+  that page's score, and the median is 96 percent: the wrong answer is one word, not a reading. In 32 of the 58, that word is part of the
+  wrong page's own title.</p>
+
+  <div class="tablewrap">
+    <table>
+      <thead><tr><th>The clue, in other words</th><th>KEYWORD heard</th><th>and answered</th><th class="num">share</th><th class="num">right page</th></tr></thead>
+      <tbody>
+        <tr><td>the brash <b>kid</b> brother in a well-known foursome of explorers, who lights himself up like a bonfire &hellip;</td><td><span class="w">kid</span></td><td>Two-Gun Kid</td><td class="num">99%</td><td class="num">Human Torch #11</td></tr>
+        <tr><td>a grizzled warrior &hellip; with a glowing eye, a metal arm and a huge <b>gun</b> &hellip;</td><td><span class="w">gun</span></td><td>Two-Gun Kid</td><td class="num">95%</td><td class="num">Cable #5</td></tr>
+        <tr><td>an air force colonel &hellip; who flies a grey, <b>gun</b>-covered suit of powered battle gear</td><td><span class="w">gun</span></td><td>Two-Gun Kid</td><td class="num">97%</td><td class="num">War Machine #170</td></tr>
+        <tr><td>a strait-laced team leader who shoots <b>red</b> force from his gaze &hellip;</td><td><span class="w">red</span></td><td>Red Wolf</td><td class="num">96%</td><td class="num">Cyclops #35</td></tr>
+        <tr><td>a strongman from uptown New York with skin no <b>bullet</b> can pierce &hellip;</td><td><span class="w">bullet</span></td><td>Blue Bullet</td><td class="num">100%</td><td class="num">Luke Cage #34</td></tr>
+        <tr><td>a brilliant but troubled researcher who can become tiny enough to ride a <b>bug</b> &hellip;</td><td><span class="w">bug</span></td><td>Bug</td><td class="num">100%</td><td class="num">Hank Pym #37</td></tr>
+        <tr><td>a pair of kids who ran away from home &hellip; a dark teleporter and a <b>girl</b> who throws glowing blades</td><td><span class="w">girl</span></td><td>Spider-Girl</td><td class="num">99.6%</td><td class="num">Cloak and Dagger #27</td></tr>
+        <tr><td>a dead businessman who shambles through the bayou at <b>night</b> &hellip;</td><td><span class="w">night</span></td><td>Werewolf by Night</td><td class="num">98%</td><td class="num">Zombie #30</td></tr>
+        <tr><td>a <b>snow</b> primate in a suit who murders murderers with two pistols</td><td><span class="w">snow</span></td><td>Jack Frost</td><td class="num">98%</td><td class="num">Hit-Monkey #25</td></tr>
+        <tr><td>a courtroom litigator &hellip; who now argues in front of judges as a seven-foot <b>jade</b> woman</td><td><span class="w">jade</span></td><td>Anya Corazon</td><td class="num">83%</td><td class="num">She-Hulk #7</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <p>The last two are not names, and they work the same way: <em>snow</em> is on 12 pages and counts most on Jack Frost's, and
+  <em>Jade</em> is a villain on Anya Corazon's page. The Two-Gun Kid wins six clues, more than any other page, on <em>gun</em> four
+  times and <em>kid</em> twice. The mechanism is week 6's: a word that is part of a character's name is repeated all over that
+  character's page, so its TF-IDF weight there is large, and a paraphrase that avoids the right page's vocabulary leaves that one
+  repeated word to decide. Names are the strongest signal TF-IDF has, and when the right words are missing, it finds a name in the
+  wrong ones.</p>
+  <p>The same thing happens in the page's own words, more quietly. Spider-Man's clue (<em>a teenager bitten by a radioactive spider
+  &hellip;</em>) puts Radioactive Man first: <em>spider</em> is on 146 of the 303 pages, because everybody links to Spider-Man, so it
+  weighs almost nothing, and <em>radioactive</em> is on 20. Of KEYWORD's 23 misses on page-words clues, in 12 the word that counts most
+  is part of the wrong page's name: <em>Wolverine</em> in Jubilee's clue, <em>the Hulk</em> in the Abomination's, <em>venom blasts</em>
+  in Spider-Woman's.</p>
+  <p>And the other half of vocabulary mismatch is the words KEYWORD cannot hear at all. 32 of the 61 other-words clues contain at least
+  one word that no page uses (46 words: <em>courtroom, litigator, judges, chrysalis, bayou, shambles, heists, spangled</em>); 1 of the
+  61 page-words clues does. With no rare page word left in the clue, KEYWORD found the right page in its top three once in 24 tries.</p>
+
+  <h2><span class="num">V.</span>How MEANING wins, and how it misses</h2>
+  <p>MEANING finds the right page first for 16 of the 61 other-words clues. In those 16, the passage it matched contains a median
+  8 percent of the clue's distinctive words (16 of 149 in total): it is not matching words. Two of them, side by side with the clue:</p>
+  <div class="duo">
+    <blockquote><b>Clue:</b> a courtroom litigator who shared her famous relative's blood &hellip; argues in front of judges as a
+    seven-foot jade woman.<br><b>She-Hulk's passage (0.444):</b> &hellip; She-Hulk is also a skilled and experienced attorney
+    who attended the UCLA School of Law &hellip; had the power to compel her to adjudicate cases anywhere in creation.</blockquote>
+    <blockquote><b>Clue:</b> a pair of kids who ran away from home, were drugged by criminals and came out as a dark teleporter and a
+    girl who throws glowing blades.<br><b>Cloak and Dagger's passage (0.473):</b> &hellip; The two teens would end up being forcibly
+    kidnapped &hellip; a criminal chemist who's developing a new synthetic drug &hellip; with tests on runaway teens &hellip;</blockquote>
+  </div>
+  <p>Not one of the clue's distinctive words is in either passage. Three of She-Hulk's (<em>courtroom, litigator, judges</em>) are
+  on no page at all, so KEYWORD never saw them; the encoder was trained on far more text than these 303 pages, and still put the
+  clue next to an attorney. In the second pair the clue says <em>ran away</em> and <em>drugged</em> and the page says <em>runaway</em>
+  and <em>drug</em>: to a bag of words those are different words, to the encoder they are the same story.</p>
+  <p>MEANING's number one is wrong for the other 45, and we read every one of the passages it matched (they are in
+  <code>data/week7_meaning_misses.tsv</code>, with a label and a line each). We sorted them into five kinds:</p>
+  <ul>
+    <li><b>The right story on somebody else's page (7).</b> For Black Widow it found the KGB training her husband in secret and hiding
+    it from Natasha, on Red Guardian's page; for Emma Frost, her school and one of her students trying to read her mind, on Empath's;
+    for Doctor Strange, a passage on Doctor Druid's page that names him. The retriever found text about the character. It is the wrong
+    page.</li>
+    <li><b>Lookalikes (7).</b> Different characters who share at least two of the clue's facts: Stingray, a man who designed and wears an
+    armoured battlesuit, for War Machine; Gargoyle, a Soviet scientist and the Hulk's first foe, for the Abomination; the Two-Gun Kid's
+    black suit, black hat and revolvers for Spider-Man Noir.</li>
+    <li><b>One word taken literally (8).</b> Quicksilver is a <em>speed demon</em>, so a passage about Hell-lords. The Werewolf changes
+    when the <em>moon</em> is full, so a passage about spies living on the Moon. Killraven fights <em>the invaders</em> from The War of
+    the Worlds, so a passage about the superhero team called the Invaders. KEYWORD made the same mistake on the same word.</li>
+    <li><b>One theme and nothing specific (14).</b> A fighter for Wolverine, a burglary for Black Cat, a meteorite for Wakanda's miracle ore.</li>
+    <li><b>Noise (9).</b> Nothing we could connect to the clue.</li>
+  </ul>
+  <p>So half of MEANING's misses (22 of 45) are wrong in a way a person can follow, and the replay in the game shows the passage every
+  time. That is the useful property of a dense retriever that the accuracy number hides: its mistakes are near the meaning.</p>
+
+  <h2><span class="num">VI.</span>Nobody here</h2>
+  <p>Six characters, no pages. A search engine returns its closest match, never "none of these", so both answered every time:</p>
+  <div class="tablewrap">
+    <table>
+      <thead><tr><th>Missing</th><th>KEYWORD</th><th class="num">score</th><th>MEANING</th><th class="num">score</th><th>MEANING's passage</th></tr></thead>
+      <tbody>
+        <tr><td><strong>Thor</strong></td><td>Beta Ray Bill</td><td class="num">0.104</td><td>Hercules</td><td class="num">0.535</td><td>his mace, "equal in durability to Thor's hammer Mjolnir"</td></tr>
+        <tr><td><strong>Captain America</strong></td><td>Jack Frost</td><td class="num">0.112</td><td>Wolverine</td><td class="num">0.488</td><td>"During World War II, Logan teamed up with Captain America"</td></tr>
+        <tr><td><strong>Magneto</strong></td><td>Rusty Collins</td><td class="num">0.060</td><td>Xorn</td><td class="num">0.527</td><td>Xorn, who "took the image of Magneto because he knew mutants would follow him"</td></tr>
+        <tr><td><strong>Iron Man</strong></td><td>Iron Man (Ultimate Marvel character)</td><td class="num">0.060</td><td>Stingray</td><td class="num">0.472</td><td>a man who designed and wears his own armoured battlesuit</td></tr>
+        <tr><td><strong>Daredevil</strong></td><td>Werewolf by Night</td><td class="num">0.046</td><td>Ghost Rider (Johnny Blaze)</td><td class="num">0.448</td><td>"send the devil back to hell": the clue said Hell's Kitchen</td></tr>
+        <tr><td><strong>Silver Surfer</strong></td><td>Firelord</td><td class="num">0.051</td><td>Fin Fang Foom</td><td class="num">0.417</td><td>"a dragon-like alien from the planet Kakaranathara"</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p>KEYWORD's answers are word matches again: <em>ice</em> and <em>frozen</em> for Captain America, <em>herald</em> for the Silver
+  Surfer (Firelord was a herald of Galactus too, which is almost right). Its Iron Man answer is the Ultimate Marvel Iron Man, the case
+  we flagged in section I: the clue describes him as well, and we count it as neither right nor wrong. MEANING's answers are more
+  interesting. For Captain America, Magneto and Thor it found passages that <em>mention</em> the missing character, on somebody else's
+  page. For a system that hands passages to a generator, that is the right text. As an answer to "who is this?", it is the wrong person,
+  said with confidence.</p>
+  <p>How much confidence: MEANING's six answers about nobody scored 0.42 to 0.54, and its right answers have a median of 0.56. To say
+  "nobody here" to all six, it would have to refuse every answer that scores 0.535 or lower, which throws away 22 of its 58 right answers,
+  including 15 of the 16 it found from other words. The answers it gets right from a paraphrase are exactly the ones it is least sure of.
+  KEYWORD's scores are no better as a detector: refusing everything at or below its highest score for a missing character (0.112) throws
+  away 10 of its 41 right answers, all 3 of its other-words ones. The score is a similarity, not a probability that the page is right.
+  It cannot say that the answer is not in the corpus.</p>
+
+  <h2><span class="num">VII.</span>Change one choice</h2>
+  <p>Exercise 7.10 asks for one change of representation and a check of which conclusions survive. We ran three, all with the same
+  encoder and the same clues.</p>
+  <div class="tablewrap">
+    <table>
+      <thead><tr><th>How a page is scored</th><th class="num">own words: first</th><th class="num">top 3</th><th class="num">other words: first</th><th class="num">top 3</th><th class="num">median rank</th></tr></thead>
+      <tbody>
+        <tr><td><span class="kwc">KEYWORD</span>, TF-IDF over the whole page</td><td class="num">38</td><td class="num">54</td><td class="num">3</td><td class="num">6</td><td class="num">13</td></tr>
+        <tr><td><span class="dnc">MEANING</span>, best 180-word passage (the game)</td><td class="num">42</td><td class="num">57</td><td class="num">16</td><td class="num">24</td><td class="num">5</td></tr>
+        <tr><td>MEANING, best 60-word passage (14,985 passages)</td><td class="num">48</td><td class="num">57</td><td class="num">14</td><td class="num">32</td><td class="num">3</td></tr>
+        <tr><td>MEANING, one averaged vector per page</td><td class="num">27</td><td class="num">48</td><td class="num">8</td><td class="num">18</td><td class="num">12</td></tr>
+        <tr><td>MEANING, <code>encode()</code> on the whole page (first 256 pieces)</td><td class="num">42</td><td class="num">50</td><td class="num">8</td><td class="num">17</td><td class="num">10</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p>Out of 61 clues of each kind. Shorter passages help: with 60 words, 32 of the other-words clues have the right page in the top
+  three. Moon Knight's clue (<em>a hired gun left for dead in Egypt</em>) is the cleanest example: his page says, nearly word for word,
+  "the mercenary who left Marc Spector for dead in Egypt", but in a 180-word passage that sentence shares the vector with several other
+  villains, and the page ranks 15th; in a 60-word passage it is third, and averaged over the whole page it is 194th. Averaging a long
+  page blurs every particular fact into the page's general drift. Cutting at 256 word pieces does surprisingly well on the page's own
+  words (42 first), probably because the first paragraphs of a Wikipedia article are its summary and our page-words clues lean on them;
+  with other words it falls to 17 in the top three. The conclusions survive every change: meaning beats words on paraphrase, and the two
+  are close on the page's own words. And how a page is cut up moves the other-words top three between 17 and 32, about as far as the
+  choice of engine moves it.</p>
+
+  <h2><span class="num">VIII.</span>So we made it a game show</h2>
+  <p><strong><a href="show/index.html">IN OTHER WORDS</a></strong> is the test with you in it. The host reads a clue; six portraits
+  flip in; you point at one, or hit <b>NOBODY HERE</b>. <span class="kwc">KEYWORD</span> and <span class="dnc">MEANING</span> play the
+  same clue at the same time against all 303 pages and lock in their number one before you have finished reading (the six portraits
+  include their picks, and the rest are pages one of them ranked highly, so every decoy is plausible to a machine). An episode is ten
+  clues: four in the page's own words, five in other words, one about somebody who is not there. Each machine will show you its top three
+  once an episode, which turns out to be the interesting decision: trust KEYWORD when the clue sounds like Wikipedia, MEANING when it
+  does not, and neither when the clue is about Thor.</p>
+  <p>After every clue comes the instant replay. KEYWORD's side shows the clue as the engine read it: each word shaded by what it added to
+  KEYWORD's pick, underlined where it would have counted for the right page instead, struck through if no page uses it. MEANING's side shows the
+  passage it matched and the right page's best passage, with the clue's words marked, so you can see how few of them there are. The
+  episode of the day is the same for everyone and ends with a result to paste.</p>
+  <p><a class="playlink" href="show/index.html">&#9654; Play IN OTHER WORDS <small>ten clues, two machines, one nobody</small></a></p>
+
+  <h2><span class="num">&nbsp;</span>What surprised us</h2>
+  <ol>
+    <li><b>The Two-Gun Kid.</b> A Western hero from 1948 is KEYWORD's favourite wrong answer, six times, because <em>gun</em> and
+    <em>kid</em> are plain English and his name.</li>
+    <li><b>Keyword misses are names even when the clue has none.</b> Red, girl, bullet, bug, night, star, agent, woman: 32 of 58 misses
+    hang on a word that is part of the wrong page's title.</li>
+    <li><b>MEANING's paraphrase wins are its least confident answers.</b> 15 of the 16 score below what it gave Hercules for Thor.</li>
+    <li><b>Both engines fell for the Invaders.</b> A homonym fools a bag of words and a sentence encoder alike.</li>
+    <li><b>The most famous word is the weakest.</b> <em>spider</em> is on 146 of 303 pages, so in Spider-Man's own clue it counts for
+    almost nothing.</li>
+    <li><b>Cutting a page at 256 pieces is not that bad, for the wrong reason.</b> The lead paragraph is a summary, and clues in the page's
+    own words echo it.</li>
+  </ol>
+
+  <h2><span class="num">&nbsp;</span>What we checked in the text</h2>
+  <ul>
+    <li>Every clue's vocabulary against its page before the first ranking, and the two clues that still leak, named above.</li>
+    <li>All 45 passages behind MEANING's misses on other-words clues, labelled by us; the analysis reads the file back and stops if a label
+    is for a clue or a pick that the ranking does not produce.</li>
+    <li>For every KEYWORD miss, the word that carried it, computed term by term, and the ten in the table above read against the pages.</li>
+    <li>The six passages MEANING returned for the missing characters, quoted in the table, and the Iron Man case it exposed.</li>
+    <li>The course's Russian spy example, as a check that our passages and encoder are the course's.</li>
+  </ul>
+
+  <div class="callout warn">
+    <b>The limitation that matters.</b> We wrote every clue, so "other words" means <em>our</em> other words: three students who know the
+    pages and were deliberately avoiding their vocabulary. Real searchers paraphrase less, and a question typed into a search box is closer
+    to our page-words clues, where the two engines tie. The numbers are also small: 61 pairs give a top-three count of 24 an uncertainty of
+    about plus or minus 12 percentage points, and six missing characters show the problem, they do not measure it.
+  </div>
+
+  <h2><span class="num">&nbsp;</span>Reproduce it</h2>
+  <p>One module holds the two engines and the passage rule, one script builds every figure and number in this post, one builds the game's
+  data, and one test recomputes the data from scratch and runs the game's rules.</p>
+<pre><code>git clone https://github.com/Oddvar112/Social-Graphs-and-Interactions
+cd Social-Graphs-and-Interactions
+
+python scripts/build_week7_show.py --check   # the vocabulary check of the clues (no model needed)
+python scripts/analyse_week7.py              # every figure and number in this post (a minute the first time, then seconds)
+python scripts/build_week7_show.py           # rankings, evidence and lineups for the game -> data/week7_show.js
+python scripts/test_in_other_words.py        # recomputes every ranking and passage, runs the game's core.js under node
+
+python -m http.server 8000                   # then open http://localhost:8000/weeks/week7/show/</code></pre>
+  <p>Needs <code>numpy</code>, <code>networkx</code>, <code>matplotlib</code>, <code>torch</code> and <code>transformers</code>; the encoder
+  is <code>sentence-transformers/all-MiniLM-L6-v2</code> (90 MB, downloaded on the first run), loaded with plain <code>transformers</code>
+  and pooled the way sentence-transformers does it. Passage vectors are cached in <code>.cache/</code>. Every number above is written to
+  <code>data/stats_week7.json</code>. The clues are in <code>data/week7_clues.tsv</code>, our reading of MEANING's misses in
+  <code>data/week7_meaning_misses.tsv</code>. The game's test recomputes all 128 rankings under both engines, every stored passage and
+  word contribution, checks that every lineup holds the right page and both picks, and plays the rules: an episode is ten clues, four,
+  five and one, never the same character twice; NOBODY HERE scores only on a missing character; the machines never do.
+  The text is the course's frozen release, <code>marvel_pages.zip</code>, unmodified. Character pictures are the lead images of the
+  Wikipedia articles, loaded as you play; we store only their addresses.</p>
+
+  <div class="postnav">
+    <a href="../week6/">&larr; Week 6</a>
+    <a class="cta" href="show/index.html">Play IN OTHER WORDS &rarr;</a>
+  </div>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    <span>Oddvar, David and Milena &middot; 02805 Social Graphs and Interactions &middot; DTU</span>
+    <span class="sp"><a href="https://github.com/Oddvar112/Social-Graphs-and-Interactions">Source on GitHub</a></span>
+  </div>
+</footer>
+
+</body>
+</html>

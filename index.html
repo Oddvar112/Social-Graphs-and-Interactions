@@ -26,6 +26,7 @@
       <a href="weeks/week4/">Week 4</a>
       <a href="weeks/week5/">Week 5</a>
       <a href="weeks/week6/">Week 6</a>
+      <a href="weeks/week7/">Week 7</a>
       <a href="https://github.com/Oddvar112/Social-Graphs-and-Interactions">Code</a>
     </nav>
   </div>
@@ -55,7 +56,7 @@
       <h2 class="comic">THE WORK</h2>
       <div class="switch" role="tablist" aria-label="How to browse the work">
         <button type="button" role="tab" id="tab-weeks" aria-controls="view-weeks" aria-selected="true" data-view="weeks">By week</button>
-        <button type="button" role="tab" id="tab-games" aria-controls="view-games" aria-selected="false" data-view="games">All games <span>8</span></button>
+        <button type="button" role="tab" id="tab-games" aria-controls="view-games" aria-selected="false" data-view="games">All games <span>9</span></button>
       </div>
     </div>
 
@@ -67,7 +68,7 @@
         <li class="done"><a href="#week-4"><i>4</i><span>Communities</span></a></li>
         <li class="done"><a href="#week-5"><i>5</i><span>Text</span></a></li>
         <li class="done"><a href="#week-6"><i>6</i><span>Similarity</span></a></li>
-        <li class="todo"><b><i>7</i><span>Soon</span></b></li>
+        <li class="done"><a href="#week-7"><i>7</i><span>Embeddings</span></a></li>
         <li class="todo"><b><i>8</i><span>Soon</span></b></li>
       </ol>
 
@@ -138,10 +139,15 @@
             <div class="plays"><a href="weeks/week6/taboo/"><i>&#9654;</i> TABOO-IDF</a><a href="weeks/week6/dial/"><i>&#9654;</i> THE NAME DIAL</a></div></div>
         </article>
 
-        <article class="week soon" id="week-7">
+        <article class="week" id="week-7">
           <div class="no"><span>Week 7</span><span class="half hot">Language</span></div>
-          <h3 class="comic">COMING UP</h3>
-          <p>A slot is reserved. It fills in when week 7 lands, with its post and something to play.</p>
+          <h3 class="comic"><a href="weeks/week7/">SAY IT IN OTHER WORDS</a></h3>
+          <p>Every character described twice, in the words of their Wikipedia page and in other words, and two search engines to
+          find them. TF-IDF and a sentence encoder tie on the page's own words; on other words keyword search hears one word, often
+          somebody else's name, and the Two-Gun Kid wins six clues. Plus six characters who are not there at all.</p>
+          <div class="tags"><span class="tag">Embeddings</span><span class="tag">Sparse vs dense search</span><span class="tag">Chunking</span></div>
+          <div class="foot"><a class="read" href="weeks/week7/">Read the post &rarr;</a>
+            <div class="plays"><a href="weeks/week7/show/"><i>&#9654;</i> IN OTHER WORDS</a></div></div>
         </article>
 
         <article class="week soon" id="week-8">
@@ -154,8 +160,17 @@
     </div>
 
     <div id="view-games" role="tabpanel" aria-labelledby="tab-games">
-      <p class="gintro">Eight things to play with, newest first: five games and three explorables. A <b>game</b> scores you against something; an <b>explorable</b> lets you turn the knobs. Each one is built on the week's idea and the data we were working with that week.</p>
+      <p class="gintro">Nine things to play with, newest first: six games and three explorables. A <b>game</b> scores you against something; an <b>explorable</b> lets you turn the knobs. Each one is built on the week's idea and the data we were working with that week.</p>
       <div class="games">
+
+        <a class="gcard" href="weeks/week7/show/">
+          <div class="meta"><span>Week 7</span><span class="kind game">Game</span></div>
+          <h3 class="comic">IN OTHER WORDS</h3>
+          <p>A game show against two search engines. The host reads a description of a Marvel character and you point at the right
+          portrait, while TF-IDF and a sentence encoder race you over all 303 Wikipedia pages. One clue an episode is about somebody who
+          is not there at all, and every answer comes with an instant replay of the words and passages each machine went on.</p>
+          <span class="cta">Play it</span>
+        </a>
 
         <a class="gcard" href="weeks/week6/taboo/">
           <div class="meta"><span>Week 6</span><span class="kind game">Game</span></div>
