@@ -1,11 +1,13 @@
 id	meaning_pick	label	what the matched passage says, read against the clue
-# Every clue written in other words where MEANING's number one is the wrong page (45 of 61), read by us on 20 October 2026.
+# Every clue written in other words where MiniLM's number one (all-MiniLM-L6-v2, 180-word passages, best passage) is the
+# wrong page (45 of 61), read by us on 20 October 2026. The same for mxbai-embed-large-v1: week7_meaning_misses_mxbai.tsv.
 # Labels: story = the passage is about the right character's story, on someone else's page;
 #         lookalike = a different character who shares at least two of the clue's facts;
 #         word = one word or phrase of the clue taken literally (a pun, a homonym);
 #         theme = shares one theme with the clue and nothing specific;
 #         noise = nothing we could connect to the clue.
-# The labels are our reading of the passage the game shows (data/week7_show.js); scripts/analyse_week7.py counts them.
+# The labels are our reading of the passage MiniLM matched (the game now plays mxbai and shows its passages instead);
+# scripts/analyse_week7.py checks them against the ranking and counts them.
 spiderman-other	Alex Wilder	theme	runaway teenagers and their parents; nothing about spiders, bites or duty
 hulk-other	Fin Fang Foom	theme	a creature that hibernates and reshapes its body; not a scientist, no explosion
 wolverine-other	Shatterstar	theme	a fighter's strength, speed and combat training; no claws, no metal skeleton, no healing

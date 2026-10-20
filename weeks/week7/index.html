@@ -7,27 +7,27 @@
 <link rel="icon" type="image/svg+xml" href="../../assets/favicon.svg">
 <link rel="icon" type="image/png" sizes="32x32" href="../../assets/favicon-32.png">
 <link rel="apple-touch-icon" href="../../assets/apple-touch-icon.png">
-<meta name="description" content="We wrote two clues for each of 61 Marvel characters, one in the words of their Wikipedia page and one in other words, and asked TF-IDF and a sentence encoder to find them. In the page's own words it is a tie; in other words keyword search hears one word, often somebody else's name. Plus six characters who are not there at all, and a game show.">
+<meta name="description" content="We wrote two clues for each of 61 Marvel characters, one in the words of their Wikipedia page and one in other words, and asked TF-IDF and two sentence encoders, the course's small MiniLM and the larger mxbai, to find them. In the page's own words it is close; in other words keyword search hears one word, often somebody else's name, and the bigger encoder's mistakes are mostly characters who fit. Plus six characters who are not there at all, and a game show.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Bangers&family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="../../assets/site.css">
 <style>
 .kwc{color:var(--web);font-weight:800}
+.mlc{color:#ff7ac8;font-weight:800}
 .dnc{color:var(--purple);font-weight:800}
 .youc{color:var(--gold);font-weight:800}
 .playlink{display:inline-flex;align-items:center;gap:10px;margin:2px 0 8px;padding:11px 24px;border-radius:12px;background:var(--red);color:#fff;font-weight:800;font-size:15px;box-shadow:0 4px 0 #6b0d10;text-decoration:none}
 .playlink:hover{background:var(--red2);text-decoration:none;transform:translateY(-1px)}
 .playlink small{font-weight:600;font-size:12px;opacity:.85}
 .post td .w{display:inline-block;padding:0 6px;border-radius:5px;background:rgba(95,227,255,.22);color:#fff;font-weight:700}
-.post td .w.p{background:rgba(166,120,255,.25)}
 .post .duo{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:14px;margin:20px 0}
 .post .duo blockquote{margin:0;font-size:13.5px}
 .post .duo blockquote b{color:var(--text)}
-.post .duo blockquote mark{background:rgba(255,201,63,.25);color:#fff;border-radius:3px;padding:0 2px}
 @media(max-width:760px){.post .duo{grid-template-columns:1fr}}
-.post .playcard .cast{display:flex;gap:8px;margin-top:12px;flex-wrap:wrap}
-.post .playcard .cast span,.playfirst .playcard .cast span{font-size:11px;font-weight:800;letter-spacing:.12em;padding:4px 10px;border-radius:99px;border:1px solid var(--line);background:rgba(0,0,0,.25)}
+.playfirst .playcard .cast{display:flex;gap:8px;margin-top:12px;flex-wrap:wrap}
+.playfirst .playcard .cast span{font-size:11px;font-weight:800;letter-spacing:.12em;padding:4px 10px;border-radius:99px;border:1px solid var(--line);background:rgba(0,0,0,.25)}
+.post td.sub{color:var(--dim);font-size:12px}
 </style>
 </head>
 <body>
@@ -69,16 +69,18 @@
   <h1>Say it in other words and keyword search hears one word, often somebody else's name.</h1>
   <p class="lede">The course's last opener this week: <em>find queries where sparse and dense retrieval disagree.</em> We made the
   disagreement on purpose. For 61 Marvel characters we wrote two clues before computing any ranking for them, one in the words of
-  the character's own Wikipedia page and one with the same facts in other words, and then let two engines rank all 303 pages for
-  every clue: <span class="kwc">KEYWORD</span>, which is week 6's TF-IDF, and <span class="dnc">MEANING</span>, the course's MiniLM
-  sentence encoder reading 180-word passages. In the page's own words they are close to a tie. In other words KEYWORD finds the
-  right page in its top three 6 times out of 61 and MEANING 24 times. When KEYWORD misses, one word carries the wrong answer,
-  a median 96 percent of its score, and in 32 of 58 misses that word is part of the wrong character's name: <em>gun</em> and
-  <em>kid</em> sent six clues to the Two-Gun Kid. We also described six characters who have no page. Both engines answered anyway,
-  and MEANING was about as sure of Hercules being Thor as it was of its right answers. Then we turned it into a game show.</p>
+  the character's own Wikipedia page and one with the same facts in other words, and then let three engines rank all 303 pages for
+  every clue: <span class="kwc">KEYWORD</span>, which is week 6's TF-IDF, and two sentence encoders reading 180-word passages, the
+  course's small <span class="mlc">MiniLM</span> and the much larger <span class="dnc">mxbai</span>, which plays MEANING in our game.
+  In the page's own words the three are close. In other words KEYWORD finds the right page in its top three 6 times out of 61,
+  MiniLM 24 times and mxbai 43. When KEYWORD misses, one word carries the wrong answer, a median 96 percent of its score, and in 32 of
+  58 misses that word is part of the wrong character's name: <em>gun</em> and <em>kid</em> sent six clues to the Two-Gun Kid. The
+  encoders miss differently, and we read every one of their 81 wrong passages: the bigger model's mistakes are mostly characters who
+  really do fit the clue. We also described six characters who have no page. All three engines answered anyway, and a rule that looks at
+  how far the winner stands out lets them say nobody some of the time. Then we turned it into a game show.</p>
   <p class="byline">Oddvar, David and Milena &middot; 20 October 2026 &middot; text: the course's frozen week 5 release, 303 pages
-  &middot; encoders: all-MiniLM-L6-v2 for the analysis, five larger ones compared, mxbai-embed-large-v1 in the game &middot; 128 clues,
-  written by us, in <code>data/week7_clues.tsv</code></p>
+  &middot; encoders: all-MiniLM-L6-v2 and mxbai-embed-large-v1, with four more compared &middot; 128 clues, written by us, in
+  <code>data/week7_clues.tsv</code></p>
 
   <div class="tldr">
     <span class="lbl">THE SHORT VERSION</span>
@@ -86,41 +88,42 @@
       <li><b>We wrote the questions first.</b> 61 characters with two clues each (the page's own words, and other words), plus six
       characters who are not in the corpus: 128 clues, checked for leaked page vocabulary and rewritten before the first ranking, and
       not touched after it.</li>
-      <li><b>In the page's own words it is a tie.</b> The right page is in the top three for 54 of 61 clues under
-      <span class="kwc">KEYWORD</span> and 57 under <span class="dnc">MEANING</span>; first for 38 and 42.</li>
-      <li><b>In other words, KEYWORD goes deaf.</b> Top three: 6 of 61, median rank 13. <span class="dnc">MEANING</span>: 24 of 61,
-      median rank 5. For the same character, KEYWORD did worse with other words 57 times out of 61 and never better.</li>
+      <li><b>In the page's own words it is close.</b> The right page is in the top three for 54 of 61 clues under
+      <span class="kwc">KEYWORD</span>, 57 under <span class="mlc">MiniLM</span> and 58 under <span class="dnc">mxbai</span>; first
+      for 38, 42 and 47.</li>
+      <li><b>In other words, KEYWORD goes deaf.</b> Top three: 6 of 61, median rank 13. MiniLM: 24, median 5. mxbai: 43, median 2.
+      For the same character, KEYWORD did worse with other words 57 times out of 61 and never better; mxbai did worse 31 times and held
+      its rank 25 times.</li>
       <li><b>One word, often a name.</b> In 56 of KEYWORD's 58 misses on other words, one word of the clue carries at least half of the
       wrong page's score, median 96 percent, and in 32 that word is in the wrong page's title: <em>gun</em> to Two-Gun Kid, <em>red</em>
       to Red Wolf, <em>girl</em> to Spider-Girl, <em>bullet</em> to Blue Bullet. Week 6 again: a name is the strongest signal TF-IDF has.</li>
-      <li><b>MEANING matches meaning.</b> Where it finds the page from other words, the passage it matched contains a median 8 percent
-      of the clue's distinctive words. 32 of the 61 other-words clues use words that no page uses at all (<em>litigator, courtroom,
-      chrysalis</em>); KEYWORD cannot see them, MEANING can.</li>
-      <li><b>We read all 45 of MEANING's misses.</b> 7 are the right character's story on somebody else's page, 7 are lookalikes,
-      8 take one word literally (<em>speed demon</em> finds a passage about demons), 14 share a theme and nothing else, 9 are noise.</li>
-      <li><b>Nobody here.</b> Asked about Thor, KEYWORD says Beta Ray Bill and MEANING says Hercules. To answer "nobody" to all six
-      missing characters, MEANING would have to refuse every answer it scores 0.535 or lower, and that throws away 22 of its 58 right
-      answers, 15 of the 16 it found from other words.</li>
+      <li><b>The encoders match meaning.</b> Where they find the page from other words, the passage they matched contains a median
+      8 percent of the clue's distinctive words, for both. 32 of the 61 other-words clues use words that no page uses at all
+      (<em>litigator, courtroom, chrysalis</em>); KEYWORD cannot see them, the encoders can.</li>
+      <li><b>We read all 81 of the encoders' misses.</b> MiniLM's 45: 7 the right character's story on somebody else's page, 7 lookalikes,
+      8 one word taken literally (<em>speed demon</em> finds a passage about demons), 14 a shared theme and nothing else, 9 noise. mxbai's
+      36: 6 stories, 16 lookalikes, 2 words, 10 themes, 2 noise. The bigger model misses less, and when it misses it usually picks a
+      character who fits.</li>
+      <li><b>Nobody here.</b> Asked about Thor, KEYWORD and mxbai say Beta Ray Bill and MiniLM says Hercules. The score cannot tell a
+      missing character from a found one: every right answer mxbai gets from other words scores no higher than its answer about Thor.</li>
       <li><b>A machine can learn to say nobody, a little.</b> Not from its score but from how far its number one stands out from the
       other 302 pages. Judged on clues the rule was not fitted to, MiniLM then says nobody to 3 of the 5 missing characters the game
-      deals, at the cost of 6 right answers; the biggest encoder we tried says it to 2 and gives up none.</li>
-      <li><b>Smaller passages help.</b> Other words, top three: 60-word passages 32 of 61, 180-word passages 24, one averaged vector
-      per page 18, the first 256 word pieces 17.</li>
-      <li><b>A bigger encoder helps where it matters.</b> We ran five larger sentence encoders on the same clues. The largest,
-      mxbai-embed-large, finds the page first for 25 of the other-words clues (MiniLM 16) and has it in its top three for 43 (MiniLM 24).
-      On the page's own words all six are within a few clues of KEYWORD.</li>
-      <li><b>IN OTHER WORDS, the game.</b> Ten clues an episode against both engines, portraits, a clock, a NOBODY HERE buzzer, one
-      lifeline per machine, and an instant replay of the words and passages each machine went on. In the game MEANING is mxbai-embed-large,
-      and both machines can say NOBODY HERE.</li>
+      deals, at the cost of 6 right answers; mxbai says it to 2 and gives up none.</li>
+      <li><b>Chunking matters to the small model.</b> Other words, top three for MiniLM: 60-word passages 32 of 61, 180-word passages 24,
+      one averaged vector per page 18, the first 256 word pieces 17. For mxbai the same choices give 41, 43, 34 and 39.</li>
+      <li><b>IN OTHER WORDS, the game.</b> Ten clues an episode against two machines, portraits, a clock, a NOBODY HERE buzzer, one
+      lifeline per machine, and an instant replay of the words and passages each machine went on. In the game MEANING is mxbai, and both
+      machines can say NOBODY HERE.</li>
     </ul>
   </div>
 
   <h2><span class="num">&nbsp;</span>What we asked</h2>
   <ol>
-    <li><b>When does searching by meaning beat searching by words?</b> Measured, not anecdotal: the same facts, two wordings, two engines.</li>
-    <li><b>What does each engine hear when it is wrong?</b> The word that carries a keyword miss; the passage behind a meaning miss, read.</li>
+    <li><b>When does searching by meaning beat searching by words?</b> Measured, not anecdotal: the same facts, two wordings, three engines.</li>
+    <li><b>What does each engine hear when it is wrong?</b> The word that carries a keyword miss; the passage behind an encoder's miss, read.</li>
+    <li><b>Does a bigger encoder change the answer?</b> The course's 23-million-parameter MiniLM next to a 335-million-parameter model.</li>
     <li><b>What happens when the answer is not there?</b> Six characters with no page.</li>
-    <li><b>Which choices matter?</b> Passage length, one vector per page, and what the encoder silently cuts off.</li>
+    <li><b>Which choices matter?</b> Passage length, one vector per page, what the encoder silently cuts off, and the encoder itself.</li>
   </ol>
 
   <h2><span class="num">I.</span>Writing the questions first</h2>
@@ -147,34 +150,38 @@
   the Ultimate Marvel version of Iron Man, and our Iron Man clue describes him too. It stays in every number below, flagged; the game
   does not deal it.</p>
 
-  <h2><span class="num">II.</span>Two engines</h2>
+  <h2><span class="num">II.</span>Three engines</h2>
   <p><span class="kwc">KEYWORD</span> is week 6's machine: every page a TF-IDF vector (tf = count / words on the page, idf = ln(303 / pages
   with the word), unit length), the clue weighted the same way, and the score the cosine between the two. A clue word that no page uses
   has no idf; it does not exist for the engine. That is the whole of vocabulary mismatch in one sentence.</p>
-  <p><span class="dnc">MEANING</span> is the course's encoder, <code>all-MiniLM-L6-v2</code>: a text in, 384 numbers out, unit length,
-  and the score a dot product. It reads at most 256 word pieces, and 302 of the 303 pages are longer (the median page is 1,644 pieces),
-  so encoding a whole page silently keeps its first few paragraphs. We did what the course page does: cut every page into passages of
-  at most 180 words at sentence boundaries (4,479 passages; the course page has 4,473, our sentence splitter differs a little), encode
-  every passage, and score a page by its best passage. As a check, the course's own example query, <em>a Russian spy who became an
+  <p><span class="mlc">MiniLM</span> is the course's encoder, <code>all-MiniLM-L6-v2</code>: 23 million parameters, a text in, 384 numbers
+  out, unit length, and the score a dot product. It reads at most 256 word pieces, and 302 of the 303 pages are longer (the median page is
+  1,644 pieces), so encoding a whole page silently keeps its first few paragraphs. We did what the course page does: cut every page into
+  passages of at most 180 words at sentence boundaries (4,479 passages; the course page has 4,473, our sentence splitter differs a little),
+  encode every passage, and score a page by its best passage. As a check, the course's own example query, <em>a Russian spy who became an
   Avenger</em>, comes out the same: with one averaged vector per page Red Guardian is first and Black Widow 21st (the course page says
   20th); scored by the best passage she is second, behind Red Guardian.</p>
-  <p>Both engines rank all 303 pages for every clue. What we record is the rank of the right page.</p>
+  <p><span class="dnc">mxbai</span> is <code>mxbai-embed-large-v1</code>: 335 million parameters, 1,024 numbers per text, and room for
+  512 word pieces (288 of the 303 pages are still longer). It was the best of five larger encoders we tried on these clues (section VII),
+  and it is MEANING in the game. Same passages, same scoring, and, as its model card says, a short instruction in front of every query.</p>
+  <p>All three rank all 303 pages for every clue. What we record is the rank of the right page.</p>
 
   <h2><span class="num">III.</span>The price of paraphrase</h2>
   <figure>
-    <img src="../../assets/figures/week7_paraphrase.png" alt="Three panels. Left, KEYWORD: 61 lines from the rank of the right page with the page's own words (mostly first to fourth) to its rank with other words (mostly fifth to a hundred and fiftieth); only 6 of 61 stay in the top three; median rank 1 to 13. Middle, MEANING: the same lines; 24 of 61 stay in the top three; median rank 1 to 5. Right: the score of each engine's number one, split into right answers, wrong answers and the six characters with no page. KEYWORD: right answers median 0.15, wrong 0.07, absent 0.05 to 0.11. MEANING: right answers median 0.56, wrong 0.46, absent 0.42 to 0.54, with Thor to Hercules at 0.54 and Magneto to Xorn at 0.53 labelled.">
-    <figcaption>Left and middle: every character, from the clue in the page's own words (gold) to the clue in other words. A coloured line
-    means the right page is still in the top three; grey means it fell out. Right: how sure each engine's number one was, when it was
-    right, when it was wrong, and when the character it was asked about has no page. White bars are medians.</figcaption>
+    <img src="../../assets/figures/week7_paraphrase.png" alt="Three panels, one per engine. Each draws 61 lines, one per character, from the rank of the right page with the clue in the page's own words (left, mostly first to fourth) to its rank with the clue in other words (right). KEYWORD: only 6 of 61 stay in the top three, median rank 1 to 13, with many lines falling to ranks 10 to 150. MiniLM: 24 of 61 stay in the top three, median rank 1 to 5. mxbai: 41 lines stay in the top three, 43 of 61 other-words clues have the right page in the top three, median rank 1 to 2, with one line falling past 100.">
+    <figcaption>Every character, from the clue in the page's own words (gold) to the clue in other words, for each engine. A coloured line
+    means the right page is still in the top three; grey means it fell out.</figcaption>
   </figure>
 
-  <p>In the page's own words the two engines are close: <span class="kwc">KEYWORD</span> puts the right page first for 38 of 61 clues
-  and in the top three for 54; <span class="dnc">MEANING</span> 42 and 57. They tie on rank in 33 of the 61. Change the words and keep
-  the facts, and KEYWORD's median rank goes from 1 to 13: for 57 of the 61 characters the right page drops, for the other 4 it stays,
-  and it never rises. MEANING's median goes from 1 to 5, and 24 of the 61 stay in the top three. Head to head on the other-words clues,
-  MEANING ranks the right page higher 43 times, KEYWORD 16 times, and twice they tie.</p>
-  <p>That is the dense-retrieval story the course tells, and it holds. The rest of the post is about the part we did not expect: what
-  each engine hears when it gets it wrong.</p>
+  <p>In the page's own words the three engines are close. <span class="kwc">KEYWORD</span> puts the right page first for 38 of 61 clues and in
+  the top three for 54; <span class="mlc">MiniLM</span> 42 and 57; <span class="dnc">mxbai</span> 47 and 58. KEYWORD ties MiniLM on rank in 33
+  of the 61 and mxbai in 38. Change the words and keep the facts, and KEYWORD's median rank goes from 1 to 13: for 57 of the 61 characters the
+  right page drops, for the other 4 it stays, and it never rises. MiniLM's median goes from 1 to 5, with 24 of the 61 still in the top three.
+  mxbai's goes from 1 to 2: 41 still in the top three, 25 at exactly the same rank, 5 even better. Head to head on the other-words clues,
+  MiniLM ranks the right page higher than KEYWORD 43 times and lower 16 times (2 ties); mxbai higher 54 times and lower 5 times; and mxbai
+  beats MiniLM 42 times, loses 6 and ties 13.</p>
+  <p>That is the dense-retrieval story the course tells, and it holds, more strongly the bigger the encoder. The rest of the post is about the
+  part we did not expect: what each engine hears when it gets it wrong.</p>
 
   <h2><span class="num">IV.</span>Why KEYWORD misses: one word, often a name</h2>
   <p>A TF-IDF cosine is a sum with one term per word (week 6's whole method), so for every miss we can ask which word carried the wrong
@@ -215,9 +222,11 @@
   one word that no page uses (46 words: <em>courtroom, litigator, judges, chrysalis, bayou, shambles, heists, spangled</em>); 1 of the
   61 page-words clues does. With no rare page word left in the clue, KEYWORD found the right page in its top three once in 24 tries.</p>
 
-  <h2><span class="num">V.</span>How MEANING wins, and how it misses</h2>
-  <p>MEANING finds the right page first for 16 of the 61 other-words clues. In those 16, the passage it matched contains a median
-  8 percent of the clue's distinctive words (16 of 149 in total): it is not matching words. Two of them, side by side with the clue:</p>
+  <h2><span class="num">V.</span>How the encoders win, and how they miss</h2>
+  <p>From other words, <span class="mlc">MiniLM</span> finds the right page first for 16 of the 61 clues and <span class="dnc">mxbai</span>
+  for 25: 12 they both get, 13 only mxbai gets, 4 only MiniLM gets. Either way the passage that won contains a median 8 percent of the
+  clue's distinctive words (16 of 149 for MiniLM's wins, 27 of 238 for mxbai's): neither is matching words. Two of MiniLM's, which mxbai
+  also finds, side by side with the clue:</p>
   <div class="duo">
     <blockquote><b>Clue:</b> a courtroom litigator who shared her famous relative's blood &hellip; argues in front of judges as a
     seven-foot jade woman.<br><b>She-Hulk's passage (0.444):</b> &hellip; She-Hulk is also a skilled and experienced attorney
@@ -230,98 +239,114 @@
   on no page at all, so KEYWORD never saw them; the encoder was trained on far more text than these 303 pages, and still put the
   clue next to an attorney. In the second pair the clue says <em>ran away</em> and <em>drugged</em> and the page says <em>runaway</em>
   and <em>drug</em>: to a bag of words those are different words, to the encoder they are the same story.</p>
-  <p>MEANING's number one is wrong for the other 45, and we read every one of the passages it matched (they are in
-  <code>data/week7_meaning_misses.tsv</code>, with a label and a line each). We sorted them into five kinds:</p>
-  <ul>
-    <li><b>The right story on somebody else's page (7).</b> For Black Widow it found the KGB training her husband in secret and hiding
-    it from Natasha, on Red Guardian's page; for Emma Frost, her school and one of her students trying to read her mind, on Empath's;
-    for Doctor Strange, a passage on Doctor Druid's page that names him. The retriever found text about the character. It is the wrong
-    page.</li>
-    <li><b>Lookalikes (7).</b> Different characters who share at least two of the clue's facts: Stingray, a man who designed and wears an
-    armoured battlesuit, for War Machine; Gargoyle, a Soviet scientist and the Hulk's first foe, for the Abomination; the Two-Gun Kid's
-    black suit, black hat and revolvers for Spider-Man Noir.</li>
-    <li><b>One word taken literally (8).</b> Quicksilver is a <em>speed demon</em>, so a passage about Hell-lords. The Werewolf changes
-    when the <em>moon</em> is full, so a passage about spies living on the Moon. Killraven fights <em>the invaders</em> from The War of
-    the Worlds, so a passage about the superhero team called the Invaders. KEYWORD made the same mistake on the same word.</li>
-    <li><b>One theme and nothing specific (14).</b> A fighter for Wolverine, a burglary for Black Cat, a meteorite for Wakanda's miracle ore.</li>
-    <li><b>Noise (9).</b> Nothing we could connect to the clue.</li>
-  </ul>
-  <p>So half of MEANING's misses (22 of 45) are wrong in a way a person can follow, and the replay in the game shows the passage every
-  time. That is the useful property of a dense retriever that the accuracy number hides: its mistakes are near the meaning.</p>
-
-  <h2><span class="num">VI.</span>Nobody here</h2>
-  <p>Six characters, no pages. A search engine returns its closest match, never "none of these", so both answered every time:</p>
+  <p>MiniLM's number one is wrong for the other 45 other-words clues, mxbai's for 36. We read every one of the 81 passages they matched
+  (<code>data/week7_meaning_misses.tsv</code> and <code>data/week7_meaning_misses_mxbai.tsv</code>, a label and a line each) and sorted
+  them into five kinds:</p>
   <div class="tablewrap">
     <table>
-      <thead><tr><th>Missing</th><th>KEYWORD</th><th class="num">score</th><th>MEANING</th><th class="num">score</th><th>MEANING's passage</th></tr></thead>
+      <thead><tr><th>What the wrong passage is</th><th class="num"><span class="mlc">MiniLM</span></th><th class="num"><span class="dnc">mxbai</span></th><th>For example</th></tr></thead>
       <tbody>
-        <tr><td><strong>Thor</strong></td><td>Beta Ray Bill</td><td class="num">0.104</td><td>Hercules</td><td class="num">0.535</td><td>his mace, "equal in durability to Thor's hammer Mjolnir"</td></tr>
-        <tr><td><strong>Captain America</strong></td><td>Jack Frost</td><td class="num">0.112</td><td>Wolverine</td><td class="num">0.488</td><td>"During World War II, Logan teamed up with Captain America"</td></tr>
-        <tr><td><strong>Magneto</strong></td><td>Rusty Collins</td><td class="num">0.060</td><td>Xorn</td><td class="num">0.527</td><td>Xorn, who "took the image of Magneto because he knew mutants would follow him"</td></tr>
-        <tr><td><strong>Iron Man</strong></td><td>Iron Man (Ultimate Marvel character)</td><td class="num">0.060</td><td>Stingray</td><td class="num">0.472</td><td>a man who designed and wears his own armoured battlesuit</td></tr>
-        <tr><td><strong>Daredevil</strong></td><td>Werewolf by Night</td><td class="num">0.046</td><td>Ghost Rider (Johnny Blaze)</td><td class="num">0.448</td><td>"send the devil back to hell": the clue said Hell's Kitchen</td></tr>
-        <tr><td><strong>Silver Surfer</strong></td><td>Firelord</td><td class="num">0.051</td><td>Fin Fang Foom</td><td class="num">0.417</td><td>"a dragon-like alien from the planet Kakaranathara"</td></tr>
+        <tr><td><b>The right story on somebody else's page</b></td><td class="num">7</td><td class="num">6</td><td>For Black Widow, both found the KGB training her husband in secret and hiding it from Natasha, on Red Guardian's page; for Black Panther, mxbai found Wakanda and its vibranium on Shuri's.</td></tr>
+        <tr><td><b>A lookalike</b>: another character who shares at least two of the clue's facts</td><td class="num">7</td><td class="num">16</td><td>mxbai: Rachel Summers for Cable (sent back from a dystopian future, a child of two X-Men), Yo-Yo Rodriguez for Misty Knight (lost limbs, robotic prosthetics), She-Hulk for Gwenpool (knows she is in a comic). MiniLM: Stingray for War Machine.</td></tr>
+        <tr><td><b>One word taken literally</b></td><td class="num">8</td><td class="num">2</td><td>MiniLM: Quicksilver is a <em>speed demon</em>, so a passage about Hell-lords; Killraven fights <em>the invaders</em>, so the team called the Invaders. mxbai: Cyclops shoots <em>red force</em>, so Red Guardian.</td></tr>
+        <tr><td><b>One theme and nothing specific</b></td><td class="num">14</td><td class="num">10</td><td>A fighter for Wolverine, a burglary for Black Cat (MiniLM); a teenage girl for Jubilee (mxbai).</td></tr>
+        <tr><td><b>Noise</b></td><td class="num">9</td><td class="num">2</td><td>Nothing we could connect to the clue. Both picked the same passage about a council of gods for the Sentry.</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p>So the bigger model does not only miss less (36 against 45), it misses better: 24 of its 36 wrong passages are a story, a lookalike or
+  a word a person can follow, against 22 of MiniLM's 45, and the lookalikes alone go from 7 to 16. They miss 32 of the same clues, and in
+  6 of those they pick the same wrong page. That is the useful property of a dense retriever that the accuracy number hides: its mistakes are
+  near the meaning, and the better the encoder, the nearer. The replay in the game shows the passage every time.</p>
+
+  <h2><span class="num">VI.</span>Nobody here</h2>
+  <p>Six characters, no pages. A search engine returns its closest match, never "none of these", so all three answered every time:</p>
+  <div class="tablewrap">
+    <table>
+      <thead><tr><th>Missing</th><th><span class="kwc">KEYWORD</span></th><th><span class="mlc">MiniLM</span></th><th><span class="dnc">mxbai</span></th><th>what MiniLM's passage says</th></tr></thead>
+      <tbody>
+        <tr><td><strong>Thor</strong></td><td>Beta Ray Bill</td><td>Hercules</td><td>Beta Ray Bill</td><td>Hercules' mace, "equal in durability to Thor's hammer Mjolnir"</td></tr>
+        <tr><td><strong>Captain America</strong></td><td>Jack Frost</td><td>Wolverine</td><td>Jack Frost</td><td>"During World War II, Logan teamed up with Captain America"</td></tr>
+        <tr><td><strong>Magneto</strong></td><td>Rusty Collins</td><td>Xorn</td><td>Xorn</td><td>Xorn, who "took the image of Magneto because he knew mutants would follow him"</td></tr>
+        <tr><td><strong>Iron Man</strong></td><td>Iron Man (Ultimate Marvel character)</td><td>Stingray</td><td>Guardian</td><td>a man who designed and wears his own armoured battlesuit</td></tr>
+        <tr><td><strong>Daredevil</strong></td><td>Werewolf by Night</td><td>Ghost Rider (Johnny Blaze)</td><td>Union Jack (Joseph Chapman)</td><td>"send the devil back to hell": the clue said Hell's Kitchen</td></tr>
+        <tr><td><strong>Silver Surfer</strong></td><td>Firelord</td><td>Fin Fang Foom</td><td>Vulcan</td><td>"a dragon-like alien from the planet Kakaranathara"</td></tr>
       </tbody>
     </table>
   </div>
   <p>KEYWORD's answers are word matches again: <em>ice</em> and <em>frozen</em> for Captain America, <em>herald</em> for the Silver
   Surfer (Firelord was a herald of Galactus too, which is almost right). Its Iron Man answer is the Ultimate Marvel Iron Man, the case
-  we flagged in section I: the clue describes him as well, and we count it as neither right nor wrong. MEANING's answers are more
-  interesting. For Captain America, Magneto and Thor it found passages that <em>mention</em> the missing character, on somebody else's
+  we flagged in section I: the clue describes him as well, and we count it as neither right nor wrong. The encoders' answers are more
+  interesting. For Captain America, Magneto and Thor, MiniLM found passages that <em>mention</em> the missing character, on somebody else's
   page. For a system that hands passages to a generator, that is the right text. As an answer to "who is this?", it is the wrong person,
-  said with confidence.</p>
-  <p>How much confidence: MEANING's six answers about nobody scored 0.42 to 0.54, and its right answers have a median of 0.56. To say
-  "nobody here" to all six, it would have to refuse every answer that scores 0.535 or lower, which throws away 22 of its 58 right answers,
-  including 15 of the 16 it found from other words. The answers it gets right from a paraphrase are exactly the ones it is least sure of.
-  KEYWORD's scores are no better as a detector: refusing everything at or below its highest score for a missing character (0.112) throws
-  away 10 of its 41 right answers, all 3 of its other-words ones. The score is a similarity, not a probability that the page is right.
-  It cannot say that the answer is not in the corpus.</p>
+  said with confidence. mxbai agrees with KEYWORD about Thor and Captain America, which is not a compliment.</p>
+
+  <figure>
+    <img src="../../assets/figures/week7_nobody.png" alt="Two panels. Left: the score of each engine's number one, for right answers, wrong answers and the five missing characters the game deals. For all three engines the missing characters sit among the right and wrong answers: KEYWORD 0.05 to 0.11 against a right-answer median of 0.15, MiniLM 0.42 to 0.54 against 0.56, mxbai 0.63 to 0.76 against 0.74. Right: how far the number one stands out, the gap to the runner-up for KEYWORD and z for the encoders, with each engine's nobody threshold as a dashed line. Right answers stand out most, wrong ones less, and the missing characters sit near the thresholds; Thor to Beta Ray Bill stands out like a right answer for mxbai, and Magneto to Xorn falls just under its line.">
+    <figcaption>Left: how sure each engine's number one was, when it was right, when it was wrong, and when the character it was asked
+    about has no page (the five the game deals). Right: how far that number one stood out from the other 302 pages, with each engine's
+    NOBODY HERE threshold dashed. White bars are medians.</figcaption>
+  </figure>
+
+  <p>How much confidence: MiniLM's answers about nobody score 0.42 to 0.54, and its right answers have a median of 0.56. To say "nobody here"
+  to all six, it would have to refuse every answer that scores 0.535 or lower, which throws away 22 of its 58 right answers, including 15 of
+  the 16 it found from other words. mxbai is worse at this, not better: its answers about nobody score 0.63 to 0.76 against a right-answer
+  median of 0.74, and every one of the 25 right answers it finds from other words scores at or below its answer for Thor. KEYWORD's scores
+  are no better as a detector: refusing everything at or below its highest score for a missing character (0.112) throws away 10 of its 41
+  right answers, all 3 of its other-words ones. A score is a similarity, not a probability that the page is right. It cannot say that the
+  answer is not in the corpus, and the answers an encoder gets right from a paraphrase are exactly the ones it is least sure of.</p>
   <p><b>Can a machine learn to say it?</b> Not from the score, but a little from the shape of the whole ranking. When the character is
   there, the right page tends to stand out from the other 302; when nobody is there, the number one is merely the best of a flat crowd.
   So we measured how far each engine's number one stands out, as z = (best &minus; mean) / standard deviation of all 303 scores, or as
   the gap to the runner-up in the same units, and let the engine say nobody below a threshold. The threshold is the one that scores best
   in the game (an episode of 4 clues in the page's own words, 5 in other words and 1 about a missing character; the five missing characters
   the game deals, without Iron Man), and since a threshold fitted on the clues it is judged on flatters itself, every clue is judged by a
-  threshold fitted without it. MiniLM with the z rule says nobody to 3 of the 5 and gives up 6 right answers; KEYWORD, whose best measure
-  is the gap, says nobody to 1 and gives up 3. Neither gains much: 4.07 points an episode becomes 4.19 for MiniLM, and KEYWORD stays
-  at 2.7. The larger encoder in the next section does better: 2 of the 5, and no right answer lost.</p>
+  threshold fitted without it. KEYWORD, whose best measure is the gap, then says nobody to 1 of the 5 and gives up 3 right answers: 2.7 points
+  an episode either way. MiniLM, with z, says nobody to 3 and gives up 6: 4.07 becomes 4.19. mxbai, with z, says nobody to 2 and gives up
+  none: 5.13 becomes 5.53. The bigger encoder is not better at doubting itself, but none of its right answers stands out as little as its
+  three weakest answers about missing characters (z from 2.67 to 2.75; its lowest right answer is 2.79), so a line can be drawn between them
+  without cutting into what it knows. Thor and Captain America stand out like right answers, and no line catches them.</p>
 
   <h2><span class="num">VII.</span>Change one choice</h2>
-  <p>Exercise 7.10 asks for one change of representation and a check of which conclusions survive. We ran three, all with the same
-  encoder and the same clues.</p>
+  <p>Exercise 7.10 asks for one change of representation and a check of which conclusions survive. We changed how a page is cut up, for
+  both encoders, and then the encoder itself.</p>
   <div class="tablewrap">
     <table>
       <thead><tr><th>How a page is scored</th><th class="num">own words: first</th><th class="num">top 3</th><th class="num">other words: first</th><th class="num">top 3</th><th class="num">median rank</th></tr></thead>
       <tbody>
         <tr><td><span class="kwc">KEYWORD</span>, TF-IDF over the whole page</td><td class="num">38</td><td class="num">54</td><td class="num">3</td><td class="num">6</td><td class="num">13</td></tr>
-        <tr><td><span class="dnc">MEANING</span>, best 180-word passage (the game)</td><td class="num">42</td><td class="num">57</td><td class="num">16</td><td class="num">24</td><td class="num">5</td></tr>
-        <tr><td>MEANING, best 60-word passage (14,985 passages)</td><td class="num">48</td><td class="num">57</td><td class="num">14</td><td class="num">32</td><td class="num">3</td></tr>
-        <tr><td>MEANING, one averaged vector per page</td><td class="num">27</td><td class="num">48</td><td class="num">8</td><td class="num">18</td><td class="num">12</td></tr>
-        <tr><td>MEANING, <code>encode()</code> on the whole page (first 256 pieces)</td><td class="num">42</td><td class="num">50</td><td class="num">8</td><td class="num">17</td><td class="num">10</td></tr>
+        <tr><td><span class="mlc">MiniLM</span>, best 180-word passage</td><td class="num">42</td><td class="num">57</td><td class="num">16</td><td class="num">24</td><td class="num">5</td></tr>
+        <tr><td class="sub">&nbsp;&nbsp;best 60-word passage (14,985 passages)</td><td class="num">48</td><td class="num">57</td><td class="num">14</td><td class="num">32</td><td class="num">3</td></tr>
+        <tr><td class="sub">&nbsp;&nbsp;one averaged vector per page</td><td class="num">27</td><td class="num">48</td><td class="num">8</td><td class="num">18</td><td class="num">12</td></tr>
+        <tr><td class="sub">&nbsp;&nbsp;<code>encode()</code> on the whole page (first 256 pieces)</td><td class="num">42</td><td class="num">50</td><td class="num">8</td><td class="num">17</td><td class="num">10</td></tr>
+        <tr><td><span class="dnc">mxbai</span>, best 180-word passage (the game)</td><td class="num">47</td><td class="num">58</td><td class="num">25</td><td class="num">43</td><td class="num">2</td></tr>
+        <tr><td class="sub">&nbsp;&nbsp;best 60-word passage</td><td class="num">50</td><td class="num">59</td><td class="num">27</td><td class="num">41</td><td class="num">2</td></tr>
+        <tr><td class="sub">&nbsp;&nbsp;one averaged vector per page</td><td class="num">44</td><td class="num">55</td><td class="num">26</td><td class="num">34</td><td class="num">3</td></tr>
+        <tr><td class="sub">&nbsp;&nbsp;<code>encode()</code> on the whole page (first 512 pieces)</td><td class="num">45</td><td class="num">57</td><td class="num">24</td><td class="num">39</td><td class="num">2</td></tr>
       </tbody>
     </table>
   </div>
-  <p>Out of 61 clues of each kind. Shorter passages help: with 60 words, 32 of the other-words clues have the right page in the top
-  three. Moon Knight's clue (<em>a hired gun left for dead in Egypt</em>) is the cleanest example: his page says, nearly word for word,
-  "the mercenary who left Marc Spector for dead in Egypt", but in a 180-word passage that sentence shares the vector with several other
-  villains, and the page ranks 15th; in a 60-word passage it is third, and averaged over the whole page it is 194th. Averaging a long
-  page blurs every particular fact into the page's general drift. Cutting at 256 word pieces does surprisingly well on the page's own
-  words (42 first), probably because the first paragraphs of a Wikipedia article are its summary and our page-words clues lean on them;
-  with other words it falls to 17 in the top three. The conclusions survive every change: meaning beats words on paraphrase, and the two
-  are close on the page's own words. And how a page is cut up moves the other-words top three between 17 and 32, about as far as the
-  choice of engine moves it.</p>
+  <p>Out of 61 clues of each kind. For the small model, how a page is cut up matters about as much as the choice of engine: MiniLM's
+  other-words top three moves between 17 and 32. Moon Knight's clue (<em>a hired gun left for dead in Egypt</em>) is the cleanest example:
+  his page says, nearly word for word, "the mercenary who left Marc Spector for dead in Egypt", but in a 180-word passage that sentence
+  shares MiniLM's vector with several other villains, and the page ranks 15th; in a 60-word passage it is third, and averaged over the whole
+  page it is 194th. mxbai puts Moon Knight first from both kinds of passage, and the same four choices only move its top three between
+  34 and 43: the bigger encoder is far more forgiving of how you cut. Cutting MiniLM at 256 word pieces does surprisingly well on the page's
+  own words (42 first), probably because the first paragraphs of a Wikipedia article are its summary and our page-words clues lean on them;
+  with other words it falls to 17 in the top three. The conclusions survive every change: meaning beats words on paraphrase, and the engines
+  are close on the page's own words.</p>
 
   <h3>Change the encoder</h3>
-  <p>MiniLM is the course's encoder and a small one, 23 million parameters. We ran five larger sentence encoders on the same clues, the same
-  passages and the same scoring, each used the way its model card says (pooling, and the prefixes it was trained to put in front of a query
-  or a passage). The last column is the game's measure: points in an episode of 4 clues in the page's own words, 5 in other words and 1 about
-  a missing character, for a machine that always answers.</p>
+  <p>Why mxbai? MiniLM is the course's encoder and a small one. We ran five larger sentence encoders on the same clues, the same passages and
+  the same scoring, each used the way its model card says (pooling, and the prefixes it was trained to put in front of a query or a passage).
+  The last column is the game's measure: points in an episode of 4 clues in the page's own words, 5 in other words and 1 about a missing
+  character, for a machine that always answers.</p>
   <div class="tablewrap">
     <table>
       <thead><tr><th>Encoder, 180-word passages</th><th class="num">parameters</th><th class="num">own words: first</th><th class="num">top 3</th><th class="num">other words: first</th><th class="num">top 3</th><th class="num">median rank</th><th class="num">points an episode</th></tr></thead>
       <tbody>
         <tr><td><span class="kwc">KEYWORD</span>, TF-IDF</td><td class="num">&nbsp;</td><td class="num">38</td><td class="num">54</td><td class="num">3</td><td class="num">6</td><td class="num">13</td><td class="num">2.7</td></tr>
-        <tr><td>all-MiniLM-L6-v2, the course's</td><td class="num">23 M</td><td class="num">42</td><td class="num">57</td><td class="num">16</td><td class="num">24</td><td class="num">5</td><td class="num">4.1</td></tr>
+        <tr><td><span class="mlc">all-MiniLM-L6-v2</span>, the course's</td><td class="num">23 M</td><td class="num">42</td><td class="num">57</td><td class="num">16</td><td class="num">24</td><td class="num">5</td><td class="num">4.1</td></tr>
         <tr><td>bge-small-en-v1.5</td><td class="num">33 M</td><td class="num">45</td><td class="num">56</td><td class="num">17</td><td class="num">27</td><td class="num">4</td><td class="num">4.3</td></tr>
         <tr><td>all-mpnet-base-v2</td><td class="num">109 M</td><td class="num">37</td><td class="num">54</td><td class="num">22</td><td class="num">38</td><td class="num">3</td><td class="num">4.2</td></tr>
         <tr><td>bge-base-en-v1.5</td><td class="num">109 M</td><td class="num">46</td><td class="num">57</td><td class="num">22</td><td class="num">33</td><td class="num">3</td><td class="num">4.8</td></tr>
@@ -330,34 +355,34 @@
       </tbody>
     </table>
   </div>
-  <p>The bigger encoders gain most where MiniLM was weakest: with other words the largest finds the right page first for 25 of the 61 clues
-  and has it in its top three for 43, where MiniLM had 16 and 24. In the page's own words all of them are within a few clues of KEYWORD
-  (37 to 50 first, against 38), so the post's main finding holds for every encoder: when the clue shares the page's words, a bag of words is
-  as good as a neural network, and when it does not, it is not close. With 60-word passages the best are bge-base (52 and 24 first, 5.4 points
-  an episode) and mxbai (50 and 27, 5.5). The NOBODY HERE rule from section VI, judged on clues it was not fitted to, adds 0.4 points to
-  mxbai with 180-word passages (5.5: nobody to 2 of the 5 missing characters, no right answer given up) and nothing to it with 60-word
-  passages, where no threshold separates the missing characters from the present ones. That is why the game plays mxbai with 180-word passages.
-  Everything here is in <code>data/week7_encoders.json</code>, written by <code>scripts/compare_week7_encoders.py</code>.</p>
+  <p>The bigger encoders gain most where MiniLM was weakest, on other words. In the page's own words all of them are within a few clues of
+  KEYWORD (37 to 50 first, against 38), so the post's main finding holds for every encoder: when the clue shares the page's words, a bag of
+  words is nearly as good as a neural network, and when it does not, it is not close. With 60-word passages the best are bge-base (52 and 24
+  first, 5.4 points an episode) and mxbai (50 and 27, 5.5). The NOBODY HERE rule from section VI, judged on clues it was not fitted to, adds
+  0.4 points to mxbai with 180-word passages and nothing to it with 60-word passages, where no threshold separates the missing characters
+  from the present ones. That is why the game plays mxbai with 180-word passages. Everything here is in <code>data/week7_encoders.json</code>,
+  written by <code>scripts/compare_week7_encoders.py</code>.</p>
 
   <h2><span class="num">VIII.</span>So we made it a game show</h2>
   <p><strong><a href="show/index.html">IN OTHER WORDS</a></strong> is the test with you in it. The host reads a clue; six portraits
-  flip in; you point at one, or hit <b>NOBODY HERE</b>. <span class="kwc">KEYWORD</span> and <span class="dnc">MEANING</span> play the
-  same clue at the same time against all 303 pages and lock in before you have finished reading (the six portraits include their number
-  ones, and the rest are pages one of them ranked highly, so every decoy is plausible to a machine). An episode is ten clues: four in the
-  page's own words, five in other words, one about somebody who is not there. Each machine will show you its top three and its answer once
-  an episode, which turns out to be the interesting decision: trust KEYWORD when the clue sounds like Wikipedia, MEANING when it does not,
-  and neither when the clue is about Thor.</p>
-  <p>In the game, MEANING is mxbai-embed-large rather than MiniLM: with MiniLM the machines were easy to beat, about 4 points in 10 an episode.
-  And both machines can say NOBODY HERE, by the rule from section VI with its threshold fitted on the clues the game deals: KEYWORD when its
+  flip in; you point at one, or hit <b>NOBODY HERE</b>. <span class="kwc">KEYWORD</span> and <span class="dnc">MEANING</span>, which is
+  mxbai, play the same clue at the same time against all 303 pages and lock in before you have finished reading (the six portraits include
+  their number ones, and the rest are pages one of them ranked highly, so every decoy is plausible to a machine). An episode is ten clues:
+  four in the page's own words, five in other words, one about somebody who is not there. Each machine will show you its top three and its
+  answer once an episode, which turns out to be the interesting decision: trust KEYWORD when the clue sounds like Wikipedia, MEANING when it
+  does not, and neither when the clue is about Thor.</p>
+  <p>We first built the game with MiniLM, and the machines were easy to beat, about 4 points in 10 an episode; mxbai makes it a contest.
+  Both machines can say NOBODY HERE, by the rule from section VI with its threshold fitted on the clues the game deals: KEYWORD when its
   number one is less than 1.71 standard deviations ahead of the runner-up, MEANING when its number one stands less than 2.75 above the
   average page. On these clues that has MEANING say nobody to Daredevil, Magneto and, only just, the Silver Surfer, and never to a character
   who is there. KEYWORD says it to Captain America (only just) and Daredevil, and also to Venom, Misty Knight and Mayday Parker, who are there.
   A threshold fitted on the clues it is then played on flatters the machines; on clues it was not fitted to, MEANING makes about 5.5 points
   an episode and KEYWORD 2.7.</p>
   <p>After every clue comes the instant replay. KEYWORD's side shows the clue as the engine read it: each word shaded by what it added to
-  KEYWORD's pick, underlined where it would have counted for the right page instead, struck through if no page uses it. MEANING's side shows the
-  passage it matched and the right page's best passage, with the clue's words marked, so you can see how few of them there are. The
-  episode of the day is the same for everyone and ends with a result to paste.</p>
+  KEYWORD's pick, underlined where it would have counted for the right page instead, struck through if no page uses it. MEANING's side shows
+  the passage it matched and the right page's best passage, with the clue's words marked, so you can see how few of them there are, and both
+  sides say why the machine answered or said nobody. The replay also gives the right page's rank under the course's MiniLM, so you can see
+  what the small model would have done. The episode of the day is the same for everyone and ends with a result to paste.</p>
   <p><a class="playlink" href="show/index.html">&#9654; Play IN OTHER WORDS <small>ten clues, two machines, one nobody</small></a></p>
 
   <h2><span class="num">&nbsp;</span>What surprised us</h2>
@@ -366,57 +391,61 @@
     <em>kid</em> are plain English and his name.</li>
     <li><b>Keyword misses are names even when the clue has none.</b> Red, girl, bullet, bug, night, star, agent, woman: 32 of 58 misses
     hang on a word that is part of the wrong page's title.</li>
-    <li><b>MEANING's paraphrase wins are its least confident answers.</b> 15 of the 16 score below what it gave Hercules for Thor.</li>
-    <li><b>Both engines fell for the Invaders.</b> A homonym fools a bag of words and a sentence encoder alike.</li>
+    <li><b>The bigger encoder misses better.</b> 16 of mxbai's 36 wrong passages are about a character who really fits the clue, against 7 of
+    MiniLM's 45; its noise falls from 9 to 2.</li>
+    <li><b>The encoders' paraphrase wins are their least confident answers.</b> 15 of MiniLM's 16 score below what it gave Hercules for Thor,
+    and all 25 of mxbai's score at or below what it gave Beta Ray Bill.</li>
+    <li><b>KEYWORD and MiniLM both fell for the Invaders.</b> A homonym fools a bag of words and a small sentence encoder alike; mxbai did not.</li>
     <li><b>The most famous word is the weakest.</b> <em>spider</em> is on 146 of 303 pages, so in Spider-Man's own clue it counts for
     almost nothing.</li>
-    <li><b>Cutting a page at 256 pieces is not that bad, for the wrong reason.</b> The lead paragraph is a summary, and clues in the page's
-    own words echo it.</li>
-    <li><b>The biggest encoder is surest about the wrong god.</b> Asked about Thor, mxbai-embed-large answers Beta Ray Bill, the alien who
-    was found worthy of his hammer, and that answer stands out from the crowd (z = 4.15) as far as its typical right answer does (median 4.18).</li>
+    <li><b>Chunking is a small model's problem.</b> MiniLM's top three on other words moves from 17 to 32 with how a page is cut; mxbai's
+    from 34 to 43.</li>
+    <li><b>The biggest encoder is surest about the wrong god.</b> Asked about Thor, mxbai answers Beta Ray Bill, the alien who was found worthy
+    of his hammer, and that answer stands out from the crowd (z = 4.15) as far as its typical right answer does (median 4.18).</li>
   </ol>
 
   <h2><span class="num">&nbsp;</span>What we checked in the text</h2>
   <ul>
     <li>Every clue's vocabulary against its page before the first ranking, and the two clues that still leak, named above.</li>
-    <li>All 45 passages behind MEANING's misses on other-words clues, labelled by us; the analysis reads the file back and stops if a label
-    is for a clue or a pick that the ranking does not produce.</li>
+    <li>All 81 passages behind the encoders' misses on other-words clues, 45 of MiniLM's and 36 of mxbai's, labelled by us; the analysis reads
+    both files back and stops if a label is for a clue or a pick that the ranking does not produce.</li>
     <li>For every KEYWORD miss, the word that carried it, computed term by term, and the ten in the table above read against the pages.</li>
-    <li>The six passages MEANING returned for the missing characters, quoted in the table, and the Iron Man case it exposed.</li>
-    <li>The course's Russian spy example, as a check that our passages and encoder are the course's.</li>
+    <li>The six passages MiniLM returned for the missing characters, quoted in the table, and the Iron Man case it exposed.</li>
+    <li>The course's Russian spy example, as a check that our passages and MiniLM are the course's.</li>
   </ul>
 
   <div class="callout warn">
     <b>The limitation that matters.</b> We wrote every clue, so "other words" means <em>our</em> other words: three students who know the
     pages and were deliberately avoiding their vocabulary. Real searchers paraphrase less, and a question typed into a search box is closer
-    to our page-words clues, where the two engines tie. The numbers are also small: 61 pairs give a top-three count of 24 an uncertainty of
+    to our page-words clues, where the engines are close. The numbers are also small: 61 pairs give a top-three count of 24 an uncertainty of
     about plus or minus 12 percentage points, and six missing characters show the problem, they do not measure it. The same goes for the
-    NOBODY HERE rule, fitted on five of them: the leave-one-out numbers are the honest ones, and they are rough.
+    NOBODY HERE rule, fitted on five of them: the leave-one-out numbers are the honest ones, and they are rough. And we picked mxbai as the best
+    of six encoders on these same clues, so its numbers are those of a winner chosen on the test.
   </div>
 
   <h2><span class="num">&nbsp;</span>Reproduce it</h2>
-  <p>One module holds the two engines and the passage rule, one script builds every figure and number in this post, one builds the game's
-  data, and one test recomputes the data from scratch and runs the game's rules.</p>
+  <p>One module holds the engines, the passage rule and the nobody rule, one script builds every figure and number in this post, one compares
+  the encoders, one builds the game's data, and one test recomputes the data from scratch and runs the game's rules.</p>
 <pre><code>git clone https://github.com/Oddvar112/Social-Graphs-and-Interactions
 cd Social-Graphs-and-Interactions
 
 python scripts/build_week7_show.py --check   # the vocabulary check of the clues (no model needed)
-python scripts/analyse_week7.py              # every figure and number in this post (a minute the first time, then seconds)
+python scripts/analyse_week7.py              # every figure and number in this post (minutes the first time, then seconds)
 python scripts/compare_week7_encoders.py     # six encoders on the same clues, and the NOBODY HERE rule -> data/week7_encoders.json
 python scripts/build_week7_show.py           # rankings, evidence, lineups and nobody flags for the game -> data/week7_show.js
 python scripts/test_in_other_words.py        # recomputes every ranking, passage and flag, runs the game's core.js under node
 
 python -m http.server 8000                   # then open http://localhost:8000/weeks/week7/show/</code></pre>
-  <p>Needs <code>numpy</code>, <code>networkx</code>, <code>matplotlib</code>, <code>torch</code> and <code>transformers</code>. The post's
-  encoder is <code>sentence-transformers/all-MiniLM-L6-v2</code> (90 MB) and the game's is <code>mixedbread-ai/mxbai-embed-large-v1</code>
-  (670 MB); the comparison downloads four more, about 2 GB in all, the first time. Each is loaded with plain <code>transformers</code>,
-  safetensors weights only, and pooled and prefixed the way its model card says (<code>SPECS</code> in <code>scripts/week7_text.py</code>).
-  Passage vectors are cached in <code>.cache/</code>. Every number above is written to
-  <code>data/stats_week7.json</code>. The clues are in <code>data/week7_clues.tsv</code>, our reading of MEANING's misses in
-  <code>data/week7_meaning_misses.tsv</code>. The game's test recomputes all 128 rankings under both of the game's engines, every stored
-  passage, word contribution and standout measure, checks that every nobody flag follows the fitted rule and that the rule refits to the
-  same thresholds, checks that every lineup holds the right page and both number ones, and plays the rules: an episode is ten clues, four,
-  five and one, never the same character twice; NOBODY HERE scores only on a missing character, for you and for the machines alike.
+  <p>Needs <code>numpy</code>, <code>networkx</code>, <code>matplotlib</code>, <code>torch</code> and <code>transformers</code>. MiniLM,
+  <code>sentence-transformers/all-MiniLM-L6-v2</code>, is 90 MB, and mxbai, <code>mixedbread-ai/mxbai-embed-large-v1</code>, 670 MB; the
+  comparison downloads four more, about 2 GB in all, the first time. Each is loaded with plain <code>transformers</code>, safetensors weights
+  only, and pooled and prefixed the way its model card says (<code>SPECS</code> in <code>scripts/week7_text.py</code>). Passage vectors are
+  cached in <code>.cache/</code>. Every number above is written to <code>data/stats_week7.json</code> or <code>data/week7_encoders.json</code>.
+  The clues are in <code>data/week7_clues.tsv</code>, our reading of the encoders' misses in <code>data/week7_meaning_misses.tsv</code>
+  (MiniLM) and <code>data/week7_meaning_misses_mxbai.tsv</code>. The game's test recomputes all 128 rankings under both of the game's engines,
+  every stored passage, word contribution and standout measure, checks that every nobody flag follows the fitted rule and that the rule refits
+  to the same thresholds, checks that every lineup holds the right page and both number ones, and plays the rules: an episode is ten clues,
+  four, five and one, never the same character twice; NOBODY HERE scores only on a missing character, for you and for the machines alike.
   The text is the course's frozen release, <code>marvel_pages.zip</code>, unmodified. Character pictures are the lead images of the
   Wikipedia articles, loaded as you play; we store only their addresses.</p>
 

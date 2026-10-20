@@ -1,0 +1,46 @@
+id	meaning_pick	label	what the matched passage says, read against the clue
+# Every clue written in other words where mxbai-embed-large-v1's number one (180-word passages, best passage) is the wrong
+# page (36 of 61), read by us on 20 October 2026, with the same five labels as week7_meaning_misses.tsv (MiniLM):
+#         story = the passage is about the right character's story, on someone else's page;
+#         lookalike = a different character who shares at least two of the clue's facts;
+#         word = one word or phrase of the clue taken literally (a pun, a homonym);
+#         theme = shares one theme with the clue and nothing specific;
+#         noise = nothing we could connect to the clue.
+# The labels are our reading of the passage the game shows (data/week7_show.js); scripts/analyse_week7.py checks them
+# against the ranking and counts them.
+hulk-other	Bill Foster	lookalike	a biochemical researcher who becomes Giant-Man: a scientist who turns into a giant, not a green one
+wolverine-other	Raza Longknife	lookalike	a cyborg fighter who turns his bionic hand into a blade: blades from the hand, and a brawler
+panther-other	Shuri	story	Wakanda short of money and Shuri hunting for vibranium: the miracle ore and the hidden country, on his sister's page
+cyclops-other	Red Guardian	word	a Red Guardian whose force field repels energy: the clue's "red" and "force"
+jeangrey-other	Moondragon	theme	a soul sharing a cousin's mind and becoming a dragon near the sun; minds and cosmic change, nothing of Jean Grey's
+widow-other	Red Guardian	story	the KGB trains Shostakov in secret and keeps his survival from Natasha: Black Widow's own story, on her husband's page
+emmafrost-other	Rachel Summers	story	Rachel trying to reach Professor Xavier or Emma Frost, then joining the Jean Grey School: Frost's world, on Rachel's page
+cable-other	Rachel Summers	lookalike	Rachel in the Days of Future Past timelines: sent from a dystopian future, and the daughter of two X-Men, exactly like Cable
+venom-other	Rom the Space Knight	theme	volunteers on another planet stripped of their bodies to become armoured warriors; aliens and bodies, no ooze, no host
+jessicadrew-other	Anya Corazon	lookalike	a girl given spider powers by a ritual and recruited by the Spider Society: spider powers and an organisation
+nova-other	Vance Astrovik	lookalike	a teenager whose powers emerge after a visit from his astronaut future self: a teen, powers, space
+misty-other	Yo-Yo Rodriguez	lookalike	a hero whose forearms are cut off and replaced with robotic prosthetics: the lost limb and the robot one
+shangchi-other	Iron Fist	lookalike	Orson Randall, raised in K'un-Lun to become the Iron Fist: a fighter raised for combat, not by a crime lord
+blackbolt-other	Balder the Brave	theme	an Asgardian who can speak with animals; communication, but no king and no silence
+warmachine-other	Turbo	lookalike	a helmet and battle suit bonded to its wearer: someone in a suit of powered battle gear
+starlord-other	Rocket Raccoon	lookalike	Rocket as captain of a starship with a first mate, protecting a colony: a space captain with a crew, from Star-Lord's own team
+eddiebrock-other	Venom	story	the first full Venom issue, where he reveals he was a reporter named Eddie Brock: Brock's story, on the symbiote's page
+quicksilver-other	Speed	lookalike	Speed, a speedster, and his mother the Scarlet Witch, whose twin is Pietro: a fast boy and a famous witch in the family
+jubilee-other	Spider-Bitch (Ashley Barton)	theme	a 17-year-old girl, her school and a drug that grants powers; a teenage girl and nothing else of Jubilee
+sentry-other	Balder the Brave	noise	gods in council against the Chaos King, the same passage MiniLM chose; nothing of a forgotten hero
+jessicajones-other	Spider-Woman (Jessica Drew)	theme	a woman, her father's killer, therapy and a friendship; Drew is a private investigator but the passage does not say so
+warlock-other	Ulysses Bloodstone	lookalike	a man bonded to a power gem, with a psionic third eye on his forehead: a stone, a forehead, a gem that keeps him alive
+noir-other	Miracleman	word	a list of Golden Age adventures with "hat-wearing giant ants": the clue's hat, taken literally
+gwenpool-other	She-Hulk	lookalike	She-Hulk breaking the fourth wall and arguing with her writer: a heroine who knows she is in a comic
+usagent-other	Battlestar	story	the Commission picks John Walker to replace Steve Rogers as Captain America: U.S. Agent's story, on his partner's page
+betaray-other	Ulysses Bloodstone	theme	a meteorite landing in Vanaheim in the Hyborian Age; something from space and a Norse name, no horse face, no hammer
+baymax-other	Doctor Nemesis	lookalike	an android built by a scientist and the scientist who built it, the same passage MiniLM chose
+finfang-other	Ghost Rider	noise	prehistoric humans who could speak a new language; nothing about a dragon, sleep or a mountain
+peggy-other	Spitfire	lookalike	a British woman who was a special agent in World War II with the Invaders: the clue's 1940s British secret agent
+shuri-other	Shang-Chi	lookalike	a younger sister who seizes her brother's society: a kid sister who takes over, though not a cat
+yelena-other	Black Widow (Natasha Romanova)	story	the Red Room and the codename Black Widow: the famous spy and the same secret school, on Natasha's page
+northstar-other	Wolverine	lookalike	Wolverine's lead: a mutant born in Canada, an X-Man; Canadian and a mutant, but neither fast nor out
+hulkling-other	Justice (New Universe)	theme	a knight exiled from a fantasy kingdom after an affair with a queen; royalty and exile, no shape-changing
+killraven-other	Brian Braddock	theme	heroes driving off attackers in Otherworld, a decimated Captain Britain Corps; a fight against invaders, not Martians
+franklin-other	Miracleman	theme	a child whose mind outstrips the adults'; a powerful child, not the son of the Fantastic Four
+mayday-other	Turbo	theme	a young woman finds a suit has powers and becomes a hero; a girl in a costume of her own, nothing of Spider-Man

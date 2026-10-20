@@ -30,7 +30,7 @@ network, every philosopher on Wikipedia born before 1900, 1444 of them with 9140
 | `weeks/week6/index.html` | Week 6 post: names or meaning. Every TF-IDF cosine split exactly into names, habit words and other words, tested against 45 pairs read by hand; the lookalikes with and without their names; story twins that the network never linked |
 | `weeks/week6/taboo/` | **TABOO-IDF**, a word game: describe a secret character one word at a time while a cosine machine ranks all 303 pages; names are taboo; the engine is in `core.js` |
 | `weeks/week6/dial/` | **THE NAME DIAL**, an explorable: pick a page, turn how much names and habit words count, and watch its lookalikes re-rank, with the network's agreement measured live; the engine is in `core.js` |
-| `weeks/week7/index.html` | Week 7 post: sparse against dense search. 61 characters described twice, in their page's words and in other words, plus six who are not there; TF-IDF against a MiniLM sentence encoder over passages; what each engine hears when it is wrong, and four ways of cutting up a page |
+| `weeks/week7/index.html` | Week 7 post: sparse against dense search. 61 characters described twice, in their page's words and in other words, plus six who are not there; TF-IDF against two sentence encoders over passages, the course's MiniLM and the larger mxbai; what each engine hears when it is wrong, 81 encoder misses read by hand, a rule for saying nobody, and four ways of cutting up a page |
 | `weeks/week7/show/` | **IN OTHER WORDS**, a game show: you, TF-IDF and a sentence encoder race to identify a described character, or to say that nobody here fits, with an instant replay of each machine's evidence; the rules are in `core.js` |
 | `scripts/` | Everything that produces the data and the figures |
 | `assets/figures/` | Generated figures: `analyse.py` writes the week 1 ones, `analyse_week2.py` the `week2_*` ones |
@@ -195,7 +195,8 @@ and confetti; no audio or image files ship with it.
 The 128 clues are ours, written before any ranking and checked for leaked page vocabulary (`data/week7_clues.tsv`). `scripts/week7_text.py`
 holds the engines, the passage rule and the NOBODY HERE rule (encoders are loaded with plain `transformers`, safetensors weights only, pooled
 and prefixed the way each model card says, `SPECS`; passage vectors are cached in `.cache/`); `scripts/analyse_week7.py` produces every figure
-and number in the post and reads back `data/week7_meaning_misses.tsv`, our labels for the 45 passages behind MiniLM's misses;
+and number in the post, for KEYWORD and both encoders side by side (the course's MiniLM and the game's mxbai), and reads back our labels for
+the passages behind their misses, `data/week7_meaning_misses.tsv` (MiniLM's 45) and `data/week7_meaning_misses_mxbai.tsv` (mxbai's 36);
 `scripts/compare_week7_encoders.py` runs six encoders on the same clues and fits and cross-validates the nobody rule for each
 (`data/week7_encoders.json`); `scripts/build_week7_show.py` writes `data/week7_show.js` (rankings, word contributions, passages, standout
 measures, nobody flags and lineups for every clue); `scripts/test_in_other_words.py` recomputes all of it from the corpus and runs the shipped
