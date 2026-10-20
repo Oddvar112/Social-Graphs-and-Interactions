@@ -77,7 +77,7 @@ def main():
     d180 = X.Dense(m.c.pages, ids, 180)
     d60 = X.Dense(m.c.pages, ids, 60)
     cut = X.encode_cached([m.c.pages[n] for n in ids], "whole")          # truncated to 256 word pieces by the encoder
-    Q = enc.encode([c["clue"] for c in clues])
+    Q = enc.encode([c["clue"] for c in clues], query=True)
     pieces = [enc.pieces(m.c.pages[n]) for n in ids]
 
     rows = []

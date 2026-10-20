@@ -4,16 +4,20 @@ Checks the data and the rules IN OTHER WORDS runs on, by recomputing the data an
 What this proves:
   * every KEYWORD top ten and rank in data/week7_show.js is the cosine between the clue's TF-IDF vector and the
     page's, recomputed here from the corpus with the week 6 definitions (to the rounding of the file)
-  * every MEANING top ten and rank is the best-passage dot product, recomputed from the cached passage vectors;
-    every stored passage really is the best passage of that page for that clue, and sits on that page
-  * every lineup has six distinct portraits, contains the right page (unless the character is absent) and the pick
-    of each engine, and never contains an absent character's page (there is none)
+  * every MEANING top ten and rank is the best-passage dot product under the game's encoder (mxbai-embed-large-v1),
+    recomputed from the passage vectors; the 60-word rank and the course MiniLM rank too; every stored passage really
+    is the best passage of that page for that clue, and sits on that page
+  * each machine's standout measures (z and gap) are recomputed, its NOBODY HERE flag is exactly "measure < threshold"
+    with the threshold in the file, and that threshold is the one fit_nobody finds on the clues the game deals
+  * every lineup has six distinct portraits, contains the right page (unless the character is absent) and the number
+    one of each machine, and every other portrait is in one machine's top forty and has a picture
   * the overlap counts (clue words on the page, rare ones) match a recount
-  * core.js under node: an episode has ten clues, four / five / one by style, no character twice, and is the same
-    for the same seed and different for another; judge() gives you a point for the right page, or for NOBODY HERE
-    on an absent clue, and never for the engines on an absent clue; tally() and shareText() add up
+  * core.js under node: an episode has ten clues, four / five / one by style, no character twice, never the clue set
+    aside, and is the same for the same seed and different for another; judge() gives you a point for the right page,
+    or for NOBODY HERE on an absent clue; a machine scores on a present character only if it answers with the right
+    page, and on a missing one only if it says nobody; tally() and shareText() add up
 
-Run:  python scripts/test_in_other_words.py     (needs node; about 20 seconds after the embeddings are cached)
+Run:  python scripts/test_in_other_words.py     (needs node; seconds once the passage vectors are cached)
 """
 
 import json
@@ -63,12 +67,18 @@ def main():
     D = load_data()
     clues = X.load_clues()
     check(len(clues) == len(D["clues"]) == D["meta"]["n_clues"], "clue count")
+    check(D["meta"]["model"] == X.GAME_MODEL, "the game's encoder is GAME_MODEL")
     m = T.build_model()
-    d = X.Dense(m.c.pages, m.ids, D["meta"]["passage_words"])
-    check(len(d.texts) == D["meta"]["n_passages"], "passage count")
-    Q = X.encoder().encode([c["clue"] for c in clues])
+    d = X.Dense(m.c.pages, m.ids, D["meta"]["passage_words"], X.GAME_MODEL)
+    d60 = X.Dense(m.c.pages, m.ids, 60, X.GAME_MODEL)
+    check(len(d.texts) == D["meta"]["n_passages"] and len(d60.texts) == D["meta"]["n_passages_60"], "passage counts")
+    Q = X.encoder(X.GAME_MODEL).encode([c["clue"] for c in clues], query=True)
+    X.release(X.GAME_MODEL)
+    mini = X.Dense(m.c.pages, m.ids, 180, X.MODEL)
+    Qm = X.encoder(X.MODEL).encode([c["clue"] for c in clues], query=True)
     chars = D["chars"]
     check([c["id"] for c in chars] == m.ids, "chars are the 303 pages in order")
+    rules = D["meta"]["rules"]
 
     for k, (c, s) in enumerate(zip(clues, D["clues"])):
         check(c["id"] == s["id"] and c["clue"] == s["clue"] and c["style"] == s["style"], f"{c['id']}: clue text and style")
@@ -76,13 +86,20 @@ def main():
         t = -1 if absent else m.ix[c["target"]]
         check(s["target"] == t, f"{c['id']}: target index")
         kw, parts, unknown = X.keyword_scores(m, c["clue"])
-        mean, best, arg = d.scores(Q[k])
+        _, best, arg = d.scores(Q[k])
+        _, best60, _ = d60.scores(Q[k])
+        _, bestm, _ = mini.scores(Qm[k])
         for key, sc in (("kw", kw), ("dn", best)):
             top = X.topk(sc, len(s[key]["top"]))
             check([p for p, _ in s[key]["top"]] == top, f"{c['id']}: {key} top ten order")
             check(all(abs(sc[p] - v) < 6e-5 for p, v in s[key]["top"]), f"{c['id']}: {key} top ten scores")
-            if not absent:
-                check(s["ranks"][key] == X.rank_of(sc, t), f"{c['id']}: {key} rank")
+            so = X.standout(sc)
+            check(abs(so["z"] - s[key]["z"]) < 1e-3 and abs(so["gap"] - s[key]["gap"]) < 1e-3, f"{c['id']}: {key} standout measures")
+            r = rules[key]
+            check(s[key]["nobody"] == (s[key][r["feature"]] < r["threshold"]), f"{c['id']}: {key} nobody flag follows the rule")
+        if not absent:
+            check(s["ranks"] == {"kw": X.rank_of(kw, t), "dn": X.rank_of(best, t), "dn60": X.rank_of(best60, t), "mini": X.rank_of(bestm, t)},
+                  f"{c['id']}: ranks")
         check(sorted(s["kw"]["unknown"]) == unknown, f"{c['id']}: unknown words")
         for w, a, b, df in s["kw"]["words"]:
             check(w in parts and abs(parts[w][s["kw"]["top"][0][0]] - a) < 6e-5, f"{c['id']}: contribution of '{w}' to the pick")
@@ -95,16 +112,26 @@ def main():
         lu = s["lineup"]
         check(len(lu) == D["meta"]["lineup"] == len(set(lu)), f"{c['id']}: six distinct portraits")
         check(absent or t in lu, f"{c['id']}: the right page is in the lineup")
-        check(s["kw"]["top"][0][0] in lu and s["dn"]["top"][0][0] in lu, f"{c['id']}: both picks are in the lineup")
+        check(s["kw"]["top"][0][0] in lu and s["dn"]["top"][0][0] in lu, f"{c['id']}: both number ones are in the lineup")
         picks = {s["kw"]["top"][0][0], s["dn"]["top"][0][0], t}
         check(all(chars[p]["img"] for p in lu if p not in picks), f"{c['id']}: every runner-up decoy has a portrait")
         plausible = set(X.topk(kw, 40)) | set(X.topk(best, 40)) | ({t} if not absent else set())
-        check(sum(p in plausible for p in lu) == len(lu), f"{c['id']}: every decoy is in one engine's top forty")
+        check(sum(p in plausible for p in lu) == len(lu), f"{c['id']}: every decoy is in one machine's top forty")
         check(s["play"] == (c["id"] != "ironman-absent"), f"{c['id']}: played in the game unless set aside")
         if not absent:
             hits = X.distinctive_words(m, c["clue"], t)
             check(s["overlap"]["page"] == len(hits), f"{c['id']}: overlap count")
             check(s["overlap"]["rare"] == sum(m.df[m.c.vi[w]] <= 30 for w in hits), f"{c['id']}: rare overlap count")
+
+    # the thresholds are the ones the rule's own fit finds on the clues the game deals
+    played = [s for s in D["clues"] if s["play"]]
+    styles = np.array([s["style"] for s in played])
+    for key, r in rules.items():
+        right = np.array([s["style"] != "absent" and s[key]["top"][0][0] == s["target"] for s in played])
+        thr, score = X.fit_nobody(np.array([s[key][r["feature"]] for s in played]), styles, right)
+        check(abs(round(thr, 4) - r["threshold"]) < 1e-9, f"{key}: threshold refits to {thr:.4f}")
+        nob = np.array([s[key]["nobody"] for s in played])
+        check(abs(X.episode_score(styles, right, nob) - r["episode"]) < 1e-3, f"{key}: episode score")
     print(f"data: {len(D['clues'])} clues recomputed ({len(FAILS)} failures so far)")
 
     # ---------------------------------------------------------------- core.js under node
@@ -142,14 +169,16 @@ function __result() {
         check(v["right"]["you"], f"{c['id']}: the right answer scores")
         check(v["none"]["you"] is False, f"{c['id']}: no answer scores nothing")
         check(v["wrongNobody"]["you"] == absent, f"{c['id']}: NOBODY HERE scores only on an absent clue")
-        check(not v["decoy"]["you"] or absent is False and c["lineup"][0] == c["target"], f"{c['id']}: a decoy scores nothing")
-        check(v["right"]["kw"] == (not absent and c["kw"]["top"][0][0] == c["target"]), f"{c['id']}: keyword verdict")
-        check(v["right"]["dn"] == (not absent and c["dn"]["top"][0][0] == c["target"]), f"{c['id']}: meaning verdict")
-        check(not absent or (v["right"]["kw"] is False and v["right"]["dn"] is False), f"{c['id']}: engines never score on an absent clue")
+        check(not v["decoy"]["you"], f"{c['id']}: a decoy scores nothing")
+        for key in ("kw", "dn"):
+            nob = c[key]["nobody"]
+            expect = nob if absent else (not nob and c[key]["top"][0][0] == c["target"])
+            check(v["right"][key] == expect, f"{c['id']}: {key} verdict")
+            check(v["right"][key + "Nobody"] == nob, f"{c['id']}: {key} says nobody exactly when flagged")
     check(r["tally"]["you"] == 10 and r["tally"]["rounds"] == 10, "tally adds up")
     check(r["share"].startswith("IN OTHER WORDS · episode 3") and r["share"].count("\n") == 3, "share text has four lines")
     check(r["date"]["number"] == 1 and r["date2"]["number"] == 8, "episode numbers count from 20 October 2026")
-    print("core.js: episode, judge, tally, shareText checked")
+    print("core.js: episode, judge (with NOBODY HERE for the machines), tally, shareText checked")
 
     print("ALL CHECKS PASSED" if not FAILS else f"{len(FAILS)} FAILURES")
     sys.exit(1 if FAILS else 0)

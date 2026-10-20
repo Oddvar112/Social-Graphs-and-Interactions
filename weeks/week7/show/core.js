@@ -8,8 +8,10 @@
    "Tonight's episode" is seeded by the date, so everyone gets the same show.
 
    Each clue: you point at one of six portraits, or at NOBODY HERE. The two
-   engines point at their number one of all 303 pages (never at nobody: a
-   search engine always returns something). One point per right answer.
+   machines point at their number one of all 303 pages, unless it does not
+   stand out enough, in which case they say NOBODY HERE too (the flag is in the
+   data, fitted by scripts/build_week7_show.py). One point per right answer:
+   the right page for a character who is there, NOBODY HERE for one who is not.
    =========================================================================== */
 (function (global) {
   'use strict';
@@ -64,15 +66,18 @@
     return shuffle(chosen, rnd);
   }
 
-  /** The verdicts for one clue. pick: a page index, -1 for NOBODY HERE, null for no answer. */
+  /** The verdicts for one clue. pick: a page index, -1 for NOBODY HERE, null for no answer.
+      A machine's answer is its number one, or NOBODY HERE when its nobody flag is set. */
   function judge(clue, pick) {
     const absent = clue.style === 'absent';
     const kwPick = clue.kw.top[0][0], dnPick = clue.dn.top[0][0];
+    const kwNobody = !!clue.kw.nobody, dnNobody = !!clue.dn.nobody;
+    const right = (nobody, p) => absent ? nobody : (!nobody && p === clue.target);
     return {
       you: pick === null || pick === undefined ? false : (absent ? pick === -1 : pick === clue.target),
-      kw: !absent && kwPick === clue.target,
-      dn: !absent && dnPick === clue.target,
-      kwPick, dnPick, absent,
+      kw: right(kwNobody, kwPick),
+      dn: right(dnNobody, dnPick),
+      kwPick, dnPick, kwNobody, dnNobody, absent,
     };
   }
 

@@ -1,29 +1,37 @@
 """
 Data for IN OTHER WORDS (weeks/week7/show): a game show in which a host reads a description of a Marvel character
-and you race two search engines to point at the right portrait.
+and you race two search engines to point at the right portrait, or to say that nobody here fits.
 
-For every clue in data/week7_clues.tsv (written by hand before any of this ran) the two engines rank all 303 pages:
+For every clue in data/week7_clues.tsv (written by hand before any of this ran) the two machines rank all 303 pages:
 
   KEYWORD   sparse retrieval: the cosine between the clue's TF-IDF vector and each page's, with the week 6
             definitions (tf = count / words, idf = ln(303 / df), unit length). A word the corpus has never seen is
             invisible to it.
-  MEANING   dense retrieval: all-MiniLM-L6-v2 encodes the clue and every passage of every page (at most 180 words,
-            split at sentence boundaries; 4,479 passages); a page's score is its best passage. The page-mean score
-            and 60-word passages are computed too, for the post, and their ranks are stored.
+  MEANING   dense retrieval with mxbai-embed-large-v1 (week7_text.GAME_MODEL), the strongest of the six encoders
+            scripts/compare_week7_encoders.py tried: it encodes the clue and every passage of every page (at most
+            180 words, split at sentence boundaries; 4,479 passages), and a page's score is its best passage. The
+            post's own analysis is about the course's smaller MiniLM; its rank is stored too, for the replay.
 
-Stored per clue: the top ten of each engine with scores, the rank of the right page under each variant, the
-evidence (for KEYWORD, each clue word's contribution to its pick's score and to the right page's, and the words it
-never read; for MEANING, the best-matching passage of its pick, of the right page and of KEYWORD's pick, in full,
-so the text stays visible), and a lineup of six portraits: the right answer, each engine's pick, and then the next
-pages down both engines' lists, so that every decoy is a page one of the machines found plausible, in a fixed
-shuffled order. A clue about a character who is not in the corpus has no right page; the lineup is the two picks
-plus their runners-up and the right answer is "nobody here".
+Each machine also says NOBODY HERE when its number one does not stand out: KEYWORD when its number one is less than
+a threshold ahead of the runner-up (gap = (best - second) / standard deviation of the 303 scores), MEANING when its
+number one stands less than a threshold above the average page (z = (best - mean) / standard deviation). Those are
+the measures that worked best for each in the comparison; the thresholds are fitted here, on the clues the game deals,
+to the game's own scoring (4 clues in the page's words, 5 in other words, 1 about a missing character). Fitted on the
+same clues they are judged on, they flatter the machines a little; the post quotes the leave-one-out numbers.
+
+Stored per clue: each machine's top ten with scores, its standout measures and whether it says nobody; the rank of
+the right page (MEANING at 180 and 60 words, MiniLM at 180, KEYWORD); the evidence (for KEYWORD, each clue word's
+contribution to its pick's score and to the right page's, and the words it never read; for MEANING, the best passage
+of its pick, of the right page and of KEYWORD's pick, in full, so the text stays visible); and a lineup of six
+portraits: the right answer, each machine's number one, and then the next pages down both lists, so that every decoy
+is a page one of the machines found plausible, in a fixed shuffled order. A clue about a character who is not in the
+corpus has no right page; its lineup is the two number ones plus their runners-up.
 
 One clue is kept out of the game (but not out of the post): see NOT_PLAYED.
 
 Writes data/week7_show.js (window.SHOW). Deterministic given the frozen data and the cached embeddings.
 
-Run:  python scripts/build_week7_show.py            (the first run encodes 19,000 passages: a minute on a GPU)
+Run:  python scripts/build_week7_show.py            (the first run encodes the passages: a few minutes on a GPU)
       python scripts/build_week7_show.py --check    only the vocabulary check of the clues (no model needed)
 """
 
@@ -51,6 +59,10 @@ RARE_DF = 30
 # the clue describes Iron Man, who has no page, but the corpus has the Ultimate Marvel version of the same Tony Stark,
 # and the clue fits him too. In a lineup that shows his portrait, "nobody here" would be a trick, not a test.
 NOT_PLAYED = {"ironman-absent": "the corpus has the Ultimate Marvel Iron Man, and the clue describes him too"}
+
+# Which standout measure each machine's NOBODY HERE rule uses (scripts/compare_week7_encoders.py: the best by
+# leave-one-out episode score for each engine).
+RULES = {"kw": "gap", "dn": "z"}
 
 
 def load_images():
@@ -83,10 +95,12 @@ def main(check_only=False):
         return
     ids, N = m.ids, m.N
     images = load_images()
-    enc = X.encoder()
-    d180 = X.Dense(m.c.pages, ids, 180)
-    d60 = X.Dense(m.c.pages, ids, 60)
-    Q = enc.encode([c["clue"] for c in clues])
+    d180 = X.Dense(m.c.pages, ids, 180, X.GAME_MODEL)
+    d60 = X.Dense(m.c.pages, ids, 60, X.GAME_MODEL)
+    Q = X.encoder(X.GAME_MODEL).encode([c["clue"] for c in clues], query=True)
+    X.release(X.GAME_MODEL)
+    mini = X.Dense(m.c.pages, ids, 180, X.MODEL)
+    Qm = X.encoder(X.MODEL).encode([c["clue"] for c in clues], query=True)
     with_img = [i for i, n in enumerate(ids) if images.get(n, {}).get("src")]
     with_set = set(with_img)
 
@@ -94,15 +108,15 @@ def main(check_only=False):
               "tokens": int(m.length[i]), "kin": int(m.G.in_degree(n))} for i, n in enumerate(ids)]
 
     out = []
-    tally = {}
     for k, c in enumerate(clues):
         absent = c["style"] == "absent"
         t = -1 if absent else m.ix[c["target"]]
         kw, parts, unknown = X.keyword_scores(m, c["clue"])
-        mean, best, arg = d180.scores(Q[k])
+        _, best, arg = d180.scores(Q[k])
         _, best60, _ = d60.scores(Q[k])
+        _, bestm, _ = mini.scores(Qm[k])
         kw_top, dn_top = X.topk(kw, TOP), X.topk(best, TOP)
-        ranks = None if absent else {"kw": X.rank_of(kw, t), "dn": X.rank_of(best, t), "dn60": X.rank_of(best60, t), "mean": X.rank_of(mean, t)}
+        ranks = None if absent else {"kw": X.rank_of(kw, t), "dn": X.rank_of(best, t), "dn60": X.rank_of(best60, t), "mini": X.rank_of(bestm, t)}
         # evidence: keyword, word by word, for its pick and for the right page
         pick_kw, pick_dn = kw_top[0], dn_top[0]
         words = []
@@ -129,36 +143,57 @@ def main(check_only=False):
         lineup += rnd.sample(pool, LINEUP - len(lineup))
         rnd.shuffle(lineup)
         hits = [] if absent else X.distinctive_words(m, c["clue"], t)
+        sk, sd = X.standout(kw), X.standout(best)
         out.append({"id": c["id"], "style": c["style"], "target": t, "name": c["target"] if absent else pretty(c["target"]),
                     "clue": c["clue"], "play": c["id"] not in NOT_PLAYED, "why_not": NOT_PLAYED.get(c["id"]),
-                    "kw": {"top": [[p, round(float(kw[p]), 4)] for p in kw_top], "words": words, "unknown": unknown},
-                    "dn": {"top": [[p, round(float(best[p]), 4)] for p in dn_top], "passages": passages},
+                    "kw": {"top": [[p, round(float(kw[p]), 4)] for p in kw_top], "words": words, "unknown": unknown,
+                           "z": round(sk["z"], 4), "gap": round(sk["gap"], 4)},
+                    "dn": {"top": [[p, round(float(best[p]), 4)] for p in dn_top], "passages": passages,
+                           "z": round(sd["z"], 4), "gap": round(sd["gap"], 4)},
                     "ranks": ranks, "lineup": lineup,
                     "overlap": {"page": len(hits), "rare": sum(1 for w in hits if m.df[m.c.vi[w]] <= RARE_DF),
                                 "words": len([w for w in dict.fromkeys(X.query_tokens(c["clue"])) if w in m.c.vi and not m.ishabit[m.c.vi[w]]])}})
-        st = tally.setdefault(c["style"], {"n": 0, "kw1": 0, "dn1": 0, "kw3": 0, "dn3": 0})
-        st["n"] += 1
-        if ranks:
-            st["kw1"] += ranks["kw"] == 1
-            st["dn1"] += ranks["dn"] == 1
-            st["kw3"] += ranks["kw"] <= 3
-            st["dn3"] += ranks["dn"] <= 3
 
-    data = {"meta": {"built": datetime.date.today().isoformat(), "model": X.MODEL, "passage_words": X.PASSAGE_WORDS,
-                     "n_passages": len(d180.texts), "n_passages_60": len(d60.texts), "n_chars": N, "n_clues": len(out),
-                     "lineup": LINEUP, "top": TOP, "styles": {s: v["n"] for s, v in tally.items()}},
+    # NOBODY HERE: fit each machine's threshold on the clues the game deals, then flag every clue
+    played = [c for c in out if c["play"]]
+    styles = np.array([c["style"] for c in played])
+    rules = {}
+    for key, feat in RULES.items():
+        right = np.array([c["style"] != "absent" and c[key]["top"][0][0] == c["target"] for c in played])
+        values = np.array([c[key][feat] for c in played])
+        thr, score = X.fit_nobody(values, styles, right)
+        # store the threshold rounded, and decide with the stored value, so the page and this file agree exactly
+        thr = round(thr, 4)
+        for c in out:
+            c[key]["nobody"] = bool(c[key][feat] < thr)
+        nob = np.array([c[key]["nobody"] for c in played])
+        rules[key] = {"feature": feat, "threshold": thr, "episode": round(X.episode_score(styles, right, nob), 3),
+                      "episode_always_answers": round(X.episode_score(styles, right, np.zeros(len(played), bool)), 3),
+                      "missing_caught": int(nob[styles == "absent"].sum()), "missing": int((styles == "absent").sum()),
+                      "right_given_up": int((nob & right).sum())}
+
+    tally = {}
+    for c in played:
+        st = tally.setdefault(c["style"], {"n": 0, "kw": 0, "dn": 0})
+        st["n"] += 1
+        for key in ("kw", "dn"):
+            ok = c[key]["nobody"] if c["style"] == "absent" else (not c[key]["nobody"] and c[key]["top"][0][0] == c["target"])
+            st[key] += ok
+
+    data = {"meta": {"built": datetime.date.today().isoformat(), "model": X.GAME_MODEL, "model_short": X.SPECS[X.GAME_MODEL]["short"],
+                     "course_model": X.MODEL, "passage_words": 180, "n_passages": len(d180.texts), "n_passages_60": len(d60.texts),
+                     "n_chars": N, "n_clues": len(out), "lineup": LINEUP, "top": TOP, "rules": rules,
+                     "styles": {s: sum(1 for c in out if c["style"] == s) for s in ("page", "other", "absent")}},
             "chars": chars, "clues": out}
     OUT.write_text("// Autogenerated by scripts/build_week7_show.py - do not edit by hand.\n"
                    "window.SHOW = " + json.dumps(data, ensure_ascii=False, separators=(",", ":")) + ";\n", encoding="utf-8")
-    print(f"wrote {OUT.relative_to(ROOT)} ({OUT.stat().st_size / 1024:.0f} kB): {len(out)} clues, {len(d180.texts)} passages")
+    print(f"wrote {OUT.relative_to(ROOT)} ({OUT.stat().st_size / 1024:.0f} kB): {len(out)} clues, {len(d180.texts)} passages, MEANING = {X.GAME_MODEL}")
+    for key, r in rules.items():
+        print(f"  {key}: nobody when {r['feature']} < {r['threshold']}: {r['episode']:.2f} points an episode "
+              f"(always answering: {r['episode_always_answers']:.2f}); says nobody to {r['missing_caught']} of {r['missing']} missing, "
+              f"gives up {r['right_given_up']} right answers")
     for s, v in tally.items():
-        if s == "absent":
-            continue
-        print(f"  {s:6s} n={v['n']:3d}  top-1  keyword {v['kw1']:3d}  meaning {v['dn1']:3d}   |  top-3  keyword {v['kw3']:3d}  meaning {v['dn3']:3d}")
-    for c in out:
-        if c["style"] == "absent":
-            print(f"  absent {c['name']:16s} keyword -> {chars[c['kw']['top'][0][0]]['name']} ({c['kw']['top'][0][1]:.3f})   "
-                  f"meaning -> {chars[c['dn']['top'][0][0]]['name']} ({c['dn']['top'][0][1]:.3f})")
+        print(f"  {s:6s} n={v['n']:3d}  right in the game: keyword {v['kw']:3d}  meaning {v['dn']:3d}")
 
 
 if __name__ == "__main__":

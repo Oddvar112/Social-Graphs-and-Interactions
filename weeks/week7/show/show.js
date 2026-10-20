@@ -54,7 +54,7 @@
       '<g class="eyes"><circle cx="25" cy="39" r="3.4" fill="#a678ff"/><circle cx="39" cy="39" r="3.4" fill="#a678ff"/></g>' +
       '<rect class="lid" x="19" y="34" width="26" height="10" fill="#18203c" style="transform-origin:32px 39px"/>' +
       '<rect x="19" y="49" width="26" height="12" rx="4" fill="#111830" stroke="#a678ff" stroke-width="2"/>' +
-      '<text x="32" y="57.8" text-anchor="middle" font-size="6.6" font-weight="800" fill="#a678ff" font-family="Inter,Arial,sans-serif">MiniLM</text></svg>',
+      '<text x="32" y="57.8" text-anchor="middle" font-size="6.6" font-weight="800" fill="#a678ff" font-family="Inter,Arial,sans-serif">mxbai</text></svg>',
   };
   const PH = '<svg viewBox="0 0 64 64" aria-hidden="true"><circle cx="32" cy="22" r="12" fill="#8d99bd"/><path d="M8 60c2-14 12-22 24-22s22 8 24 22z" fill="#8d99bd"/>' +
     '<path d="M21 21q5-5 11 0q6-5 11 0q-2 5-6 5q-3 0-5-3q-2 3-5 3q-4 0-6-5z" fill="#05070f"/></svg>';
@@ -177,6 +177,18 @@
     return { html: pieces.map(words).join(`<mark class="who">${esc(name)}</mark>`), shared };
   }
   function shortName(c) { return c.style === 'absent' ? 'Nobody (' + c.name + ')' : D.chars[c.target].name; }
+  const RULES = D.meta.rules || {};
+  const fmt = x => Number(x).toFixed(2);
+  /** One sentence on why a machine said nobody, or why it did not when it should have. */
+  function nobodyWhy(c, k, v) {
+    const r = RULES[k];
+    if (!r) return '';
+    const x = c[k][r.feature], pick = D.chars[c[k].top[0][0]].name;
+    const measure = r.feature === 'gap' ? 'standard deviations ahead of the runner-up' : 'standard deviations above the average page';
+    if (c[k].nobody) return ` It said <b>NOBODY HERE</b>: its best page, ${esc(pick)}, was only ${fmt(x)} ${measure}, and it answers only from ${fmt(r.threshold)}.`;
+    if (v.absent) return ` It answered anyway: its best page was ${fmt(x)} ${measure}, over its line of ${fmt(r.threshold)} for saying nobody.`;
+    return '';
+  }
 
   // ------------------------------------------------------------------ state
   let S = null;     // the episode
@@ -194,7 +206,7 @@
   }
 
   function renderPodiums() {
-    const P = [['you', 'Picks from six portraits'], ['kw', 'TF-IDF &middot; searches all 303 pages'], ['dn', 'MiniLM &middot; searches all 303 pages']];
+    const P = [['you', 'Picks from six portraits'], ['kw', 'TF-IDF &middot; searches all 303 pages'], ['dn', 'mxbai &middot; searches all 303 pages']];
     $('podiums').innerHTML = P.map(([k, sub]) => `<div class="podium ${k}" id="p-${k}"><div class="av">${AV[k]}</div><h3 class="comic">${NAME[k]}</h3>` +
       `<div class="score" id="s-${k}">${S.score[k]}</div><div class="sub">${sub}</div><div class="status"><span class="lamp"></span><span id="st-${k}">Ready</span>` +
       (k === 'you' ? '' : `<button class="ask" type="button" data-k="${k}"${S.asked[k] ? ' disabled' : ''} title="Once an episode: see its top three">ASK ${NAME[k]}</button>`) + '</div></div>').join('');
@@ -216,8 +228,8 @@
   function renderIntro() {
     const cast = [
       ['you', 'The contestant', 'Knows comics. Reads the clue, looks at six portraits and points. Gets one look at each machine\'s top three per episode.'],
-      ['kw', 'TF-IDF &middot; week 6\'s machine', 'Counts the clue\'s words on every page; a rare word counts for a lot, a common one for nothing. A word that no page uses does not exist for it.'],
-      ['dn', 'MiniLM &middot; a sentence encoder', 'Turns the clue and 4,479 passages into 384 numbers each and picks the page with the closest passage. Reads meaning, not spelling.'],
+      ['kw', 'TF-IDF &middot; week 6\'s machine', 'Counts the clue\'s words on every page; a rare word counts for a lot, a common one for nothing. A word that no page uses does not exist for it. Says nobody here when its best page is not clearly ahead of the next.'],
+      ['dn', 'mxbai-embed-large &middot; a sentence encoder', 'Turns the clue and 4,479 passages into 1,024 numbers each and picks the page with the closest passage. Reads meaning, not spelling. Says nobody here when no page stands out from the crowd.'],
     ];
     $('cast').innerHTML = cast.map(([k, role, text]) => `<div class="who ${k}"><div class="av">${AV[k]}</div><h3 class="comic">${NAME[k]}</h3><div class="role">${role}</div><p>${text}</p></div>`).join('');
     const ep = C.episodeOfDate();
@@ -259,6 +271,7 @@
     $('replay').hidden = true; $('replay').innerHTML = '';
     $('clue').innerHTML = ''; $('lineup').innerHTML = '';
     $('b-nobody').disabled = true; $('b-nobody').className = 'nobody';
+    $('b-nobody').querySelector('.chips').innerHTML = '';
     document.querySelectorAll('.bubble').forEach(b => b.remove());
     setTimer(1, '');
     $('timer').classList.remove('hot'); $('r-sec').classList.remove('hot');
@@ -360,15 +373,18 @@
     const el = $('p-' + k);
     el.querySelector('.ask').disabled = true;
     const top = R.c[k].top.slice(0, 3);
+    const nobody = !!R.c[k].nobody;
     const b = document.createElement('div');
     b.className = 'bubble';
     b.innerHTML = `<button class="x" type="button" aria-label="Close">&times;</button><b>${NAME[k]}:</b> my top three of 303 pages` +
-      `<ol>${top.map(([p, s]) => `<li><b>${esc(D.chars[p].name)}</b> <span style="color:#55607d">${s.toFixed(3)}</span>${cardOf(p) ? '' : ' <span style="color:#55607d">(not in your six)</span>'}</li>`).join('')}</ol>`;
+      `<ol>${top.map(([p, s]) => `<li><b>${esc(D.chars[p].name)}</b> <span style="color:#55607d">${s.toFixed(3)}</span>${cardOf(p) ? '' : ' <span style="color:#55607d">(not in your six)</span>'}</li>`).join('')}</ol>` +
+      `<div style="margin-top:6px">${nobody ? 'My answer: <b>NOBODY HERE</b>. None of them stands out.' : `My answer: <b>${esc(D.chars[top[0][0]].name)}</b>.`}</div>`;
     el.appendChild(b);
     b.querySelector('.x').addEventListener('click', () => b.remove());
     top.forEach(([p], i) => { const card = cardOf(p); if (card) addChip(card, k, `#${i + 1}`, true); });
+    if (nobody) addChip($('b-nobody'), k, 'ITS ANSWER', true);
     Sound.lock();
-    announce(`${NAME[k]} says: ${top.map(([p]) => D.chars[p].name).join(', ')}.`);
+    announce(`${NAME[k]} says: ${top.map(([p]) => D.chars[p].name).join(', ')}. ${nobody ? 'Its answer: nobody here.' : ''}`);
   }
 
   // ------------------------------------------------------------------ an answer, and the reveal
@@ -396,7 +412,8 @@
     Sound.drum();
     document.body.classList.add('flash');
     await wait(650);
-    const kc = cardOf(v.kwPick), dc = cardOf(v.dnPick);
+    // each machine's answer: its number one, or the NOBODY HERE buzzer
+    const kc = v.kwNobody ? $('b-nobody') : cardOf(v.kwPick), dc = v.dnNobody ? $('b-nobody') : cardOf(v.dnPick);
     if (kc) addChip(kc, 'kw', 'KEYWORD');
     Sound.lock();
     await wait(430);
@@ -414,17 +431,22 @@
     }
     const wrong = new Set();
     if (!v.you && R.pick !== null && R.pick !== -1) wrong.add(R.pick);
-    if (!v.kw) wrong.add(v.kwPick);
-    if (!v.dn) wrong.add(v.dnPick);
+    if (!v.kw && !v.kwNobody) wrong.add(v.kwPick);
+    if (!v.dn && !v.dnNobody) wrong.add(v.dnPick);
     wrong.forEach(p => { const el = cardOf(p); if (el) { el.classList.remove('dim'); el.querySelector('.stamp').innerHTML = '<b>&times;</b>'; } });
     if (v.you) { Sound.ding(); Confetti.fromEl(v.absent ? $('b-nobody') : cardOf(c.target), 90); } else Sound.buzz();
+    const said = { kw: v.kwNobody, dn: v.dnNobody };
     ['you', 'kw', 'dn'].forEach((k, i) => setTimeout(() => {
       if (v[k]) { S.score[k] += 1; bumpScore(k); }
-      podiumState(k, v[k] ? 'right' : 'wrong', v[k] ? 'Right' : (k === 'you' && R.pick === null ? 'Out of time' : 'Wrong'));
+      let label = v[k] ? 'Right' : 'Wrong';
+      if (k === 'you' && R.pick === null) label = 'Out of time';
+      if (k !== 'you' && said[k]) label = v[k] ? 'Right: nobody here' : 'Said nobody here';
+      podiumState(k, v[k] ? 'right' : 'wrong', label);
     }, 200 + i * 170));
     renderDots();
+    const answerOf = (nobody, p) => nobody ? 'nobody here' : D.chars[p].name;
     announce(`${v.you ? 'Right' : 'Wrong'}. The answer: ${v.absent ? 'nobody here, ' + c.name + ' has no page' : D.chars[c.target].name}. ` +
-      `KEYWORD said ${D.chars[v.kwPick].name}, MEANING said ${D.chars[v.dnPick].name}.`);
+      `KEYWORD said ${answerOf(v.kwNobody, v.kwPick)}, MEANING said ${answerOf(v.dnNobody, v.dnPick)}.`);
     await wait(950);
     replay(R, v);
   }
@@ -435,13 +457,17 @@
     const kind = c.style === 'page' ? ['page', "In the page's own words"] : (c.style === 'other' ? ['other', 'In other words'] : ['absent', 'Not in the corpus']);
     let head;
     if (v.absent) {
+      const said = v.kwNobody && v.dnNobody ? 'Both machines said nobody here.'
+        : [v.kwNobody ? 'KEYWORD said nobody here' : `KEYWORD answered ${esc(D.chars[v.kwPick].name)}`,
+          v.dnNobody ? 'MEANING said nobody here' : `MEANING answered ${esc(D.chars[v.dnPick].name)}`].join('; ') + '.';
       head = `<div class="pic none">?</div><div><span class="kind absent">${kind[1]}</span><h3 class="comic none">NOBODY HERE: ${esc(c.name.toUpperCase())}</h3>` +
-        `<p>${esc(c.name)} has no page among the 303, so the right answer was <b>nobody here</b>. Both machines answered anyway: a search engine returns its closest match, never "none of these".</p></div>`;
+        `<p>${esc(c.name)} has no page among the 303, so the right answer was <b>nobody here</b>. ${said} ` +
+        `A search engine always has a number one; it only says nobody if you give it a rule for when its number one does not stand out.</p></div>`;
     } else {
       const t = D.chars[c.target];
       head = `<div class="pic">${t.img ? `<img src="${esc(t.img)}" alt="${esc(t.name)}">` : PH}</div><div><span class="kind ${kind[0]}">${kind[1]}</span><h3 class="comic">${esc(t.name.toUpperCase())}</h3>` +
         `<p>Where the right page ranked among 303: <b class="kw">KEYWORD #${c.ranks.kw}</b> &middot; <b class="dn">MEANING #${c.ranks.dn}</b> ` +
-        `<small>(MEANING with 60-word passages #${c.ranks.dn60}, with one averaged vector per page #${c.ranks.mean})</small> &middot; ` +
+        `<small>(MEANING with 60-word passages #${c.ranks.dn60}; the course's smaller MiniLM #${c.ranks.mini})</small> &middot; ` +
         `<a href="${esc(t.url)}" target="_blank" rel="noopener">Read the page &rarr;</a></p></div>`;
     }
     const last = S.i === S.clues.length - 1;
@@ -488,8 +514,10 @@
     const name = D.chars[v.kwPick].name;
     const share = best && pickScore > 0 ? best.a / pickScore : 0;
     const inName = best && (name.toLowerCase().match(/[a-z]+/g) || []).indexOf(best.w) >= 0;
-    let text = (v.kw ? '<span class="ok">Right.</span>' : '<span class="bad">Wrong.</span>') + ` Its number one: <b>${esc(name)}</b>, cosine ${pickScore.toFixed(3)}.`;
-    if (best && share >= 0.5) text += ` One word carried ${Math.round(share * 100)} percent of it: <b>${esc(best.w)}</b>${inName && !v.kw ? `, which is part of the name ${esc(name)}` : ''}.`;
+    let text = (v.kw ? '<span class="ok">Right.</span>' : '<span class="bad">Wrong.</span>');
+    text += c.kw.nobody ? nobodyWhy(c, 'kw', v) : ` Its number one: <b>${esc(name)}</b>, cosine ${pickScore.toFixed(3)}.` + nobodyWhy(c, 'kw', v);
+    if (best && share >= 0.5) text += ` One word carried ${Math.round(share * 100)} percent of ${c.kw.nobody ? 'that page\'s score' : 'it'}: <b>${esc(best.w)}</b>` +
+      `${inName && v.kwPick !== c.target ? `, which is part of the name ${esc(name)}` : ''}.`;
     if (unknown.size) text += ` It never saw ${[...unknown].map(w => `<b>${esc(w)}</b>`).join(', ')}: no page uses ${unknown.size > 1 ? 'those words' : 'that word'}.`;
     if (showRight) text += ` The right page came #${c.ranks.kw}.`;
     return `<div class="rp-col kw"><h4>${AV.kw}KEYWORD counted these words</h4><p class="toks">${toks}</p>` +
@@ -508,13 +536,16 @@
       return `<div class="pass ${cls}"><header><b>${esc(D.chars[p].name)}</b><span>${label}</span><span class="sc">${x.score.toFixed(3)}</span></header>` +
         `<blockquote>${m.html}</blockquote><button class="more" type="button">Show the whole passage</button></div>`;
     };
-    let body = v.dn ? block(v.dnPick, 'right', 'its number one, and the right page')
-      : block(v.dnPick, 'pick', 'its number one') + (v.absent ? '' : block(c.target, 'right', `the right page's closest passage, #${c.ranks.dn}`));
+    const nob = !!c.dn.nobody;
+    const pickIsRight = !v.absent && v.dnPick === c.target;
+    let body = pickIsRight ? block(v.dnPick, 'right', nob ? 'its best page, the right one, but it said nobody' : 'its number one, and the right page')
+      : block(v.dnPick, 'pick', nob ? 'its best page (it said nobody)' : 'its number one') + (v.absent ? '' : block(c.target, 'right', `the right page's closest passage, #${c.ranks.dn}`));
     const x = P[String(v.dnPick)];
     const shared = markPassage(x.text, content, null).shared;
-    let text = (v.dn ? '<span class="ok">Right.</span>' : '<span class="bad">Wrong.</span>') +
-      ` Its number one is the page with the passage closest to the clue in meaning: <b>${esc(D.chars[v.dnPick].name)}</b>, similarity ${x.score.toFixed(3)}.` +
-      ` Of the clue's ${content.size} distinctive words, ${shared} ${shared === 1 ? 'turns' : 'turn'} up in that passage.`;
+    let text = (v.dn ? '<span class="ok">Right.</span>' : '<span class="bad">Wrong.</span>');
+    text += nob ? nobodyWhy(c, 'dn', v)
+      : ` Its number one is the page with the passage closest to the clue in meaning: <b>${esc(D.chars[v.dnPick].name)}</b>, similarity ${x.score.toFixed(3)}.` + nobodyWhy(c, 'dn', v);
+    text += ` Of the clue's ${content.size} distinctive words, ${shared} ${shared === 1 ? 'turns' : 'turn'} up in that passage.`;
     if (v.absent && x.text.indexOf(c.name) >= 0) text += ` The passage mentions <b>${esc(c.name)}</b>, on somebody else's page: the right text, the wrong person.`;
     return `<div class="rp-col dn"><h4>${AV.dn}MEANING matched this passage</h4>${body}<p class="verdict">${text}</p></div>`;
   }
@@ -536,7 +567,8 @@
     const mark = ok => ok ? '<span class="y">&#10003;</span>' : '<span class="n">&times;</span>';
     const rows = S.verdicts.map((v, i) => { const c = D.clues[S.clues[i]]; return `<tr><td>${i + 1}</td><td><b>${esc(shortName(c))}</b></td><td class="cl">${esc(c.clue)}</td><td class="m">${mark(v.you)}</td><td class="m">${mark(v.kw)}</td><td class="m">${mark(v.dn)}</td></tr>`; }).join('');
     const all = D.clues.filter(c => c.style === 'other');
-    const kwAll = all.filter(c => c.kw.top[0][0] === c.target).length, dnAll = all.filter(c => c.dn.top[0][0] === c.target).length;
+    const kwAll = all.filter(c => C.judge(c, null).kw).length, dnAll = all.filter(c => C.judge(c, null).dn).length;
+    const miniAll = all.filter(c => c.ranks.mini === 1).length;
     const share = C.shareText(S.number, S.verdicts);
     $('game').hidden = true;
     $('final').hidden = false;
@@ -544,7 +576,8 @@
       `<div class="bars">${['you', 'kw', 'dn'].map(k => `<div class="bar ${k}${t.winners.indexOf(k) >= 0 ? ' win' : ''}"><div class="av">${AV[k]}</div>` +
         `<div class="col" data-h="${Math.round(100 * (0.14 + 0.86 * t[k] / max))}"><b>${t[k]}</b></div><div class="lbl">${NAME[k]}</div></div>`).join('')}</div>` +
       `<div class="split">${split("In the page's own words", by.page)}${split('In other words', by.other)}${split('Nobody here', by.absent)}</div>` +
-      `<p class="foot" style="margin-top:16px">Across all ${all.length} clues we wrote in other words, KEYWORD's number one is right ${kwAll} times and MEANING's ${dnAll}. ` +
+      `<p class="foot" style="margin-top:16px">Across all ${all.length} clues we wrote in other words, KEYWORD gets ${kwAll} right and MEANING ${dnAll} ` +
+      `(the course's smaller MiniLM would have found ${miniAll}). ` +
       `<a href="../index.html">Why, in the post &rarr;</a></p>` +
       `<div class="recap"><table><thead><tr><th>#</th><th>Answer</th><th class="cl">Clue</th><th>You</th><th>KW</th><th>MN</th></tr></thead><tbody>${rows}</tbody></table></div>` +
       `<pre class="share" id="share">${esc(share)}</pre>` +

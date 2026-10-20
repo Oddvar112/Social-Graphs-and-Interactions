@@ -7,7 +7,7 @@
 <link rel="icon" type="image/svg+xml" href="../../../assets/favicon.svg">
 <link rel="icon" type="image/png" sizes="32x32" href="../../../assets/favicon-32.png">
 <link rel="apple-touch-icon" href="../../../assets/apple-touch-icon.png">
-<meta name="description" content="A game show. The host reads a description of a Marvel character; you point at the right portrait. Two search engines play the same clue over all 303 Wikipedia pages: KEYWORD counts words, MEANING reads them. One clue each episode is about someone who is not there at all.">
+<meta name="description" content="A game show. The host reads a description of a Marvel character; you point at the right portrait. Two search engines play the same clue over all 303 Wikipedia pages: KEYWORD counts words, MEANING reads them. One clue each episode is about someone who is not there at all, and the machines can say so too, when nothing stands out.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Bangers&family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
@@ -194,6 +194,8 @@ body.hard .card.reveal .nm{visibility:visible}
 .nobody:disabled{cursor:default;filter:saturate(.4) brightness(.65)}
 .nobody.picked{filter:none;box-shadow:0 6px 0 #5a0b0e,0 0 0 5px var(--you),0 0 30px rgba(255,201,63,.6)}
 .nobody.answer{filter:none;background:radial-gradient(circle at 50% 30%,#7af0a3,#16a34a 70%);box-shadow:0 6px 0 #0b4d24,0 0 0 5px var(--green),0 0 40px rgba(74,222,128,.7)}
+.nobody .chips{top:-30px;right:auto;left:50%;transform:translateX(-50%);flex-direction:row;gap:6px;align-items:center;white-space:nowrap}
+.nobody .chip{font-family:Inter,sans-serif;letter-spacing:.1em}
 
 /* --------------------------------------------------------------- podiums */
 .podiums{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;margin-top:28px;align-items:end}
@@ -371,8 +373,8 @@ body.hard .card.reveal .nm{visibility:visible}
 
     <ol class="rules">
       <li><i>1</i><b>Ten clues an episode.</b> Some are written in the words of the character's own Wikipedia page, some say the same facts <b>in other words</b>. You only find out which after you answer.</li>
-      <li><i>2</i><b>One clue is about someone who isn't there.</b> No page, no portrait. Spot it and hit <b>NOBODY HERE</b>. A search engine always returns somebody.</li>
-      <li><i>3</i><b>You pick from six; the machines search all 303 pages</b> and lock in their number one before you have read the clue. The six include whatever they picked. Each machine will tell you its top three once an episode: press <b>ASK</b> on its podium.</li>
+      <li><i>2</i><b>One clue is about someone who isn't there.</b> No page, no portrait. Spot it and hit <b>NOBODY HERE</b>. The machines can say it too, when no page stands out from the rest, and they are not always right about it.</li>
+      <li><i>3</i><b>You pick from six; the machines search all 303 pages</b> and lock in before you have read the clue. The six include whatever they picked. Each machine will tell you its top three and its answer once an episode: press <b>ASK</b> on its podium.</li>
       <li><i>4</i><b>One point a clue,</b> for anyone who is right. After every clue, the <b>instant replay</b> shows the words and the passages each machine went on.</li>
     </ol>
 
@@ -397,7 +399,7 @@ body.hard .card.reveal .nm{visibility:visible}
     </div>
 
     <div class="lineup" id="lineup" role="group" aria-label="The lineup: six characters"></div>
-    <div class="buzzrow"><button class="nobody" id="b-nobody" type="button" disabled><span>NOBODY HERE</span><small>NONE OF THESE &middot; PRESS N</small></button></div>
+    <div class="buzzrow"><button class="nobody" id="b-nobody" type="button" disabled><span>NOBODY HERE</span><small>NONE OF THESE &middot; PRESS N</small><span class="chips"></span></button></div>
 
     <div class="podiums" id="podiums"></div>
 
@@ -408,8 +410,9 @@ body.hard .card.reveal .nm{visibility:visible}
   <section id="final" hidden></section>
 
   <p class="foot">Portraits are the lead images of the Wikipedia articles, loaded from Wikipedia; only their addresses are stored. The art belongs to Marvel and is shown
-  for identification. Clues were written by us before any ranking was computed. KEYWORD is TF-IDF over the 303 pages; MEANING is all-MiniLM-L6-v2 over
-  4,479 passages of at most 180 words. <a href="../index.html">How it works, and what we found</a>.</p>
+  for identification. Clues were written by us before any ranking was computed. KEYWORD is TF-IDF over the 303 pages; MEANING is mxbai-embed-large-v1 over
+  4,479 passages of at most 180 words. Each says nobody here when its number one does not stand out, by a rule fitted on these clues.
+  <a href="../index.html">How it works, and what we found</a>.</p>
 </main>
 
 <canvas id="confetti" aria-hidden="true"></canvas>

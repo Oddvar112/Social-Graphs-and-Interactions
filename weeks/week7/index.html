@@ -55,8 +55,9 @@
       <h3 class="comic">IN OTHER WORDS</h3>
       <p>A game show. The host reads a description of a Marvel character and you point at the right portrait, while two search
       engines play the same clue against all 303 Wikipedia pages: <b>KEYWORD</b> counts words, <b>MEANING</b> reads them. One clue
-      each episode is about somebody who is not there at all. After every clue, an instant replay of what each machine went on.</p>
-      <div class="cast"><span style="color:var(--gold)">YOU</span><span style="color:var(--web)">KEYWORD &middot; TF-IDF</span><span style="color:var(--purple)">MEANING &middot; MiniLM</span></div>
+      each episode is about somebody who is not there at all, and the machines can say so too. After every clue, an instant replay of
+      what each machine went on.</p>
+      <div class="cast"><span style="color:var(--gold)">YOU</span><span style="color:var(--web)">KEYWORD &middot; TF-IDF</span><span style="color:var(--purple)">MEANING &middot; mxbai</span></div>
       <span class="cta">Play it</span>
     </a>
   </div>
@@ -76,7 +77,8 @@
   <em>kid</em> sent six clues to the Two-Gun Kid. We also described six characters who have no page. Both engines answered anyway,
   and MEANING was about as sure of Hercules being Thor as it was of its right answers. Then we turned it into a game show.</p>
   <p class="byline">Oddvar, David and Milena &middot; 20 October 2026 &middot; text: the course's frozen week 5 release, 303 pages
-  &middot; encoder: all-MiniLM-L6-v2 &middot; 128 clues, written by us, in <code>data/week7_clues.tsv</code></p>
+  &middot; encoders: all-MiniLM-L6-v2 for the analysis, five larger ones compared, mxbai-embed-large-v1 in the game &middot; 128 clues,
+  written by us, in <code>data/week7_clues.tsv</code></p>
 
   <div class="tldr">
     <span class="lbl">THE SHORT VERSION</span>
@@ -99,10 +101,17 @@
       <li><b>Nobody here.</b> Asked about Thor, KEYWORD says Beta Ray Bill and MEANING says Hercules. To answer "nobody" to all six
       missing characters, MEANING would have to refuse every answer it scores 0.535 or lower, and that throws away 22 of its 58 right
       answers, 15 of the 16 it found from other words.</li>
+      <li><b>A machine can learn to say nobody, a little.</b> Not from its score but from how far its number one stands out from the
+      other 302 pages. Judged on clues the rule was not fitted to, MiniLM then says nobody to 3 of the 5 missing characters the game
+      deals, at the cost of 6 right answers; the biggest encoder we tried says it to 2 and gives up none.</li>
       <li><b>Smaller passages help.</b> Other words, top three: 60-word passages 32 of 61, 180-word passages 24, one averaged vector
       per page 18, the first 256 word pieces 17.</li>
+      <li><b>A bigger encoder helps where it matters.</b> We ran five larger sentence encoders on the same clues. The largest,
+      mxbai-embed-large, finds the page first for 25 of the other-words clues (MiniLM 16) and has it in its top three for 43 (MiniLM 24).
+      On the page's own words all six are within a few clues of KEYWORD.</li>
       <li><b>IN OTHER WORDS, the game.</b> Ten clues an episode against both engines, portraits, a clock, a NOBODY HERE buzzer, one
-      lifeline per machine, and an instant replay of the words and passages each machine went on.</li>
+      lifeline per machine, and an instant replay of the words and passages each machine went on. In the game MEANING is mxbai-embed-large,
+      and both machines can say NOBODY HERE.</li>
     </ul>
   </div>
 
@@ -267,6 +276,15 @@
   KEYWORD's scores are no better as a detector: refusing everything at or below its highest score for a missing character (0.112) throws
   away 10 of its 41 right answers, all 3 of its other-words ones. The score is a similarity, not a probability that the page is right.
   It cannot say that the answer is not in the corpus.</p>
+  <p><b>Can a machine learn to say it?</b> Not from the score, but a little from the shape of the whole ranking. When the character is
+  there, the right page tends to stand out from the other 302; when nobody is there, the number one is merely the best of a flat crowd.
+  So we measured how far each engine's number one stands out, as z = (best &minus; mean) / standard deviation of all 303 scores, or as
+  the gap to the runner-up in the same units, and let the engine say nobody below a threshold. The threshold is the one that scores best
+  in the game (an episode of 4 clues in the page's own words, 5 in other words and 1 about a missing character; the five missing characters
+  the game deals, without Iron Man), and since a threshold fitted on the clues it is judged on flatters itself, every clue is judged by a
+  threshold fitted without it. MiniLM with the z rule says nobody to 3 of the 5 and gives up 6 right answers; KEYWORD, whose best measure
+  is the gap, says nobody to 1 and gives up 3. Neither gains much: 4.07 points an episode becomes 4.19 for MiniLM, and KEYWORD stays
+  at 2.7. The larger encoder in the next section does better: 2 of the 5, and no right answer lost.</p>
 
   <h2><span class="num">VII.</span>Change one choice</h2>
   <p>Exercise 7.10 asks for one change of representation and a check of which conclusions survive. We ran three, all with the same
@@ -293,14 +311,49 @@
   are close on the page's own words. And how a page is cut up moves the other-words top three between 17 and 32, about as far as the
   choice of engine moves it.</p>
 
+  <h3>Change the encoder</h3>
+  <p>MiniLM is the course's encoder and a small one, 23 million parameters. We ran five larger sentence encoders on the same clues, the same
+  passages and the same scoring, each used the way its model card says (pooling, and the prefixes it was trained to put in front of a query
+  or a passage). The last column is the game's measure: points in an episode of 4 clues in the page's own words, 5 in other words and 1 about
+  a missing character, for a machine that always answers.</p>
+  <div class="tablewrap">
+    <table>
+      <thead><tr><th>Encoder, 180-word passages</th><th class="num">parameters</th><th class="num">own words: first</th><th class="num">top 3</th><th class="num">other words: first</th><th class="num">top 3</th><th class="num">median rank</th><th class="num">points an episode</th></tr></thead>
+      <tbody>
+        <tr><td><span class="kwc">KEYWORD</span>, TF-IDF</td><td class="num">&nbsp;</td><td class="num">38</td><td class="num">54</td><td class="num">3</td><td class="num">6</td><td class="num">13</td><td class="num">2.7</td></tr>
+        <tr><td>all-MiniLM-L6-v2, the course's</td><td class="num">23 M</td><td class="num">42</td><td class="num">57</td><td class="num">16</td><td class="num">24</td><td class="num">5</td><td class="num">4.1</td></tr>
+        <tr><td>bge-small-en-v1.5</td><td class="num">33 M</td><td class="num">45</td><td class="num">56</td><td class="num">17</td><td class="num">27</td><td class="num">4</td><td class="num">4.3</td></tr>
+        <tr><td>all-mpnet-base-v2</td><td class="num">109 M</td><td class="num">37</td><td class="num">54</td><td class="num">22</td><td class="num">38</td><td class="num">3</td><td class="num">4.2</td></tr>
+        <tr><td>bge-base-en-v1.5</td><td class="num">109 M</td><td class="num">46</td><td class="num">57</td><td class="num">22</td><td class="num">33</td><td class="num">3</td><td class="num">4.8</td></tr>
+        <tr><td>e5-base-v2</td><td class="num">109 M</td><td class="num">50</td><td class="num">60</td><td class="num">21</td><td class="num">35</td><td class="num">2</td><td class="num">5.0</td></tr>
+        <tr><td><span class="dnc">mxbai-embed-large-v1</span>, the game's MEANING</td><td class="num">335 M</td><td class="num">47</td><td class="num">58</td><td class="num">25</td><td class="num">43</td><td class="num">2</td><td class="num">5.1</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p>The bigger encoders gain most where MiniLM was weakest: with other words the largest finds the right page first for 25 of the 61 clues
+  and has it in its top three for 43, where MiniLM had 16 and 24. In the page's own words all of them are within a few clues of KEYWORD
+  (37 to 50 first, against 38), so the post's main finding holds for every encoder: when the clue shares the page's words, a bag of words is
+  as good as a neural network, and when it does not, it is not close. With 60-word passages the best are bge-base (52 and 24 first, 5.4 points
+  an episode) and mxbai (50 and 27, 5.5). The NOBODY HERE rule from section VI, judged on clues it was not fitted to, adds 0.4 points to
+  mxbai with 180-word passages (5.5: nobody to 2 of the 5 missing characters, no right answer given up) and nothing to it with 60-word
+  passages, where no threshold separates the missing characters from the present ones. That is why the game plays mxbai with 180-word passages.
+  Everything here is in <code>data/week7_encoders.json</code>, written by <code>scripts/compare_week7_encoders.py</code>.</p>
+
   <h2><span class="num">VIII.</span>So we made it a game show</h2>
   <p><strong><a href="show/index.html">IN OTHER WORDS</a></strong> is the test with you in it. The host reads a clue; six portraits
   flip in; you point at one, or hit <b>NOBODY HERE</b>. <span class="kwc">KEYWORD</span> and <span class="dnc">MEANING</span> play the
-  same clue at the same time against all 303 pages and lock in their number one before you have finished reading (the six portraits
-  include their picks, and the rest are pages one of them ranked highly, so every decoy is plausible to a machine). An episode is ten
-  clues: four in the page's own words, five in other words, one about somebody who is not there. Each machine will show you its top three
-  once an episode, which turns out to be the interesting decision: trust KEYWORD when the clue sounds like Wikipedia, MEANING when it
-  does not, and neither when the clue is about Thor.</p>
+  same clue at the same time against all 303 pages and lock in before you have finished reading (the six portraits include their number
+  ones, and the rest are pages one of them ranked highly, so every decoy is plausible to a machine). An episode is ten clues: four in the
+  page's own words, five in other words, one about somebody who is not there. Each machine will show you its top three and its answer once
+  an episode, which turns out to be the interesting decision: trust KEYWORD when the clue sounds like Wikipedia, MEANING when it does not,
+  and neither when the clue is about Thor.</p>
+  <p>In the game, MEANING is mxbai-embed-large rather than MiniLM: with MiniLM the machines were easy to beat, about 4 points in 10 an episode.
+  And both machines can say NOBODY HERE, by the rule from section VI with its threshold fitted on the clues the game deals: KEYWORD when its
+  number one is less than 1.71 standard deviations ahead of the runner-up, MEANING when its number one stands less than 2.75 above the
+  average page. On these clues that has MEANING say nobody to Daredevil, Magneto and, only just, the Silver Surfer, and never to a character
+  who is there. KEYWORD says it to Captain America (only just) and Daredevil, and also to Venom, Misty Knight and Mayday Parker, who are there.
+  A threshold fitted on the clues it is then played on flatters the machines; on clues it was not fitted to, MEANING makes about 5.5 points
+  an episode and KEYWORD 2.7.</p>
   <p>After every clue comes the instant replay. KEYWORD's side shows the clue as the engine read it: each word shaded by what it added to
   KEYWORD's pick, underlined where it would have counted for the right page instead, struck through if no page uses it. MEANING's side shows the
   passage it matched and the right page's best passage, with the clue's words marked, so you can see how few of them there are. The
@@ -319,6 +372,8 @@
     almost nothing.</li>
     <li><b>Cutting a page at 256 pieces is not that bad, for the wrong reason.</b> The lead paragraph is a summary, and clues in the page's
     own words echo it.</li>
+    <li><b>The biggest encoder is surest about the wrong god.</b> Asked about Thor, mxbai-embed-large answers Beta Ray Bill, the alien who
+    was found worthy of his hammer, and that answer stands out from the crowd (z = 4.15) as far as its typical right answer does (median 4.18).</li>
   </ol>
 
   <h2><span class="num">&nbsp;</span>What we checked in the text</h2>
@@ -335,7 +390,8 @@
     <b>The limitation that matters.</b> We wrote every clue, so "other words" means <em>our</em> other words: three students who know the
     pages and were deliberately avoiding their vocabulary. Real searchers paraphrase less, and a question typed into a search box is closer
     to our page-words clues, where the two engines tie. The numbers are also small: 61 pairs give a top-three count of 24 an uncertainty of
-    about plus or minus 12 percentage points, and six missing characters show the problem, they do not measure it.
+    about plus or minus 12 percentage points, and six missing characters show the problem, they do not measure it. The same goes for the
+    NOBODY HERE rule, fitted on five of them: the leave-one-out numbers are the honest ones, and they are rough.
   </div>
 
   <h2><span class="num">&nbsp;</span>Reproduce it</h2>
@@ -346,17 +402,21 @@ cd Social-Graphs-and-Interactions
 
 python scripts/build_week7_show.py --check   # the vocabulary check of the clues (no model needed)
 python scripts/analyse_week7.py              # every figure and number in this post (a minute the first time, then seconds)
-python scripts/build_week7_show.py           # rankings, evidence and lineups for the game -> data/week7_show.js
-python scripts/test_in_other_words.py        # recomputes every ranking and passage, runs the game's core.js under node
+python scripts/compare_week7_encoders.py     # six encoders on the same clues, and the NOBODY HERE rule -> data/week7_encoders.json
+python scripts/build_week7_show.py           # rankings, evidence, lineups and nobody flags for the game -> data/week7_show.js
+python scripts/test_in_other_words.py        # recomputes every ranking, passage and flag, runs the game's core.js under node
 
 python -m http.server 8000                   # then open http://localhost:8000/weeks/week7/show/</code></pre>
-  <p>Needs <code>numpy</code>, <code>networkx</code>, <code>matplotlib</code>, <code>torch</code> and <code>transformers</code>; the encoder
-  is <code>sentence-transformers/all-MiniLM-L6-v2</code> (90 MB, downloaded on the first run), loaded with plain <code>transformers</code>
-  and pooled the way sentence-transformers does it. Passage vectors are cached in <code>.cache/</code>. Every number above is written to
+  <p>Needs <code>numpy</code>, <code>networkx</code>, <code>matplotlib</code>, <code>torch</code> and <code>transformers</code>. The post's
+  encoder is <code>sentence-transformers/all-MiniLM-L6-v2</code> (90 MB) and the game's is <code>mixedbread-ai/mxbai-embed-large-v1</code>
+  (670 MB); the comparison downloads four more, about 2 GB in all, the first time. Each is loaded with plain <code>transformers</code>,
+  safetensors weights only, and pooled and prefixed the way its model card says (<code>SPECS</code> in <code>scripts/week7_text.py</code>).
+  Passage vectors are cached in <code>.cache/</code>. Every number above is written to
   <code>data/stats_week7.json</code>. The clues are in <code>data/week7_clues.tsv</code>, our reading of MEANING's misses in
-  <code>data/week7_meaning_misses.tsv</code>. The game's test recomputes all 128 rankings under both engines, every stored passage and
-  word contribution, checks that every lineup holds the right page and both picks, and plays the rules: an episode is ten clues, four,
-  five and one, never the same character twice; NOBODY HERE scores only on a missing character; the machines never do.
+  <code>data/week7_meaning_misses.tsv</code>. The game's test recomputes all 128 rankings under both of the game's engines, every stored
+  passage, word contribution and standout measure, checks that every nobody flag follows the fitted rule and that the rule refits to the
+  same thresholds, checks that every lineup holds the right page and both number ones, and plays the rules: an episode is ten clues, four,
+  five and one, never the same character twice; NOBODY HERE scores only on a missing character, for you and for the machines alike.
   The text is the course's frozen release, <code>marvel_pages.zip</code>, unmodified. Character pictures are the lead images of the
   Wikipedia articles, loaded as you play; we store only their addresses.</p>
 

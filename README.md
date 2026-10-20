@@ -31,7 +31,7 @@ network, every philosopher on Wikipedia born before 1900, 1444 of them with 9140
 | `weeks/week6/taboo/` | **TABOO-IDF**, a word game: describe a secret character one word at a time while a cosine machine ranks all 303 pages; names are taboo; the engine is in `core.js` |
 | `weeks/week6/dial/` | **THE NAME DIAL**, an explorable: pick a page, turn how much names and habit words count, and watch its lookalikes re-rank, with the network's agreement measured live; the engine is in `core.js` |
 | `weeks/week7/index.html` | Week 7 post: sparse against dense search. 61 characters described twice, in their page's words and in other words, plus six who are not there; TF-IDF against a MiniLM sentence encoder over passages; what each engine hears when it is wrong, and four ways of cutting up a page |
-| `weeks/week7/show/` | **IN OTHER WORDS**, a game show: you, TF-IDF and a sentence encoder race to identify a described character, with an instant replay of each machine's evidence; the rules are in `core.js` |
+| `weeks/week7/show/` | **IN OTHER WORDS**, a game show: you, TF-IDF and a sentence encoder race to identify a described character, or to say that nobody here fits, with an instant replay of each machine's evidence; the rules are in `core.js` |
 | `scripts/` | Everything that produces the data and the figures |
 | `assets/figures/` | Generated figures: `analyse.py` writes the week 1 ones, `analyse_week2.py` the `week2_*` ones |
 | `data/` | Generated: graph for the game, stats, API verification output, the week 2 crawl |
@@ -181,19 +181,25 @@ recomputes every posting from the corpus, runs the shipped `core.js` against num
 **IN OTHER WORDS** (week 7) is the course's last 7.13 opener, *find queries where sparse and dense retrieval disagree*, as a game show.
 The host reads a description of a Marvel character, six portraits flip in, and you point at one or hit NOBODY HERE. Two machines play the
 same clue against all 303 pages and lock in before you have finished reading: **KEYWORD** is week 6's TF-IDF (the clue weighted like a page,
-cosine), **MEANING** is `all-MiniLM-L6-v2` over 4,479 passages of at most 180 words, a page scored by its best passage. An episode is ten
-clues, four in the page's own words, five in other words and one about a character with no page; the lineup is the right page, both machines'
-picks and their runners-up, so every decoy is plausible to a machine. Each machine shows its top three once an episode. After every clue an
-instant replay shows KEYWORD's words shaded by what each added to its pick (and struck through when no page uses them) and the passages MEANING
-matched, with the clue's words marked. Episode of the day by date, a result to paste, a 40-second clock, a hard mode without names,
-synthesised sound and confetti; no audio or image files ship with it.
+cosine), **MEANING** is `mxbai-embed-large-v1` over 4,479 passages of at most 180 words, a page scored by its best passage (the post's analysis
+uses the course's smaller `all-MiniLM-L6-v2`; `scripts/compare_week7_encoders.py` tried six encoders and this one did best). Each machine says
+NOBODY HERE when its number one does not stand out: KEYWORD when it is less than 1.71 standard deviations ahead of the runner-up, MEANING when
+it stands less than 2.75 above the average page, thresholds fitted to the game's own scoring. An episode is ten clues, four in the page's own
+words, five in other words and one about a character with no page; the lineup is the right page, both machines' number ones and their
+runners-up, so every decoy is plausible to a machine. Each machine shows its top three and its answer once an episode. After every clue an
+instant replay shows KEYWORD's words shaded by what each added to its pick (and struck through when no page uses them), the passages MEANING
+matched, with the clue's words marked, and why a machine said nobody or did not. On these clues MEANING makes about 5.5 points an episode and
+KEYWORD 2.7 (leave-one-out). Episode of the day by date, a result to paste, a 40-second clock, a hard mode without names, synthesised sound
+and confetti; no audio or image files ship with it.
 
 The 128 clues are ours, written before any ranking and checked for leaked page vocabulary (`data/week7_clues.tsv`). `scripts/week7_text.py`
-holds both engines and the passage rule (the encoder is loaded with plain `transformers`, mean-pooled the way sentence-transformers does it,
-and its passage vectors are cached in `.cache/`); `scripts/analyse_week7.py` produces every figure and number in the post and reads back
-`data/week7_meaning_misses.tsv`, our labels for the 45 passages behind MEANING's misses; `scripts/build_week7_show.py` writes
-`data/week7_show.js` (rankings, word contributions, passages and lineups for every clue); `scripts/test_in_other_words.py` recomputes all of it
-from the corpus and runs the shipped `core.js` under node: episodes, judging, tallies and the share text.
+holds the engines, the passage rule and the NOBODY HERE rule (encoders are loaded with plain `transformers`, safetensors weights only, pooled
+and prefixed the way each model card says, `SPECS`; passage vectors are cached in `.cache/`); `scripts/analyse_week7.py` produces every figure
+and number in the post and reads back `data/week7_meaning_misses.tsv`, our labels for the 45 passages behind MiniLM's misses;
+`scripts/compare_week7_encoders.py` runs six encoders on the same clues and fits and cross-validates the nobody rule for each
+(`data/week7_encoders.json`); `scripts/build_week7_show.py` writes `data/week7_show.js` (rankings, word contributions, passages, standout
+measures, nobody flags and lineups for every clue); `scripts/test_in_other_words.py` recomputes all of it from the corpus and runs the shipped
+`core.js` under node: episodes, judging (the machines' NOBODY HERE included), tallies and the share text.
 
 ## Reproducing everything
 
@@ -230,8 +236,9 @@ python scripts/test_taboo.py            # recomputes every posting, runs TABOO-I
 
 python scripts/build_week7_show.py --check  # vocabulary check of the clues against their pages (no model needed)
 python scripts/analyse_week7.py             # every figure and number in the week 7 post (a minute the first time, then seconds)
-python scripts/build_week7_show.py          # rankings, evidence and lineups for IN OTHER WORDS -> data/week7_show.js
-python scripts/test_in_other_words.py       # recomputes every ranking and passage, runs the shipped core.js under node
+python scripts/compare_week7_encoders.py    # six encoders on the same clues, and the NOBODY HERE rule -> data/week7_encoders.json
+python scripts/build_week7_show.py          # rankings, evidence, lineups and nobody flags for IN OTHER WORDS -> data/week7_show.js
+python scripts/test_in_other_words.py       # recomputes every ranking, passage and flag, runs the shipped core.js under node
 ```
 
 Week 5 additionally needs spaCy with `en_core_web_sm`, NLTK with its stopword list, and scikit-learn.
@@ -240,8 +247,9 @@ Week 6 needs no spaCy or NLTK (the stopword list is inlined in `week5_text.py`),
 networkx's, and its partition depends on the version: networkx 3.7 gives eight communities of the 277-node giant component where the
 week 5 run had seven, so community numbers in the week 6 post are from the partition it recomputes.
 
-Week 7 additionally needs `torch` and `transformers`; the encoder, `sentence-transformers/all-MiniLM-L6-v2` (90 MB), is downloaded on the
-first run. The first run encodes 19,464 passages and caches them; a GPU is used if there is one, and without one that run is slower.
+Week 7 additionally needs `torch` and `transformers`. The post's encoder, `sentence-transformers/all-MiniLM-L6-v2` (90 MB), and the game's,
+`mixedbread-ai/mxbai-embed-large-v1` (670 MB), are downloaded on the first run; the encoder comparison downloads four more (about 2 GB in all).
+Each encoder's passages are encoded once and cached; a GPU is used if there is one, and without one the first run is slow.
 
 The week 2 crawl is not frozen by the course, so `data/week2_*.tsv` is committed as our own snapshot (8 September
 2026) and `data/week2_crawl.json` records which category members were dropped and why. Re-running the crawl will
