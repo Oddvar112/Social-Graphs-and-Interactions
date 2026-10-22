@@ -2,7 +2,7 @@
 
 Group site for **02805 Social Graphs and Interactions** (DTU, autumn 2026), by **Oddvar**, **David** and **Milena**.
 
-Eight weekly posts about one dataset: the 303 characters in Wikipedia's
+Seven weekly posts about one dataset: the 303 characters in Wikipedia's
 [Category:Marvel Comics superheroes](https://en.wikipedia.org/wiki/Category:Marvel_Comics_superheroes)
 and the 1784 directed links between their pages. From week 2 the villains join in: 363 characters from
 [Category:Marvel Comics supervillains](https://en.wikipedia.org/wiki/Category:Marvel_Comics_supervillains),

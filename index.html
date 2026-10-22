@@ -61,7 +61,7 @@
     </div>
 
     <div id="view-weeks" role="tabpanel" aria-labelledby="tab-weeks">
-      <ol class="timeline" aria-label="Progress through the eight weeks">
+      <ol class="timeline" aria-label="Progress through the seven weeks">
         <li class="done"><a href="#week-1"><i>1</i><span>Degrees</span></a></li>
         <li class="done"><a href="#week-2"><i>2</i><span>Growth</span></a></li>
         <li class="done"><a href="#week-3"><i>3</i><span>Centrality</span></a></li>
@@ -69,7 +69,6 @@
         <li class="done"><a href="#week-5"><i>5</i><span>Text</span></a></li>
         <li class="done"><a href="#week-6"><i>6</i><span>Similarity</span></a></li>
         <li class="done"><a href="#week-7"><i>7</i><span>Embeddings</span></a></li>
-        <li class="todo"><b><i>8</i><span>Soon</span></b></li>
       </ol>
 
       <div class="weeks">
@@ -150,25 +149,68 @@
             <div class="plays"><a href="weeks/week7/show/"><i>&#9654;</i> IN OTHER WORDS</a></div></div>
         </article>
 
-        <article class="week soon" id="week-8">
-          <div class="no"><span>Week 8</span><span class="half hot">Language</span></div>
-          <h3 class="comic">COMING UP</h3>
-          <p>A slot is reserved. It fills in when week 8 lands, with its post and something to play.</p>
-        </article>
-
       </div>
     </div>
 
     <div id="view-games" role="tabpanel" aria-labelledby="tab-games">
-      <p class="gintro">Nine things to play with, newest first: six games and three explorables. A <b>game</b> scores you against something; an <b>explorable</b> lets you turn the knobs. Each one is built on the week's idea and the data we were working with that week.</p>
+      <p class="gintro">Nine things to play with, in week order: six games and three explorables. A <b>game</b> scores you against something; an <b>explorable</b> lets you turn the knobs. Each one is built on the week's idea and the data we were working with that week.</p>
       <div class="games">
 
-        <a class="gcard" href="weeks/week7/show/">
-          <div class="meta"><span>Week 7</span><span class="kind game">Game</span></div>
-          <h3 class="comic">IN OTHER WORDS</h3>
-          <p>A game show against two search engines. The host reads a description of a Marvel character and you point at the right
-          portrait, while TF-IDF and a sentence encoder race you over all 303 Wikipedia pages. One clue an episode is about somebody who
-          is not there at all, and every answer comes with an instant replay of the words and passages each machine went on.</p>
+        <a class="gcard" href="weeks/week1/game/">
+          <div class="meta"><span>Week 1</span><span class="kind game">Game</span></div>
+          <h3 class="comic">WEB-CRAWLER</h3>
+          <p>Pick Spider-Man, Wolverine or Doctor Strange. You get sent somewhere out in the network and have to click your
+          way home along real Wikipedia links, one page at a time. The map only exists where you have walked, and your score
+          is measured against the shortest route that actually exists in the graph.</p>
+          <span class="cta">Play it</span>
+        </a>
+
+        <a class="gcard" href="weeks/week2/grow/">
+          <div class="meta"><span>Week 2</span><span class="kind expl">Explorable</span></div>
+          <h3 class="comic">ORIGIN STORY</h3>
+          <p>Watch the Marvel universe grow one character at a time from 1939 to 2020, each arrival with its comic
+          panel, with or without the villains, and see who collects the links. Then grow a preferential-attachment
+          universe of the same size next to it. In the model, whoever arrives first becomes a hub. On Wikipedia, the
+          hubs are the class of 1962.</p>
+          <span class="cta">Watch it</span>
+        </a>
+
+        <a class="gcard" href="weeks/week2/hubdial/index.html?theme=dark">
+          <div class="meta"><span>Week 2 &middot; exercise 2.10</span><span class="kind expl">Explorable</span></div>
+          <h3 class="comic">THE HUB DIAL</h3>
+          <p>Grow a network where newcomers attach with probability proportional to k to the power &alpha;, and turn
+          &alpha;. Below 1 the hubs never form. At 1 you get Barab&aacute;si-Albert. Above 1 one node takes a fixed share
+          of every link, however big the network gets. Spider-Man reads 1.1 on the dial.</p>
+          <span class="cta">Turn it</span>
+        </a>
+
+        <a class="gcard" href="weeks/week3/game/">
+          <div class="meta"><span>Week 3</span><span class="kind game">Game</span></div>
+          <h3 class="comic">KINGPIN</h3>
+          <p>You get eight hits. Remove characters from the real network and try to shatter its core; whoever loses
+          their last route to the big cluster is cut off. Then three rival hitmen run the same contract: one shoots
+          the most connected, one the biggest broker, one at random. The map shows who is popular. It does not show
+          who holds the network together.</p>
+          <span class="cta">Play it</span>
+        </a>
+
+        <a class="gcard" href="weeks/week4/game/">
+          <div class="meta"><span>Week 4 &middot; philosophers</span><span class="kind game">Game</span></div>
+          <h3 class="comic">SYMPOSIUM</h3>
+          <p>You get one philosopher at the head of an empty table and 3, 5 or 9 seats to fill. The score is the links
+          inside the table beyond what chance would give, one table's share of modularity, and hubs are expensive. Then
+          a greedy host, a random host and the best table we ever found sit down beside yours. Or host the whole room,
+          1374 philosophers and a handful of place cards, and take on Louvain.</p>
+          <span class="cta">Host it</span>
+        </a>
+
+        <a class="gcard" href="weeks/week5/game/">
+          <div class="meta"><span>Week 5</span><span class="kind game">Game</span></div>
+          <h3 class="comic">SECRET IDENTITY</h3>
+          <p>Every Marvel page reduced to a bag of words. Unmask the character from as few words as you can while a
+          bag-of-words machine reads the same clues and commits on its own schedule; tell a real Wikipedia sentence from
+          one a trigram model dreamed up; put the blanked word back into a concordance line. One case of the day for
+          everyone, with a result to copy.</p>
           <span class="cta">Play it</span>
         </a>
 
@@ -180,6 +222,7 @@
           wins almost every time, which is the whole week in one switch.</p>
           <span class="cta">Play it</span>
         </a>
+
         <a class="gcard" href="weeks/week6/dial/">
           <div class="meta"><span>Week 6</span><span class="kind expl">Explorable</span></div>
           <h3 class="comic">THE NAME DIAL</h3>
@@ -188,56 +231,13 @@
           names, habit words and everything else, and the network's agreement with the text is measured live as you drag.</p>
           <span class="cta">Turn it</span>
         </a>
-        <a class="gcard" href="weeks/week5/game/">
-          <div class="meta"><span>Week 5</span><span class="kind game">Game</span></div>
-          <h3 class="comic">SECRET IDENTITY</h3>
-          <p>Every Marvel page reduced to a bag of words. Unmask the character from as few words as you can while a
-          bag-of-words machine reads the same clues and commits on its own schedule; tell a real Wikipedia sentence from
-          one a trigram model dreamed up; put the blanked word back into a concordance line. One case of the day for
-          everyone, with a result to copy.</p>
-          <span class="cta">Play it</span>
-        </a>
-        <a class="gcard" href="weeks/week4/game/">
-          <div class="meta"><span>Week 4 &middot; philosophers</span><span class="kind game">Game</span></div>
-          <h3 class="comic">SYMPOSIUM</h3>
-          <p>You get one philosopher at the head of an empty table and 3, 5 or 9 seats to fill. The score is the links
-          inside the table beyond what chance would give, one table's share of modularity, and hubs are expensive. Then
-          a greedy host, a random host and the best table we ever found sit down beside yours. Or host the whole room,
-          1374 philosophers and a handful of place cards, and take on Louvain.</p>
-          <span class="cta">Host it</span>
-        </a>
-        <a class="gcard" href="weeks/week3/game/">
-          <div class="meta"><span>Week 3</span><span class="kind game">Game</span></div>
-          <h3 class="comic">KINGPIN</h3>
-          <p>You get eight hits. Remove characters from the real network and try to shatter its core; whoever loses
-          their last route to the big cluster is cut off. Then three rival hitmen run the same contract: one shoots
-          the most connected, one the biggest broker, one at random. The map shows who is popular. It does not show
-          who holds the network together.</p>
-          <span class="cta">Play it</span>
-        </a>
-        <a class="gcard" href="weeks/week2/grow/">
-          <div class="meta"><span>Week 2</span><span class="kind expl">Explorable</span></div>
-          <h3 class="comic">ORIGIN STORY</h3>
-          <p>Watch the Marvel universe grow one character at a time from 1939 to 2020, each arrival with its comic
-          panel, with or without the villains, and see who collects the links. Then grow a preferential-attachment
-          universe of the same size next to it. In the model, whoever arrives first becomes a hub. On Wikipedia, the
-          hubs are the class of 1962.</p>
-          <span class="cta">Watch it</span>
-        </a>
-        <a class="gcard" href="weeks/week2/hubdial/index.html?theme=dark">
-          <div class="meta"><span>Week 2 &middot; exercise 2.10</span><span class="kind expl">Explorable</span></div>
-          <h3 class="comic">THE HUB DIAL</h3>
-          <p>Grow a network where newcomers attach with probability proportional to k to the power &alpha;, and turn
-          &alpha;. Below 1 the hubs never form. At 1 you get Barab&aacute;si-Albert. Above 1 one node takes a fixed share
-          of every link, however big the network gets. Spider-Man reads 1.1 on the dial.</p>
-          <span class="cta">Turn it</span>
-        </a>
-        <a class="gcard" href="weeks/week1/game/">
-          <div class="meta"><span>Week 1</span><span class="kind game">Game</span></div>
-          <h3 class="comic">WEB-CRAWLER</h3>
-          <p>Pick Spider-Man, Wolverine or Doctor Strange. You get sent somewhere out in the network and have to click your
-          way home along real Wikipedia links, one page at a time. The map only exists where you have walked, and your score
-          is measured against the shortest route that actually exists in the graph.</p>
+
+        <a class="gcard" href="weeks/week7/show/">
+          <div class="meta"><span>Week 7</span><span class="kind game">Game</span></div>
+          <h3 class="comic">IN OTHER WORDS</h3>
+          <p>A game show against two search engines. The host reads a description of a Marvel character and you point at the right
+          portrait, while TF-IDF and a sentence encoder race you over all 303 Wikipedia pages. One clue an episode is about somebody who
+          is not there at all, and every answer comes with an instant replay of the words and passages each machine went on.</p>
           <span class="cta">Play it</span>
         </a>
       </div>
